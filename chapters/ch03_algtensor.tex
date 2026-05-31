@@ -1,2 +1,562 @@
-% ---- placeholder ----
-% TODO: Write content
+%============================================================
+%  ch03_algtensor.tex
+%  Chapter 3: Algebraic Tensor Spaces
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Estimated length: ~25 pp.
+%============================================================
+
+\chapter{Algebraic Tensor Spaces}
+\label{chap:algtensor}
+
+This chapter develops the purely algebraic foundations of tensor spaces.
+We introduce the algebraic tensor product via its universal property,
+establish the key notions of elementary tensor, matricisation, and multilinear
+rank, and define the Tucker format and the set $\Tucker{\fr}{\VD}$ of tensors
+of fixed Tucker rank. No topology is assumed in this chapter; that enters
+in Chapter~\ref{chap:topTBT}.
+
+Throughout, $D = \{1, \ldots, d\}$ with $d \geq 2$ is the \emph{dimension
+index set}, and $V_\alpha$ ($\alpha \in D$) are vector spaces over $\KK$.
+Concerning the foundational construction of tensor products we follow
+Greub~\cite{Greub1981}.
+
+%------------------------------------------------------------
+\section{The algebraic tensor product}
+\label{sec:algtensor:def}
+%------------------------------------------------------------
+
+\subsection*{Universal property and construction}
+
+\begin{definition}
+\label{def:algtensor}
+The \emph{algebraic tensor product} of the spaces $V_\alpha$, $\alpha \in D$,
+is a pair $(\VD, \bigotimes)$ consisting of a vector space $\VD$ and a
+multilinear map
+\begin{equation}
+\label{eq:tensor_product_map}
+    \bigotimes : \prod_{\alpha \in D} V_\alpha \longrightarrow \VD,
+    \qquad
+    (v_\alpha)_{\alpha \in D} \mapsto \bigotimes_{\alpha \in D} v_\alpha,
+\end{equation}
+satisfying the following \emph{universal property}: for every vector space
+$Z$ and every multilinear map $M: \prod_{\alpha \in D} V_\alpha \to Z$,
+there exists a unique linear map $\widehat{M}: \VD \to Z$ such that
+$M = \widehat{M} \circ \bigotimes$.
+
+We write $\VD = {}_a\bigotimes_{\alpha \in D} V_\alpha$ and refer to elements
+of the form $\bigotimes_{\alpha \in D} v_\alpha$ (with $v_\alpha \in V_\alpha$)
+as \emph{elementary tensors}. Every element of $\VD$ is a \emph{finite}
+linear combination of elementary tensors.
+\end{definition}
+
+The algebraic tensor product exists and is unique up to isomorphism; see
+\cite{Greub1981} for the standard construction. The prefix `$a$' in
+${}_a\bigotimes$ emphasises the algebraic (non-topological) nature.
+The underlying field is $\KK = \RR$ throughout, but all results hold
+equally for $\KK = \CC$.
+
+\begin{remark}
+\label{rem:tensor_not_basis}
+The set of elementary tensors is \emph{not} a basis of $\VD$; it
+generates $\VD$ but with many linear dependencies. For example,
+$\lambda v \otimes w = v \otimes \lambda w$ for all $\lambda \in \KK$.
+If $\{e_i\}$ and $\{f_j\}$ are bases of $V_1$ and $V_2$ respectively,
+then $\{e_i \otimes f_j\}$ is a basis of $V_1 \atens V_2$.
+\end{remark}
+
+\subsection*{Bilinear identification and the $\alpha$-unfolding}
+
+For each $\alpha \in D$, the algebraic tensor space can be rewritten as
+a two-factor product by grouping all indices except $\alpha$:
+\begin{equation}
+\label{eq:bilinear_split}
+    \VD \cong V_\alpha \atens \Vbigalpha^{[\alpha]},
+    \qquad
+    \Vbigalpha^{[\alpha]} \coloneqq {}_a\bigotimes_{\beta \in D \setminus \{\alpha\}} V_\beta.
+\end{equation}
+Concretely, there is a canonical linear isomorphism
+$\Phi_\alpha: \VD \xrightarrow{\;\sim\;} V_\alpha \atens \Vbigalpha^{[\alpha]}$
+and throughout this monograph we identify $\bv \in \VD$ with
+$\Phi_\alpha(\bv) \in V_\alpha \atens \Vbigalpha^{[\alpha]}$ without
+further comment. An elementary tensor splits as
+$\bigotimes_{\beta \in D} v_\beta \leftrightarrow v_\alpha \otimes
+\bigotimes_{\beta \neq \alpha} v_\beta$.
+
+\subsection*{Tensor products of linear maps}
+
+Given linear maps $A_\alpha: V_\alpha \to W_\alpha$ for $\alpha \in D$,
+their tensor product is the unique linear map
+\begin{equation}
+\label{eq:tensor_of_maps}
+    \bigotimes_{\alpha \in D} A_\alpha :
+    \VD \longrightarrow \mathbf{W}_D
+    \coloneqq {}_a\bigotimes_{\alpha \in D} W_\alpha,
+\end{equation}
+determined on elementary tensors by
+$\bigl(\bigotimes_{\alpha \in D} A_\alpha\bigr)
+\bigl(\bigotimes_{\alpha \in D} v_\alpha\bigr)
+= \bigotimes_{\alpha \in D} A_\alpha v_\alpha$.
+This is the unique linear extension guaranteed by the universal property.
+We denote the algebraic dual of $V$ by $\algdual{V} = L(V, \KK)$
+and the space of all linear maps from $V$ to $W$ by $L(V, W)$.
+
+\subsection*{Partitions and iterated tensor products}
+
+\begin{definition}
+\label{def:partition_tensor}
+Let $\mathcal{P}$ be a partition of $D$ (i.e., a collection of
+non-empty, pairwise disjoint subsets of $D$ whose union is $D$).
+For each $\alpha \in \mathcal{P}$, set
+$\Vbigalpha \coloneqq {}_a\bigotimes_{j \in \alpha} V_j$
+(with the convention $\mathbf{V}_{\{j\}} = V_j$). Then the
+\emph{iterated tensor product} associated to $\mathcal{P}$ is
+\begin{equation}
+\label{eq:iterated_tensor}
+    {}_a\bigotimes_{\alpha \in \mathcal{P}} \Vbigalpha
+    \cong \VD,
+\end{equation}
+where the isomorphism is canonical and consistent with the
+identifications of elementary tensors.
+\end{definition}
+
+This associativity-of-tensor-products fact is fundamental: it allows us
+to regroup the factors of $\VD$ according to any hierarchical structure,
+which is precisely what the dimension partition trees of
+Chapter~\ref{chap:trees} will exploit.
+
+\begin{example}
+\label{ex:iterated_tensor}
+For $D = \{1,2,3,4\}$ and the partition
+$\mathcal{P} = \{\{1,2\}, \{3,4\}\}$:
+\begin{equation*}
+    (V_1 \atens V_2) \atens (V_3 \atens V_4) \cong
+    V_1 \atens V_2 \atens V_3 \atens V_4.
+\end{equation*}
+The partition $\mathcal{P}' = \{\{1\},\{2\},\{3\},\{4\}\}$ (trivial)
+recovers the original four-fold product. The non-trivial partition
+$\mathcal{P}$ is the structure underlying the Tucker format
+(depth-2 tree), while more refined partitions correspond to hierarchical
+formats; see Chapter~\ref{chap:trees}.
+\end{example}
+
+%------------------------------------------------------------
+\section{Matricisation and multilinear rank}
+\label{sec:algtensor:rank}
+%------------------------------------------------------------
+
+\subsection*{Matricisation in finite dimensions}
+
+When the component spaces are finite-dimensional, the tensor $\bv \in \VD$
+can be represented as a multi-dimensional array, and the identification
+\eqref{eq:bilinear_split} induces a matrix.
+
+\begin{definition}
+\label{def:matricisation}
+Let $D = \{1, \ldots, d\}$, $\dim V_\alpha = n_\alpha < \infty$, and
+fix bases of each $V_\alpha$. Identify $\bv \in \VD$ with its
+coordinate array $C \in \RR^{n_1 \times \cdots \times n_d}$.
+For each $\alpha \in D$, the \emph{$\alpha$-matricisation} (or
+\emph{$\alpha$-unfolding}) of $\bv$ is the matrix
+\begin{equation*}
+    \Mmat{\alpha}(\bv) \in \RR^{n_\alpha \times \prod_{\beta \neq \alpha} n_\beta}
+\end{equation*}
+obtained by reordering the coordinate array $C$ so that the $\alpha$-index
+labels the rows and all other indices, in lexicographic order, label the
+columns. The rank of this matrix,
+$\rank \Mmat{\alpha}(\bv) \in \{0, 1, \ldots, n_\alpha\}$,
+is the \emph{$\alpha$-rank} of $\bv$.
+\end{definition}
+
+The notion of $\alpha$-rank was introduced by Hitchcock
+\cite[p.\,170]{Hitchcock1927} in 1927 under the name ``rank on the $j$th
+index''. In the infinite-dimensional case, the correct replacement of
+$\rank \Mmat{\alpha}(\bv)$ is the dimension of the minimal subspace
+$\Umin{\alpha}{\bv}$, which we define in Section~\ref{sec:algtensor:tucker}
+and develop fully in Chapter~\ref{chap:minsubspaces}.
+
+\subsection*{Full-rank core tensors}
+
+The following definition isolates the tensors whose coordinate arrays
+have maximal rank in every direction, a condition that will characterise
+elements of the Tucker manifold $\Tucker{\fr}{\VD}$.
+
+\begin{definition}
+\label{def:fullrank_core}
+For a rank tuple $\fr = (r_\alpha)_{\alpha \in D} \in \NN^d$, define
+\begin{equation}
+\label{eq:Rstar}
+    \RR^{\times_{\alpha \in D} r_\alpha}_*
+    \coloneqq
+    \Bigl\{
+        C \in \RR^{\times_{\alpha \in D} r_\alpha} :
+        \rank \Mmat{\alpha}(C) = r_\alpha \;\text{ for all } \alpha \in D
+    \Bigr\}.
+\end{equation}
+Elements of $\RR^{\times_{\alpha \in D} r_\alpha}_*$ are called
+\emph{full-rank core tensors} of shape $\fr$.
+\end{definition}
+
+\begin{remark}
+\label{rem:Rstar_open}
+Since $\rank \Mmat{\alpha}(C) = r_\alpha$ if and only if
+$\Mmat{\alpha}(C)\Mmat{\alpha}(C)^T \in \GL{\RR^{r_\alpha}}$,
+and the determinant is a continuous function,
+$\RR^{\times_{\alpha \in D} r_\alpha}_*$ is an open subset of
+$\RR^{\times_{\alpha \in D} r_\alpha}$, hence a smooth finite-dimensional
+manifold in its own right. In the scalar case $r_\alpha = 1$ for all
+$\alpha$, we recover $\RR_* = \RR \setminus \{0\} = \GL{\RR}$.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The Tucker format}
+\label{sec:algtensor:tucker}
+%------------------------------------------------------------
+
+\subsection*{Minimal subspaces: first appearance}
+
+We introduce minimal subspaces here in their algebraic form; the full
+theory (existence, uniqueness, lattice properties, best approximation)
+is developed in Chapter~\ref{chap:minsubspaces}.
+
+\begin{definition}
+\label{def:minimal_subspace_algebraic}
+Let $\bv \in \VD = {}_a\bigotimes_{\alpha \in D} V_\alpha$ and
+$\alpha \in D$. Under the identification $\VD \cong V_\alpha \atens
+\Vbigalpha^{[\alpha]}$, the \emph{minimal subspace} of $\bv$ in
+direction $\alpha$ is the unique subspace $\Umin{\alpha}{\bv} \subset V_\alpha$
+of smallest dimension such that
+$\bv \in \Umin{\alpha}{\bv} \atens \Vbigalpha^{[\alpha]}$.
+The \emph{$\alpha$-rank} of $\bv$ is $r_\alpha(\bv) \coloneqq \dim \Umin{\alpha}{\bv}$.
+\end{definition}
+
+The key properties — existence, uniqueness, and the symmetry
+$\dim \Umin{\alpha}{\bv} = \dim \Umin{D \setminus \{\alpha\}}{\bv}$ —
+are established in Chapter~\ref{chap:minsubspaces}. Here we proceed
+taking these properties for granted.
+
+\subsection*{The Tucker format and the set $\Tucker{\fr}{\VD}$}
+
+\begin{definition}
+\label{def:tucker_format}
+Let $\fr = (r_\alpha)_{\alpha \in D} \in \NNz^d$ and let $U_\alpha \in
+\Grass{r_\alpha}{V_\alpha}$ for each $\alpha \in D$. A tensor
+$\bv \in \VD$ is said to be in \emph{Tucker format} with subspace
+tuple $(U_\alpha)_{\alpha \in D}$ if
+\begin{equation*}
+    \bv \in {}_a\bigotimes_{\alpha \in D} U_\alpha.
+\end{equation*}
+The \emph{Tucker rank} of $\bv$ is the tuple
+$\fr(\bv) = (r_\alpha(\bv))_{\alpha \in D}$,
+and the set of tensors with fixed Tucker rank $\fr$ is
+\begin{equation}
+\label{eq:Tucker_set}
+    \Tucker{\fr}{\VD} \coloneqq
+    \bigl\{
+        \bv \in \VD : r_\alpha(\bv) = r_\alpha \text{ for all } \alpha \in D
+    \bigr\}.
+\end{equation}
+\end{definition}
+
+The Tucker format thus represents $\bv$ as an element of a subspace
+$U_1 \otimes \cdots \otimes U_d$ spanned by $r_\alpha$-dimensional
+subspaces $U_\alpha \subset V_\alpha$. Unlike the subspaces, the
+representation is not unique; the set $\Tucker{\fr}{\VD}$ collects all
+tensors for which the \emph{minimal} such subspaces have dimension
+exactly $r_\alpha$.
+
+\subsection*{Admissible Tucker ranks}
+
+\begin{definition}
+\label{def:admissible_tucker}
+A tuple $\fr = (r_\alpha)_{\alpha \in D} \in \NNz^d$ is an
+\emph{admissible Tucker rank} for $\VD$ if there exists $\bv \in \VD$
+with $r_\alpha(\bv) = r_\alpha$ for all $\alpha \in D$. The set of all
+admissible Tucker ranks is
+\begin{equation}
+\label{eq:AD_tucker}
+    \AD{\VD} \coloneqq
+    \bigl\{
+        (r_\alpha(\bv))_{\alpha \in D} \in \NNz^d : \bv \in \VD
+    \bigr\}.
+\end{equation}
+\end{definition}
+
+The zero tuple $\mathbf{0} = (0,\ldots,0)$ is always admissible
+(corresponding to $\bv = 0$). The tuple $\mathbf{1} = (1,\ldots,1)$
+is admissible if and only if $\dim V_\alpha \geq 1$ for all $\alpha$.
+Since the $r_\alpha$ are bounded above by $\dim V_\alpha$ (in finite
+dimensions), $\AD{\VD}$ is a finite set when all $V_\alpha$ are
+finite-dimensional.
+
+The following decomposition is one of the foundational structural facts
+of the whole theory.
+
+\begin{proposition}
+\label{prop:tucker_decomposition}
+The algebraic tensor space decomposes as a disjoint union:
+\begin{equation}
+\label{eq:tucker_disjoint}
+    \VD = \bigsqcup_{\fr \in \AD{\VD}} \Tucker{\fr}{\VD}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Since every $\bv \in \VD$ has a well-defined Tucker rank tuple
+(Chapter~\ref{chap:minsubspaces}), the sets $\Tucker{\fr}{\VD}$ cover
+$\VD$; they are disjoint by definition of the rank.
+\end{proof}
+
+The decomposition \eqref{eq:tucker_disjoint} is the algebraic precursor
+of the manifold decomposition established in
+Chapter~\ref{chap:tucker_manifold}: each component $\Tucker{\fr}{\VD}$
+will be shown to carry the structure of an infinite-dimensional
+$\mathcal{C}^\infty$-Banach manifold.
+
+\subsection*{Explicit representation of Tucker tensors}
+
+The following lemma, which combines the definition of $\Tucker{\fr}{\VD}$
+with the properties of minimal subspaces, gives three equivalent
+characterisations of Tucker tensors. It is the algebraic heart of the
+Tucker manifold construction.
+
+\begin{lemma}
+\label{lem:tucker_characterisation}
+Let $\VD = {}_a\bigotimes_{\alpha \in D} V_\alpha$ and $\fr \in \AD{\VD}$
+with $\fr \neq \mathbf{0}$. For $\bv \in \VD$, the following conditions
+are equivalent.
+\begin{enumerate}
+\item[\textup{(a)}] $\bv \in \Tucker{\fr}{\VD}$.
+\item[\textup{(b)}] \textup{(Tucker representation)} For each $\alpha \in D$ there exists a
+    basis $\{u^{(\alpha)}_{i_\alpha} : 1 \leq i_\alpha \leq r_\alpha\}$
+    of $\Umin{\alpha}{\bv}$ and a unique full-rank core tensor
+    $\CD \in \RR^{\times_{\alpha \in D} r_\alpha}_*$,
+    once the bases are fixed, such that
+    \begin{equation}
+    \label{eq:tucker_core}
+        \bv = \sum_{\substack{1 \leq i_\alpha \leq r_\alpha \\ \alpha \in D}}
+        \CD_{(i_\alpha)_{\alpha \in D}}
+        \bigotimes_{\alpha \in D} u^{(\alpha)}_{i_\alpha}.
+    \end{equation}
+\item[\textup{(c)}] \textup{(Bilinear form)} For each $\alpha \in D$ there exist
+    linearly independent vectors
+    $\{u^{(\alpha)}_{i_\alpha}\}_{i_\alpha=1}^{r_\alpha}$ in $V_\alpha$
+    and linearly independent vectors
+    $\{\bU^{(\alpha)}_{i_\alpha}\}_{i_\alpha=1}^{r_\alpha}$
+    in $\Vbigalpha^{[\alpha]}$ such that
+    \begin{equation}
+    \label{eq:tucker_bilinear}
+        \bv = \sum_{i_\alpha=1}^{r_\alpha}
+        u^{(\alpha)}_{i_\alpha} \otimes \bU^{(\alpha)}_{i_\alpha}.
+    \end{equation}
+    Moreover, when \eqref{eq:tucker_core} holds, the vectors
+    $\bU^{(\alpha)}_{i_\alpha}$ are given by
+    \begin{equation}
+    \label{eq:tucker_Ualpha}
+        \bU^{(\alpha)}_{i_\alpha} =
+        \sum_{\substack{1 \leq i_\beta \leq r_\beta \\ \beta \in D \setminus \{\alpha\}}}
+        \CD_{i_\alpha, (i_\beta)_{\beta \neq \alpha}}
+        \bigotimes_{\beta \neq \alpha} u^{(\beta)}_{i_\beta}.
+    \end{equation}
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+\textbf{(a) $\Leftrightarrow$ (c).} If (a) holds, then by
+Proposition~\ref{prop:min_bilinear} (Chapter~\ref{chap:minsubspaces}),
+$\bv \in \Umin{\alpha}{\bv} \atens \Umin{D\setminus\{\alpha\}}{\bv}$
+with $\dim \Umin{\alpha}{\bv} = \dim \Umin{D\setminus\{\alpha\}}{\bv} = r_\alpha$,
+which gives~(c). Conversely, (c) implies $\dim \Umin{\alpha}{\bv} = r_\alpha$
+for all $\alpha$, hence~(a).
+
+\textbf{(b) $\Rightarrow$ (c).} Immediate.
+
+\textbf{(c) $\Rightarrow$ (b).} From (c), one has
+$\Umin{\alpha}{\bv} = \spann\{u^{(\alpha)}_{i_\alpha}\}$ for each $\alpha$,
+and since $\bv \in {}_a\bigotimes_{\alpha \in D} \Umin{\alpha}{\bv}$,
+there exists $\CD \in \RR^{\times_{\alpha \in D} r_\alpha}$ satisfying
+\eqref{eq:tucker_core}. From \eqref{eq:tucker_Ualpha} and the linear
+independence of the $\bU^{(\alpha)}_{i_\alpha}$, one deduces
+$\rank \Mmat{\alpha}(\CD) = r_\alpha$ for all $\alpha$, so
+$\CD \in \RR^{\times_{\alpha \in D} r_\alpha}_*$.
+\end{proof}
+
+\begin{remark}
+\label{rem:tucker_identification}
+From Lemma~\ref{lem:tucker_characterisation} and
+Remark~\ref{rem:Rstar_open}, once bases of the minimal subspaces
+$\Umin{\alpha}{\bv}$ are fixed ($\alpha \in D$), there is a natural
+identification
+\begin{equation}
+\label{eq:tucker_iso}
+    \Tucker{\fr}\Bigl({}_a\bigotimes_{\alpha \in D} \Umin{\alpha}{\bv}\Bigr)
+    \xrightarrow{\;\sim\;}
+    \RR^{\times_{\alpha \in D} r_\alpha}_*,
+    \qquad
+    \bu \mapsto E^{(D)},
+\end{equation}
+where $E^{(D)}$ is the coordinate array of $\bu$ in the chosen bases.
+This identification is a diffeomorphism (both directions are polynomial),
+and it is the local model for the Tucker manifold chart; see
+Section~\ref{sec:tucker_manifold:charts}.
+\end{remark}
+
+\subsection*{The Tucker format as a flat case of tree-based formats}
+
+The Tucker format corresponds to the \emph{shallowest} possible
+hierarchical structure: the dimension partition tree $\TDtuck$ of
+depth~1, whose root is $D$ and whose children are the singletons
+$\{1\}, \ldots, \{d\}$:
+\begin{equation*}
+    \TDtuck = \bigl\{D, \{1\}, \{2\}, \ldots, \{d\}\bigr\},
+    \qquad
+    \Sons{D} = \bigl\{\{1\},\ldots,\{d\}\bigr\} = \Leaves[\TDtuck].
+\end{equation*}
+In Chapter~\ref{chap:algTBT} we will define tree-based formats for
+arbitrary dimension partition trees $\TD$ and show that
+$\Tucker{\fr}{\VD} = \FT{\fr}{\VD}{\TDtuck}$.
+
+%------------------------------------------------------------
+\section{The tensor product map and its differential}
+\label{sec:algtensor:tensmap}
+%------------------------------------------------------------
+
+When the component spaces are normed, the tensor product map inherits
+both topological and differential properties that underpin the manifold
+constructions in Part~\ref{part:geometry}.
+
+\begin{definition}
+\label{def:tensor_product_continuous}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces and let $\|\cdot\|_D$
+be a norm on $\VD$. The \emph{tensor product map}
+\begin{equation}
+\label{eq:tensor_product_normed}
+    \bigotimes :
+    \prod_{\alpha \in D}(V_\alpha, \|\cdot\|_\alpha) \longrightarrow
+    (\VD, \|\cdot\|_D),
+    \qquad
+    (v_\alpha)_{\alpha \in D} \mapsto \bigotimes_{\alpha \in D} v_\alpha,
+\end{equation}
+(where the product is equipped with the $\max$ norm
+$\|(v_\alpha)\|_\times = \max_\alpha \|v_\alpha\|_\alpha$) is said to be
+\emph{continuous} if $\|\bigotimes_\alpha v_\alpha\|_D \leq C \prod_\alpha
+\|v_\alpha\|_\alpha$ for some constant $C > 0$.
+\end{definition}
+
+Continuity of the tensor product map is equivalent to
+$\|\bigotimes\| < \infty$; it holds whenever $\|\cdot\|_D$ is a
+crossnorm (Definition~\ref{def:crossnorm}) on $\VD$.
+
+\begin{proposition}
+\label{prop:tensor_smooth}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces and let $\|\cdot\|_D$
+be a norm on $\VD$ such that the tensor product map
+\eqref{eq:tensor_product_normed} is continuous. Then:
+\begin{enumerate}
+\item[\textup{(i)}] The map \eqref{eq:tensor_product_normed} is
+    $\mathcal{C}^\infty$-Fréchet differentiable, with differential
+    \begin{equation}
+    \label{eq:diff_tensor_product}
+        D\bigotimes(v_1,\ldots,v_d)(w_1,\ldots,w_d)
+        = \sum_{\alpha \in D}
+          v_1 \otimes \cdots \otimes v_{\alpha-1} \otimes
+          w_\alpha \otimes v_{\alpha+1} \otimes \cdots \otimes v_d.
+    \end{equation}
+\item[\textup{(ii)}] The tensor product of bounded linear maps,
+    \begin{equation*}
+        \bigotimes :
+        \prod_{\alpha \in D} \cL(U_\alpha, V_\alpha)
+        \longrightarrow
+        \cL\Bigl({}_a\bigotimes_{\alpha \in D} U_\alpha,\, \VD\Bigr),
+        \quad
+        (A_\alpha) \mapsto \bigotimes_{\alpha \in D} A_\alpha,
+    \end{equation*}
+    is also continuous and $\mathcal{C}^\infty$-Fréchet differentiable
+    for any finite-dimensional subspaces $U_\alpha \subset V_\alpha$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i) follows directly from Proposition~\ref{prop:multilinear_smooth},
+since $\bigotimes$ is a continuous multilinear map. The formula for the
+differential follows by the Leibniz rule for multilinear maps. For~(ii),
+one checks boundedness of the map using the continuity of
+\eqref{eq:tensor_product_normed}:
+\begin{equation*}
+    \|\bigotimes_\alpha A_\alpha\|_{\VD \leftarrow \bigotimes U_\alpha}
+    \leq C \prod_\alpha \|A_\alpha\|_{V_\alpha \leftarrow U_\alpha},
+\end{equation*}
+where $C$ is the constant in Definition~\ref{def:tensor_product_continuous},
+and the finite-dimensionality of $U_\alpha$ ensures
+$L(U_\alpha, V_\alpha) = \cL(U_\alpha, V_\alpha)$.
+Fréchet differentiability then follows again from
+Proposition~\ref{prop:multilinear_smooth}.
+\end{proof}
+
+\begin{remark}
+\label{rem:regularity_Tucker}
+Proposition~\ref{prop:tensor_smooth} is the reason why the Tucker manifold
+$\Tucker{\fr}{\VD}$ is $\mathcal{C}^\infty$ (not merely continuous): all
+coordinate change maps between charts are built from compositions of
+projections and the tensor product map, all of which are
+$\mathcal{C}^\infty$-Fréchet differentiable. See
+Section~\ref{sec:tucker_manifold:cinfty} for the precise argument.
+\end{remark}
+
+\subsection*{Banach tensor spaces}
+
+When a norm is fixed on $\VD$, its completion is the natural ambient space.
+
+\begin{definition}
+\label{def:banach_tensor_space}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces and $\|\cdot\|_D$ a
+norm on $\VD = {}_a\bigotimes_{\alpha \in D} V_\alpha$. The
+\emph{Banach tensor space} associated to this data is the completion
+\begin{equation*}
+    \VDnorm
+    \coloneqq
+    {}_{\|\cdot\|_D}\bigotimes_{\alpha \in D} V_\alpha
+    \coloneqq
+    \overline{\VD}^{\|\cdot\|_D}.
+\end{equation*}
+If $\VDnorm$ is a Hilbert space, it is called a \emph{Hilbert tensor space}.
+\end{definition}
+
+\begin{example}
+\label{ex:Lp_tensor}
+For $I_\alpha \subset \RR$ ($\alpha \in D$) and $1 \leq p < \infty$,
+the Lebesgue spaces $L^p(I_\alpha)$ satisfy
+\begin{equation*}
+    L^p\Bigl(\prod_{\alpha \in D} I_\alpha\Bigr)
+    = {}_{\|\cdot\|_{0,p}}\bigotimes_{\alpha \in D} L^p(I_\alpha),
+\end{equation*}
+where $\|\cdot\|_{0,p}$ denotes the standard $L^p$ norm on the product
+domain. For $p=2$ this is a Hilbert tensor space.
+\end{example}
+
+\begin{example}
+\label{ex:sobolev_tensor}
+For Sobolev spaces $H^{N,p}(I_\alpha)$ with $1 < p < \infty$ and
+$\mathbf{I} = \prod_\alpha I_\alpha$:
+\begin{equation*}
+    H^{N,p}(\mathbf{I})
+    = {}_{\|\cdot\|_{N,p}}\bigotimes_{\alpha \in D} H^{N,p}(I_\alpha).
+\end{equation*}
+This is reflexive and separable. For $p=2$ it is a Hilbert tensor space.
+These spaces arise naturally in the numerical treatment of high-dimensional
+PDEs; see Section~\ref{sec:min:bestapprox} and
+Section~\ref{sec:topTBT:bestapprox}.
+\end{example}
+
+\begin{remark}
+\label{rem:algebraic_dense}
+The algebraic tensor space $\VD$ is dense in $\VDnorm$ by construction.
+The Tucker manifold $\Tucker{\fr}{\VD}$ lives inside the algebraic space,
+but its closure (as a subset of $\VDnorm$) and its topology as a manifold
+are determined by the norm $\|\cdot\|_D$ and, in particular, by whether
+$\|\cdot\|_D$ is a crossnorm. This interplay between algebraic and
+topological structure is a recurring theme throughout the monograph.
+\end{remark}
+
