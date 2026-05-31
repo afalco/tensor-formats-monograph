@@ -1,13 +1,258 @@
 %============================================================
 %  app_functional.tex  —  Functional Analysis: Selected Results
-%  TODO: Write content
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
 %============================================================
 
 \chapter{Functional Analysis: Selected Results}
 \label{app:functional}
 
-\section*{To be written}
+This appendix collects classical results from Banach space theory and
+convex analysis that are used at various points in the monograph but
+whose proofs would interrupt the main narrative. Standard references
+are~\cite{Hackbusch2019} (tensor analysis viewpoint)
+and~\cite{Lang1999} (differential-geometric perspective).
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section{Geometry of Banach spaces}
+\label{app:functional:geometry}
+%------------------------------------------------------------
 
+\subsection*{Strict and uniform convexity}
+
+\begin{definition}
+A normed space $(X, \|\cdot\|)$ is:
+\begin{enumerate}
+\item[\textup{(i)}] \emph{Strictly convex} (rotund) if
+    $\|x+y\|/2 < 1$ whenever $\|x\| = \|y\| = 1$ and $x \neq y$.
+\item[\textup{(ii)}] \emph{Uniformly convex} if for every
+    $\varepsilon > 0$ there exists $\delta > 0$ such that
+    $\|x+y\|/2 \leq 1-\delta$ whenever $\|x\|,\|y\| \leq 1$ and
+    $\|x-y\| \geq \varepsilon$.
+\item[\textup{(iii)}] \emph{Smooth} if
+    $\lim_{t\to 0}(\|x+ty\|-\|x\|)/t$ exists for all $x,y$ with
+    $\|x\| = 1$.
+\end{enumerate}
+\end{definition}
+
+Uniform convexity implies strict convexity and reflexivity
+(Clarkson's theorem). The $L^p$ spaces satisfy:
+$L^p$ is uniformly convex for $1 < p < \infty$; $L^1$ and $L^\infty$
+are neither strictly convex nor smooth in general.
+The duality relations are: $X$ is smooth $\Leftrightarrow$ $X^*$ is
+strictly convex, and $X$ is strictly convex $\Leftrightarrow$ $X^*$ is
+smooth.
+
+\subsection*{Duality mapping}
+
+\begin{definition}
+The \emph{normalised duality mapping} $J: X \to 2^{X^*}$ of a Banach
+space $X$ is
+\begin{equation*}
+    J(x) \coloneqq \bigl\{f \in X^* : \langle x, f\rangle = \|x\|^2
+    = \|f\|_{X^*}^2 \bigr\}.
+\end{equation*}
+\end{definition}
+
+The duality mapping is:
+\begin{itemize}
+\item Always non-empty (Hahn--Banach theorem).
+\item Single-valued on $X \setminus \{0\}$ if and only if $X$ is smooth.
+\item The Riesz isomorphism $J: H \to H^*$, $J(x) = \langle x,\cdot\rangle$,
+    when $X = H$ is a Hilbert space.
+\item Uniformly continuous on bounded sets when $X$ is uniformly smooth.
+\end{itemize}
+
+\subsection*{Metric and generalised projections}
+
+Let $C \subset X$ be a closed convex subset of a Banach space $X$.
+
+\begin{definition}
+\begin{enumerate}
+\item[\textup{(i)}] The \emph{metric projection} $P_C: X \to 2^C$ assigns
+    to each $x \in X$ the set of nearest points in $C$:
+    \begin{equation*}
+        P_C(x) \coloneqq \argmin_{c \in C} \|x - c\|.
+    \end{equation*}
+\item[\textup{(ii)}] The \emph{Lyapunov functional} is
+    $\phi(x,y) \coloneqq \|x\|^2 - 2\langle x, J(y)\rangle + \|y\|^2$.
+\item[\textup{(iii)}] The \emph{generalised projection}
+    $\Pi_C: X \to 2^C$ is
+    \begin{equation*}
+        \Pi_C(x) \coloneqq \argmin_{c \in C} \phi(c, x).
+    \end{equation*}
+\end{enumerate}
+\end{definition}
+
+Key properties:
+\begin{itemize}
+\item $P_C(x)$ is non-empty for all $x$ if and only if $C$ is
+    \emph{proximinal}. Every closed convex set in a reflexive Banach
+    space is proximinal (see~\cite[p.~61]{Hackbusch2019}).
+\item $P_C(x)$ is a singleton for all $x$ if $X$ is strictly convex.
+\item $\Pi_C(x)$ is non-empty whenever $X$ is reflexive and smooth;
+    it is a singleton whenever $X$ is additionally strictly convex.
+\item In a Hilbert space, $\phi(x,y) = \|x-y\|^2$, so
+    $P_C = \Pi_C$ (orthogonal projection).
+\end{itemize}
+
+\begin{proposition}[\cite{Alber1996}]
+\label{prop:app:projection}
+Let $X$ be reflexive and strictly convex, and $C \subset X$ closed
+convex. For $x \in X$ and $c_* \in C$, the following are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $c_* = P_C(x)$ (metric projection).
+\item[\textup{(b)}] $\langle c_* - c,\, J(x - c_*)\rangle \geq 0$
+    for all $c \in C$.
+\item[\textup{(c)}] $\langle c,\, J(x - c_*)\rangle = 0$ for all
+    $c \in C$ \textup{(}when $C$ is a closed linear subspace\textup{)}.
+\end{enumerate}
+\end{proposition}
+
+Condition~(c) is the Banach-space analogue of orthogonality and is
+used in Chapter~\ref{chap:DF} to characterise the Dirac--Frenkel
+projection onto the tangent space $\ZD{\bv}$.
+
+%------------------------------------------------------------
+\section{Weak topology and weak convergence}
+\label{app:functional:weak}
+%------------------------------------------------------------
+
+\begin{theorem}[Eberlein--\v{S}mulian]
+\label{thm:app:eberlein}
+A Banach space $X$ is reflexive if and only if every bounded sequence
+has a weakly convergent subsequence.
+\end{theorem}
+
+\begin{theorem}[Mazur]
+\label{thm:app:mazur}
+A convex subset of a Banach space is weakly closed if and only if it
+is norm-closed.
+\end{theorem}
+
+\begin{corollary}
+\label{cor:app:lsc}
+The norm $\|\cdot\|$ is weakly lower semicontinuous: if
+$x_n \rightharpoonup x$, then $\|x\| \leq \liminf_n \|x_n\|$.
+\end{corollary}
+
+These results are used in Chapter~\ref{chap:minsubspaces} (and
+Chapter~\ref{chap:topTBT}) to prove existence of best Tucker and
+tree-based approximations: a minimising sequence in the weakly closed
+set $\Tucker{\leq\fr}{\VDnorm}$ has a weakly convergent subsequence
+(by reflexivity), whose limit lies in the set (by weak closedness)
+and achieves the infimum (by weak lower semicontinuity of the norm).
+
+%------------------------------------------------------------
+\section{Crossnorms and the injective norm condition}
+\label{app:functional:crossnorms}
+%------------------------------------------------------------
+
+Let $V_1, \ldots, V_d$ be normed spaces and $\VD = \bigotimes_{j=1}^d V_j$
+their algebraic tensor product.
+
+\begin{definition}
+A norm $\|\cdot\|_D$ on $\VD$ is:
+\begin{enumerate}
+\item[\textup{(i)}] A \emph{crossnorm} if
+    $\|\bigotimes_{j} v_j\|_D = \prod_j \|v_j\|_j$ for all
+    $v_j \in V_j$.
+\item[\textup{(ii)}] A \emph{reasonable crossnorm} (or satisfies
+    \condINJ) if it is a crossnorm and
+    $\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$,
+    where $\|\bv\|_\varepsilon$ is the injective (or spatial) norm
+    \begin{equation*}
+        \|\bv\|_\varepsilon \coloneqq \sup\bigl\{
+            |(\bigotimes_j \varphi_j)(\bv)| :
+            \varphi_j \in V_j^*,\; \|\varphi_j\|_{V_j^*} \leq 1
+        \bigr\}.
+    \end{equation*}
+\end{enumerate}
+\end{definition}
+
+The injective norm $\|\cdot\|_\varepsilon$ is the smallest reasonable
+crossnorm; the projective norm $\|\cdot\|_\pi$ is the largest crossnorm.
+For $d=2$:
+$\|A\|_\varepsilon = \|A\|_{\cL(V_1^*, V_2)} = \|A\|_{\cL(V_2^*, V_1)}$
+(operator norm), and $\|A\|_\pi = \inf\{\sum_k \|u_k\|\|v_k\| :
+A = \sum_k u_k \otimes v_k\}$ (nuclear norm).
+
+Condition \condINJ\ plays a central role in:
+\begin{itemize}
+\item The weak closedness of $\Tucker{\leq\fr}{\VD}$
+    (Theorem~\ref{thm:weak_closed}).
+\item The existence of best Tucker and tree-based approximations
+    (Theorems~\ref{thm:best_approx_tucker}
+    and~\ref{thm:topTBT:bestapprox}).
+\item The Dirac--Frenkel immersion theorems
+    (Theorems~\ref{thm:tucker_immersion} and~\ref{thm:TBT_immersion}).
+\end{itemize}
+
+\begin{remark}[Examples of reasonable crossnorms]
+\label{ex:app:crossnorms}
+\begin{enumerate}
+\item[\textup{(i)}] The $L^p$-norm on $L^p(\prod_j I_j)$ is a
+    reasonable crossnorm for $1 \leq p \leq \infty$.
+\item[\textup{(ii)}] The Sobolev norm on
+    $H^{N,p}(\prod_j I_j)$ with $1 < p < \infty$, $N \geq 0$, is a
+    reasonable crossnorm.
+\item[\textup{(iii)}] The partial-derivative norm
+    $\|f\|^2 = \|f\|_{L^2}^2 + \|\partial_{x_j} f\|_{L^2}^2$ on
+    $H^{1,2}(I_1) \otimes H^{1,2}(I_2)$ is a crossnorm satisfying
+    \condINJ.
+\end{enumerate}
+\end{remark}
+
+%------------------------------------------------------------
+\section{Fredholm theory and split operators}
+\label{app:functional:fredholm}
+%------------------------------------------------------------
+
+\begin{definition}
+A bounded operator $T \in \cL(X, Y)$ between Banach spaces is:
+\begin{enumerate}
+\item[\textup{(i)}] \emph{Fredholm} if $\ker T$ and
+    $Y / \overline{\operatorname{Im}\, T}$ are finite-dimensional.
+\item[\textup{(ii)}] \emph{Split} (or \emph{normally solvable}) if
+    $\operatorname{Im}\, T$ is closed and complemented in $Y$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}
+\label{prop:app:split_map}
+Let $T \in \cL(X,Y)$. The following are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $T$ is split.
+\item[\textup{(b)}] $\operatorname{Im}\, T$ is closed in $Y$ and
+    split as a subspace of $Y$.
+\item[\textup{(c)}] There exists $S \in \cL(Y,X)$ such that
+    $T \circ S \circ T = T$ \textup{(}$T$ has a bounded
+    generalised inverse\textup{)}.
+\end{enumerate}
+\end{proposition}
+
+This characterisation is used in the proof of the immersion theorems
+in Chapters~\ref{chap:tucker_manifold} and~\ref{chap:TB_manifold}:
+the tangent map of the inclusion $\Tucker{\fr}{\VD} \hookrightarrow \VDnorm$
+is shown to be split by exhibiting an explicit bounded right inverse.
+
+%------------------------------------------------------------
+\section{The Cauchy--Lipschitz theorem in Banach spaces}
+\label{app:functional:cauchy}
+%------------------------------------------------------------
+
+\begin{theorem}[Picard--Lindelöf in Banach spaces]
+\label{thm:app:picard}
+Let $X$ be a Banach space, $U \subset X$ open, and
+$F: [0,T] \times U \to X$ continuous with $F(t,\cdot)$ locally
+Lipschitz uniformly in $t$. For every $x_0 \in U$ there exist
+$\varepsilon > 0$ and a unique $\mathcal{C}^1$-solution
+$x: [0, \varepsilon) \to U$ to $\dot x(t) = F(t, x(t))$,
+$x(0) = x_0$.
+\end{theorem}
+
+Applied to the Dirac--Frenkel ODE on the Tucker manifold
+$\Tucker{\fr}{\VD}$ (Chapter~\ref{chap:DF}), with
+$F(t, \bv_r) = \Pmetric{\bv_r}(\bF(t, \bv_r))$. The local Lipschitz
+condition follows from the $\mathcal{C}^\infty$-regularity of the
+manifold and the vector field.

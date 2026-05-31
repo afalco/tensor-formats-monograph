@@ -1,13 +1,201 @@
 %============================================================
 %  app_manifolds.tex  —  Banach Manifolds: A Summary
-%  TODO: Write content
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
 %============================================================
 
 \chapter{Banach Manifolds: A Summary}
 \label{app:manifolds}
 
-\section*{To be written}
+This appendix collects the main definitions and results from
+infinite-dimensional differential geometry that are used throughout
+the monograph. The material is self-contained but terse; proofs are
+given only when they do not appear in Chapter~\ref{chap:banach}.
+Standard references are~\cite{Lang1999} and~\cite{Upmeier1985}.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section{Banach manifolds}
+\label{app:manifolds:def}
+%------------------------------------------------------------
 
+\subsection*{Atlases and manifolds}
+
+Let $\mathbb{M}$ be a set. A \emph{$\mathcal{C}^p$-atlas} on
+$\mathbb{M}$ (for $p \in \NNz \cup \{\infty, \omega\}$, where
+$\omega$ denotes the analytic case) is a family of \emph{charts}
+$\{(M_i, u_i)\}_{i \in A}$ where each $M_i \subset \mathbb{M}$ and
+$u_i : M_i \to U_i$ is a bijection onto an open set $U_i$ in a Banach
+space $X_i$, subject to:
+\begin{enumerate}
+\item[\textup{(AT1)}] $\bigcup_{i \in A} M_i = \mathbb{M}$.
+\item[\textup{(AT2)}] For all $i, j \in A$, the set $u_i(M_i \cap M_j)$
+    is open in $X_i$.
+\item[\textup{(AT3)}] Whenever $M_i \cap M_j \neq \emptyset$, the
+    \emph{transition map}
+    $u_j \circ u_i^{-1} : u_i(M_i \cap M_j) \to u_j(M_i \cap M_j)$
+    is a $\mathcal{C}^p$-diffeomorphism.
+\end{enumerate}
+Two atlases are \emph{compatible} if their union satisfies (AT1)--(AT3).
+A \emph{$\mathcal{C}^p$-Banach manifold} is a set together with a
+maximal compatible $\mathcal{C}^p$-atlas. When all model spaces $X_i$
+are isomorphic to a single Banach space $X$, the manifold is
+\emph{modelled on $X$}.
+
+\subsection*{Tangent spaces and differentiable maps}
+
+Let $\mathbb{M}$ be a $\mathcal{C}^p$-Banach manifold with $p \geq 1$,
+and let $m \in \mathbb{M}$. A \emph{tangent vector} at $m$ is an
+equivalence class of triples $(M_i, u_i, v)$ where $(M_i, u_i)$ is a
+chart at $m$ and $v \in X_i$, under
+$(M_i, u_i, v) \sim (M_j, u_j, w)$ iff
+$D(u_j \circ u_i^{-1})(u_i(m)) \cdot v = w$.
+The \emph{tangent space} $T_m \mathbb{M}$ is the vector space of all
+tangent vectors at $m$; it is isomorphic to $X_i$ via any chart at $m$.
+
+A map $f: \mathbb{M} \to \mathbb{N}$ between $\mathcal{C}^p$-manifolds
+is \emph{of class $\mathcal{C}^p$} if for all charts $(M_i, u_i)$ on
+$\mathbb{M}$ and $(N_j, v_j)$ on $\mathbb{N}$, the map
+$v_j \circ f \circ u_i^{-1}$ is $\mathcal{C}^p$ wherever defined. The
+\emph{tangent map} $Tf(m) : T_m\mathbb{M} \to T_{f(m)}\mathbb{N}$ is
+the bounded linear map induced by differentiating the local
+representative.
+
+\subsection*{Immersions and submanifolds}
+
+A $\mathcal{C}^1$-map $f: \mathbb{M} \to \mathbb{N}$ is an
+\emph{immersion} at $m$ if $Tf(m)$ is injective with closed split
+image in $T_{f(m)}\mathbb{N}$. It is a \emph{(global) immersion} if
+this holds at every point. An \emph{immersed submanifold} is the image
+of an injective immersion.
+
+\begin{remark}
+In finite dimensions, or in Hilbert spaces, the split condition on
+$\operatorname{Im}\,Tf(m)$ is automatic. In general Banach spaces it is
+a genuine constraint: a closed subspace need not be complemented.
+The immersion theorems of
+Chapters~\ref{chap:tucker_manifold} and~\ref{chap:TB_manifold} are
+precisely theorems establishing this split condition for the tensor
+manifolds.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The Grassmann--Banach manifold}
+\label{app:manifolds:grassmann}
+%------------------------------------------------------------
+
+\subsection*{Split subspaces}
+
+Let $X$ be a Banach space. A closed subspace $U \subset X$ is
+\emph{split} (or \emph{complemented}) if there exists a closed
+subspace $W$ with $X = U \oplus W$ (direct topological sum). Every
+finite-dimensional subspace is split. In a Hilbert space, every closed
+subspace is split (via orthogonal complement). In a general Banach
+space this fails; a Banach space in which every closed subspace is
+complemented is isomorphic to a Hilbert space
+(Lindenstrauss--Tzafriri).
+
+\subsection*{The Grassmannian}
+
+The \emph{Grassmannian} of $X$ is
+\begin{equation*}
+    \GrassB{X} \coloneqq \{U \subset X : U \text{ is a split subspace}\},
+\end{equation*}
+with the \emph{finite Grassmannian}
+$\Grass{r}{X} \coloneqq \{U \in \GrassB{X} : \dim U = r\}$
+for $r \in \NNz$.
+
+\begin{theorem}[Douady~\cite{Douady1966}]
+\label{thm:app:grassmann}
+$\GrassB{X}$ is an analytic Banach manifold. For each splitting
+$X = U \oplus W$, the chart domain
+$\GrassB{W,X} \coloneqq \{V \in \GrassB{X} : X = V \oplus W\}$
+is mapped analytically to $\cL(U,W)$ by
+\begin{equation*}
+    \Psi_{U \oplus W}(V)
+    \coloneqq
+    \Proj{W}{U}\big|_V \circ \bigl(\Proj{U}{W}\big|_V\bigr)^{-1}.
+\end{equation*}
+The transition maps are analytic, and
+$T_U \Grass{r}{X} \cong \cL(U, W)$ for any complement $W$ of $U$.
+\end{theorem}
+
+Each connected component $\Grass{r}{X}$ is an analytic Banach manifold
+modelled on $\cL(U, W)$, whose isomorphism class depends only on $r$
+and $X$ (not on the choice of $U$ or $W$).
+
+\subsection*{The nilpotent algebra and chart inverses}
+
+For a splitting $X = U \oplus W$, define
+\begin{equation*}
+    \cL_{(U,W)}(X) \coloneqq
+    \bigl\{ \Proj{W}{U} \circ S \circ \Proj{U}{W} : S \in \cL(X) \bigr\}
+    \cong \cL(U,W).
+\end{equation*}
+Every element $L \in \cL_{(U,W)}(X)$ satisfies $L^2 = 0$, so
+$\exp(L) = \Id{X} + L$ and $(\Id{X}+L)^{-1} = \Id{X} - L$. The
+inverse chart is $\Psi_{U\oplus W}^{-1}(L) = \{(\Id{X}+L)(u) : u \in U\}$,
+a degree-one polynomial map; see Proposition~\ref{prop:nilpotent_algebra}.
+
+%------------------------------------------------------------
+\section{Fréchet derivatives and regularity}
+\label{app:manifolds:frechet}
+%------------------------------------------------------------
+
+Let $X$, $Y$ be Banach spaces and $U \subset X$ open. A map
+$f: U \to Y$ is \emph{Fréchet differentiable} at $x_0$ if there
+exists $A \in \cL(X,Y)$ such that
+\begin{equation*}
+    \lim_{\|h\| \to 0} \frac{\|f(x_0 + h) - f(x_0) - Ah\|}{\|h\|} = 0.
+\end{equation*}
+The map $A = Df(x_0)$ is the \emph{Fréchet derivative} at $x_0$. Higher
+derivatives $D^k f$ are defined inductively; $f$ is $\mathcal{C}^k$ if
+$D^k f: U \to \cL(X, \cL(X, \ldots, \cL(X,Y)\ldots))$ is continuous.
+
+\begin{proposition}[\cite{HJ2012}]
+\label{prop:app:multilinear}
+Every continuous multilinear map
+$M: X_1 \times \cdots \times X_d \to Y$ is $\mathcal{C}^\infty$, with
+$D^k M = 0$ for $k > d$.
+\end{proposition}
+
+\begin{proposition}[\cite{HJ2012}]
+\label{prop:app:analytic}
+Let $X$, $Y$ be complex Banach spaces and $U \subset X$ open. A map
+$f: U \to Y$ is analytic if and only if it is $\mathcal{C}^1$-Fréchet
+differentiable.
+\end{proposition}
+
+\begin{corollary}
+Every continuous multilinear map between complex Banach spaces is analytic.
+Consequently, the Tucker and tree-based tensor manifolds are analytic
+Banach manifolds when the component spaces are complex, and
+$\mathcal{C}^\infty$ in the real case.
+\end{corollary}
+
+%------------------------------------------------------------
+\section{Vector fields and ODEs on Banach manifolds}
+\label{app:manifolds:ode}
+%------------------------------------------------------------
+
+A \emph{(smooth) vector field} on a $\mathcal{C}^\infty$-Banach manifold
+$\mathbb{M}$ is a $\mathcal{C}^\infty$-section of the tangent bundle:
+a map $F: \mathbb{M} \to T\mathbb{M}$ with $F(m) \in T_m\mathbb{M}$
+for all $m$. In a chart $(M_i, u_i)$, the vector field is represented
+by a $\mathcal{C}^\infty$-map $f_i: u_i(M_i) \to X_i$.
+
+An \emph{integral curve} of $F$ through $m_0 \in \mathbb{M}$ is a
+$\mathcal{C}^1$-curve $\gamma: (-\varepsilon, \varepsilon) \to \mathbb{M}$
+with $\gamma(0) = m_0$ and $\dot\gamma(t) = F(\gamma(t))$.
+
+\begin{theorem}[Existence and uniqueness, {\cite[Theorem~4.1.5]{Lang1999}}]
+\label{thm:app:ode}
+Let $\mathbb{M}$ be a $\mathcal{C}^\infty$-Banach manifold and
+$F$ a $\mathcal{C}^\infty$ vector field on $\mathbb{M}$. For every
+$m_0 \in \mathbb{M}$ there exists $\varepsilon > 0$ and a unique integral
+curve $\gamma: (-\varepsilon, \varepsilon) \to \mathbb{M}$ of $F$ through
+$m_0$. The flow map $(t, m_0) \mapsto \gamma(t)$ is $\mathcal{C}^\infty$.
+\end{theorem}
+
+This theorem is applied in Chapter~\ref{chap:DF} to the Dirac--Frenkel
+projected vector field on the Tucker manifold
+$\Tucker{\fr}{\VD}$ and on $\FTv$.

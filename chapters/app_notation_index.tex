@@ -1,13 +1,156 @@
 %============================================================
 %  app_notation_index.tex  —  Index of Notation
-%  TODO: Write content
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
 %============================================================
 
 \chapter{Index of Notation}
 \label{app:notation_index}
 
-\section*{To be written}
+All macros are defined in \texttt{notation.tex}. Entries are grouped
+thematically and listed in the order they first appear in the text.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section*{Sets and fields}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$\KK$ & field ($\RR$ or $\CC$) & \\
+$\RR$, $\CC$ & real and complex numbers & \\
+$\NN$, $\NNz$, $\ZZ$ & positive integers, non-negative integers, integers & \\
+$D = \{1,\ldots,d\}$ & dimension index set & Ch.~\ref{chap:algtensor} \\
+$d = |D|$ & number of dimensions & Ch.~\ref{chap:algtensor} \\
+$\alpha^c = D \setminus \alpha$ & complement of $\alpha$ in $D$ & Ch.~\ref{chap:algtensor} \\
+$2^D$ & power set of $D$ & Ch.~\ref{chap:trees} \\
+$\#(S)$ & cardinality of set $S$ & \\
+$\overline{S}$ & closure of $S$ & \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Banach spaces and linear maps}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$(X, \|\cdot\|)$ & normed (Banach) space & Ch.~\ref{chap:banach} \\
+$X^* = \cL(X,\KK)$ & topological dual of $X$ & Ch.~\ref{chap:banach} \\
+$X' $ & algebraic dual of $X$ & Ch.~\ref{chap:banach} \\
+$\langle x, f \rangle$ & duality pairing, $f \in X^*$, $x \in X$ & \\
+$\cL(X,Y)$ & bounded linear maps $X \to Y$ & Ch.~\ref{chap:banach} \\
+$\cL(X)$ & $\cL(X,X)$ & \\
+$\|A\|_{Y \leftarrow X}$ & operator norm of $A \in \cL(X,Y)$ & Ch.~\ref{chap:banach} \\
+$\GL{X}$ & bounded linear automorphisms of $X$ & Ch.~\ref{chap:banach} \\
+$\Id{X}$ & identity map on $X$ & \\
+$P_{U \oplus W}$ & projection onto $U$ along $W$ & Ch.~\ref{chap:banach} \\
+$J: X \to 2^{X^*}$ & normalised duality mapping & Ch.~\ref{chap:DF} \\
+$\phi(x,y)$ & Lyapunov functional $\|x\|^2 - 2\langle x,J(y)\rangle + \|y\|^2$ & Ch.~\ref{chap:DF} \\
+$\cL_{(U,W)}(X)$ & nilpotent algebra associated to splitting & Ch.~\ref{chap:banach} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Grassmannians and subspaces}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$\GrassB{X}$ & Grassmannian of split subspaces of $X$ & Ch.~\ref{chap:banach} \\
+$\Grass{r}{X}$ & $r$-dimensional split subspaces of $X$ & Ch.~\ref{chap:banach} \\
+$\GrassB{W,X}$ & split subspaces with complement $W$ & Ch.~\ref{chap:banach} \\
+$\Psi_{U \oplus W}$ & Grassmann chart map & Ch.~\ref{chap:banach} \\
+$T_U \Grass{r}{X} \cong \cL(U,W)$ & tangent space to Grassmannian & Ch.~\ref{chap:banach} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Component spaces and tensor products}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$V_j$, $V_\alpha$ & component spaces ($j \in D$, $\alpha \subset D$) & Ch.~\ref{chap:algtensor} \\
+$\|\cdot\|_j$, $\|\cdot\|_\alpha$ & norms on $V_j$, $V_\alpha$ & \\
+$\VD = \bigotimes_{j \in D} V_j$ & algebraic tensor product & Ch.~\ref{chap:algtensor} \\
+$\mathbf{V}_\alpha = \bigotimes_{j \in \alpha} V_j$ & partial algebraic tensor product & Ch.~\ref{chap:algtensor} \\
+$v \otimes_a w$ & algebraic tensor product of vectors & Ch.~\ref{chap:algtensor} \\
+$\bv, \bu, \bw$ & elements of $\VD$ (tensors) & \\
+$\VDnorm$ & completion of $\VD$ under $\|\cdot\|_D$ & Ch.~\ref{chap:algtensor} \\
+$\|\cdot\|_D$ & norm on $\VD$ (or $\VDnorm$) & \\
+$\|\bv\|_\varepsilon$ & injective (spatial) norm & Ch.~\ref{chap:minsubspaces} \\
+$\|\bv\|_\pi$ & projective (nuclear) norm & Ch.~\ref{chap:algtensor} \\
+\condINJ & condition: $\|\cdot\|_D \geq \|\cdot\|_\varepsilon$ & Ch.~\ref{chap:minsubspaces} \\
+\condCROSS & condition: $\|\cdot\|_D$ is a crossnorm & Ch.~\ref{chap:algtensor} \\
+$\Mmat{\alpha}(\bv)$ & $\alpha$-matricisation (unfolding) of $\bv$ & Ch.~\ref{chap:minsubspaces} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Minimal subspaces and Tucker format}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$\Umin{\alpha}{\bv}$ & minimal subspace of $\bv$ in $V_\alpha$ & Ch.~\ref{chap:minsubspaces} \\
+$r_\alpha(\bv) = \dim\Umin{\alpha}{\bv}$ & $\alpha$-rank of $\bv$ & Ch.~\ref{chap:minsubspaces} \\
+$\fr = (r_\alpha)_{\alpha \in D}$ & Tucker rank tuple & Ch.~\ref{chap:minsubspaces} \\
+$\AD{\VD}$ & admissible rank tuples for $\VD$ & Ch.~\ref{chap:minsubspaces} \\
+$\Tucker{\fr}{\VD}$ & Tucker tensors with fixed rank $\fr$ & Ch.~\ref{chap:minsubspaces} \\
+$\Tucker{\leq\fr}{\VD}$ & Tucker tensors with rank $\leq \fr$ & Ch.~\ref{chap:minsubspaces} \\
+$\ZD{\bv}$ & tangent subspace at $\bv \in \Tucker{\fr}{\VD}$ & Ch.~\ref{chap:tucker_manifold} \\
+$\Emodel{D}$ & model Banach space of Tucker manifold & Ch.~\ref{chap:tucker_manifold} \\
+$\xi_{\bv}$ & local chart map at $\bv$ & Ch.~\ref{chap:tucker_manifold} \\
+$\mathcal{U}(\bv)$ & chart domain at $\bv$ & Ch.~\ref{chap:tucker_manifold} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Trees and tree-based formats}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$\TD$ & dimension partition tree on $D$ & Ch.~\ref{chap:trees} \\
+$S(\alpha)$ & sons of vertex $\alpha$ in $\TD$ & Ch.~\ref{chap:trees} \\
+$\mathcal{L}(\TD)$ & leaves of $\TD$ & Ch.~\ref{chap:trees} \\
+$\mathrm{level}(\alpha)$ & level of vertex $\alpha$ & Ch.~\ref{chap:trees} \\
+$\mathrm{depth}(\TD)$ & depth of the tree $\TD$ & Ch.~\ref{chap:trees} \\
+$\mathcal{P}_k(\TD)$ & level-$k$ partition of $D$ & Ch.~\ref{chap:trees} \\
+$\TDtuck$ & Tucker tree (depth 1) & Ch.~\ref{chap:trees} \\
+$\TDtt$ & Tensor Train tree (linear chain) & Ch.~\ref{chap:trees} \\
+$\TDht$ & Hierarchical Tucker tree (binary) & Ch.~\ref{chap:trees} \\
+$\fr = (\mathfrak{r}_\alpha)_{\alpha \in \TD \setminus \mathcal{L}(\TD)}$ & tree-based rank tuple & Ch.~\ref{chap:algTBT} \\
+$\ADTD$ & admissible tree-based rank tuples & Ch.~\ref{chap:algTBT} \\
+$\FTv = \mathcal{FT}_{\fr}(\VD, \TD)$ & tree-based tensors with fixed rank $\fr$ & Ch.~\ref{chap:algTBT} \\
+$\mathcal{FT}_{\leq\fr}(\VD,\TD)$ & tree-based tensors with rank $\leq \fr$ & Ch.~\ref{chap:topTBT} \\
+$C^{(\alpha)}$ & transfer tensor at vertex $\alpha$ & Ch.~\ref{chap:algTBT} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Differential geometry}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$T_m \mathbb{M}$ & tangent space at $m \in \mathbb{M}$ & Ch.~\ref{chap:banach} \\
+$Tf(m)$ & tangent map (derivative) of $f$ at $m$ & Ch.~\ref{chap:banach} \\
+$Df(m)$ & Fréchet derivative of $f$ at $m$ & Ch.~\ref{chap:banach} \\
+$\mathcal{C}^p$ & $p$ times continuously Fréchet differentiable & \\
+$\mathcal{C}^\omega$ & analytic (real or complex) & \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Dirac--Frenkel variational principle}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}lll@{}}
+$\bF(t,\bv)$ & vector field (right-hand side of ODE) & Ch.~\ref{chap:DF} \\
+$\bv_r(t)$ & solution curve on $\Tucker{\fr}{\VD}$ & Ch.~\ref{chap:DF} \\
+$\Pmetric{\bv}$ & metric projection onto $\ZD{\bv}$ & Ch.~\ref{chap:DF} \\
+$\Pi_{\bv}$ & generalised projection onto $\ZD{\bv}$ & Ch.~\ref{chap:DF} \\
+$\argmin$ & argument of the minimum & Ch.~\ref{chap:DF} \\
+\end{tabular}
+
+%------------------------------------------------------------
+\section*{Common abbreviations}
+%------------------------------------------------------------
+
+\begin{tabular}{@{}ll@{}}
+TT & Tensor Train \\
+HT & Hierarchical Tucker \\
+TBT & Tree-Based Tensor \\
+ODE & Ordinary Differential Equation \\
+PDE & Partial Differential Equation \\
+MCTDH & Multiconfiguration Time-Dependent Hartree \\
+\end{tabular}
+
 

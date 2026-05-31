@@ -560,3 +560,65 @@ $\|\cdot\|_D$ is a crossnorm. This interplay between algebraic and
 topological structure is a recurring theme throughout the monograph.
 \end{remark}
 
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:algtensor:history}
+%------------------------------------------------------------
+
+\paragraph{Algebraic tensor products.}
+The tensor product of vector spaces was introduced in its modern form
+by Whitney in 1938 and placed within the framework of multilinear
+algebra by Bourbaki in the 1940s. The presentation here follows
+the approach of Greub~\cite{Greub1981}, which is well suited to the
+infinite-dimensional setting: the algebraic tensor product is defined
+by the universal property, without any choice of basis or norm.
+
+The projective and injective tensor norms were introduced by
+Grothendieck in his 1953 Résumé, which also established the fundamental
+inequality $\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$
+for any crossnorm $\|\cdot\|_D$, and identified the dual of
+$V_1 \otimes_\pi V_2$ as the space of bounded bilinear forms on
+$V_1 \times V_2$. This work, largely unrecognised at the time, later
+became the foundation of Banach space theory through the notion of
+tensor norms and operator ideals. A systematic treatment appears
+in~\cite{Hackbusch2019}, Chapters~3--4.
+
+\paragraph{Crossnorms and tensor product norms.}
+The crossnorm condition \condCROSS\ and the injective norm condition
+\condINJ\ are formulated in~\cite{FH2012} as the minimal hypotheses
+under which the algebraic structure of minimal subspaces extends to
+the topological setting. The condition \condINJ\ (the norm dominates
+the injective norm) is the natural analogue of the ``reasonable
+crossnorm'' condition in Grothendieck's theory and holds for all the
+standard function-space tensor products ($L^p$, Sobolev) used in
+numerical applications; see Remark~\ref{rem:crossnorm_examples}.
+
+\paragraph{Tucker format and tensor rank.}
+The Tucker decomposition~\cite{Tucker1966} was introduced as a
+psychometric tool for three-mode factor analysis. It generalises the
+singular value decomposition (SVD) to higher-order tensors: just as
+every matrix $A \in \RR^{m \times n}$ can be written as
+$A = U \Sigma V^\top$ with $U \in \RR^{m \times r}$,
+$V \in \RR^{n \times r}$ orthogonal and $\Sigma$ diagonal,
+a $d$-th order Tucker tensor is represented by a core array and
+a set of factor matrices in each mode.
+
+The notion of tensor rank for $d \geq 3$ is far more subtle than for
+matrices: the maximum rank of a real $n \times n \times n$ tensor is
+not known in general, and computing the rank is NP-hard
+(Håstad, 1990). The minimal-subspace framework of
+Chapter~\ref{chap:minsubspaces} avoids these difficulties by working
+with the subspace rank $(r_\alpha)_{\alpha \in D}$ rather than the
+canonical (CP) rank; the former has a clean algebraic characterisation
+and leads to a well-posed approximation problem.
+
+\paragraph{Tensor product map and the manifold structure.}
+The differential of the tensor product map
+(Section~\ref{sec:algtensor:diff}) is the key ingredient in the
+construction of the tangent space to the Tucker manifold. The formula
+$D\tau(\bv)[\delta\bv] = \sum_j \tau^{(j)}(\delta v_j)$, where
+$\tau^{(j)}$ inserts $\delta v_j$ in the $j$-th slot, is the
+multilinear analogue of the product rule and appears in~\cite{FHN2019}
+as the starting point for the identification
+$T_{\bv}\Tucker{\fr}{\VD} \cong \ZD{\bv}$.

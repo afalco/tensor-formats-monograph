@@ -462,22 +462,111 @@ $\|\cdot\|_D$ be a norm on $\VD$ satisfying condition \condINJ.
 Then the set $\Tucker{\leq\fr}{\VD}$ is weakly closed in $\VDnorm$.
 \end{theorem}
 
-\begin{proof}[Sketch]
+\begin{proof}
 Let $(\bv_n) \subset \Tucker{\leq\fr}{\VD}$ converge weakly to
-$\bv \in \VDnorm$. We must show $\bv \in \Tucker{\leq\fr}{\VD}$,
-i.e., $r_\alpha(\bv) \leq r_\alpha$ for all $\alpha \in D$.
+$\bv \in \VDnorm$. We must show $r_\alpha(\bv) \leq r_\alpha$ for
+all $\alpha \in D$.
 
-Fix $\alpha \in D$ and consider the $\alpha$-unfolding map
-$\Mmat{\alpha}: \VDnorm \to \cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$
-defined by $\Mmat{\alpha}(\bv)(\varphi) = (\varphi \otimes \Id{})(\bv)$.
-Since $r_\alpha(\bv_n) \leq r_\alpha$, we have
-$\rank \Mmat{\alpha}(\bv_n) \leq r_\alpha$ for all $n$. The condition
-\condINJ\ implies that $\Mmat{\alpha}$ is continuous for the weak
-topology on $\VDnorm$ and the weak operator topology on
-$\cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$. Since the set of
-operators of rank $\leq r_\alpha$ is closed in the weak operator topology
-(it is a closed variety), the limit $\Mmat{\alpha}(\bv)$ has rank
-$\leq r_\alpha$, i.e., $r_\alpha(\bv) \leq r_\alpha$.
+\medskip
+\noindent\textbf{Step 1: Weak continuity of the contraction operators.}
+
+Fix $\alpha \in D$. For each $\varphi \in \dual{V_\alpha}$, define the
+\emph{contraction operator}
+\begin{equation*}
+    T_\varphi \coloneqq \overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}
+    : \VDnorm \to \Vbigalpha^{[\alpha]},
+    \qquad
+    T_\varphi(\bv) = (\varphi \otimes \Id{\Vbigalpha^{[\alpha]}})(\bv).
+\end{equation*}
+We claim $T_\varphi$ is bounded. Indeed, for $\bv \in \VD$ and
+$\psi \in \dual{(\Vbigalpha^{[\alpha]})}$:
+\begin{equation*}
+    |\langle T_\varphi(\bv),\, \psi\rangle|
+    = |(\varphi \otimes \psi)(\bv)|
+    \leq \|\varphi \otimes \psi\|_{(\VDnorm)^*}\,\|\bv\|_D.
+\end{equation*}
+Since $\|\cdot\|_D$ satisfies \condINJ, we have
+$\|\varphi \otimes \psi\|_{(\VDnorm)^*} \leq \|\varphi\|_{\dual{V_\alpha}}
+\|\psi\|_{\dual{(\Vbigalpha^{[\alpha]})}}$
+(the injective norm is the smallest reasonable crossnorm, so its dual
+functional norms are bounded by products of component norms; see
+\cite[Chapter~4]{Hackbusch2019}). Hence
+\begin{equation*}
+    \|T_\varphi\|_{\cL(\VDnorm,\, \Vbigalpha^{[\alpha]})}
+    \leq \|\varphi\|_{\dual{V_\alpha}},
+\end{equation*}
+and $T_\varphi$ is a bounded linear operator. Therefore, weak convergence
+$\bv_n \rightharpoonup \bv$ in $\VDnorm$ implies
+\begin{equation}
+\label{eq:weak_contraction}
+    T_\varphi(\bv_n) \rightharpoonup T_\varphi(\bv)
+    \quad \text{weakly in } \Vbigalpha^{[\alpha]},
+    \qquad \forall\, \varphi \in \dual{V_\alpha}.
+\end{equation}
+
+\medskip
+\noindent\textbf{Step 2: The minimal subspace is characterised by
+the range of contractions.}
+
+By the contraction characterisation
+(Theorem~\ref{thm:min_contraction}), for any $\bw \in \VDnorm$:
+\begin{equation}
+\label{eq:min_contraction_norm}
+    \Umin{\alpha}{\bw}
+    = \overline{\spann\bigl\{
+        T_\varphi(\bw) : \varphi \in \dual{V_\alpha}
+    \bigr\}}^{\|\cdot\|_\alpha}.
+\end{equation}
+In particular, $r_\alpha(\bw) = \dim \Umin{\alpha}{\bw}$, which equals
+the rank of the linear map $\Phi_\bw: \dual{V_\alpha} \to
+\Vbigalpha^{[\alpha]}$, $\Phi_\bw(\varphi) = T_\varphi(\bw)$.
+
+\medskip
+\noindent\textbf{Step 3: Rank is weakly lower semicontinuous.}
+
+Since $r_\alpha(\bv_n) \leq r_\alpha$ for all $n$, we have
+$\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$. This means there exist
+subspaces $W_n \subset \Vbigalpha^{[\alpha]}$ with $\dim W_n \leq r_\alpha$
+such that $T_\varphi(\bv_n) \in W_n$ for all $\varphi \in \dual{V_\alpha}$.
+
+By~\eqref{eq:weak_contraction}, for each fixed $\varphi \in \dual{V_\alpha}$,
+the sequence $(T_\varphi(\bv_n))_n$ converges weakly to $T_\varphi(\bv)$.
+We now use the following standard fact: if $(w_n)$ is a weakly convergent
+sequence in a Banach space with $w_n \in W_n$ and $\dim W_n \leq r$,
+then its weak limit $w$ satisfies $w \in W$ for some subspace $W$ with
+$\dim W \leq r$.
+
+To see this, note that $\{T_\varphi(\bv_n) : \varphi \in \dual{V_\alpha},\,
+\|\varphi\| \leq 1\} \subset W_n$ spans $\Umin{\alpha}{\bv_n}$ for each
+$n$. Since all these subspaces have dimension $\leq r_\alpha$, the
+Grassmannian $\bigcup_{n} \{W_n\}$ is contained in the compact set
+$\Grass{\leq r_\alpha}{\Vbigalpha^{[\alpha]}}$ (in finite dimensions)
+or, in infinite dimensions, we argue directly: the set
+\begin{equation*}
+    W \coloneqq \overline{\spann\bigl\{
+        T_\varphi(\bv) : \varphi \in \dual{V_\alpha}
+    \bigr\}}^{\|\cdot\|_\alpha} = \Umin{\alpha}{\bv}
+\end{equation*}
+is the weak limit of the images, and its dimension satisfies
+$\dim W \leq \liminf_{n\to\infty} \dim W_n \leq r_\alpha$.
+
+More precisely: suppose for contradiction that $\dim \Umin{\alpha}{\bv}
+> r_\alpha$. Then there exist $r_\alpha + 1$ linearly independent vectors
+$w_1, \ldots, w_{r_\alpha+1} \in \Umin{\alpha}{\bv}$, each of the form
+$T_{\varphi_k}(\bv)$ for some $\varphi_k \in \dual{V_\alpha}$. By
+\eqref{eq:weak_contraction}, $T_{\varphi_k}(\bv_n) \rightharpoonup w_k$
+for each $k$. Since $T_{\varphi_k}(\bv_n) \in \Umin{\alpha}{\bv_n}$ and
+$\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$, the vectors
+$T_{\varphi_1}(\bv_n), \ldots, T_{\varphi_{r_\alpha+1}}(\bv_n)$ are
+linearly dependent for each $n$. But linear dependence is preserved under
+weak limits (it is a closed algebraic condition), so $w_1, \ldots,
+w_{r_\alpha+1}$ are linearly dependent in $\Vbigalpha^{[\alpha]}$ —
+a contradiction. Therefore $\dim \Umin{\alpha}{\bv} \leq r_\alpha$,
+i.e., $r_\alpha(\bv) \leq r_\alpha$.
+
+\medskip
+Since the argument holds for every $\alpha \in D$, we conclude
+$\bv \in \Tucker{\leq\fr}{\VDnorm}$.
 \end{proof}
 
 \subsection*{Existence of best approximations}
@@ -580,7 +669,7 @@ least-squares and related iterative methods.
 
 The weak closedness argument of Theorem~\ref{thm:weak_closed} is
 modelled on Uschmajew's result for the case of the spectral norm
-on finite-dimensional spaces~\cite{UschmajewVandereycken2013}. The innovation
+on finite-dimensional spaces~\cite{Uschmajew2012}. The innovation
 of~\cite{FH2012} is the extension to general reflexive Banach spaces
 under the crossnorm condition \condINJ, which is the natural condition
 for tensor product norms.
