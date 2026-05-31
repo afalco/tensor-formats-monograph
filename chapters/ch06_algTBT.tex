@@ -1,13 +1,472 @@
 %============================================================
-%  ch06_algTBT.tex  —  Algebraic Tree-Based Tensor Formats
-%  TODO: Write content
+%  ch06_algTBT.tex
+%  Chapter 6: Algebraic Tree-Based Tensor Formats
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2021 (Secs. 2.1-2.4), FHN2023 (Sec. 3)
+%  Estimated length: ~35 pp.
 %============================================================
 
 \chapter{Algebraic Tree-Based Tensor Formats}
 \label{chap:algTBT}
 
-\section*{To be written}
+This chapter develops the algebraic theory of tree-based tensor formats.
+Given a dimension partition tree $\TD$ over $D$ and a tensor space
+$\VD = {}_a\bigotimes_{j \in D} V_j$, we associate to each vertex
+$\alpha \in \TD$ a subspace $\Vbigalpha$ and a minimal subspace
+$\Umin{\alpha}{\bv}$, define the tree-based rank and the sets
+$\FTv$ and $\FTleq{\fr}{\VD}{\TD}$, and establish the central
+characterisation theorem (Theorem~\ref{thm:TBT_characterisation})
+expressing every tensor of fixed tree-based rank in terms of
+a hierarchical system of \emph{transfer tensors}. The chapter
+closes with a discussion of the special cases Tucker, HT, and TT.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+Throughout, $\TD$ is a dimension partition tree over $D = \{1,\ldots,d\}$
+with $d \geq 2$, and $V_j$ ($j \in D$) are vector spaces over $\KK$.
+
+%------------------------------------------------------------
+\section{Tree-based tensor spaces}
+\label{sec:algTBT:spaces}
+%------------------------------------------------------------
+
+\subsection*{Associated spaces at each vertex}
+
+For each $\alpha \in \TD$ we associate a vector space $\Vbigalpha$
+defined recursively from the leaves upward:
+\begin{itemize}
+\item For leaves $\{j\} \in \Leaves$: $\mathbf{V}_{\{j\}} = V_j$.
+\item For internal vertices $\alpha \in \TD \setminus \Leaves$:
+    $\Vbigalpha = {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Vbigbeta$.
+\end{itemize}
+Since $\Sons{\alpha}$ partitions $\alpha$, the canonical identification
+$\Vbigalpha = {}_a\bigotimes_{j \in \alpha} V_j$ holds at every vertex
+by the associativity of Equation~\eqref{eq:iterated_tensor}.
+In particular, $\VD = \mathbf{V}_D$.
+
+\begin{definition}
+\label{def:TBT_space}
+The \emph{tensor space in tree-based format} associated to $(\VD, \TD)$
+is the pair $(\VD, \TD)$ together with the collection of spaces
+$\{\Vbigalpha\}_{\alpha \in \TD \setminus \{D\}}$.
+\end{definition}
+
+\subsection*{Minimal subspaces compatible with the tree}
+
+Recall from Proposition~\ref{prop:min_inclusion_partition} that
+for any $\alpha \in \TD \setminus \Leaves$ and any
+$\bv \in \VD$:
+\begin{equation}
+\label{eq:min_compat_tree}
+    \Umin{\alpha}{\bv}
+    \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv}
+    \subset \Vbigalpha.
+\end{equation}
+This compatibility is the algebraic backbone of the tree-based format:
+the minimal subspace at each internal vertex is contained in the tensor
+product of the minimal subspaces of its children.
+
+%------------------------------------------------------------
+\section{Tree-based rank and admissible tuples}
+\label{sec:algTBT:tbrank}
+%------------------------------------------------------------
+
+\begin{definition}[Tree-based rank]
+\label{def:TBT_rank}
+For $\bv \in \VD$, its \emph{tree-based rank with respect to $\TD$} is
+the tuple
+\begin{equation}
+\label{eq:TBT_rank}
+    \mathrm{rank}_{\TD}(\bv)
+    \coloneqq \bigl(\dim \Umin{\alpha}{\bv}\bigr)_{\alpha \in \TD}
+    \in \NNz^{\card{\TD}}.
+\end{equation}
+\end{definition}
+
+\begin{definition}[Admissible tuples]
+\label{def:TBT_admissible}
+A tuple $\fr = (r_\alpha)_{\alpha \in \TD} \in \NN^{\card{\TD}}$ is
+\emph{admissible for $(\VD, \TD)$} if there exists $\bv \in \VD$ with
+$\mathrm{rank}_{\TD}(\bv) = \fr$. The set of all admissible tuples is
+\begin{equation}
+\label{eq:TBT_admissible}
+    \ADTD \coloneqq
+    \bigl\{
+        \mathrm{rank}_{\TD}(\bv) : \bv \in \VD
+    \bigr\}.
+\end{equation}
+\end{definition}
+
+\begin{remark}
+\label{rem:TBT_rank_constraints}
+Admissible tuples satisfy the compatibility constraints inherited from
+Proposition~\ref{prop:admissible_bounds} and
+Equation~\eqref{eq:min_compat_tree}. Specifically, for each
+$\alpha \in \TD \setminus \Leaves$:
+\begin{equation}
+\label{eq:rank_constraint}
+    r_\alpha \leq \prod_{\beta \in \Sons{\alpha}} r_\beta.
+\end{equation}
+Equality in~\eqref{eq:rank_constraint} is the generic case; strict
+inequality indicates that the tensor has additional structure at
+vertex $\alpha$.
+\end{remark}
+
+\subsection*{Sets of tensors with fixed and bounded tree-based rank}
+
+\begin{definition}
+\label{def:FT_sets}
+Let $\fr \in \ADTD$. Define:
+\begin{align}
+    \FTv
+    &\coloneqq \bigl\{\bv \in \VD :
+        \dim \Umin{\alpha}{\bv} = r_\alpha
+        \text{ for all } \alpha \in \TD\bigr\},
+    \label{eq:FT_fixed} \\
+    \FTleq{\fr}{\VD}{\TD}
+    &\coloneqq \bigl\{\bv \in \VD :
+        \dim \Umin{\alpha}{\bv} \leq r_\alpha
+        \text{ for all } \alpha \in \TD\bigr\}.
+    \label{eq:FT_bounded}
+\end{align}
+\end{definition}
+
+The relation between these two sets is:
+\begin{equation}
+\label{eq:FT_union}
+    \FTleq{\fr}{\VD}{\TD}
+    = \bigsqcup_{\substack{\fs \in \ADTD \\ \fs \leq \fr}}
+    \mathcal{FT}_{\fs}(\VD, \TD).
+\end{equation}
+
+\begin{remark}[Tucker as special case]
+\label{rem:tucker_special}
+For $\TD = \TDtuck$ (depth~1, $\Sons{D} = \Leaves$), the tree-based
+rank reduces to the Tucker rank: $\mathrm{rank}_{\TDtuck}(\bv)
+= (r_D, r_{\{1\}}, \ldots, r_{\{d\}})$. Since $r_D = 1$ for all
+non-zero $\bv$ (the root has a single rank), the effective tuple
+is $(r_{\{1\}}, \ldots, r_{\{d\}})$ and
+$\FT{\fr}{\VD}{\TDtuck} = \Tucker{\fr}{\VD}$.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Minimal subspaces compatible with a tree: new characterisation}
+\label{sec:algTBT:mincompat}
+%------------------------------------------------------------
+
+The following proposition, proved in~\cite{FHN2021}, gives a
+characterisation of $\Umin{\beta}{\bv}$ for an internal vertex $\beta$
+in terms of contractions of $\Umin{\alpha}{\bv}$ for its parent
+$\alpha = \mathrm{parent}(\beta)$. This is the tree-based analogue of
+the contraction characterisation Theorem~\ref{thm:min_contraction}.
+
+\begin{proposition}[Tree-based characterisation of minimal subspaces,
+{\cite[Proposition~2.3]{FHN2021}}]
+\label{prop:min_char_tree}
+Let $\bv \in \VD$, $\alpha \in \TD \setminus \Leaves$ with
+$\card{\Sons{\alpha}} \geq 2$, and assume that $\Vbigalpha$ and
+$\Vbigbeta$ for $\beta \in \Sons{\alpha}$ are normed spaces. Then
+for each $\beta \in \Sons{\alpha}$:
+\begin{equation}
+\label{eq:min_char_tree}
+    \Umin{\beta}{\bv}
+    = \spann\Bigl\{
+        \bigl(\Id{\Vbigbeta} \otimes \varphi^{(\alpha \setminus \beta)}\bigr)
+        (\bv_\alpha) :
+        \bv_\alpha \in \Umin{\alpha}{\bv},\;
+        \varphi^{(\alpha \setminus \beta)} \in
+        \Bigl({}_a\bigotimes_{\gamma \in \Sons{\alpha} \setminus \{\beta\}}
+        \Vbigalpha[\gamma]\Bigr)^*
+    \Bigr\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+This follows directly from Proposition~\ref{prop:min_char_partition}
+applied at level $k$ of the tree, with $\alpha$ playing the role of the
+block and $\Sons{\alpha}$ playing the role of the partition
+$\mathcal{P}_\alpha$.
+\end{proof}
+
+%------------------------------------------------------------
+\section{The transfer tensor representation}
+\label{sec:algTBT:transfer}
+%------------------------------------------------------------
+
+The main result of this section is the characterisation of every
+$\bv \in \FTv$ by a system of \emph{transfer tensors}
+$\{C^{(\alpha)}\}_{\alpha \in \TD}$, one at each vertex. This is the
+algebraic heart of the tree-based format and the starting point for
+all computational algorithms (ALS, DMRG, etc.).
+
+\subsection*{Transfer tensors and the representation formula}
+
+\begin{definition}
+\label{def:transfer_tensor}
+Let $\alpha \in \TD$ with $\card{\Sons{\alpha}} \geq 2$ and let
+$\fr_\alpha = (r_\beta)_{\beta \in \Sons{\alpha}}$. A
+\emph{transfer tensor at vertex $\alpha$} is an array
+\begin{equation*}
+    \Calpha \in \RR^{r_\alpha \times \prod_{\beta \in \Sons{\alpha}} r_\beta},
+\end{equation*}
+where we view it as a matrix with $r_\alpha$ rows and
+$\prod_{\beta \in \Sons{\alpha}} r_\beta$ columns (indexed by the
+multi-index $(i_\beta)_{\beta \in \Sons{\alpha}}$). The transfer tensor
+$\Calpha$ is said to be \emph{full-rank} if
+$\rank \Mmat{\alpha}(\Calpha) = r_\alpha$.
+\end{definition}
+
+For the root vertex $D$, the transfer tensor $\CD$ plays a special role:
+
+\begin{definition}
+\label{def:root_transfer}
+The \emph{root transfer tensor} is
+\begin{equation*}
+    \CD \in \RR^{\times_{\alpha \in \Sons{D}} r_\alpha},
+\end{equation*}
+a multi-dimensional array of shape $\prod_{\alpha \in \Sons{D}} r_\alpha$
+(no ``row'' index since the root has no parent). The full-rank
+condition at the root is $\CD \in \RR^{\times_{\alpha \in \Sons{D}}
+r_\alpha}_*$, the open set of Definition~\ref{def:fullrank_core}.
+\end{definition}
+
+\subsection*{The main characterisation theorem}
+
+\begin{theorem}[Transfer tensor characterisation, {\cite[Theorem~2.6]{FHN2021}}]
+\label{thm:TBT_characterisation}
+Let $\TD$ be a dimension partition tree over $D$ with $\dep{\TD} = L$,
+and let $\fr \in \ADTD$ with $\fr \neq \mathbf{0}$.
+For $\bv \in \VD$, the following statements are equivalent.
+\begin{enumerate}
+\item[\textup{(a)}] $\bv \in \FTv$.
+\item[\textup{(b)}] Given bases $\{u^{(k)}_{i_k} : 1 \leq i_k \leq r_k\}$
+    of $\Umin{k}{\bv}$ for each $k \in \Leaves$, there exist:
+    \begin{itemize}
+    \item A unique root transfer tensor $\CD \in
+        \RR^{\times_{\alpha \in \Sons{D}} r_\alpha}_*$ such that
+        \begin{equation}
+        \label{eq:TBT_root}
+            \bv = \sum_{\substack{1 \leq i_\alpha \leq r_\alpha \\ \alpha \in \Sons{D}}}
+            \CD_{(i_\alpha)_{\alpha \in \Sons{D}}}
+            \bigotimes_{\alpha \in \Sons{D}} \bu^{(\alpha)}_{i_\alpha},
+        \end{equation}
+    \item For each internal vertex $\mu \in \TD \setminus (\{D\} \cup \Leaves)$
+        with $\Sons{\mu} \neq \emptyset$, a unique transfer tensor
+        $\Cmu \in \RR^{r_\mu \times \prod_{\beta \in \Sons{\mu}} r_\beta}$
+        with $\rank \Mmat{\mu}(\Cmu) = r_\mu$, and a basis
+        $\{\bu^{(\mu)}_{i_\mu} : 1 \leq i_\mu \leq r_\mu\}$ of
+        $\Umin{\mu}{\bv}$ given by:
+        \begin{equation}
+        \label{eq:TBT_transfer}
+            \bu^{(\mu)}_{i_\mu}
+            = \sum_{\substack{1 \leq i_\beta \leq r_\beta \\ \beta \in \Sons{\mu}}}
+            \Cmu_{i_\mu, (i_\beta)_{\beta \in \Sons{\mu}}}
+            \bigotimes_{\beta \in \Sons{\mu}} \bu^{(\beta)}_{i_\beta},
+            \quad 1 \leq i_\mu \leq r_\mu.
+        \end{equation}
+    \end{itemize}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+\textbf{(b) $\Rightarrow$ (a).} Clear: the representation gives
+$\dim \Umin{\alpha}{\bv} \leq r_\alpha$ at each level, and
+the full-rank conditions force equality.
+
+\textbf{(a) $\Rightarrow$ (b).} We construct the transfer tensors
+level by level from the leaves upward.
+
+\textit{Step 1 (Root).} Since $\bv \in \FTv$ and
+$\bv \in {}_a\bigotimes_{\alpha \in \Sons{D}} \Umin{\alpha}{\bv}$
+(by the compatibility condition~\eqref{eq:min_compat_tree}), there
+exists a unique $\CD \in \RR^{\times_{\alpha \in \Sons{D}} r_\alpha}$
+such that~\eqref{eq:TBT_root} holds (choosing any bases of the
+$\Umin{\alpha}{\bv}$). The full-rank condition
+$\CD \in \RR^{\times_{\alpha \in \Sons{D}} r_\alpha}_*$ follows from
+$\dim \Umin{\alpha}{\bv} = r_\alpha$ for $\alpha \in \Sons{D}$:
+the rank $\rank \Mmat{\alpha}(\CD) = r_\alpha$ for each $\alpha$
+because otherwise one could find a subspace of $\Umin{\alpha}{\bv}$
+of smaller dimension still containing $\bv$, contradicting minimality.
+
+\textit{Step 2 (Internal vertices).} For each $\mu \in \TD \setminus
+(\{D\} \cup \Leaves)$ with $\Sons{\mu} \neq \emptyset$, the inclusion
+$\Umin{\mu}{\bv} \subset {}_a\bigotimes_{\beta \in \Sons{\mu}}
+\Umin{\beta}{\bv}$ (Proposition~\ref{prop:min_inclusion_partition})
+gives the existence of $\Cmu$ satisfying~\eqref{eq:TBT_transfer}.
+The full-rank condition $\rank \Mmat{\mu}(\Cmu) = r_\mu$ follows from
+the linear independence of $\{\bu^{(\mu)}_{i_\mu}\}$
+(as a basis of $\Umin{\mu}{\bv}$).
+\end{proof}
+
+\begin{remark}[Uniqueness up to gauge]
+\label{rem:gauge_freedom}
+The transfer tensors $\{C^{(\alpha)}\}$ are uniquely determined once
+the bases $\{u^{(k)}_{i_k}\}_{k \in \Leaves}$ are fixed. Changing the
+bases introduces a \emph{gauge transformation}: if
+$\{(\tilde{u}^{(k)}_{i_k})\}$ is another set of bases related by
+invertible matrices $G_k \in \GL{\RR^{r_k}}$ (via
+$\tilde{u}^{(k)}_{i_k} = \sum_j (G_k)_{ij} u^{(k)}_j$), then the
+transfer tensors transform by contracting with the corresponding
+$G_k$. The freedom to choose orthonormal bases (when the $V_j$ are
+Hilbert spaces) is exploited in the HOSVD and related algorithms.
+\end{remark}
+
+\subsection*{Recursive computation}
+
+Equation~\eqref{eq:TBT_transfer} has a natural recursive interpretation:
+the basis vectors of $\Umin{\mu}{\bv}$ are built bottom-up from the
+leaf bases, level by level, using the transfer tensors as ``gluing''
+coefficients. The full representation can be written compactly as:
+\begin{equation}
+\label{eq:TBT_full_recursive}
+    \bv = \sum_{(i_j)_{j \in D}}
+    \Bigl[\text{network contraction of }
+    \{C^{(\alpha)}\}_{\alpha \in \TD}\Bigr]_{(i_j)_{j\in D}}
+    \bigotimes_{j \in D} u^{(\{j\})}_{i_j},
+\end{equation}
+where the ``network contraction'' is the tensor network obtained by
+connecting the transfer tensors along the edges of $\TD$.
+
+%------------------------------------------------------------
+\section{Special cases}
+\label{sec:algTBT:special}
+%------------------------------------------------------------
+
+We verify Theorem~\ref{thm:TBT_characterisation} in the three standard
+formats, recovering known representations.
+
+\subsection*{Tucker format}
+
+For $\TD = \TDtuck$ (depth~1), $\Sons{D} = \Leaves = \{\{j\} : j \in D\}$,
+and there are no internal vertices other than the root. The only
+transfer tensor is the root tensor $\CD$, and
+Theorem~\ref{thm:TBT_characterisation} reduces to:
+\begin{equation*}
+    \bv = \sum_{\substack{1 \leq i_j \leq r_j \\ j \in D}}
+    \CD_{(i_j)_{j \in D}}
+    \bigotimes_{j \in D} u^{(\{j\})}_{i_j},
+    \quad \CD \in \RR^{\times_{j \in D} r_j}_*.
+\end{equation*}
+This is exactly the Tucker representation~\eqref{eq:tucker_core} of
+Lemma~\ref{lem:tucker_characterisation}, with $\CD$ playing the role
+of the core tensor.
+
+\subsection*{Hierarchical Tucker format ($d=4$, balanced binary)}
+
+For $\TDht$ of Example~\ref{ex:HT_tree} with $D=\{1,2,3,4\}$,
+$\Sons{D} = \{\{1,2\},\{3,4\}\}$, and the two internal vertices
+$\{1,2\}$ and $\{3,4\}$ each have $\Sons{\{i,j\}} = \{\{i\},\{j\}\}$.
+Theorem~\ref{thm:TBT_characterisation} gives:
+
+\begin{itemize}
+\item Leaf bases: $\{u^{(\{j\})}_{i_j}\}_{i_j=1}^{r_j}$ for $j=1,2,3,4$.
+\item Transfer tensors at level 2:
+    $C^{(\{1,2\})} \in \RR^{r_{\{1,2\}} \times r_1 r_2}$ and
+    $C^{(\{3,4\})} \in \RR^{r_{\{3,4\}} \times r_3 r_4}$, defining
+    bases of $\Umin{\{1,2\}}{\bv}$ and $\Umin{\{3,4\}}{\bv}$:
+    \begin{equation*}
+        \bu^{(\{1,2\})}_{i_{12}}
+        = \sum_{i_1=1}^{r_1}\sum_{i_2=1}^{r_2}
+        C^{(\{1,2\})}_{i_{12},i_1 i_2}\, u^{(\{1\})}_{i_1} \otimes u^{(\{2\})}_{i_2}.
+    \end{equation*}
+\item Root transfer tensor:
+    $\CD \in \RR^{r_{\{1,2\}} \times r_{\{3,4\}}}_*$, giving:
+    \begin{equation*}
+        \bv = \sum_{i_{12}=1}^{r_{\{1,2\}}} \sum_{i_{34}=1}^{r_{\{3,4\}}}
+        \CD_{i_{12},i_{34}}\,
+        \bu^{(\{1,2\})}_{i_{12}} \otimes \bu^{(\{3,4\})}_{i_{34}}.
+    \end{equation*}
+\end{itemize}
+
+The total storage for this representation is
+$r_1 r_2 r_{\{1,2\}} + r_3 r_4 r_{\{3,4\}} + r_{\{1,2\}} r_{\{3,4\}}
++ (r_1 + r_2 + r_3 + r_4) n$,
+where $n = \max_j \dim V_j$, compared to $n^4$ for a full tensor.
+
+\subsection*{Tensor Train format}
+
+For $\TDtt$ over $D = \{1,\ldots,d\}$, with
+$\Sons{\{1,\ldots,k\}} = \{\{1,\ldots,k-1\},\{k\}\}$ for $k \geq 2$,
+Theorem~\ref{thm:TBT_characterisation} gives the
+\emph{TT decomposition}:
+\begin{equation}
+\label{eq:TT_decomposition}
+    \bv = \sum_{\substack{1 \leq i_j \leq r_j \\ j \in D}}
+    G^{(1)}_{i_1} G^{(2)}_{i_1 i_2} \cdots G^{(d-1)}_{i_{d-2}i_{d-1}}
+    G^{(d)}_{i_{d-1} i_d}\,
+    \bigotimes_{j \in D} u^{(\{j\})}_{i_j},
+\end{equation}
+where $G^{(k)} \in \RR^{r_{k-1} \times r_k}$ are the transfer matrices
+at level $k$ (with $r_0 = r_d = 1$). This is the standard TT format
+of~\cite{Oseledets2011}, expressed in terms of minimal subspace bases.
+
+%------------------------------------------------------------
+\section{Disjoint decomposition and rank stratification}
+\label{sec:algTBT:stratification}
+%------------------------------------------------------------
+
+\begin{theorem}
+\label{thm:TBT_decomposition}
+The algebraic tensor space $\VD$ admits the disjoint decomposition
+\begin{equation}
+\label{eq:TBT_disjoint}
+    \VD = \bigsqcup_{\fr \in \ADTD} \FT{\fr}{\VD}{\TD}.
+\end{equation}
+Every non-zero $\bv \in \VD$ belongs to exactly one stratum
+$\FT{\fr}{\VD}{\TD}$ for $\fr = \mathrm{rank}_{\TD}(\bv)$.
+\end{theorem}
+
+\begin{proof}
+Follows directly from the uniqueness of minimal subspaces
+(Theorem~\ref{thm:min_existence}) and the definition of tree-based rank.
+\end{proof}
+
+\begin{proposition}[Relation to Tucker decomposition]
+\label{prop:TBT_tucker_relation}
+For any $\TD$ and $\fr \in \ADTD$, the set $\FTv$ is contained in the
+Tucker set of rank $\fr_{\mathrm{leaf}}$:
+\begin{equation*}
+    \FTv \subset \Tucker{\fr_\mathrm{leaf}}{\VD},
+    \quad
+    \fr_\mathrm{leaf} = (r_{\{j\}})_{j \in D}.
+\end{equation*}
+Moreover, from Theorem~\ref{thm:intersection_representation}:
+\begin{equation*}
+    \FTv = \Tucker{\fr_\mathrm{leaf}}{\VD}
+    \cap \Tucker{\fr_1}{\VD, \mathcal{P}_1(\TD)}
+    \cap \cdots \cap
+    \Tucker{\fr_{\dep{}-1}}{\VD, \mathcal{P}_{\dep{}-1}(\TD)}.
+\end{equation*}
+The tree-based format imposes \emph{additional} rank constraints beyond
+the Tucker format at each intermediate level of the tree.
+\end{proposition}
+
+%------------------------------------------------------------
+\section{Historical notes and comparison}
+\label{sec:algTBT:history}
+%------------------------------------------------------------
+
+The characterisation of tree-based tensors by transfer tensors
+(Theorem~\ref{thm:TBT_characterisation}) generalises the Tucker core
+representation (for depth~1 trees) and the HT representation of
+Hackbusch--Kühn~\cite{HaKuehn2009} (for binary trees). The TT
+case~\eqref{eq:TT_decomposition} was established by Oseledets~\cite{Oseledets2011};
+the connection to the minimal subspace framework was made explicit
+in~\cite{FH2012}.
+
+The general tree-based format, unifying all these cases, was introduced
+in~\cite{FHN2021}. The key innovation there is the \emph{new
+characterisation of minimal subspaces} (Proposition~\ref{prop:min_char_tree}),
+which expresses $\Umin{\beta}{\bv}$ via contractions of
+$\Umin{\alpha}{\bv}$ for the parent vertex $\alpha$. This extends
+the results of~\cite{FH2012} (where only the bilinear splitting
+$V_\alpha \otimes V_{\alpha^c}$ was used) to the full tree structure.
+
+The gauge freedom (Remark~\ref{rem:gauge_freedom}) is the algebraic
+manifestation of the non-uniqueness of tensor decompositions. In the
+TT case, canonical gauges (left-orthogonal, right-orthogonal, and
+mixed-canonical) are used in the DMRG algorithm~\cite{HoltzRohwedderSchneider2012}.
+For general trees, the analogous gauge conditions lead to the HOSVD
+(Higher-Order SVD) of De Lathauwer et al.~\cite{DeLathauwer2000}.
 

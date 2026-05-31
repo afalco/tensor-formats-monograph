@@ -1,13 +1,380 @@
 %============================================================
-%  ch07_topTBT.tex  —  Topological Tree-Based Tensor Spaces
-%  TODO: Write content
+%  ch07_topTBT.tex
+%  Chapter 7: Topological Tree-Based Tensor Spaces
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2021 (Sec. 3), FH2012 (Secs. 4-5)
+%  Estimated length: ~25 pp.
 %============================================================
 
 \chapter{Topological Tree-Based Tensor Spaces}
 \label{chap:topTBT}
 
-\section*{To be written}
+The algebraic theory of Chapter~\ref{chap:algTBT} operates entirely
+within the algebraic tensor space $\VD$. For applications — numerical
+solution of PDEs, best approximation, dynamical systems — one needs a
+\emph{topological} framework: a norm on $\VD$ (or on its completion)
+and conditions guaranteeing that the tensor product maps at each level
+of the tree are continuous. This chapter introduces topological
+tree-based tensor spaces (Section~\ref{sec:topTBT:spaces}), the
+$T_D$-continuity condition
+(Section~\ref{sec:topTBT:continuity}), the key identification theorem
+(Section~\ref{sec:topTBT:identification}), and the existence of best
+approximations in the tree-based setting
+(Section~\ref{sec:topTBT:bestapprox}). The main results are drawn
+from~\cite{FHN2021}, which significantly weakens the norm conditions
+required in~\cite{FH2012}.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section{Topological tree-based tensor spaces}
+\label{sec:topTBT:spaces}
+%------------------------------------------------------------
+
+\begin{definition}[Topological tree-based tensor space]
+\label{def:top_TBT_space}
+Let $\TD$ be a dimension partition tree over $D$ and let
+$(V_j, \|\cdot\|_j)$ be a normed space for each $j \in D$, with
+completion $V_{j,\|\cdot\|_j}$ (a Banach space). A
+\emph{topological tree-based representation} of the ambient Banach
+tensor space $\VDnorm = {}_{\|\cdot\|_D}\bigotimes_{j \in D} V_j$
+is a collection
+$\{\Valphanorm\}_{\alpha \in \TD \setminus \{D\}}$ such that:
+\begin{enumerate}
+\item[\textup{(i)}] For each leaf $\{j\} \in \Leaves$:
+    $V_{\{j\},\|\cdot\|_j} = V_{j,\|\cdot\|_j}$.
+\item[\textup{(ii)}] For each internal vertex $\alpha \in
+    \TD \setminus \Leaves$: $\Valphanorm$ is a Banach tensor space
+    \begin{equation}
+    \label{eq:top_TBT_space}
+        \Valphanorm
+        = {}_{\|\cdot\|_\alpha}\bigotimes_{\beta \in \Sons{\alpha}}
+        V_\beta,
+    \end{equation}
+    i.e., the completion of the algebraic space
+    $\Vbigalpha = {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Vbigbeta$
+    under the norm $\|\cdot\|_\alpha$.
+\end{enumerate}
+\end{definition}
+
+The key question is when the norm $\|\cdot\|_\alpha$ on the algebraic
+tensor space ${}_a\bigotimes_{\beta \in \Sons{\alpha}} \Vbigbeta$ is
+\emph{compatible} with completing each factor: that is, when does
+\begin{equation}
+\label{eq:top_TBT_identity}
+    {}_{\|\cdot\|_\alpha}\bigotimes_{\beta \in \Sons{\alpha}}
+    V_{\beta,\|\cdot\|_\beta}
+    =
+    {}_{\|\cdot\|_\alpha}\bigotimes_{\beta \in \Sons{\alpha}} V_\beta
+    =
+    {}_{\|\cdot\|_\alpha}\bigotimes_{j \in \alpha} V_j
+\end{equation}
+hold? The answer is provided by the $T_D$-continuity condition.
+
+%------------------------------------------------------------
+\section{The $T_D$-continuity condition}
+\label{sec:topTBT:continuity}
+%------------------------------------------------------------
+
+\begin{definition}[$T_D$-continuous tensor product]
+\label{def:TD_continuous}
+Let $\{\Valphanorm\}_{\alpha \in \TD \setminus \{D\}}$ be a topological
+tree-based representation of $\VDnorm$. The tensor product map
+$\bigotimes$ is \emph{$T_D$-continuous} if for each internal vertex
+$\alpha \in \TD \setminus \Leaves$, the map
+\begin{equation}
+\label{eq:TD_continuous}
+    \bigotimes :
+    \prod_{\beta \in \Sons{\alpha}}
+    (V_{\beta,\|\cdot\|_\beta}, \|\cdot\|_\beta)
+    \longrightarrow
+    (\Valphanorm, \|\cdot\|_\alpha)
+\end{equation}
+is continuous (equivalently, bounded as a multilinear map).
+\end{definition}
+
+$T_D$-continuity is equivalent to requiring that each norm
+$\|\cdot\|_\alpha$ is a crossnorm on the product
+$\prod_{\beta \in \Sons{\alpha}} V_{\beta,\|\cdot\|_\beta}$ (or
+at least bounds it from above up to a constant).
+
+\begin{lemma}[{\cite[Lemma~4.34]{Hackbusch2019}}]
+\label{lem:TD_continuous_identification}
+Let $(V_j, \|\cdot\|_j)$ be normed spaces and $\|\cdot\|$ a norm on
+${}_a\bigotimes_{j=1}^d V_j$ such that the tensor product map
+$\bigotimes: \prod_j (V_{j,\|\cdot\|_j}, \|\cdot\|_j) \to
+({}_a\bigotimes_j V_{j,\|\cdot\|_j}, \|\cdot\|)$ is continuous. Then
+\begin{equation*}
+    {}_{\|\cdot\|}\bigotimes_{j=1}^d V_{j,\|\cdot\|_j}
+    = {}_{\|\cdot\|}\bigotimes_{j=1}^d V_j.
+\end{equation*}
+\end{lemma}
+
+%------------------------------------------------------------
+\section{The identification theorem}
+\label{sec:topTBT:identification}
+%------------------------------------------------------------
+
+The following theorem is the topological counterpart of the algebraic
+associativity: it shows that, under $T_D$-continuity, completing at
+each vertex of the tree gives the same result as completing all factors
+simultaneously.
+
+\begin{theorem}[Identification theorem, {\cite[Theorem~3.2]{FHN2021}}]
+\label{thm:TBT_identification}
+Let $\{\Valphanorm\}_{\alpha \in \TD \setminus \{D\}}$ be a
+topological tree-based representation of $\VDnorm$ such that the
+tensor product map $\bigotimes$ is $T_D$-continuous. Then for each
+$\alpha \in \TD \setminus \Leaves$:
+\begin{equation}
+\label{eq:TBT_identification}
+    \Valphanorm
+    = {}_{\|\cdot\|_\alpha}\bigotimes_{\beta \in \Sons{\alpha}}
+      V_{\beta,\|\cdot\|_\beta}
+    = {}_{\|\cdot\|_\alpha}\bigotimes_{\beta \in \Sons{\alpha}} V_\beta
+    = {}_{\|\cdot\|_\alpha}\bigotimes_{j \in \alpha} V_j.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:TD_continuous_identification} at each internal
+vertex $\alpha$, using the $T_D$-continuity of the tensor product map
+at $\alpha$. The third equality in~\eqref{eq:TBT_identification}
+follows from the algebraic identity $\Vbigalpha =
+{}_a\bigotimes_{j \in \alpha} V_j$ (associativity of tensor products,
+Proposition~\ref{def:partition_tensor}).
+\end{proof}
+
+\begin{example}[Anisotropic Sobolev space]
+\label{ex:sobolev_TBT}
+Consider $D = \{1,2,3\}$, $V_1 = L^p(I_1)$,
+$V_2 = H^{N,p}(I_2)$, $V_3 = H^{N,p}(I_3)$, and the tree
+\begin{equation*}
+    \TD: D \to \bigl\{\{1\}, \{2,3\}\bigr\} \to
+    \bigl\{\{1\},\{2\},\{3\}\bigr\},
+\end{equation*}
+with norms $\|\cdot\|_{23}$ on $V_2 \otimes_a V_3$ and
+$\|\cdot\|_{123}$ on $V_D$. If both tensor product maps are continuous
+(i.e., $\bigotimes$ is $T_D$-continuous), then
+\begin{equation*}
+    {}_{\|\cdot\|_{123}}\bigotimes_{j=1}^3 V_j
+    = L^p(I_1) \otimes_{\|\cdot\|_{123}}
+      \bigl(H^{N,p}(I_2) \otimes_{\|\cdot\|_{23}} H^{N,p}(I_3)\bigr),
+\end{equation*}
+which is the anisotropic Sobolev space of Figure~\ref{fig:sobolev_TBT}.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\synttree[${}_{\|\cdot\|_{123}}\overline{L^p(I_1)\otimes_a H^{N,p}(I_2)\otimes_a H^{N,p}(I_3)}$
+  [$L^p(I_1)$]
+  [${}_{\|\cdot\|_{23}}\overline{H^{N,p}(I_2)\otimes_a H^{N,p}(I_3)}$
+    [$H^{N,p}(I_2)$]
+    [$H^{N,p}(I_3)$]]]
+\caption{Topological tree-based tensor space for an anisotropic Sobolev
+product. The intermediate space at vertex $\{2,3\}$ is the Banach
+completion of $H^{N,p}(I_2) \otimes_a H^{N,p}(I_3)$ under
+$\|\cdot\|_{23}$.}
+\label{fig:sobolev_TBT}
+\end{figure}
+
+%------------------------------------------------------------
+\section{The tree-based injective norm condition}
+\label{sec:topTBT:inj_condition}
+%------------------------------------------------------------
+
+For the existence of best approximations, a stronger condition than
+$T_D$-continuity is required. The following condition is the
+tree-based analogue of condition~\condINJ\ from
+Section~\ref{sec:min:bestapprox}.
+
+\begin{definition}[$T_D$-injective norm condition]
+\label{def:TD_inj}
+A topological tree-based representation $\{\Valphanorm\}$ satisfies
+the \emph{$T_D$-injective norm condition} \condINJ[$T_D$] if for
+each $\alpha \in \TD \setminus \Leaves$:
+\begin{equation}
+\label{eq:TD_inj}
+    \|\cdot\|_\alpha \gtrsim
+    \|\cdot\|_{\varepsilon(\Sons{\alpha})},
+\end{equation}
+where $\|\cdot\|_{\varepsilon(\Sons{\alpha})}$ is the injective norm on
+${}_a\bigotimes_{\beta \in \Sons{\alpha}} V_{\beta,\|\cdot\|_\beta}$.
+\end{definition}
+
+\begin{proposition}[{\cite[Proposition~3.3]{FHN2021}}]
+\label{prop:TD_inj_implies_continuous}
+Condition \condINJ[$T_D$] implies $T_D$-continuity.
+\end{proposition}
+
+\begin{proof}
+The injective norm is a reasonable crossnorm
+(Proposition~\ref{prop:admissible_bounds}), so
+$\|\cdot\|_\alpha \gtrsim \|\cdot\|_{\varepsilon(\Sons{\alpha})}$
+implies that $\bigotimes: \prod_{\beta \in \Sons{\alpha}}
+V_{\beta,\|\cdot\|_\beta} \to \Valphanorm$ is continuous.
+\end{proof}
+
+\begin{remark}
+\label{rem:TD_inj_Lp}
+The condition \condINJ[$T_D$] holds for all common tensor product
+norms arising from $L^p$ and Sobolev spaces. In particular, the
+$L^p$ norm on $L^p(\prod_j I_j)$ satisfies \condINJ[$T_D$] for
+any binary tree over $D$ (this follows from the fact that $L^p$
+norms are reasonable crossnorms; see~\cite{Hackbusch2019},
+Example~4.72).
+\end{remark}
+
+\subsection*{Minimal subspaces in the completion}
+
+Under condition \condINJ[$T_D$], the definition of minimal subspaces
+can be extended from $\VD$ to the Banach completion $\VDnorm$. This
+extension is needed for tensors in $\VDnorm \setminus \VD$, which
+arise naturally as weak limits of sequences in $\VD$.
+
+\begin{lemma}[Extension of minimal subspaces, {\cite[Lemma~3.8]{FH2012}}]
+\label{lem:min_extension}
+Let $\{\Valphanorm\}$ satisfy \condINJ[$T_D$]. For
+$\bv \in \VDnorm$ and $\alpha \in \Sons{D}$, define
+\begin{equation}
+\label{eq:min_extension}
+    \Umin{\alpha}{\bv}
+    \coloneqq \cl{\spann\bigl\{
+        \overline{(\Id{\Vbigalpha} \otimes \varphi^{[\alpha]})}(\bv) :
+        \varphi^{[\alpha]} \in
+        {}_a\bigotimes_{\beta \in \Sons{D} \setminus \{\alpha\}}
+        \Vbigbeta^*
+    \bigr\}}^{\|\cdot\|_\alpha},
+\end{equation}
+where $\overline{(\Id{\Vbigalpha} \otimes \varphi^{[\alpha]})}
+\in \cL(\VDnorm, \Valphanorm)$ is the continuous extension of the
+contraction map. Then $\Umin{\alpha}{\bv}$ is a well-defined closed
+subspace of $\Valphanorm$ with $\dim \Umin{\alpha}{\bv} < \infty$.
+\end{lemma}
+
+The lemma allows one to define the tree-based rank
+$\mathrm{rank}_{\TD}(\bv)$ for any $\bv \in \VDnorm$, not just for
+$\bv \in \VD$. This is essential for the best approximation theorem.
+
+%------------------------------------------------------------
+\section{Weak closedness and best approximations}
+\label{sec:topTBT:bestapprox}
+%------------------------------------------------------------
+
+\begin{theorem}[Weak lower semicontinuity of rank, {\cite[Theorem~3.4]{FHN2021}}]
+\label{thm:TBT_rank_lsc}
+Let $\{\Valphanorm\}$ satisfy \condINJ[$T_D$], and let
+$(\bv_n) \subset \VDnorm$ be a sequence converging weakly to
+$\bv \in \VDnorm$. Then for each $\alpha \in \TD \setminus \{D\}$:
+\begin{equation}
+\label{eq:rank_lsc}
+    \dim \Umin{\alpha}{\bv} \leq
+    \liminf_{n \to \infty} \dim \Umin{\alpha}{\bv_n}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}[Sketch]
+For $\alpha \in \Sons{D}$, the minimal subspace $\Umin{\alpha}{\bv}$
+is characterised as the closure of the range of the operator
+$\overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}$ applied to
+$\bv$, for $\varphi^{[\alpha]}$ ranging over the dual unit ball.
+Weak convergence $\bv_n \rightharpoonup \bv$ implies that
+$\overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}(\bv_n)
+\rightharpoonup \overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}(\bv)$
+weakly in $\Valphanorm$ (by the continuity of the operator from
+Lemma~\ref{lem:min_extension}). The lower semicontinuity of the
+dimension then follows from the fact that the set of operators of
+rank $\leq r$ is weakly closed in the operator topology, analogously
+to Theorem~\ref{thm:weak_closed}. The extension to all $\alpha \in \TD$
+follows by induction on $\dep{\TD}$, using
+Proposition~\ref{prop:min_char_tree} to propagate the inequality
+from children to parents.
+\end{proof}
+
+\begin{theorem}[Weak closedness, {\cite[Theorem~3.5]{FHN2021}}]
+\label{thm:TBT_weak_closed}
+Let $\{\Valphanorm\}$ satisfy \condINJ[$T_D$] and let
+$\fr \in \ADTD$. Then $\FTleq{\fr}{\VD}{\TD}$ is weakly closed
+in $\VDnorm$.
+\end{theorem}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:TBT_rank_lsc}: if $\bv_n \in
+\FTleq{\fr}{\VD}{\TD}$ and $\bv_n \rightharpoonup \bv$, then
+$\dim \Umin{\alpha}{\bv} \leq \liminf \dim \Umin{\alpha}{\bv_n}
+\leq r_\alpha$ for all $\alpha \in \TD$, so $\bv \in
+\FTleq{\fr}{\VD}{\TD}$.
+\end{proof}
+
+\begin{theorem}[Best approximation, {\cite[Theorem~3.6]{FHN2021}}]
+\label{thm:TBT_best_approx}
+Let $\{\Valphanorm\}$ satisfy \condINJ[$T_D$] and assume $\VDnorm$
+is reflexive. Then for every $\bu \in \VDnorm$ and $\fr \in \ADTD$,
+there exists $\bv_* \in \FTleq{\fr}{\VD}{\TD}$ such that
+\begin{equation}
+\label{eq:TBT_best_approx}
+    \|\bu - \bv_*\|_D =
+    \inf_{\bv \in \FTleq{\fr}{\VD}{\TD}} \|\bu - \bv\|_D.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Identical to the proof of Theorem~\ref{thm:best_approx_tucker}:
+take a minimising sequence $(\bv_n) \subset \FTleq{\fr}{\VD}{\TD}$,
+extract a weakly convergent subsequence (by reflexivity), and apply
+Theorem~\ref{thm:TBT_weak_closed} to conclude the limit is in
+$\FTleq{\fr}{\VD}{\TD}$. Lower semicontinuity of the norm then gives
+the minimum.
+\end{proof}
+
+\begin{remark}[Improvement over prior results]
+\label{rem:TBT_improvement}
+Theorem~\ref{thm:TBT_best_approx} improves the earlier result of
+Theorem~\ref{thm:best_approx_tucker} in two ways:
+\begin{enumerate}
+\item It applies to \emph{any} tree $\TD$, not just the Tucker
+    tree $\TDtuck$.
+\item The norm condition \condINJ[$T_D$] is \emph{weaker} than the
+    condition of~\cite{FH2012}: it requires the injective norm bound
+    only \emph{locally} at each vertex, whereas~\cite{FH2012} required
+    a global injective norm bound on the full tensor product.
+\end{enumerate}
+In particular, Theorem~\ref{thm:TBT_best_approx} applies to the
+anisotropic Sobolev space of Example~\ref{ex:sobolev_TBT}, which
+is \emph{not} covered by Theorem~\ref{thm:best_approx_tucker}.
+\end{remark}
+
+\begin{corollary}
+\label{cor:TBT_best_approx_Lp}
+For $1 < p < \infty$, $L^p(\prod_{j \in D} I_j)$ with any dimension
+partition tree $\TD$ satisfies the hypotheses of
+Theorem~\ref{thm:TBT_best_approx}. Hence every $f \in L^p(\prod_j I_j)$
+has a best tree-based approximation of any prescribed tree-based rank.
+\end{corollary}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:topTBT:history}
+%------------------------------------------------------------
+
+The first best approximation results for tensor formats in infinite-
+dimensional spaces were proved in~\cite{FH2012} for the Tucker format,
+under the assumption that $\|\cdot\|_D \gtrsim \|\cdot\|_\varepsilon$
+globally. The extension to tree-based formats under the weaker condition
+\condINJ[$T_D$] was achieved in~\cite{FHN2021}. The key improvement is
+the use of the \emph{local} injective norm bound at each vertex of the
+tree, combined with the new characterisation of minimal subspaces
+(Proposition~\ref{prop:min_char_tree}) to propagate weak lower
+semicontinuity up the tree.
+
+The anisotropic Sobolev space of Example~\ref{ex:sobolev_TBT}
+motivates this improvement: in parametric PDEs where the spatial
+variable $x_1 \in I_1$ and the parameter $x_2 \in I_2$ have
+different regularity, the natural norm on $L^p(I_1) \otimes H^{N,p}(I_2)$
+is not a global injective norm, but it does satisfy
+\condINJ[$T_D$] for the two-level tree. The existence of best
+approximations in such spaces is crucial for the convergence analysis
+of greedy algorithms for parametric PDEs
+(cf.~\cite{Nouy2017}).
 
