@@ -1,33 +1,74 @@
 %============================================================
-%  TENSOR FORMATS IN BANACH SPACES:
+%  main.tex
+%  Tensor Formats in Banach Spaces:
 %  Minimal Subspaces, Geometry, and Variational Principles
 %
-%  Antonio Falcó
-%  Universidad Cardenal Herrera-CEU, CEU Universities
+%  Antonio Falcó — Universidad Cardenal Herrera-CEU
 %
-%  Skeleton for Ergebnisse der Mathematik und ihrer
-%  Grenzgebiete (3. Folge), Springer
+%  TARGET: Ergebnisse der Mathematik und ihrer Grenzgebiete
+%          (3. Folge), Springer
 %
-%  Estimated length: ~320 pages
+%  COMPILATION:
+%    pdflatex main && bibtex main && pdflatex main && pdflatex main
+%  or:
+%    latexmk -pdf main
 %============================================================
 
-\documentclass[envcountsame,envcountchap,sectrefs]{svmono}
+%------------------------------------------------------------
+%  DOCUMENT CLASS
+%  Use 'book' locally (freely available).
+%  For final submission replace with \documentclass{svmono}
+%  and adjust theorem styles to Springer macros.
+%------------------------------------------------------------
+\documentclass[12pt, a4paper, twoside, openright]{book}
 
-% ---- Standard packages ----
+%------------------------------------------------------------
+%  PACKAGES
+%------------------------------------------------------------
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath, amssymb, amsthm, mathrsfs}
-\usepackage{mathtools}          % \coloneqq, etc.
-\usepackage{graphicx}
-\usepackage{tikz}
-\usepackage[all,cmtip]{xy}
-\usepackage{synttree}           % dimension partition trees
-\usepackage{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+
+% Mathematics
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{mathrsfs}
+\usepackage{mathtools}       % \coloneqq, \xrightarrow, etc.
+
+% Layout and typography
+\usepackage[margin=2.5cm, inner=3cm]{geometry}
+\usepackage{microtype}
+\usepackage{setspace}
+\onehalfspacing
+
+% Cross-references and hyperlinks
+\usepackage[colorlinks=true,
+            linkcolor=blue!60!black,
+            citecolor=green!50!black,
+            urlcolor=blue!70!black]{hyperref}
+
+% Index and bibliography
 \usepackage{makeidx}
 \makeindex
 
-%============================================================
-%  THEOREM-LIKE ENVIRONMENTS
-%============================================================
+% Figures and trees
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage[all,cmtip]{xy}
+\usepackage{synttree}
+
+% Misc
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+%------------------------------------------------------------
+%  THEOREM ENVIRONMENTS
+%  svmono uses \newtheorem with shared counter per chapter.
+%  Here we replicate that behaviour manually.
+%------------------------------------------------------------
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
@@ -36,993 +77,134 @@
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{example}[theorem]{Example}
-\newtheorem{remark}[theorem]{Remark}
-\newtheorem{notation}[theorem]{Notation}
 \newtheorem{assumption}[theorem]{Assumption}
 
-%============================================================
-%  UNIFIED NOTATION  --  ALL MACROS DEFINED HERE
-%
-%  PHILOSOPHY:
-%  (a) Scalars/indices: lowercase Roman or Greek
-%  (b) Vectors in component spaces: lowercase bold  \bv, \bu ...
-%  (c) Tensors: uppercase bold  \bV, \bU ...
-%  (d) Tensor spaces (algebraic):  \VD, \Valpha, ...
-%  (e) Tensor Banach spaces (topological completion): with norm subscript
-%  (f) Trees, partitions, index sets: calligraphic or Roman
-%============================================================
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{notation}[theorem]{Notation}
 
-% ---- Fields ----
-\newcommand{\RR}{\mathbb{R}}          % real numbers
-\newcommand{\CC}{\mathbb{C}}          % complex numbers
-\newcommand{\KK}{\mathbb{K}}          % generic field (R or C)
-\newcommand{\NN}{\mathbb{N}}          % natural numbers (positive)
-\newcommand{\NNz}{\mathbb{N}_0}       % non-negative integers
-\newcommand{\ZZ}{\mathbb{Z}}          % integers
+%------------------------------------------------------------
+%  UNIFIED NOTATION  (separated into notation.tex)
+%------------------------------------------------------------
+\input{notation}
 
-% ---- Index sets ----
-% D = {1,...,d}  is the dimension index set
-\newcommand{\DD}{D}                    % dimension index set
-\newcommand{\dD}{d}                    % cardinality of D
+%------------------------------------------------------------
+%  CUSTOM COMMANDS (not in notation.tex)
+%------------------------------------------------------------
+% Forward/backward references helpers
+\newcommand{\ie}{i.e.,\ }
+\newcommand{\eg}{e.g.,\ }
+\newcommand{\cf}{cf.\ }
 
-% ---- Vector spaces (component spaces) ----
-% V_j for j in D  (scalar spaces)
-% Written as V_j or V_alpha for alpha a subset of D
-\newcommand{\Vj}{V_j}                  % j-th component space
-\newcommand{\Valpha}{V_\alpha}         % space associated to alpha
-\newcommand{\Vbeta}{V_\beta}           % space associated to beta
-\newcommand{\Vnu}{V_\nu}              % space associated to nu (multi-index)
+% Short \left\| \right\| around long expressions
+\newcommand{\Norm}[1]{\left\|#1\right\|}
 
-% ---- Algebraic tensor spaces ----
-% Convention: _a\bigotimes denotes algebraic tensor product
-% \VD  = algebraic tensor product of all V_j, j in D
-\newcommand{\VD}{\mathbf{V}_\DD}
-\newcommand{\VDalg}{{}_a\bigotimes_{\alpha \in \DD} V_\alpha}
-\newcommand{\Vbigalpha}{\mathbf{V}_\alpha}  % V_alpha = alg. tensor over alpha
-\newcommand{\Vbigbeta}{\mathbf{V}_\beta}
-\newcommand{\VPk}{\mathbf{V}_{\mathcal{P}_k}} % space at level k partition
+% Hitchcock reference shorthand
+\newcommand{\Hitchcock}{\cite{Hitchcock1927}}
 
-% Algebraic tensor product symbol
-\newcommand{\atens}{\otimes_a}          %  v \atens w  (algebraic)
-\newcommand{\Atens}{\bigotimes_a}       %  \Atens_{j} V_j
-
-% ---- Topological tensor spaces (completions) ----
-% Convention: completion of V_D under norm ||\cdot||_D
-%   written as  \VDnorm  or  V_{D,\|\cdot\|_D}
-\newcommand{\VDnorm}{\mathbf{V}_{D,\|\cdot\|_D}}
-\newcommand{\Valphanorm}{\mathbf{V}_{\alpha,\|\cdot\|_\alpha}}
-% General: _{\|\cdot\|}\bigotimes  for topological tensor product
-\newcommand{\tnorm}[1]{{}_{\|\cdot\|_{#1}}\bigotimes}
-
-% ---- Tensors (elements) ----
-% Bold lowercase: component vectors
-\newcommand{\bv}{\mathbf{v}}    % generic tensor
-\newcommand{\bu}{\mathbf{u}}    % generic tensor
-\newcommand{\bw}{\mathbf{w}}    % generic tensor
-\newcommand{\bx}{\mathbf{x}}    % generic tensor
-\newcommand{\bF}{\mathbf{F}}    % right-hand side in ODE
-\newcommand{\bU}{\mathbf{U}}    % block tensor
-% Elementary tensor
-\newcommand{\etens}[1]{\bigotimes_{#1}}  % elementary tensor symbol
-
-% ---- Norms ----
-\newcommand{\norm}[2]{\left\|#1\right\|_{#2}}   % \norm{v}{D}
-\newcommand{\normD}[1]{\left\|#1\right\|_{D}}   % norm in V_D
-\newcommand{\norma}[1]{\left\|#1\right\|_{\alpha}}
-\newcommand{\normj}[1]{\left\|#1\right\|_{j}}
-\newcommand{\dualnorm}[1]{\left\|#1\right\|_{#1^*}}
-\newcommand{\opnorm}[3]{\left\|#1\right\|_{#2 \leftarrow #3}} % operator norm
-
-% ---- Dual spaces ----
-\newcommand{\dual}[1]{#1^*}       % topological dual
-\newcommand{\algdual}[1]{#1'}     % algebraic dual  L(V,K)
-
-% ---- Linear maps and operators ----
-\newcommand{\cL}{\mathcal{L}}     % space of bounded linear maps
-\newcommand{\GL}[1]{\mathrm{GL}(#1)}  % bounded automorphisms
-\newcommand{\Id}[1]{\mathrm{id}_{#1}} % identity on #1
-\newcommand{\Proj}[2]{P_{#1 \oplus #2}} % projection onto #1 along #2
-\newcommand{\Isom}[2]{\cL(#1,#2)} % bounded linear maps
-
-% ---- Subspaces, Grassmannian ----
-\newcommand{\Grass}[2]{\mathbb{G}_{#1}(#2)}  % Grassmannian of r-dim subspaces
-\newcommand{\GrassB}[1]{\mathbb{G}(#1)}       % Grassmannian (all split subspaces)
-\newcommand{\AD}[1]{\mathcal{AD}(#1)}         % set of admissible ranks
-
-% ---- Minimal subspaces ----
-% U^min_alpha(v)  =  minimal subspace of v associated to alpha
-\newcommand{\Umin}[2]{U^{\min}_{#1}(#2)}         % \Umin{\alpha}{\bv}
-\newcommand{\Uminj}[1]{U^{\min}_{j}(#1)}          % \Uminj{\bv}
-\newcommand{\Wmin}[2]{W^{\min}_{#1}(#2)}          % complement in decomp.
-\newcommand{\alphrank}[2]{r_{#1}(#2)}             % alpha-rank of v = dim Umin
-% Short version when tensor is clear from context:
-\newcommand{\Uminalpha}{U^{\min}_\alpha(\bv)}
-\newcommand{\alphabrank}{r_\alpha}  % alpha-rank (fixed)
-
-% ---- Tucker format ----
-% M_r(V_D)  = set of tensors in Tucker format with fixed Tucker rank r
-\newcommand{\Tucker}[2]{\mathfrak{M}_{#1}(#2)}   % \Tucker{\fr}{V_D}
-\newcommand{\TuckerV}{\mathfrak{M}_{\fr}(\VD)}    % with canonical names
-% Tangent-like subspace at v in Tucker manifold
-\newcommand{\ZD}[1]{Z^{(D)}(#1)}                  % \ZD{\bv}
-
-% ---- Tree-based format ----
-% T_D  = dimension partition tree over D
-\newcommand{\TD}{T_D}                  % dimension partition tree
-\newcommand{\TDtuck}{T_D^{\mathrm{Tucker}}}  % Tucker tree (depth 1)
-\newcommand{\TDtt}{T_D^{\mathrm{TT}}}       % Tensor Train tree
-\newcommand{\TDht}{T_D^{\mathrm{HT}}}       % Hierarchical Tucker tree
-
-% Sons (children) of a vertex alpha in T_D
-\newcommand{\Sons}[1]{S(#1)}           % \Sons{\alpha}
-% Leaves of T_D
-\newcommand{\Leaves}{\mathcal{L}(\TD)}
-% Levels and depth
-\newcommand{\lev}[1]{\mathrm{level}(#1)}
-\newcommand{\dep}[1]{\mathrm{depth}(#1)}
-% Partition at level k induced by T_D
-\newcommand{\Pk}{\mathcal{P}_k(\TD)}   % k-th level partition
-\newcommand{\PkT}[2]{\mathcal{P}_{#1}(#2)}  % general: \PkT{k}{T_D}
-
-% FT_r(V_D, T_D)  =  set of tree-based tensors with fixed rank r
-\newcommand{\FT}[3]{\mathcal{FT}_{#1}(#2,#3)}  % \FT{\fr}{\VD}{\TD}
-\newcommand{\FTv}{\mathcal{FT}_{\fr}(\VD,\TD)}  % canonical
-\newcommand{\FTleq}[3]{\mathcal{FT}_{\leq #1}(#2,#3)}  % bounded rank
-
-% Tree-based rank tuple
-\newcommand{\fr}{\mathfrak{r}}         % tree-based rank tuple
-\newcommand{\fs}{\mathfrak{s}}         % another rank tuple
-% Admissible tuples for (V_D, T_D)
-\newcommand{\ADTD}{\mathcal{AD}(\VD,\TD)}
-
-% ---- Rank-related objects ----
-% C^(alpha) = transfer tensor at vertex alpha
-\newcommand{\Calpha}{C^{(\alpha)}}
-\newcommand{\CD}{C^{(D)}}
-\newcommand{\Cmu}{C^{(\mu)}}
-% Matricisation map
-\newcommand{\Mmat}[1]{\mathcal{M}_{#1}}    % \Mmat{\beta}(C)
-
-% ---- Banach manifold objects ----
-\newcommand{\atlas}{\mathcal{A}}       % atlas
-\newcommand{\chart}{\mathcal{U}}       % chart domain
-% Local chart map at v
-\newcommand{\chartmap}[1]{\xi_{#1}}    % \chartmap{\bv}
-\newcommand{\Psi}{\Psi_{\bv}}          % chart map (Grassmann)
-% Tangent space
-\newcommand{\Tv}[2]{T_{#1}#2}          % tangent space T_v M
-% Model Banach space for Tucker manifold at v
-\newcommand{\Emodel}[1]{\mathbf{E}_{#1}}  % model space
-
-% ---- Dirac-Frenkel objects ----
-% Projection onto tangent space
-\newcommand{\Pmetric}[1]{\mathcal{P}_{#1}}   % metric projection at v
-% ODE: \dot{u} = F(t,u)
-\newcommand{\Fvf}{\mathbf{F}}          % vector field in ODE
-
-% ---- Crossnorm / norm conditions ----
-\newcommand{\injnorm}{\|\cdot\|_\varepsilon}   % injective norm
-\newcommand{\projnorm}{\|\cdot\|_\pi}          % projective norm
-% Condition (inj): norm >= injective norm
-\newcommand{\condINJ}{\textup{(Inj)}}
-% Condition (cross): norm is a crossnorm
-\newcommand{\condCROSS}{\textup{(Cross)}}
-
-% ---- Miscellaneous ----
-\newcommand{\spann}{\mathrm{span}}      % linear span
-\newcommand{\rank}{\mathrm{rank}}       % matrix rank
-\newcommand{\depth}{\mathrm{depth}}     % depth of tree
-\newcommand{\level}{\mathrm{level}}     % level in tree
-\newcommand{\diam}{\mathrm{diam}}       % diameter
-\newcommand{\dist}{\mathrm{dist}}       % distance
-\newcommand{\cl}[1]{\overline{#1}}      % closure
-\newcommand{\interior}[1]{\mathring{#1}} % interior
-\newcommand{\card}[1]{\#(#1)}           % cardinality
-% Complement of alpha in D
-\newcommand{\ac}{\alpha^c}              % D \ alpha
-% Power set of D
-\newcommand{\pset}[1]{2^{#1}}           % 2^D
+%------------------------------------------------------------
+%  PART / CHAPTER TITLES  (for table of contents)
+%------------------------------------------------------------
+\setcounter{tocdepth}{2}
 
 %============================================================
-%  CROSS-REFERENCE SHORTHANDS
-%============================================================
-\newcommand{\refthm}[1]{Theorem~\ref{#1}}
-\newcommand{\reflem}[1]{Lemma~\ref{#1}}
-\newcommand{\refprop}[1]{Proposition~\ref{#1}}
-\newcommand{\refdef}[1]{Definition~\ref{#1}}
-\newcommand{\refsec}[1]{Section~\ref{#1}}
-\newcommand{\refchap}[1]{Chapter~\ref{#1}}
-\newcommand{\refeq}[1]{(\ref{#1})}
-
-%============================================================
-%  DOCUMENT BEGINS
+%  DOCUMENT
 %============================================================
 \begin{document}
 
+%------------------------------------------------------------
+%  FRONT MATTER
+%------------------------------------------------------------
 \frontmatter
 
-\title{Tensor Formats in Banach Spaces:\\
-Minimal Subspaces, Geometry,\\
-and Variational Principles}
-
-\author{Antonio Falcó}
-
-\maketitle
-
-%------------------------------------------------------------
-\chapter*{Preface}
-\label{chap:preface}
-%------------------------------------------------------------
-% [~8 pp.]
-%
-% CONTENT OUTLINE:
-%
-% 1. Motivation and context
-%    - The curse of dimensionality in modern mathematics and applications
-%    - Low-rank tensor formats as a strategy for complexity reduction
-%    - The need for a rigorous functional-analytic and geometric foundation
-%
-% 2. Overview of the four source papers and how they fit together
-%    - [FH2012]  On Minimal Subspaces in Tensor Representations
-%                (Falcó & Hackbusch, Found. Comput. Math. 12, 2012)
-%    - [FHN2019] On the Dirac-Frenkel Variational Principle on Tensor Banach Spaces
-%                (Falcó, Hackbusch & Nouy, Found. Comput. Math. 19, 2019)
-%    - [FHN2021] Tree-based Tensor Formats
-%                (Falcó, Hackbusch & Nouy, SeMA J. 78, 2021)
-%    - [FHN2023] Geometry of Tree-based Tensor Formats in Tensor Banach Spaces
-%                (Falcó, Hackbusch & Nouy, Ann. Mat. Pura Appl., 2023)
-%
-% 3. What this monograph adds beyond the articles
-%    - Unified notation and language
-%    - Expanded proofs and additional examples
-%    - New introductory and contextual material
-%    - Comparison with parallel literature
-%
-% 4. Reader's guide: prerequisites, chapter dependencies
-%
-% 5. Acknowledgements
-
-%------------------------------------------------------------
-\chapter*{Notation and Conventions}
-\label{chap:notation}
-%------------------------------------------------------------
-% [~6 pp.]
-%
-% Systematic reference table for all symbols introduced in
-% the macro section above.  To be typeset as a two-column table.
-%
-% SECTIONS:
-%
-% N.1  General conventions
-%      - Field K = R (default) or C
-%      - D = {1,...,d}: dimension index set; |D| = d
-%      - Alpha, beta, gamma: generic non-empty subsets of D
-%      - alpha^c = D \ alpha: complement
-%      - 2^D: power set; cardinality denoted #(alpha)
-%      - N_0 = N cup {0}: non-negative integers
-%
-% N.2  Vector spaces and tensor products
-%      - V_j (j in D): component normed spaces
-%      - V_alpha = _a otimes_{j in alpha} V_j  (algebraic)
-%      - V_D = _a otimes_{j in D} V_j         (algebraic tensor space)
-%      - ||.||_j: norm on V_j
-%      - ||.||_D: norm on V_D  (crossnorm or reasonable crossnorm)
-%      - Completion: \bar{V}_{D,||.||_D} = topological tensor Banach space
-%      - _a\otimes: algebraic tensor product (finite sums of elementary tensors)
-%      - \otimes_{||.||}:  topological tensor product (completion)
-%
-% N.3  Subspaces and complemented subspaces
-%      - G(X): Grassmannian of X (all split subspaces)
-%      - G_r(X): Grassmannian of r-dimensional subspaces  (r finite)
-%      - P_{U oplus W}: projection onto U along W
-%      - L(X,Y): space of linear maps; L(X,Y) for normed, L_a(X,Y) algebraic
-%      - GL(X): invertible bounded linear maps on X
-%
-% N.4  Minimal subspaces
-%      - U^min_alpha(v): unique minimal subspace of v in V_alpha
-%      - r_alpha(v) = dim U^min_alpha(v): alpha-rank of v
-%      - AD(V_D): set of admissible Tucker ranks
-%      - AD(V_D, T_D): set of admissible tree-based rank tuples
-%
-% N.5  Tucker format
-%      - r = (r_1,...,r_d): Tucker rank tuple
-%      - M_r(V_D): set of tensors in Tucker format with fixed rank r
-%      - Z^(D)(v): tangent subspace at v in M_r(V_D)
-%
-% N.6  Trees and tree-based formats
-%      - T_D: dimension partition tree over D (Definition chap.5)
-%      - Root: D;  leaves: L(T_D) = {{j}: j in D}
-%      - S(alpha): set of sons (children) of alpha in T_D
-%      - level(alpha): level of vertex alpha (root has level 0)
-%      - depth(T_D) = max_{alpha} level(alpha)
-%      - P_k(T_D): partition of D at level k
-%      - r = (r_alpha)_{alpha in T_D}: tree-based rank tuple
-%      - FT_r(V_D, T_D): set of tensors with fixed tree-based rank r
-%      - FT_{<=r}(V_D, T_D): set with bounded tree-based rank
-%      - C^(alpha): transfer tensor at vertex alpha
-%      - M_beta(C): matricisation of tensor C in direction beta
-%
-% N.7  Special trees
-%      - T_D^Tucker: Tucker tree (depth 1, S(D) = L(T_D))
-%      - T_D^TT: Tensor Train tree (binary, linear)
-%      - T_D^HT: Hierarchical Tucker tree (balanced binary)
-%
-% N.8  Manifold objects
-%      - atlas A = {(U_i, phi_i)}
-%      - T_v M: tangent space at v
-%      - E_{P_D}: model Banach space for Tucker manifold
-%      - P_v: metric projection onto T_v M_r(V_D)
-%
-% N.9  Norms and norm conditions
-%      - ||.||_eps: injective norm (smallest reasonable crossnorm)
-%      - ||.||_pi: projective norm (largest crossnorm)
-%      - (Inj): ||.||_D >= ||.||_eps  (key condition for immersion)
-%      - (Cross): ||.||_D is a crossnorm
+\begin{titlepage}
+  \begin{center}
+    \vspace*{3cm}
+    {\Huge\bfseries Tensor Formats in Banach Spaces}\\[1.5ex]
+    {\Large Minimal Subspaces, Geometry,\\[0.5ex]
+    and Variational Principles}\\[4cm]
+    {\Large Antonio Falcó}\\[1ex]
+    {\normalsize ESI International Chair@CEU-UCH\\
+    Departamento de Matemáticas, Física y Ciencias Tecnológicas\\
+    Universidad Cardenal Herrera-CEU, CEU Universities\\
+    San Bartolomé 55, 46115 Alfara del Patriarca (Valencia), Spain\\[0.5ex]
+    \texttt{afalco@uchceu.es}}\\[3cm]
+    {\small Ergebnisse der Mathematik und ihrer Grenzgebiete
+            (3.\ Folge), Springer}\\[0.5ex]
+    {\small \today}
+  \end{center}
+\end{titlepage}
 
 \tableofcontents
 
+%------------------------------------------------------------
+%  PREFACE  (stub)
+%------------------------------------------------------------
+\input{chapters/ch00_preface}
+
+%------------------------------------------------------------
+%  NOTATION CHAPTER  (stub)
+%------------------------------------------------------------
+\chapter*{Notation and Conventions}
+\addcontentsline{toc}{chapter}{Notation and Conventions}
+\label{chap:notation}
+% TODO: typeset notation table from notation.tex comments
+See the file \texttt{notation.tex} for the complete list of macros
+and symbols used throughout.
+
+%------------------------------------------------------------
+%  MAIN MATTER
+%------------------------------------------------------------
 \mainmatter
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  PART I
-%  ALGEBRAIC AND TOPOLOGICAL FOUNDATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%  PART I: ALGEBRAIC AND TOPOLOGICAL FOUNDATIONS
 \part{Algebraic and Topological Foundations}
 \label{part:foundations}
 
-%------------------------------------------------------------
-\chapter{Introduction and Motivation}
-\label{chap:intro}
-%------------------------------------------------------------
-% [~25 pp.]
+\input{chapters/ch01_introduction}
+\input{chapters/ch02_banach}
+\input{chapters/ch03_algtensor}
+\input{chapters/ch04_minsubspaces}
 
-\section{The curse of dimensionality}
-\label{sec:intro:curse}
-% - Exponential growth of d-variate function spaces
-% - Discretisation cost: N^d  vs linear-in-d methods
-% - Historical context: Tucker (1966), CP (Hitchcock 1927, Carroll-Chang 1970,
-%   Harshman 1970), PARAFAC, HOSVD (De Lathauwer et al. 2000)
-% - The role of low-rank approximation
-
-\section{Tensor formats: an informal overview}
-\label{sec:intro:overview}
-% - Tucker format: subspace representation, core tensor
-% - Hierarchical Tucker (HT) format [Hackbusch-Kühn 2009]
-% - Tensor Train (TT) format [Oseledets 2011, Vidal 2003]
-% - Unifying viewpoint: tree-based Tucker formats
-% - Applications: PDEs, quantum chemistry (MCTDH, DMRG),
-%   uncertainty quantification, machine learning
-
-\section{Functional-analytic challenges}
-\label{sec:intro:challenges}
-% - Infinite-dimensional setting: normed vs Banach vs Hilbert
-% - Non-linearity of fixed-rank sets
-% - Existence of best approximations: not automatic (lack of convexity)
-% - Manifold structure: not obvious, key difficulty is complementedness
-%   of tangent spaces in Banach (non-Hilbert) spaces
-
-\section{Contributions and structure of the monograph}
-\label{sec:intro:structure}
-% - Main results summarised informally
-% - Chapter-by-chapter guide
-% - What requires new work beyond [FH2012,FHN2019,FHN2021,FHN2023]
-% - Dependency graph of chapters  (figure)
-
-%------------------------------------------------------------
-\chapter{Banach Space Prerequisites}
-\label{chap:banach}
-%------------------------------------------------------------
-% [~30 pp.]
-% Self-contained background; expert readers may skip to Ch. 3.
-
-\section{Normed spaces and Banach spaces}
-\label{sec:banach:basics}
-% - Norms, equivalent norms, completeness
-% - Bounded linear maps: L(X,Y), operator norm  ||\cdot||_{Y<-X}
-% - Dual space X^*; dual norm; bidual X^**
-% - Reflexive Banach spaces; uniform convexity; smooth norms
-% - Key examples: L^p(I), H^{1,p}(I), Sobolev spaces
-
-\section{Complemented subspaces and projections}
-\label{sec:banach:complemented}
-% - Split subspaces: U in G(X)  iff  U closed and has closed complement W
-%   with X = U oplus W
-% - Projection P_{U oplus W}: definition, continuity, norm estimate
-% - Proposition: every finite-dimensional subspace is complemented
-% - Proposition: in Hilbert spaces every closed subspace is complemented
-% - Counterexamples in non-Hilbert Banach spaces
-% - The Grassmannian G(X) and G_r(X): set of split / r-dim subspaces
-
-\section{The Grassmann--Banach manifold}
-\label{sec:banach:grassmann}
-% - G_r(X) as a Banach manifold modelled on L(U,W) for U in G_r(X)
-% - Local charts: Psi_U: G(W, X) -> L(U,W)  via
-%     Psi_U(U') = P_{W oplus U} |_{U'} o (P_{U oplus W}|_{U'})^{-1}
-% - Transition maps and C^infty structure
-% - The lemma on common complements (Char_Projections)
-% - Proposition (niceinverse): L_{(U,W)}(X,X) is a nilpotent sub-algebra;
-%     exp(L) = id + L
-% - G(X) as a Banach manifold NOT modelled on a single space
-
-\section{Banach manifolds: definitions and examples}
-\label{sec:banach:manifolds}
-% - Atlas, charts, compatibility, C^p and analytic atlases
-% - Banach manifold modelled on X; Hilbert manifolds
-% - Morphisms (differentiable maps between manifolds)
-% - Tangent space T_v M; tangent bundle
-% - Immersed and embedded submanifolds
-% - Example: GL(X) as open subset of L(X,X)
-% - Example: any Banach space as manifold modelled on itself
-
-\section{Multilinear maps and Fréchet differentiability}
-\label{sec:banach:multilinear}
-% - Multilinear maps between normed spaces; boundedness <-> continuity
-% - Proposition: every continuous multilinear map is C^infty-Fréchet
-%   differentiable (D^k M = 0 for k > d)
-% - Analytic maps over complex Banach spaces:
-%   analytic <-> C^1-Fréchet (Proposition analytic)
-% - Corollary: continuous multilinear maps between complex Banach spaces
-%   are analytic
-
-%------------------------------------------------------------
-\chapter{Algebraic Tensor Spaces}
-\label{chap:algtensor}
-%------------------------------------------------------------
-% [~25 pp.]
-
-\section{The algebraic tensor product}
-\label{sec:algtensor:def}
-% - Universal property and construction (Greub)
-% - Elementary tensors v_1 otimes ... otimes v_d
-% - Algebraic tensor space V_D = _a otimes_{j in D} V_j
-% - Algebraic tensor of linear maps A = otimes A_j
-% - Algebraic dual L(V,K); algebraic tensor of dual functionals
-
-\section{Multilinear rank and matricisation}
-\label{sec:algtensor:rank}
-% - alpha-matricisation M_alpha(v): V_D -> V_alpha otimes V_{alpha^c}
-%   as matrix  (finite-dim case: unfolding)
-% - rank_j(v) = rank(M_j(v)): Hitchcock rank [1927]
-% - Multilinear (Tucker) rank: tuple r = (r_1,...,r_d)
-% - Relations between marginal ranks: dim U^min_alpha = dim U^min_{alpha^c}
-
-\section{Partitions and iterated tensor products}
-\label{sec:algtensor:partitions}
-% - Non-trivial partitions P_D of D
-% - Canonical identification: V_D = _a otimes_{alpha in P_D} V_alpha
-% - Iterated tensor products; associativity at algebraic level
-% - Key example: V_{1,2,3,4} = (V_1 otimes V_2) otimes (V_3 otimes V_4)
-
-\section{The Tucker format}
-\label{sec:algtensor:tucker}
-% - Tucker subspace representation: v = sum_I C_I prod_j u_j^(i_j)
-%   with U_j = span{u_j^(i_j)} in G_{r_j}(V_j)
-% - Set T_r: all tensors representable with fixed multi-rank r
-% - Equivalent description via subspaces (no explicit basis needed)
-% - V_D = union_{r in AD(V_D)} M_r(V_D): disjoint decomposition
-
-%------------------------------------------------------------
-\chapter{Minimal Subspaces in Tensor Representations}
-\label{chap:minsubspaces}
-%------------------------------------------------------------
-% [~40 pp.]
-% Expanded version of [FH2012]
-
-\section{Definition and existence}
-\label{sec:min:def}
-% - Definition of U^min_alpha(v) via universality:
-%     v in U^min_alpha otimes V_{alpha^c}  and
-%     [v in U_alpha otimes V_{alpha^c}  => U^min_alpha subset U_alpha]
-% - Theorem: U^min_alpha(v) exists, is unique, has finite dimension
-% - Algebraic characterisation:
-%   U^min_alpha(v) = span{ (id_alpha otimes phi^(alpha^c))(v) : phi in V^*_{alpha^c} }
-% - Symmetry: dim U^min_alpha(v) = dim U^min_{alpha^c}(v)
-
-\section{Lattice properties}
-\label{sec:min:lattice}
-% - Monotonicity: if v in U_alpha otimes V_{alpha^c} then U^min_alpha(v) subset U_alpha
-% - Intersection lemma: (X_1 otimes X_2) cap (Y_1 otimes Y_2) = (X_1 cap Y_1) otimes (X_2 cap Y_2)
-% - Inclusion under refinement of partitions (Proposition inclusion_Umin):
-%     U^min_alpha(v) subset _a otimes_{beta in P_alpha} U^min_beta(v)
-% - New characterisation of minimal subspaces (Prop. (Ualpha in Tensor Uj)):
-%   U^min_beta(v) via contractions of U^min_alpha(v)
-
-\section{The alpha-rank and admissible ranks}
-\label{sec:min:admissible}
-% - alpha-rank: r_alpha(v) = dim U^min_alpha(v)
-% - Tucker rank of v: tuple r = (r_j(v))_{j in D} in N_0^d
-% - Admissible Tucker ranks: AD(V_D) = {r(v): v in V_D}
-% - Characterisation of admissible tuples
-% - The set M_r(V_D) for r in AD(V_D): tensors of fixed Tucker rank r
-% - V_D = disjoint union over r in AD(V_D) of M_r(V_D)
-
-\section{Best approximation in Banach tensor spaces}
-\label{sec:min:bestapprox}
-% - Topological tensor product and crossnorms
-%   (preliminary; full treatment in Ch. 5)
-% - Weak closedness of M_{<=r}(V_D) = FT_{<=r}(V_D, T_D^Tucker)
-% - Theorem [FH2012]: in a tensor Banach space with ||.||_D >= ||.||_eps,
-%   for any v in V_D there exists best approximation in M_{<=r}(V_D)
-% - Extension to intersections of finitely many tensor Banach spaces
-% - Examples with Sobolev spaces H^{1,p}(I_1) hat_otimes H^{1,p}(I_2)
-
-\section{Historical notes and comparison}
-\label{sec:min:history}
-% - Original results in [FH2012]
-% - Relation to Schmidt (d=2), SVD, Tucker (1966)
-% - Comparison with Falcó-Nouy convex optimization results
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  PART II
-%  TREE-BASED TENSOR FORMATS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%  PART II: TREE-BASED TENSOR FORMATS
 \part{Tree-Based Tensor Formats}
 \label{part:tree}
 
-%------------------------------------------------------------
-\chapter{Dimension Partition Trees}
-\label{chap:trees}
-%------------------------------------------------------------
-% [~20 pp.]
+\input{chapters/ch05_trees}
+\input{chapters/ch06_algTBT}
+\input{chapters/ch07_topTBT}
 
-\section{Definition and basic properties}
-\label{sec:trees:def}
-% - Definition of dimension partition tree T_D (Definition partition_tree):
-%   (a) all vertices are non-empty subsets of D
-%   (b) D is the root
-%   (c) every non-leaf vertex alpha has sons S(alpha) = non-trivial partition of alpha
-%   (d) leaves = singletons = L(T_D) = {{j}: j in D}
-% - Level of a vertex; depth of T_D
-% - Partitions at each level: P_k(T_D) for 0 <= k <= depth(T_D)
-%   with P_0 = {D}, P_{depth} = L(T_D) = trivial partition
-
-\section{Special trees}
-\label{sec:trees:special}
-% - Tucker tree T_D^Tucker: depth 1, S(D) = L(T_D)
-%   (Figure: star tree for D={1,2,3,4,5,6})
-% - Binary trees; balanced binary trees
-% - Hierarchical Tucker tree T_D^HT: balanced binary, depth ~ log_2(d)
-% - Tensor Train tree T_D^TT: linear/chain tree, depth = d-1
-%   (Figure: chain tree for D={1,...,6})
-% - General non-binary trees (Example: D={1,2,3,4,5,6}, depth=2)
-%   (Figure from [FHN2021])
-
-\section{Dimension partition tree as a graph}
-\label{sec:trees:graph}
-% - T_D as rooted tree (graph-theoretic viewpoint)
-% - Number of vertices: #T_D
-% - Number of internal vertices: #T_D - d
-% - Recursive structure: T_D determines T_alpha for each alpha in T_D
-% - Isomorphisms of trees; canonical forms
-
-%------------------------------------------------------------
-\chapter{Algebraic Tree-Based Tensor Formats}
-\label{chap:algTBT}
-%------------------------------------------------------------
-% [~35 pp.]
-% Expanded version of [FHN2021], algebraic part
-
-\section{Tree-based tensor spaces}
-\label{sec:algTBT:spaces}
-% - Pair (V_D, T_D) as a representation in tree-based format
-% - Associated spaces {V_alpha}_{alpha in T_D \ D}
-% - For each alpha in T_D \ L(T_D):  V_alpha = _a otimes_{beta in S(alpha)} V_beta
-% - Canonical identifications with V_D via iterated tensor products
-
-\section{Minimal subspaces compatible with a tree}
-\label{sec:algTBT:mincompat}
-% - For v in V_D and alpha in T_D, U^min_alpha(v) is well-defined
-% - Compatibility condition: U^min_alpha(v) subset _a otimes_{beta in S(alpha)} U^min_beta(v)
-%   (Proposition inclusion_Umin applied at each level of T_D)
-% - New Proposition (Prop. (Ualpha in Tensor Uj) for trees):
-%   U^min_beta(v) = span{ (id_beta otimes phi^(alpha\beta))(v_alpha) :
-%     v_alpha in U^min_alpha(v), phi in ...}
-
-\section{Tree-based rank}
-\label{sec:algTBT:tbrank}
-% - Tree-based rank: rank_{T_D}(v) = (dim U^min_alpha(v))_{alpha in T_D}
-%   in N_0^{#T_D}
-% - Admissible tuples: AD(V_D, T_D)
-% - Reduction to Tucker rank when T_D = T_D^Tucker
-% - Relations between tree-based ranks for different trees
-
-\section{Sets of tensors with fixed and bounded tree-based rank}
-\label{sec:algTBT:sets}
-% - FT_r(V_D, T_D): fixed rank r in AD(V_D, T_D)
-% - FT_{<=r}(V_D, T_D): bounded rank
-% - Theorem: FT_{<=r}(V_D, T_D) = union over s<=r of FT_s(V_D, T_D)
-% - Relation to Tucker manifolds at each level:
-%   FT_r(V_D, T_D) = intersection_{k=1}^{depth(T_D)} M_{r_k}(V_{P_k(T_D)})
-%   (Main structural theorem, Theorem 3.12 in [FHN2023])
-
-\section{The transfer tensor representation}
-\label{sec:algTBT:transfer}
-% - Theorem characterisation_FT [FHN2021]:
-%   v in FT_r(V_D,T_D) <=>
-%   there exist bases {u^(k)_{i_k}} of U^min_k(v) (k leaf)
-%   and transfer tensors C^(alpha) in R^{r_alpha x prod_{beta in S(alpha)} r_beta}
-%   with rank conditions rank(M_alpha(C^(alpha))) = r_alpha
-%   such that v is expressed recursively via (TBRT1) and (TBRT2)
-% - Full proof (expanded from [FHN2021])
-% - Special case: Tucker format (one level, C^(D) = core tensor G)
-% - Special case: Tensor Train (MPS representation)
-% - Special case: Hierarchical Tucker (recursive tree structure)
-
-\section{Matricisation and rank conditions}
-\label{sec:algTBT:matricisation}
-% - Definition of M_beta: R^{prod r_mu} -> R^{r_beta x prod_{mu!=beta} r_mu}
-% - Rank condition: rank(M_beta(C^(alpha))) = r_beta for beta in S(alpha)
-%   <=> C^(alpha) in M_r(R^{prod r_mu})  (full-rank condition)
-% - Consequences for uniqueness of the representation
-
-%------------------------------------------------------------
-\chapter{Topological Tree-Based Tensor Spaces}
-\label{chap:topTBT}
-%------------------------------------------------------------
-% [~25 pp.]
-% Expanded from [FHN2021], topological part
-
-\section{Crossnorms and reasonable crossnorms}
-\label{sec:topTBT:crossnorms}
-% - Crossnorm: ||v_1 otimes ... otimes v_d||_D = prod ||v_j||_j
-% - Reasonable crossnorm: both ||.||_D and ||.||_D^* are crossnorms
-% - Injective norm ||.||_eps: smallest reasonable crossnorm
-% - Projective norm ||.||_pi: largest crossnorm
-% - Condition (Inj): ||.||_D >= ||.||_eps  <=> ||.||_D reasonable crossnorm
-% - Remark: condition (Inj) is weaker than requiring ||.||_D = ||.||_eps
-
-\section{Topological tree-based tensor spaces}
-\label{sec:topTBT:spaces}
-% - T_D-continuous tensor product map (Definition)
-% - Existence of norms ||.||_alpha for each alpha in T_D \ L(T_D)
-% - Theorem ext_Banach [FHN2021]:
-%   Under T_D-continuity:  ||.||_alpha-otimes_{beta in S(alpha)} V_{beta,||.||} =
-%     ||.||_alpha-otimes_{beta in S(alpha)} V_beta  =  ||.||_alpha-otimes_{j in alpha} V_j
-% - Definition: topological tree-based tensor space {V_{alpha,||.||_alpha}}_{alpha in T_D \ {D}}
-%   with ambient space V_{D,||.||_D}
-
-\section{Existence of best approximations from tree-based sets}
-\label{sec:topTBT:bestapprox}
-% - Weak closedness of FT_{<=r}(V_D, T_D) in V_{D,||.||_D}
-%   under weakened crossnorm conditions (main improvement over [FH2012])
-% - Theorem [FHN2021]: in a topological tree-based tensor space
-%   satisfying (Inj) at each level, best approximations exist in FT_{<=r}
-% - Proof strategy: induction on depth(T_D), using weak closedness at each level
-% - Examples:
-%   (a) L^p spaces: ||.||_{0,p} is a reasonable crossnorm for all 1<=p<inf
-%   (b) Sobolev spaces H^{1,p}: ||.||_{(0,1),p} is a crossnorm
-%   (c) Tree-based Sobolev product spaces (Figure tree for Sobolev example)
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  PART III
-%  DIFFERENTIAL GEOMETRY OF TENSOR FORMATS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%  PART III: DIFFERENTIAL GEOMETRY OF TENSOR FORMATS
 \part{Differential Geometry of Tensor Formats}
 \label{part:geometry}
 
-%------------------------------------------------------------
-\chapter{The Tucker Manifold}
-\label{chap:tucker_manifold}
-%------------------------------------------------------------
-% [~45 pp.]
-% Expanded version of [FHN2019], Sections 3-4
+\input{chapters/ch08_tucker_manifold}
+\input{chapters/ch09_TB_manifold}
 
-\section{The tensor space as a disjoint union}
-\label{sec:tucker_manifold:decomp}
-% - V_D = disjoint union_{r in AD(V_D)} M_r(V_D)
-% - Each M_r(V_D) as a connected component (motivation)
-% - Strategy: construct C^inf atlas on each M_r(V_D)
-
-\section{The rank map and the bundle projection}
-\label{sec:tucker_manifold:rankmap}
-% - Rank map rho: V_D -> union G_{r_alpha}(V_alpha)  given by
-%     v |-> (U^min_alpha(v))_{alpha in D}
-% - Restricted map rho_r: M_r(V_D) -> prod_{alpha in D} G_{r_alpha}(V_alpha)
-%   which is surjective
-% - Fibres: rho_r^{-1}(subspace tuple) = M_r(_a otimes U_alpha)
-%   is diffeomorphic to M_r(R^{x r_alpha}) (full-rank core tensors)
-% - The product manifold prod G_{r_j}(V_j) as base
-
-\section{Local charts for M_r(V_D)}
-\label{sec:tucker_manifold:charts}
-% - At each v in M_r(V_D):
-%     choose W^min_alpha(v) closed complement of U^min_alpha(v) in V_{alpha,||.||_alpha}
-%     i.e. V_{alpha,||.||_alpha} = U^min_alpha(v) oplus W^min_alpha(v)
-% - Chart domain: U(v) = {w in M_r(V_D): U^min_alpha(w) in G(W^min_alpha(v), V_alpha)}
-% - Chart map xi_v: U(v) -> prod L(U^min_alpha(v), W^min_alpha(v)) x ...
-%     w |-> (Psi^(alpha)_v(U^min_alpha(w)))_{alpha in D}  x  [core coefficient]
-%   where Psi^(alpha)_v = chart map of G_{r_alpha}(V_alpha) at U^min_alpha(v)
-% - Explicit formula:
-%     Psi^(alpha)_v(U) = P_{W^min_alpha(v) oplus U^min_alpha(v)} |_U
-%       circ (P_{U^min_alpha(v) oplus W^min_alpha(v)} |_U)^{-1}  in L(U^min_alpha(v), W^min_alpha(v))
-% - Model Banach space:
-%     E_{P_D} = prod_{alpha in D} L(U^min_alpha(v), W^min_alpha(v))
-%                 x R^{x_{alpha in D} r_alpha}_{*}  (full-rank core tensors)
-
-\section{The C^inf-Banach manifold structure}
-\label{sec:tucker_manifold:cinfty}
-% - Theorem Tucker_Banach_Manifold [FHN2019]:
-%   Under condition (Cross) [tensor product map is continuous]:
-%   M_r(V_D) is a C^inf-Banach manifold modelled on E_{P_D}
-%   (Theorem restated for partitions via Theorem Tucker_Banach_ManifoldXXX)
-% - Full proof with transition map computation
-% - Remark: the geometric structure is independent of the choice of ||.||_D
-%   (depends only on topology of V_{alpha,||.||_alpha})
-% - Example: M_r(_a otimes L^p(I_alpha)) as Banach manifold
-
-\section{The tangent space}
-\label{sec:tucker_manifold:tangent}
-% - T_v M_r(V_D) = Z^(D)(v) as a closed subspace of V_{D,||.||_D}
-% - Characterisation:
-%     Z^(D)(v) = sum_{alpha in D} W^min_alpha(v) otimes _a U^min_{D\{alpha}}(v)
-%                + _a otimes_{alpha in D} U^min_alpha(v)
-% - The tangent space as a sum of d+1 subspaces (geometric interpretation)
-% - Proof that Z^(D)(v) is closed in V_{D,||.||_D}  [key difficulty: Banach, not Hilbert]
-
-\section{Immersion in the ambient Banach space}
-\label{sec:tucker_manifold:immersion}
-% - Lemma (Wmin tensor Umin is split) [FHN2019, Lemma 4.13]:
-%     W^min_alpha(v) atens U^min_{D\{alpha}}(v) in G(V_{D,||.||_D})
-%   under condition (Inj)
-% - Lemma (sum of split subspaces) [FHN2019, Lemma 4.14]
-% - Theorem 4.15 [FHN2019]: under condition (Inj),
-%     Z^(D)(v) in G(V_{D,||.||_D})  for all v in M_r(V_D)
-%   hence M_r(V_D) is an immersed submanifold of V_{D,||.||_D}
-% - Corollary: in reflexive V_{D,||.||_D}, best projection onto Z^(D)(v) exists
-% - Examples with L^p (Example 4.16) and H^{1,p} (Example 4.17)
-
-%------------------------------------------------------------
-\chapter{The Tree-Based Manifold}
-\label{chap:TB_manifold}
-%------------------------------------------------------------
-% [~40 pp.]
-% Expanded version of [FHN2023]
-
-\section{Intersection of Tucker manifolds}
-\label{sec:TB_manifold:intersection}
-% - Key structural result (Theorem 3.12 of [FHN2023] = Thm in manifold paper):
-%     FT_r(V_D, T_D) = intersection_{k=1}^{depth(T_D)} M_{r_k}(V_{P_k(T_D)})
-%   where r_k = (r_alpha)_{alpha in P_k(T_D)}
-% - Each M_{r_k}(V_{P_k}) is a Tucker manifold for the partition P_k
-% - The intersection as a submanifold of the ambient space
-% - Degenerate cases: when the intersection collapses to a Tucker manifold
-%   (Example with depth-2 tree and "trivial" upper level)
-
-\section{Charts and atlas for FT_r(V_D, T_D)}
-\label{sec:TB_manifold:charts}
-% - At each v in FT_r(V_D, T_D):
-%     chart domain compatible with all levels simultaneously
-%   U(v) = intersection_{k=1}^{depth} U_k(v)
-%   where U_k(v) = chart domain of M_{r_k}(V_{P_k}) at v
-% - Chart map: product of chart maps from each Tucker level
-%     xi_v = (xi^{(k)}_v)_{k=1}^{depth}
-% - Model Banach space:
-%     E_{T_D} = prod_{k=1}^{depth} E_{P_k}  (product of Tucker model spaces)
-%             modulo compatibility conditions
-% - Compatibility with Tucker atlas [FHN2023, Section 4]:
-%   the atlas of FT_r restricts to the atlas of M_{r_k} at each level
-
-\section{The C^inf-Banach manifold structure}
-\label{sec:TB_manifold:cinfty}
-% - Theorem [FHN2023, main theorem]:
-%   Under T_D-continuity of tensor product map:
-%   FT_r(V_D, T_D) is a C^inf-Banach manifold immersed in V_{D,||.||_D}
-% - Proof: induction on depth(T_D) using Tucker manifold results
-% - Natural character of the description: comparison with
-%   (a) Uschmajew-Vandereycken [2012]: HT format, finite-dim quotient manifold
-%   (b) Holtz-Rohwedder-Schneider [2012]: TT format, finite-dim
-%   (c) Falcó-Hackbusch-Nouy [2015, arXiv]: different chart system
-%   The present description is more natural and compatible with Tucker
-
-\section{Topology and connected components}
-\label{sec:TB_manifold:topology}
-% - Are the sets FT_r(V_D,T_D) connected? (open question in general)
-% - Known results for Tucker manifolds (connected for r != 0)
-% - Stratification of V_D by tree-based rank:
-%     V_{D,||.||_D} = union_{r in AD(V_D,T_D)} FT_r(V_D,T_D)
-% - Boundary and closure: FT_r is NOT closed; FT_{<=r} IS weakly closed (Ch. 7)
-% - Open problems: global topology, fundamental groups
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%  PART IV
-%  VARIATIONAL PRINCIPLES AND APPLICATIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%%  PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
 \part{Variational Principles and Applications}
 \label{part:variational}
 
-%------------------------------------------------------------
-\chapter{The Dirac--Frenkel Variational Principle}
-\label{chap:DF}
-%------------------------------------------------------------
-% [~35 pp.]
-% Expanded from [FHN2019] Sect. 5, and [FHN2023] Sect. 5
-
-\section{The abstract Cauchy problem on tensor Banach spaces}
-\label{sec:DF:cauchy}
-% - Abstract ODE: du/dt = F(t,u(t)),  u(0) = u_0  in V_{D,||.||_D}
-% - Assumptions on F: Lipschitz, existence and uniqueness of solutions
-% - Goal: approximate solution by a curve t |-> v_r(t) in M_r(V_D)  [or FT_r]
-%   (reduced order model / model reduction)
-% - Physical motivation: time-dependent Schrödinger equation,
-%   MCTDH (Multi-Configuration Time-Dependent Hartree),
-%   stochastic parametric PDEs
-
-\section{The Dirac--Frenkel principle: Hilbert space case}
-\label{sec:DF:hilbert}
-% - Classical formulation in Hilbert space H:
-%     <v_dot_r(t) - F(t,v_r(t)), v_dot> = 0  for all v_dot in T_{v_r(t)} M_r
-%   <=> v_dot_r(t) = P_{v_r(t)} F(t, v_r(t))
-%   where P_v = metric projection onto T_v M_r (Hilbert projection)
-% - Well-posedness in finite dimension (Koch-Lubich 2007)
-% - Limitations: Hilbert structure needed for metric projection
-
-\section{Metric projection and convexity in Banach spaces}
-\label{sec:DF:projection}
-% - Strictly convex Banach spaces: unique metric projections onto convex sets
-% - Uniformly convex spaces (Clarkson): reflexive + strictly convex
-% - Smooth Banach spaces: Fréchet differentiability of the norm
-% - Metric projection onto Z^(D)(v):
-%     v_dot_r(t) = argmin_{v_dot in Z^(D)(v_r(t))} ||v_dot - F(t,v_r(t))||_D
-%   existence guaranteed when V_{D,||.||_D} is reflexive (Corollary 4.18 [FHN2019])
-%   uniqueness when V_{D,||.||_D} is strictly convex
-
-\section{Extension to Tucker format: Dirac--Frenkel in Banach spaces}
-\label{sec:DF:tucker}
-% - Theorem 5.2 [FHN2019]:  (existence of reduced ODE on Tucker manifold)
-%   Under conditions (Cross) and (Inj):
-%   for any smooth vector field F on V_{D,||.||_D},
-%   there exists a solution of the projected ODE on M_r(V_D)
-%   (at least locally in time)
-% - Theorem 5.4 [FHN2019]:  (characterisation via variational condition)
-%   v_dot_r(t) in Z^(D)(v_r(t)) and
-%   ||v_dot_r(t) - F(t,v_r(t))||_D = min_{v_dot in Z^(D)(v_r(t))} ||v_dot - F||_D
-% - Full proof (expanded from [FHN2019])
-% - Remark: in Hilbert case recovers classical Dirac-Frenkel equation
-
-\section{Extension to tree-based format}
-\label{sec:DF:treebased}
-% - Theorem [FHN2023, Section 5]: Theorems 5.2 and 5.4 of [FHN2019]
-%   extend verbatim to FT_r(V_D, T_D) when:
-%   (a) Condition (Inj) holds
-%   (b) The tensor product map is T_D-continuous
-% - Proof: use the immersion result (Ch. 9) and note that
-%   T_{v} FT_r(V_D,T_D) is a closed split subspace of V_{D,||.||_D}
-% - Consequences for DMRG and ALS algorithms (informal discussion)
+\input{chapters/ch10_DF}
+\input{chapters/ch11_open}
 
 %------------------------------------------------------------
-\chapter{Open Problems and Perspectives}
-\label{chap:open}
-%------------------------------------------------------------
-% [~20 pp.]
-
-\section{Algorithmic implications}
-\label{sec:open:algorithms}
-% - ALS (Alternating Least Squares) and its geometric interpretation
-%   on M_r(V_D) or FT_r(V_D,T_D)
-% - DMRG (Density Matrix Renormalisation Group) as optimisation on TT manifold
-% - Riemannian gradient methods on tensor manifolds (Uschmajew-Vandereycken 2020)
-% - Convergence analysis relying on manifold geometry (curvature, injectivity radius)
-
-\section{Global topology of tensor manifolds}
-\label{sec:open:topology}
-% - Connectedness of FT_r(V_D,T_D): proven for Tucker (r != 0), open for general trees
-% - Higher homotopy groups of Grassmannians and Tucker manifolds
-% - Stratification by rank: FT_r as stratum, FT_{<=r} = closure (Zariski-like)
-% - Degree and characteristic classes: analogues of Schubert calculus?
-
-\section{Tensor formats over non-classical spaces}
-\label{sec:open:spaces}
-% - Extension to Fréchet spaces, locally convex spaces
-% - Manifolds of tensors in quasi-Banach spaces (L^p for 0 < p < 1)
-% - Infinite-dimensional index sets: nuclear spaces, projective limits
-
-\section{Learning on tensor manifolds}
-\label{sec:open:learning}
-% - Tensor networks in machine learning: MPS, MERA, PEPS
-% - Gradient descent on FT_r as optimisation on a Banach manifold
-% - Generalisation bounds via geometry (tube formula, Weyl)
-% - Open: role of tree choice in approximation quality (optimal tree selection)
-
-\section{Connections with quantum information}
-\label{sec:open:quantum}
-% - Matrix Product States (MPS) = TT format in C^N (complex Hilbert space)
-% - Entanglement entropy and Schmidt ranks = tree-based ranks
-% - Area laws and tree tensor network states
-% - Relation to C^*-algebras and operator systems
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  APPENDICES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%------------------------------------------------------------
 \appendix
 
-%------------------------------------------------------------
-\chapter{Banach Manifolds: A Summary}
-\label{app:manifolds}
-%------------------------------------------------------------
-% [~8 pp.]
-% Quick reference for the main definitions and theorems used.
-% No proofs; references given to Lang [Fundamentals of Differential Geometry]
-% and Abraham-Marsden-Ratiu [Manifolds, Tensor Analysis, Applications].
-%
-% A.1  Topological manifolds
-% A.2  Banach manifolds; atlas; charts; C^p and analytic structures
-% A.3  Morphisms; diffeomorphisms; local diffeomorphism theorem
-% A.4  Tangent space; tangent bundle; differential
-% A.5  Submanifolds: immersed vs embedded
-% A.6  Vector fields; flows; ODE on manifolds
-% A.7  Riemannian and Finsler metrics on Banach manifolds (brief)
+\input{chapters/app_manifolds}
+\input{chapters/app_functional}
+\input{chapters/app_notation_index}
 
 %------------------------------------------------------------
-\chapter{Functional Analysis: Selected Results}
-\label{app:functional}
+%  BACK MATTER
 %------------------------------------------------------------
-% [~5 pp.]
-% A.1  Hahn-Banach theorem and corollaries
-% A.2  Open mapping theorem; closed graph theorem
-% A.3  Uniform boundedness principle
-% A.4  Reflexive spaces; weak convergence; Eberlein-Šmulian theorem
-% A.5  Proximinal sets; best approximation in reflexive spaces
-% A.6  Strictly and uniformly convex spaces: key properties
-
-%------------------------------------------------------------
-\chapter{Index of Notation}
-\label{app:notation_index}
-%------------------------------------------------------------
-% [~3 pp.]
-% Alphabetical list of all symbols with page reference.
-% Cross-references to the Notation chapter (front matter).
-
 \backmatter
 
 \bibliographystyle{alpha}
-\bibliography{monograph}
-
-%------------------------------------------------------------
-% BIBLIOGRAPHY NOTES (for the author -- not typeset)
-%
-% Core references to include:
-%
-% [FH2012]      Falcó-Hackbusch, Found. Comput. Math. 12 (2012) 765-803
-% [FHN2019]     Falcó-Hackbusch-Nouy, Found. Comput. Math. 19 (2019) 159-204
-% [FHN2021]     Falcó-Hackbusch-Nouy, SeMA J. 78 (2021) 159-173
-% [FHN2023]     Falcó-Hackbusch-Nouy, Ann. Mat. Pura Appl. (2023)
-%
-% Tensor formats:
-% [Hackbusch]   Hackbusch, Tensor Spaces and Numerical Tensor Calculus,
-%               2nd ed., Springer 2019
-% [HaKuehn2009] Hackbusch-Kühn, J. Fourier Anal. Appl. 15 (2009) 706-722
-% [Osedelets1]  Oseledets, SIAM J. Sci. Comput. 33 (2011) 2295-2317
-% [Vidal]       Vidal, Phys. Rev. Lett. 91 (2003) 147902
-%
-% Geometry of tensor formats:
-% [KoLu1]       Koch-Lubich, SIAM J. Matrix Anal. Appl. 29 (2007) 434-454
-% [Uschmajew2012] Uschmajew-Vandereycken, Lin. Alg. Appl. 437 (2012)
-% [HRS]         Holtz-Rohwedder-Schneider, Found. Comput. Math. 12 (2012) 
-% [AMS]         Absil-Mahony-Sepulchre, Optimization Algorithms on Matrix
-%               Manifolds, Princeton UP 2008
-%
-% Functional analysis / Banach geometry:
-% [Lang]        Lang, Fundamentals of Differential Geometry, Springer 1999
-% [Greub]       Greub, Linear Algebra, 4th ed., Springer 1981
-% [Douady66]    Douady, Bull. Soc. Math. France 94 (1966) 323-374
-% [FHHM]        Falcó-Hackbusch-Nouy... (Grassmannian results)
-% [DRW]         Douady-Robba-Wallach? (check [FHN2019] reference list)
-%
-% Applications:
-% [Bachmayr2016] Bachmayr et al., ESAIM Math. Model. Numer. Anal. (2016)
-% [nouy:2017]   Nouy, in: Model Reduction and Approximation, SIAM 2017
-% [Lubish]      Lubich, From Quantum to Classical Molecular Dynamics, EMS 2008
-% [KOL09]       Kolda-Bader, SIAM Rev. 51 (2009) 455-500
-%------------------------------------------------------------
+\bibliography{bibliography/monograph}
 
 \printindex
 
 \end{document}
-%============================================================
-%  END OF SKELETON
-%============================================================
