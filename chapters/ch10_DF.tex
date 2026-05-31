@@ -1,13 +1,356 @@
 %============================================================
-%  ch10_DF.tex  —  The Dirac--Frenkel Variational Principle
-%  TODO: Write content
+%  ch10_DF.tex
+%  Chapter 10: The Dirac--Frenkel Variational Principle
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2019 (Sec. 5), FHN2023 (Sec. 5)
+%  Estimated length: ~35 pp.
 %============================================================
 
 \chapter{The Dirac--Frenkel Variational Principle}
 \label{chap:DF}
 
-\section*{To be written}
+The geometric framework developed in Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:TB_manifold} has a direct dynamical application: it
+provides the rigorous foundation for \emph{model reduction} of
+differential equations on tensor Banach spaces. Given an abstract
+Cauchy problem on $\VDnorm$, one looks for an approximate solution
+that evolves on the manifold $\Tucker{\fr}{\VD}$ (or $\FTv$).
+The natural way to constrain the dynamics to the manifold is the
+\emph{Dirac--Frenkel variational principle}: at each time $t$, the
+velocity $\dot{\bv}_r(t)$ is chosen as the best approximation of the
+vector field $\bF(t, \bv_r(t))$ in the tangent space $\ZD{\bv_r(t)}$.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+This principle was originally proposed by Dirac and Frenkel in 1930 for
+the time-dependent Schrödinger equation in Hilbert spaces. The present
+chapter extends it to general Banach tensor spaces, establishing the
+existence of the reduced ODE and characterising its solutions.
+Sections~\ref{sec:DF:cauchy}--\ref{sec:DF:hilbert} set up the
+abstract framework. Section~\ref{sec:DF:tucker} proves the Tucker
+version (Theorems~5.2 and~5.4 of~\cite{FHN2019}).
+Section~\ref{sec:DF:treebased} extends to the tree-based setting
+(\cite{FHN2023}).
+
+%------------------------------------------------------------
+\section{The abstract Cauchy problem on tensor Banach spaces}
+\label{sec:DF:cauchy}
+%------------------------------------------------------------
+
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces for $\alpha \in D$,
+and let $\VDnorm = {}_{\|\cdot\|_D}\bigotimes_{\alpha \in D} V_\alpha$
+be a reflexive Banach tensor space satisfying condition~\condINJ.
+Consider the abstract Cauchy problem:
+\begin{align}
+    \dot{\bu}(t) &= \bF(t, \bu(t)), \quad t \geq 0,
+    \label{eq:DF:ode} \\
+    \bu(0) &= \bu_0,
+    \label{eq:DF:ic}
+\end{align}
+where $\bu_0 \neq \mathbf{0}$, and $\bF: [0, \infty) \times \VDnorm
+\to \VDnorm$ satisfies the usual conditions for existence and uniqueness
+of solutions (e.g., Lipschitz continuity in the second argument).
+
+The goal is to approximate $\bu(t)$ by a \emph{differentiable curve}
+$t \mapsto \bv_r(t)$ lying in $\Tucker{\fr}{\VD}$ for some fixed
+$\fr \in \AD{\VD}$ with $\fr \neq \mathbf{0}$, with initial condition
+$\bv_r(0) = \bv_0 \in \Tucker{\fr}{\VD}$ chosen as an approximation
+of $\bu_0$.
+
+\begin{remark}
+\label{rem:DF:initial}
+By Theorem~\ref{thm:best_approx_tucker}, a best approximation
+$\bv_0 \in \Tucker{\leq\fr}{\VD}$ of $\bu_0$ exists when $\VDnorm$
+is reflexive. The initial condition $\bv_0 \in \Tucker{\fr}{\VD}$
+(with exact rank $\fr$) can always be arranged by taking
+$\bv_0 \in \Tucker{\fr'}{\VD}$ for some $\fr' \leq \fr$ and
+adjusting the rank.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The principle in Hilbert spaces}
+\label{sec:DF:hilbert}
+%------------------------------------------------------------
+
+When $\VDnorm$ is a Hilbert space with inner product
+$\langle \cdot, \cdot \rangle_D$, the constraint to $\Tucker{\fr}{\VD}$
+takes the classical form. Since $\ZD{\bv_r(t)} \in \GrassB{\VDnorm}$
+(Theorem~\ref{thm:tucker_immersion}), the orthogonal projection
+$\Pmetric{\bv_r(t)}$ onto $\ZD{\bv_r(t)}$ is well-defined and the
+\emph{Dirac--Frenkel equation} reads:
+\begin{equation}
+\label{eq:DF:hilbert}
+    \dot{\bv}_r(t) = \Pmetric{\bv_r(t)}\bigl(\bF(t, \bv_r(t))\bigr),
+\end{equation}
+which is equivalent to the variational condition:
+\begin{equation}
+\label{eq:DF:variational}
+    \langle \dot{\bv}_r(t) - \bF(t, \bv_r(t)),\, \dot{\bv} \rangle_D = 0
+    \quad \text{for all } \dot{\bv} \in \ZD{\bv_r(t)}.
+\end{equation}
+The MCTDH (Multi-Configuration Time-Dependent Hartree) method of
+quantum dynamics~\cite{Lubich2008} is precisely~\eqref{eq:DF:hilbert}
+with $\VDnorm = L^2(\RR^{3d})$ and $\Tucker{\fr}{\VD}$ the Hartree
+manifold ($\fr = (1,\ldots,1)$).
+
+%------------------------------------------------------------
+\section{Projections in Banach spaces}
+\label{sec:DF:projection}
+%------------------------------------------------------------
+
+In a general Banach space, there is no canonical inner product and hence
+no canonical projection. Two notions replace the orthogonal projection.
+
+\subsection*{Metric projection}
+
+\begin{definition}
+\label{def:metric_projection}
+For $\bv_r(t) \in \Tucker{\fr}{\VD}$ and $t \in I$, the
+\emph{metric projection} $\Pmetric{\bv_r(t)}$ maps
+$\dot{\bu} \in \VDnorm$ to the nearest point in $\ZD{\bv_r(t)}$:
+\begin{equation*}
+    \Pmetric{\bv_r(t)}(\dot{\bu})
+    \coloneqq \argmin_{\dot{\bv} \in \ZD{\bv_r(t)}}
+    \|\dot{\bu} - \dot{\bv}\|_D.
+\end{equation*}
+\end{definition}
+
+By Corollary~\ref{cor:best_proj_tangent}, when $\VDnorm$ is reflexive
+the metric projection exists. When $\VDnorm$ is strictly convex it is
+unique (since $\ZD{\bv_r(t)}$ is convex). The metric projection is,
+in general, a \emph{nonlinear} operator on Banach spaces.
+
+\subsection*{Normalised duality mapping}
+
+The duality mapping $J: \VDnorm \to 2^{\dual{\VDnorm}}$ is defined by
+\begin{equation*}
+    J(\bu) \coloneqq \bigl\{f \in \dual{\VDnorm} :
+    \langle \bu, f \rangle = \|\bu\|_D^2 = \|f\|_*^2\bigr\}.
+\end{equation*}
+It is single-valued when $\VDnorm$ is smooth (Definition~\ref{def:smooth}),
+and uniformly continuous on bounded sets when $\VDnorm$ is uniformly smooth.
+In a Hilbert space, $J$ coincides with the Riesz isomorphism.
+
+\begin{theorem}[Metric projection characterisation,
+{\cite[Theorem~5.2]{FHN2019}}]
+\label{thm:metric_projection}
+Let $\VDnorm$ be reflexive and strictly convex, and assume \condINJ.
+For $\bv_r(t) \in \Tucker{\fr}{\VD}$ and fixed $t \in I$, the
+following are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $\dot{\bv}_r(t) = \Pmetric{\bv_r(t)}
+    (\bF(t,\bv_r(t)))$.
+\item[\textup{(b)}] $\langle \dot{\bv}_r(t) - \dot{\bv},\,
+    J(\bF(t,\bv_r(t)) - \dot{\bv}_r(t)) \rangle \geq 0$
+    for all $\dot{\bv} \in \ZD{\bv_r(t)}$.
+\item[\textup{(c)}] $\langle \dot{\bv},\,
+    J(\bF(t,\bv_r(t)) - \dot{\bv}_r(t)) \rangle = 0$
+    for all $\dot{\bv} \in \ZD{\bv_r(t)}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+This is a direct consequence of the classical characterisation of the
+metric projection onto a closed convex set in a reflexive, strictly
+convex Banach space, combined with~\cite[Proposition~2.10]{Alber1996}.
+Condition~(c) recovers the Hilbert-space variational form: when $J$
+is the Riesz map, (c) becomes the orthogonality condition~\eqref{eq:DF:variational}.
+\end{proof}
+
+\subsection*{Generalised projection}
+
+When $\VDnorm$ is additionally smooth, an alternative projection is
+available. Define $\phi: \VDnorm \times \VDnorm \to \RR$ by
+\begin{equation*}
+    \phi(\bu, \bv) = \|\bu\|_D^2 - 2\langle \bu, J(\bv) \rangle + \|\bv\|_D^2.
+\end{equation*}
+The \emph{generalised projection} $\Pi_{\bv_r(t)}$ minimises $\phi$
+over $\ZD{\bv_r(t)}$:
+\begin{equation*}
+    \Pi_{\bv_r(t)}(\dot{\bu})
+    \coloneqq \argmin_{\dot{\bv} \in \ZD{\bv_r(t)}}
+    \phi(\dot{\bv}, \dot{\bu}).
+\end{equation*}
+It coincides with the metric projection when $\VDnorm$ is a Hilbert
+space.
+
+%------------------------------------------------------------
+\section{The Dirac--Frenkel principle for the Tucker manifold}
+\label{sec:DF:tucker}
+%------------------------------------------------------------
+
+\begin{theorem}[Dirac--Frenkel for Tucker, {\cite[Theorems~5.2,~5.4]{FHN2019}}]
+\label{thm:DF_tucker}
+Let $\VDnorm$ be reflexive and strictly convex, and assume \condINJ.
+Let $\fr \in \AD{\VD}$ with $\fr \neq \mathbf{0}$, and let
+$\bv_0 \in \Tucker{\fr}{\VD}$.
+\begin{enumerate}
+\item[\textup{(Existence)}] There exists a differentiable curve
+    $t \mapsto \bv_r(t)$ in $\Tucker{\fr}{\VD}$, defined for $t$ in a
+    neighbourhood of $0$, satisfying
+    \begin{equation}
+    \label{eq:DF_tucker}
+        \dot{\bv}_r(t) = \Pmetric{\bv_r(t)}\bigl(\bF(t, \bv_r(t))\bigr),
+        \qquad \bv_r(0) = \bv_0.
+    \end{equation}
+
+\item[\textup{(Characterisation)}] The curve $t \mapsto \bv_r(t)$
+    satisfies~\eqref{eq:DF_tucker} if and only if $\dot{\bv}_r(t)
+    \in \ZD{\bv_r(t)}$ and
+    \begin{equation}
+    \label{eq:DF_tucker_char}
+        \|\dot{\bv}_r(t) - \bF(t, \bv_r(t))\|_D
+        = \min_{\dot{\bv} \in \ZD{\bv_r(t)}}
+        \|\dot{\bv} - \bF(t, \bv_r(t))\|_D.
+    \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Sketch]
+\textbf{Existence.} The reduced ODE~\eqref{eq:DF_tucker} is an ODE on
+the Banach manifold $\Tucker{\fr}{\VD}$. By
+Theorem~\ref{thm:tucker_immersion}, $\ZD{\bv_r(t)}$ is a split
+subspace of $\VDnorm$ for each $\bv_r(t) \in \Tucker{\fr}{\VD}$.
+The right-hand side of~\eqref{eq:DF_tucker} depends smoothly on
+$\bv_r(t)$ (the metric projection onto a smoothly-varying split
+subspace is smooth), so local existence and uniqueness follow from the
+ODE existence theorem on Banach manifolds~\cite[Theorem~4.1.5]{Lang1999}.
+
+\textbf{Characterisation.} Since $\ZD{\bv_r(t)}$ is closed and
+convex, Corollary~\ref{cor:best_proj_tangent} gives existence of the
+minimum in~\eqref{eq:DF_tucker_char}. The equivalence with the metric
+projection condition~\eqref{eq:DF_tucker} follows from the uniqueness
+(strict convexity) and Theorem~\ref{thm:metric_projection}.
+\end{proof}
+
+\begin{remark}[Kinematic equations]
+\label{rem:kinematic}
+In local chart coordinates $(L_\alpha, C^{(D)})$ at $\bv_r(t)$,
+the reduced ODE~\eqref{eq:DF_tucker} takes the form of a system
+of coupled equations for the subspace parameters $L_\alpha(t)$ and
+the core tensor $C^{(D)}(t)$. The tangent formula~\eqref{eq:tangent_formula}
+makes this explicit:
+\begin{equation*}
+    \dot{\bv}_r(t)
+    = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)} \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}
+    + \sum_\alpha \sum_{i_\alpha} \dot{u}^{(\alpha)}_{i_\alpha}
+      \otimes \bU^{(\alpha)}_{i_\alpha}.
+\end{equation*}
+The Dirac--Frenkel condition~\eqref{eq:DF_tucker_char} then yields
+coupled evolution equations for the basis vectors
+$u^{(\alpha)}_{i_\alpha}(t) \in V_\alpha$ and the core tensor
+$C^{(D)}(t)$, which generalise the MCTDH equations to arbitrary
+Tucker ranks in Banach spaces.
+\end{remark}
+
+\subsection*{The Hartree manifold}
+
+\begin{example}[Time-dependent Hartree method]
+\label{ex:hartree}
+For $\fr = \mathbf{1} = (1, \ldots, 1)$, the Tucker manifold
+$\Tucker{\mathbf{1}}{\VD}$ consists of elementary tensors
+$\bv = \lambda \bigotimes_\alpha v_\alpha$ ($v_\alpha \in V_\alpha$,
+$\lambda \in \RR$), called the \emph{Hartree manifold}~\cite{Lubich2008}.
+The Dirac--Frenkel ODE~\eqref{eq:DF_tucker} on the Hartree manifold
+gives the \emph{time-dependent Hartree equations}. In a Hilbert space
+with $\|v_\alpha\|_\alpha = 1$ (unit sphere constraint):
+\begin{align*}
+    \dot{\lambda}(t) &= \langle \bigotimes_\alpha v_\alpha(t),
+        \bF(t, \bv_r(t)) \rangle_D, \\
+    \lambda(t)\,\dot{v}_\alpha(t) &= P_{W_\alpha(t)}\bigl[
+        (\Id{\alpha} \otimes \langle \cdot, \bigotimes_{\beta \neq \alpha}
+        v_\beta(t) \rangle)\bF(t, \bv_r(t))\bigr],
+\end{align*}
+where $P_{W_\alpha(t)}$ is the orthogonal projection onto the
+complement of $\spann\{v_\alpha(t)\}$ in $V_\alpha$. This is
+the system solved numerically by MCTDH.
+\end{example}
+
+%------------------------------------------------------------
+\section{Extension to tree-based formats}
+\label{sec:DF:treebased}
+%------------------------------------------------------------
+
+The extension of Theorem~\ref{thm:DF_tucker} to $\FTv$ is immediate
+given the immersion result of Chapter~\ref{chap:TB_manifold}.
+
+\begin{theorem}[Dirac--Frenkel for tree-based formats,
+{\cite[Section~5]{FHN2023}}]
+\label{thm:DF_treebased}
+Let $\TD$ be a dimension partition tree, $\fr \in \ADTD$ such that
+$\FTv$ is a proper set of tree-based tensors. Assume $\VDnorm$ is
+reflexive and strictly convex, and that \condINJ\ holds at each
+level of $\TD$. Let $\bv_0 \in \FTv$.
+\begin{enumerate}
+\item[\textup{(Existence)}] There exists a differentiable curve
+    $t \mapsto \bv_r(t)$ in $\FTv$ satisfying
+    \begin{equation}
+    \label{eq:DF_TBT}
+        \dot{\bv}_r(t) = \Pmetric{\bv_r(t)}\bigl(\bF(t, \bv_r(t))\bigr),
+        \qquad \bv_r(0) = \bv_0,
+    \end{equation}
+    where $\Pmetric{\bv_r(t)}$ is the metric projection onto
+    $T_{\bv_r(t)}\mathfrak{i}(\mathbb{T}_{\bv_r(t)}(\FTv))
+    = \bigcap_k \ZD[\PkT{k}{\TD}]{\bv_r(t)}$.
+\item[\textup{(Characterisation)}] The curve satisfies~\eqref{eq:DF_TBT}
+    if and only if $\dot{\bv}_r(t) \in \bigcap_k \ZD[\PkT{k}{\TD}]{\bv_r(t)}$
+    and
+    \begin{equation}
+    \label{eq:DF_TBT_char}
+        \|\dot{\bv}_r(t) - \bF(t, \bv_r(t))\|_D
+        = \min_{\dot{\bv} \in \bigcap_k \ZD[\PkT{k}]{\bv_r(t)}}
+        \|\dot{\bv} - \bF(t, \bv_r(t))\|_D.
+    \end{equation}
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+The proof is identical to that of Theorem~\ref{thm:DF_tucker}, with
+$\Tucker{\fr}{\VD}$ replaced by $\FTv$ and $\ZD{\bv_r(t)}$ replaced
+by $\bigcap_k \ZD[\PkT{k}]{\bv_r(t)}$. The key inputs are:
+(i) $\FTv$ is a $\mathcal{C}^\infty$-Banach manifold
+(Theorem~\ref{thm:TBT_Banach_Manifold}); (ii) its tangent space is
+a split subspace of $\VDnorm$ (Theorem~\ref{thm:TBT_immersion}); and
+(iii) the metric projection onto a split subspace in a reflexive
+strictly convex space is well-defined and unique.
+\end{proof}
+
+\begin{remark}[Algorithmic interpretation]
+\label{rem:DF_algorithms}
+Theorem~\ref{thm:DF_treebased} provides the mathematical foundation
+for a class of algorithms that integrate tensor-format ODEs by evolving
+the transfer tensors $\{C^{(\alpha)}\}_{\alpha \in \TD}$ and the leaf
+basis vectors $\{u^{(j)}_{i_j}\}_{j \in \Leaves}$ along the
+Dirac--Frenkel trajectories. For the TT format, this is the starting
+point of the \emph{projector-splitting integrator} of Lubich, Oseledets,
+and Vandereycken~\cite{LubichOseledetsVandereycken2015}. For general
+tree-based formats, the corresponding algorithm was introduced by
+Ceruti, Lubich, and Walach~\cite{CerutiLubichWalach2020}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:DF:history}
+%------------------------------------------------------------
+
+The Dirac--Frenkel variational principle was proposed independently by
+Dirac~\cite{Dirac1930} and Frenkel~\cite{Frenkel1934} in 1930 and 1934
+for the time-dependent Schrödinger equation in Hilbert space. The
+formulation used here — projection of the vector field onto the tangent
+space of a manifold — is that of McLachlan et al.\ and Lubich.
+
+Koch and Lubich~\cite{KochLubich2007} proved existence and uniqueness
+of solutions to the Dirac--Frenkel ODE on Tucker manifolds in
+finite-dimensional Hilbert spaces, and used it to analyse the MCTDH
+method. The extension to infinite-dimensional Banach spaces
+(Theorem~\ref{thm:DF_tucker}) was established in~\cite{FHN2019},
+where the key difficulty — showing that the tangent space $\ZD{\bv_r(t)}$
+is a split subspace of $\VDnorm$, without the Hilbert space structure —
+was resolved by the immersion theorem (Theorem~\ref{thm:tucker_immersion}).
+
+The extension to tree-based formats (Theorem~\ref{thm:DF_treebased})
+is the main application result of~\cite{FHN2023}: having established
+the geometry of $\FTv$ in Chapter~\ref{chap:TB_manifold}, the
+Dirac--Frenkel principle follows with no additional effort.
 

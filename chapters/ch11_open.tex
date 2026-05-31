@@ -1,13 +1,252 @@
 %============================================================
-%  ch11_open.tex  —  Open Problems and Perspectives
-%  TODO: Write content
+%  ch11_open.tex
+%  Chapter 11: Open Problems and Perspectives
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Estimated length: ~20 pp.
 %============================================================
 
 \chapter{Open Problems and Perspectives}
 \label{chap:open}
 
-\section*{To be written}
+The results established in this monograph open several directions for
+further research. This chapter collects the most natural open problems,
+organised by theme, together with a discussion of connections to other
+active areas of mathematics and its applications.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section{Global topology of tensor manifolds}
+\label{sec:open:topology}
+%------------------------------------------------------------
+
+\subsection*{Connectedness of tree-based manifolds}
+
+We showed in Proposition~\ref{prop:TBT_connected} that each Tucker
+manifold $\Tucker{\fr}{\VD}$ is connected. For tree-based manifolds
+with $\dep{\TD} \geq 2$, this question is open in the
+infinite-dimensional setting.
+
+\begin{problem}
+\label{prob:connected}
+Let $\TD$ be a dimension partition tree with $\dep{\TD} \geq 2$ and
+let $\fr \in \ADTD$ with $\FTv$ a proper set. Is $\FTv$ connected?
+\end{problem}
+
+In finite dimensions, connectedness has been established for the HT
+format~\cite{Uschmajew2012} and the TT format~\cite{HoltzRohwedderSchneider2012},
+but the methods used there (algebraic geometry of determinantal varieties)
+do not directly extend to the Banach setting.
+
+\subsection*{Higher homotopy groups}
+
+Even in finite dimensions, the homotopy type of $\Tucker{\fr}{\VD}$
+and $\FTv$ is not fully understood. Since $\Tucker{\fr}{\VD}$ is
+a fibre bundle over the product of Grassmannians
+$\prod_\alpha \Grass{r_\alpha}{V_\alpha}$ (Theorem~\ref{thm:Tucker_Banach_Manifold}),
+the long exact sequence of homotopy groups relates
+$\pi_n(\Tucker{\fr}{\VD})$ to $\pi_n(\prod_\alpha \Grass{r_\alpha}{\RR^{n_\alpha}})$
+and $\pi_n(\RR^{\times r_\alpha}_*)$.
+
+\begin{problem}
+\label{prob:homotopy}
+Compute the fundamental group $\pi_1(\Tucker{\fr}{\VD})$ and
+$\pi_1(\FTv)$ in the finite-dimensional case. Are these manifolds
+simply connected?
+\end{problem}
+
+\subsection*{Rank stratification}
+
+The decomposition $\VD = \bigsqcup_\fr \Tucker{\fr}{\VD}$ is a
+stratification of the algebraic tensor space. The boundary
+$\overline{\Tucker{\fr}{\VD}} \setminus \Tucker{\fr}{\VD}$ consists of
+tensors with strictly smaller rank, and the closure
+$\overline{\Tucker{\fr}{\VD}}^{\|\cdot\|}$ in the Banach topology is the
+set $\Tucker{\leq\fr}{\VD}$ of tensors of bounded rank
+(Theorem~\ref{thm:weak_closed}).
+
+\begin{problem}
+\label{prob:stratification}
+Describe the local geometry of the boundary strata: what is the tangent
+cone to $\Tucker{\leq\fr}{\VD}$ at a boundary point
+$\bv \in \Tucker{\leq\fr}{\VD} \setminus \Tucker{\fr}{\VD}$?
+Is the stratification Whitney regular?
+\end{problem}
+
+%------------------------------------------------------------
+\section{Riemannian and Finsler geometry on tensor manifolds}
+\label{sec:open:riemannian}
+%------------------------------------------------------------
+
+In the Hilbert case, the Tucker manifold inherits a Riemannian metric
+from the ambient Hilbert tensor space. Riemannian gradient methods
+on $\Tucker{\fr}{\VD}$ (ALS, Riemannian gradient, retraction-based
+methods) have been developed by Uschmajew and Vandereycken~\cite{UschmajewVandereycken2020}.
+In the Banach setting, a natural replacement is a Finsler metric (a
+continuously varying norm on each tangent space).
+
+\begin{problem}
+\label{prob:finsler}
+Equip $\Tucker{\fr}{\VD}$ with the Finsler metric induced by
+$\|\cdot\|_D$ (via the isomorphism
+$T_\bv\Tucker{\fr}{\VD} \cong \ZD{\bv}$). Study the geodesics,
+curvature, and exponential map of this Finsler manifold. In particular:
+does the Dirac--Frenkel flow~\eqref{eq:DF_tucker} preserve the
+Finsler structure in any sense?
+\end{problem}
+
+%------------------------------------------------------------
+\section{Algorithms and convergence analysis}
+\label{sec:open:algorithms}
+%------------------------------------------------------------
+
+\subsection*{Projector-splitting integrators on tree-based manifolds}
+
+For the TT format, Lubich, Oseledets, and
+Vandereycken~\cite{LubichOseledetsVandereycken2015} introduced the
+\emph{projector-splitting integrator}, which integrates the
+Dirac--Frenkel ODE by splitting the projection onto $\ZD{\bv_r(t)}$
+into a sequence of rank-one updates. For general tree-based formats,
+the corresponding integrator was introduced in~\cite{CerutiLubichWalach2020}.
+
+The convergence analysis of these algorithms in infinite-dimensional
+Banach spaces (as opposed to Hilbert spaces) requires understanding
+the stability of the Dirac--Frenkel flow on $\FTv$ and the
+approximation properties of the splitting.
+
+\begin{problem}
+\label{prob:integrator}
+Extend the convergence analysis of the projector-splitting integrator
+to the setting of Banach tensor spaces. In particular, establish
+error bounds that depend explicitly on the geometry of the tree-based
+manifold $\FTv$ (curvature, injectivity radius, condition number of
+the rank map $\varrho_\fr$).
+\end{problem}
+
+\subsection*{Alternating least squares in Banach spaces}
+
+The \emph{alternating least squares} (ALS) algorithm and its variants
+(DMRG, HOSVD) minimise a functional over $\Tucker{\leq\fr}{\VD}$ by
+alternating optimisation over one factor at a time. In Hilbert spaces,
+convergence of ALS is well understood~\cite{UschmajewVandereycken2020}.
+In Banach spaces, convergence requires different tools.
+
+\begin{problem}
+\label{prob:ALS}
+Prove convergence of ALS for minimisation over $\Tucker{\leq\fr}{\VD}$
+in a reflexive Banach tensor space $\VDnorm$. What role does the
+geometry of the Tucker manifold (specifically, the structure of the
+tangent spaces $\ZD{\bv}$) play in the convergence rate?
+\end{problem}
+
+%------------------------------------------------------------
+\section{Beyond Banach spaces}
+\label{sec:open:beyond}
+%------------------------------------------------------------
+
+\subsection*{Quasi-Banach and Fréchet spaces}
+
+The component spaces $V_\alpha$ in this monograph are normed (Banach or
+at least normed). Many function spaces of interest — $L^p$ for
+$0 < p < 1$, or spaces of smooth functions — are quasi-Banach or Fréchet
+but not Banach. The theory of minimal subspaces and Tucker manifolds
+should extend to these settings, but the proofs require substantial
+modifications.
+
+\begin{problem}
+\label{prob:quasi-banach}
+Develop the theory of minimal subspaces and tensor manifolds for
+quasi-Banach spaces $V_\alpha$ with $0 < p < 1$. In particular,
+does the Tucker manifold $\Tucker{\fr}{\VD}$ retain its smooth
+structure when the $V_\alpha$ are $L^p$ spaces for $p < 1$?
+\end{problem}
+
+\subsection*{Infinite-dimensional index sets}
+
+All results in this monograph assume $D = \{1, \ldots, d\}$ is finite.
+For problems in infinite dimensions — e.g., infinite particle quantum
+systems or PDEs in infinitely many variables — one would want $D$ to
+be infinite. The algebraic tensor product over an infinite index set
+requires projective limits or nuclear spaces.
+
+\begin{problem}
+\label{prob:infinite_D}
+Extend the tree-based tensor framework to infinite index sets
+$D = \NN$ (or more general sets). What is the natural analogue of
+a dimension partition tree, and what conditions on the norms guarantee
+the existence of minimal subspaces and best approximations?
+\end{problem}
+
+%------------------------------------------------------------
+\section{Connections with quantum information}
+\label{sec:open:quantum}
+%------------------------------------------------------------
+
+\subsection*{Tensor networks and entanglement}
+
+In quantum information, a \emph{tensor network state} on a lattice
+is a tensor $\bv \in \bigotimes_{j \in D} \CC^{d_j}$ whose
+transfer tensors $\{C^{(\alpha)}\}$ are specified by a graph (not
+necessarily a tree). The tree-based format corresponds to
+\emph{tree tensor networks} (TTN), which include MPS/TT as the
+linear-chain case and MERA (multi-scale entanglement renormalisation
+ansatz) as a more general tree.
+
+The \emph{entanglement entropy} of a bipartition $D = \alpha \cup \alpha^c$
+is $S(\alpha) = -\mathrm{tr}(\rho_\alpha \log \rho_\alpha)$, where
+$\rho_\alpha$ is the reduced density matrix of the state on $\alpha$.
+The \emph{area law} for ground states of local Hamiltonians states that
+$S(\alpha)$ grows at most as $|\partial \alpha|$ (the boundary of
+$\alpha$), not as $|\alpha|$ (the volume). This motivates the use of
+tree-based formats: the rank constraints in $\FTv$ directly control
+the entanglement structure.
+
+\begin{problem}
+\label{prob:quantum}
+Formulate the Dirac--Frenkel variational principle for tree tensor
+networks in the language of $C^*$-algebras and operator systems.
+What is the correct generalisation of the Tucker manifold in the
+non-commutative setting?
+\end{problem}
+
+%------------------------------------------------------------
+\section{Learning on tensor manifolds}
+\label{sec:open:learning}
+%------------------------------------------------------------
+
+\subsection*{Statistical learning theory}
+
+In machine learning, tensor network states arise naturally as
+\emph{function approximation schemes} for high-dimensional data.
+The generalisation capacity of these models depends on the geometry
+of the hypothesis class $\FTleq{\fr}{\VD}{\TD}$.
+
+The \emph{Rademacher complexity} of $\FTleq{\fr}{\VD}{\TD}$ controls
+the generalisation error via the Dudley entropy integral. For finite
+$D$ and fixed ranks, this can be bounded using the Weyl tube formula
+once the curvature of the manifold $\FTv$ is understood.
+
+\begin{problem}
+\label{prob:learning}
+Compute the Rademacher complexity and metric entropy of
+$\FTleq{\fr}{\VD}{\TD}$ in terms of the tree-based rank $\fr$,
+the depth $\dep{\TD}$, and the dimensions $\dim V_j$. How does the
+choice of tree $\TD$ affect the approximation-complexity tradeoff?
+\end{problem}
+
+\subsection*{Optimal tree selection}
+
+Given a function $f: \prod_j I_j \to \RR$ (a target function for
+approximation), which tree $\TD$ gives the best approximation of $f$
+by a tree-based tensor of a given rank? This question connects the
+geometry of tensor manifolds to the combinatorics of tree structures.
+
+\begin{problem}
+\label{prob:tree_selection}
+Given $f \in \VDnorm$ and a bound $r$ on the tree-based rank,
+find the dimension partition tree $\TD^*$ that minimises the
+approximation error $\inf_{\bv \in \FTleq{\fr}{\VD}{\TD^*}} \|f - \bv\|_D$.
+Is this optimisation problem tractable?
+\end{problem}
 
