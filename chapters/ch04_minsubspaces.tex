@@ -1,2 +1,593 @@
-% ---- placeholder ----
-% TODO: Write content
+%============================================================
+%  ch04_minsubspaces.tex
+%  Chapter 4: Minimal Subspaces in Tensor Representations
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: Falcó & Hackbusch, Found. Comput. Math. 12 (2012)
+%  Estimated length: ~40 pp.
+%============================================================
+
+\chapter{Minimal Subspaces in Tensor Representations}
+\label{chap:minsubspaces}
+
+In Chapter~\ref{chap:algtensor} we introduced the Tucker format and
+defined the minimal subspace $\Umin{\alpha}{\bv}$ informally, taking
+its existence and properties for granted. This chapter provides the
+complete theory: existence and uniqueness (Section~\ref{sec:min:existence}),
+the lattice structure and inclusion under refinement of partitions
+(Section~\ref{sec:min:lattice}), admissible ranks and the disjoint
+decomposition of $\VD$ (Section~\ref{sec:min:admissible}), and the
+existence of best approximations in Banach tensor spaces
+(Section~\ref{sec:min:bestapprox}). The results in this chapter are
+taken from~\cite{FH2012}, expanded with complete proofs and additional
+examples.
+
+%------------------------------------------------------------
+\section{Existence and uniqueness of minimal subspaces}
+\label{sec:min:existence}
+%------------------------------------------------------------
+
+\subsection*{The case $d = 2$: Schmidt decomposition}
+
+The case of two factors $\VD = V_1 \atens V_2$ is classical and serves
+as the inductive base. The key observation is a lattice property of
+tensor subspaces.
+
+\begin{lemma}[Intersection lemma]
+\label{lem:intersection_d2}
+Let $X_i, Y_i$ be subspaces of $V_i$ for $i = 1, 2$. Then
+\begin{equation}
+\label{eq:intersection_d2}
+    (X_1 \atens X_2) \cap (Y_1 \atens Y_2)
+    = (X_1 \cap Y_1) \atens (X_2 \cap Y_2).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The inclusion $(X_1 \cap Y_1) \atens (X_2 \cap Y_2) \subseteq
+(X_1 \atens X_2) \cap (Y_1 \atens Y_2)$ is immediate. For the
+reverse inclusion, let $\bv \in (X_1 \atens X_2) \cap (Y_1 \atens Y_2)$
+with representations
+\begin{equation*}
+    \bv = \sum_{\nu=1}^{n_x} x^{(1)}_\nu \otimes x^{(2)}_\nu
+       = \sum_{\nu=1}^{n_y} y^{(1)}_\nu \otimes y^{(2)}_\nu,
+    \quad
+    x^{(i)}_\nu \in X_i,\; y^{(i)}_\nu \in Y_i.
+\end{equation*}
+By adding terms with zero coefficient, assume $n_x = n_y = n$ and
+that $\{x^{(1)}_\nu\}$ and $\{y^{(1)}_\nu\}$ are each linearly
+independent (passing to a minimal representation). The two
+representations yield the same matrix $M_1(\bv)$ under any identification
+with a bilinear form, so $\spann\{x^{(1)}_\nu\} = \spann\{y^{(1)}_\nu\}
+\subset X_1 \cap Y_1$. A symmetric argument for the second factor gives
+$\spann\{x^{(2)}_\nu\} \subset X_2 \cap Y_2$, so
+$\bv \in (X_1 \cap Y_1) \atens (X_2 \cap Y_2)$.
+\end{proof}
+
+\begin{proposition}[Minimal subspace: case $d=2$]
+\label{prop:min_d2}
+Let $\bv \in V_1 \atens V_2$. There exist unique subspaces
+$U_i \subset V_i$ of finite dimension such that:
+\begin{enumerate}
+\item[\textup{(i)}] $\bv \in U_1 \atens U_2$.
+\item[\textup{(ii)}] If $\bv \in X_1 \atens X_2$ for any subspaces $X_i$,
+    then $U_i \subset X_i$.
+\end{enumerate}
+Moreover, $\dim U_1 = \dim U_2$.
+\end{proposition}
+
+\begin{proof}
+\textbf{Existence.} Fix any representation $\bv = \sum_\nu v^{(1)}_\nu
+\otimes v^{(2)}_\nu$ and set $U_i = \spann\{v^{(i)}_\nu\}$. By passing
+to a representation with linearly independent $v^{(1)}_\nu$, one can also
+take $v^{(2)}_\nu$ linearly independent (otherwise row reduce).
+Then $\dim U_1 = \dim U_2$ (both equal the rank of the bilinear form).
+
+\textbf{Minimality.} If $\bv \in X_1 \atens X_2$, then by the
+intersection lemma, $\bv \in (U_1 \cap X_1) \atens (U_2 \cap X_2)$,
+which forces $U_i \subset X_i$ by minimality of $U_i$.
+
+\textbf{Uniqueness.} If $U_i$ and $U_i'$ both satisfy (i)--(ii),
+minimality of $U_i$ applied to $U_i'$ gives $U_i \subset U_i'$,
+and vice versa.
+\end{proof}
+
+\subsection*{The general case: existence and uniqueness}
+
+\begin{theorem}[Existence and uniqueness of minimal subspaces]
+\label{thm:min_existence}
+Let $D = \{1, \ldots, d\}$, $\VD = {}_a\bigotimes_{\alpha \in D}
+V_\alpha$, and $\bv \in \VD$. For each $\alpha \in D$, under the
+identification $\VD \cong V_\alpha \atens \Vbigalpha^{[\alpha]}$,
+there exists a unique subspace $\Umin{\alpha}{\bv} \subset V_\alpha$
+of finite dimension $r_\alpha < \infty$ such that:
+\begin{enumerate}
+\item[\textup{(a)}] $\bv \in \Umin{\alpha}{\bv} \atens
+    \Vbigalpha^{[\alpha]}$.
+\item[\textup{(b)}] If $\bv \in U_\alpha \atens \Vbigalpha^{[\alpha]}$
+    for any subspace $U_\alpha \subset V_\alpha$, then
+    $\Umin{\alpha}{\bv} \subset U_\alpha$.
+\end{enumerate}
+Furthermore, there exists a unique subspace
+$\Umin{D\setminus\{\alpha\}}{\bv} \subset \Vbigalpha^{[\alpha]}$
+of dimension $r_\alpha$ such that
+$\bv \in \Umin{\alpha}{\bv} \atens \Umin{D\setminus\{\alpha\}}{\bv}$.
+\end{theorem}
+
+\begin{proof}
+Apply Proposition~\ref{prop:min_d2} to the two-factor product
+$V_\alpha \atens \Vbigalpha^{[\alpha]}$. The subspace $\Umin{\alpha}{\bv}$
+is the minimal subspace in the $V_\alpha$-factor. Uniqueness follows
+from the same argument as in $d=2$.
+\end{proof}
+
+\begin{definition}
+\label{def:minimal_subspace}
+The subspace $\Umin{\alpha}{\bv}$ of Theorem~\ref{thm:min_existence}
+is called the \emph{minimal subspace} of $\bv$ in direction $\alpha$.
+The integer $r_\alpha(\bv) \coloneqq \dim \Umin{\alpha}{\bv}$ is the
+\emph{$\alpha$-rank} of $\bv$.
+\end{definition}
+
+\subsection*{Characterisation via contractions}
+
+The following characterisation, which is central to both the proof of
+Chapter~\ref{chap:tucker_manifold} and the tree-based theory of
+Chapter~\ref{chap:algTBT}, expresses $\Umin{\alpha}{\bv}$ as the
+range of a family of contractions.
+
+\begin{theorem}[Contraction characterisation]
+\label{thm:min_contraction}
+Let $\bv \in \VD$ and $\alpha \in D$. Then
+\begin{equation}
+\label{eq:min_contraction}
+    \Umin{\alpha}{\bv}
+    = \spann\bigl\{
+        (\Id{V_\alpha} \otimes \varphi^{[\alpha]})(\bv) :
+        \varphi^{[\alpha]} \in (\Vbigalpha^{[\alpha]})^*
+      \bigr\},
+\end{equation}
+where $(\Id{V_\alpha} \otimes \varphi^{[\alpha]})(\bv) \in V_\alpha$
+is the contraction of $\bv$ with the functional $\varphi^{[\alpha]}$
+in all directions except $\alpha$.
+\end{theorem}
+
+\begin{proof}
+Write $\bv = \sum_\nu u_\nu \otimes \bU_\nu$ with $u_\nu \in V_\alpha$
+and $\bU_\nu \in \Vbigalpha^{[\alpha]}$. For $\varphi \in
+(\Vbigalpha^{[\alpha]})^*$:
+$(\Id{V_\alpha} \otimes \varphi)(\bv) = \sum_\nu \varphi(\bU_\nu) u_\nu
+\in \spann\{u_\nu\} = \Umin{\alpha}{\bv}$. Conversely, by taking
+$\varphi = \varphi_\nu$ dual to a basis of $\Umin{D\setminus\{\alpha\}}{\bv}$,
+one recovers a basis of $\Umin{\alpha}{\bv}$, so equality holds.
+\end{proof}
+
+\begin{remark}
+\label{rem:min_replacement}
+In Theorem~\ref{thm:min_contraction}, one can replace
+$(\Vbigalpha^{[\alpha]})^*$ by $(\Umin{D\setminus\{\alpha\}}{\bv})^*$
+without changing the span, since $\bv \in V_\alpha \atens
+\Umin{D\setminus\{\alpha\}}{\bv}$. This gives the tighter formula
+\begin{equation}
+\label{eq:min_contraction_minimal}
+    \Umin{\alpha}{\bv}
+    = \spann\bigl\{
+        (\Id{V_\alpha} \otimes \varphi^{[\alpha]})(\bv) :
+        \varphi^{[\alpha]} \in (\Umin{D\setminus\{\alpha\}}{\bv})^*
+      \bigr\},
+\end{equation}
+which is often more useful in practice.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Lattice properties and inclusion under partitions}
+\label{sec:min:lattice}
+%------------------------------------------------------------
+
+\subsection*{Monotonicity}
+
+\begin{proposition}[Monotonicity of minimal subspaces]
+\label{prop:min_monotone}
+Let $\bv \in \VD$ and $U_\alpha \in \Grass{r_\alpha}{V_\alpha}$
+for each $\alpha \in D$. Then:
+\begin{equation*}
+    \bv \in {}_a\bigotimes_{\alpha \in D} U_\alpha
+    \quad \Longrightarrow \quad
+    \Umin{\alpha}{\bv} \subset U_\alpha \quad \forall\, \alpha \in D.
+\end{equation*}
+\end{proposition}
+
+\begin{proof}
+Under $\bv \in {}_a\bigotimes_{\alpha \in D} U_\alpha$, the identification
+$\VD \cong V_\alpha \atens \Vbigalpha^{[\alpha]}$ gives
+$\bv \in U_\alpha \atens \Vbigalpha^{[\alpha]}$,
+so the minimality of $\Umin{\alpha}{\bv}$ (Theorem~\ref{thm:min_existence}(b))
+yields $\Umin{\alpha}{\bv} \subset U_\alpha$.
+\end{proof}
+
+\subsection*{Inclusion under partition refinement}
+
+The following proposition is the key algebraic fact underlying the
+tree-based format: it shows that minimal subspaces at a coarser
+level of a tree are contained in tensor products of minimal subspaces
+at finer levels.
+
+\begin{proposition}[Inclusion under refinement]
+\label{prop:min_inclusion_partition}
+Let $\bv \in \VD$ and let $\alpha \subset D$ with $\card{\alpha} \geq 2$.
+Let $\mathcal{P}_\alpha$ be a non-trivial partition of $\alpha$. Then
+\begin{equation}
+\label{eq:min_inclusion}
+    \Umin{\alpha}{\bv} \subset
+    {}_a\bigotimes_{\beta \in \mathcal{P}_\alpha} \Umin{\beta}{\bv}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+From the canonical identification $\VD \cong \Vbigalpha \atens
+\Vbigalpha^{[\alpha]}$ and Theorem~\ref{thm:min_contraction},
+\begin{equation*}
+    \Umin{\alpha}{\bv} =
+    \spann\bigl\{
+        (\Id{\Vbigalpha} \otimes \varphi^{[\alpha]})(\bv)
+        : \varphi^{[\alpha]} \in (\Umin{\ac}{\bv})^*
+    \bigr\}.
+\end{equation*}
+For each such element $w_\alpha = (\Id{\Vbigalpha} \otimes
+\varphi^{[\alpha]})(\bv) \in \Vbigalpha$, we apply
+Proposition~\ref{prop:min_monotone} to the tensor space
+$\Vbigalpha \cong {}_a\bigotimes_{\beta \in \mathcal{P}_\alpha} \Vbigbeta$.
+Since $w_\alpha \in \Umin{\alpha}{\bv}$ and
+$\Vbigalpha = {}_a\bigotimes_{\beta \in \mathcal{P}_\alpha} \Vbigbeta$,
+one has $w_\alpha \in {}_a\bigotimes_{\beta \in \mathcal{P}_\alpha}
+\Umin{\beta}{w_\alpha}$. Moreover, from the minimality of
+$\Umin{\beta}{\bv}$ and the relation between contractions at different
+levels, $\Umin{\beta}{w_\alpha} \subset \Umin{\beta}{\bv}$ for each
+$\beta \in \mathcal{P}_\alpha$. Hence
+$w_\alpha \in {}_a\bigotimes_{\beta \in \mathcal{P}_\alpha} \Umin{\beta}{\bv}$,
+and taking the span over all such $w_\alpha$ gives~\eqref{eq:min_inclusion}.
+\end{proof}
+
+\begin{remark}
+\label{rem:min_inclusion_tree}
+Proposition~\ref{prop:min_inclusion_partition} applied iteratively at
+every internal vertex $\alpha \in \TD$ of a dimension partition tree
+(Chapter~\ref{chap:trees}) gives the fundamental compatibility of
+minimal subspaces with the tree structure:
+\begin{equation}
+\label{eq:min_inclusion_tree}
+    \Umin{\alpha}{\bv} \subset
+    {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv}
+    \quad \forall\, \alpha \in \TD \setminus \Leaves.
+\end{equation}
+This is the algebraic foundation of the tree-based format in
+Chapter~\ref{chap:algTBT}.
+\end{remark}
+
+\subsection*{New characterisation of minimal subspaces}
+
+The following result, proved in~\cite{FHN2021} and used in the construction
+of tree-based tensor formats, gives a characterisation of $\Umin{\beta}{\bv}$
+via contractions of $\Umin{\alpha}{\bv}$ for $\alpha \supset \beta$.
+
+\begin{proposition}
+\label{prop:min_char_partition}
+Let $\bv \in \VD$, $\alpha \subset D$ with $\card{\alpha} \geq 2$,
+and $\mathcal{P}_\alpha$ a non-trivial partition of $\alpha$. Suppose
+that $\Vbigalpha$ and $\Vbigbeta$ for $\beta \in \mathcal{P}_\alpha$
+are normed spaces. Then for each $\beta \in \mathcal{P}_\alpha$:
+\begin{equation}
+\label{eq:min_char_partition}
+    \Umin{\beta}{\bv}
+    = \spann\bigl\{
+        (\Id{\Vbigbeta} \otimes \varphi^{(\alpha\setminus\beta)})
+        (\bv_\alpha) :
+        \bv_\alpha \in \Umin{\alpha}{\bv},\;
+        \varphi^{(\alpha\setminus\beta)} \in
+        ({}_a\bigotimes_{\gamma \in \mathcal{P}_\alpha \setminus \{\beta\}}
+        \Vbigalpha[\gamma])^*
+    \bigr\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Applying Theorem~\ref{thm:min_contraction} twice — first for the
+full index set $D$ and then for $\alpha$ — one obtains two nested
+contraction characterisations. The formula~\eqref{eq:min_char_partition}
+follows by composing these and using that $\bv \in \Vbigalpha \atens
+\Umin{\ac}{\bv}$ allows the replacement of the ambient dual by that
+of $\Umin{\ac}{\bv}$.
+\end{proof}
+
+%------------------------------------------------------------
+\section{Admissible ranks and the disjoint decomposition}
+\label{sec:min:admissible}
+%------------------------------------------------------------
+
+\subsection*{Admissible Tucker ranks}
+
+Recall from Chapter~\ref{chap:algtensor} (Definition~\ref{def:admissible_tucker})
+that the set of admissible Tucker ranks is
+\begin{equation*}
+    \AD{\VD} = \bigl\{
+        (r_\alpha(\bv))_{\alpha \in D} \in \NNz^d : \bv \in \VD
+    \bigr\}.
+\end{equation*}
+The following proposition characterises which tuples are admissible.
+
+\begin{proposition}
+\label{prop:admissible_characterisation}
+A tuple $\fr = (r_\alpha)_{\alpha \in D} \in \NNz^d$ belongs to
+$\AD{\VD}$ if and only if there exist subspaces
+$U_\alpha \in \Grass{r_\alpha}{V_\alpha}$ and a tensor
+$\bv \in \Tucker{\fr}{{}_a\bigotimes_{\alpha \in D} U_\alpha}$,
+i.e., a tensor whose $\alpha$-unfolding has rank exactly $r_\alpha$
+for all $\alpha \in D$.
+\end{proposition}
+
+\begin{proposition}
+\label{prop:admissible_bounds}
+For $\fr \in \AD{\VD}$:
+\begin{enumerate}
+\item[\textup{(i)}] $r_\alpha \leq \dim V_\alpha$ for all $\alpha \in D$.
+\item[\textup{(ii)}] $r_\alpha = r_{\alpha^c} \coloneqq
+    \dim \Umin{D\setminus\{\alpha\}}{\bv}$ for all $\alpha \in D$
+    \textup{(}symmetry of marginal ranks\textup{)}.
+\item[\textup{(iii)}] $r_\alpha \leq \prod_{\beta \neq \alpha} r_\beta$
+    for all $\alpha \in D$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Statements~(i) and~(iii) follow from the representation formula
+\eqref{eq:tucker_core} and rank properties of multi-index arrays.
+Statement~(ii) follows from Proposition~\ref{prop:min_d2} applied
+to $V_\alpha \atens \Vbigalpha^{[\alpha]}$.
+\end{proof}
+
+\subsection*{The disjoint decomposition}
+
+Theorem~\ref{thm:min_existence} immediately gives the following
+structural result.
+
+\begin{theorem}
+\label{thm:tucker_decomposition_full}
+The algebraic tensor space $\VD$ admits the disjoint decomposition
+\begin{equation}
+\label{eq:tucker_disjoint_full}
+    \VD = \bigsqcup_{\fr \in \AD{\VD}} \Tucker{\fr}{\VD}.
+\end{equation}
+Each $\Tucker{\fr}{\VD}$ is non-empty for $\fr \in \AD{\VD}$.
+The zero tensor $\mathbf{0}$ belongs to $\Tucker{\mathbf{0}}{\VD}$
+and each elementary tensor $\bigotimes_\alpha v_\alpha$ (with all
+$v_\alpha \neq 0$) belongs to $\Tucker{\mathbf{1}}{\VD}$.
+\end{theorem}
+
+\begin{remark}[Topology of the decomposition]
+\label{rem:tucker_topology}
+While $\Tucker{\fr}{\VD}$ is algebraically well-defined, its
+topological structure is non-trivial. The key result —
+that each $\Tucker{\fr}{\VD}$ is a $\mathcal{C}^\infty$-Banach
+manifold immersed in the ambient Banach tensor space $\VDnorm$ —
+is established in Chapter~\ref{chap:tucker_manifold}. The immersion
+requires the condition \condINJ\ on the norm $\|\cdot\|_D$
+(Definition~\ref{def:crossnorm}).
+\end{remark}
+
+\subsection*{Stratification by rank}
+
+\begin{definition}
+\label{def:bounded_tucker_rank}
+For $\fr \in \AD{\VD}$, the set of tensors with Tucker rank
+\emph{bounded by} $\fr$ is
+\begin{equation}
+\label{eq:tucker_bounded}
+    \Tucker{\leq\fr}{\VD}
+    \coloneqq
+    \bigsqcup_{\substack{\mathfrak{s} \in \AD{\VD} \\ \mathfrak{s} \leq \fr}}
+    \Tucker{\mathfrak{s}}{\VD}
+    =
+    \bigl\{
+        \bv \in \VD : r_\alpha(\bv) \leq r_\alpha \;\forall\, \alpha \in D
+    \bigr\},
+\end{equation}
+where $\fs \leq \fr$ means $s_\alpha \leq r_\alpha$ for all $\alpha \in D$.
+\end{definition}
+
+The set $\Tucker{\leq\fr}{\VD}$ is not a linear subspace (it is not
+closed under addition) but it is closed under scalar multiplication.
+The key property for applications — that best approximations from
+$\Tucker{\leq\fr}{\VD}$ exist in Banach tensor spaces — is proved in
+Section~\ref{sec:min:bestapprox}.
+
+%------------------------------------------------------------
+\section{Best approximations in Banach tensor spaces}
+\label{sec:min:bestapprox}
+%------------------------------------------------------------
+
+In numerical applications, one needs to approximate a given tensor
+$\bv \in \VDnorm$ by a tensor of bounded rank. The existence of such
+a best approximation is non-trivial: the set $\Tucker{\leq\fr}{\VD}$
+is not convex, so general theorems about proximinal sets do not apply.
+The proof uses the weak closedness of $\Tucker{\leq\fr}{\VD}$.
+
+\subsection*{Crossnorms and the injective norm condition}
+
+\begin{definition}
+\label{def:crossnorm}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces and $\|\cdot\|_D$
+a norm on $\VD$. We say $\|\cdot\|_D$ is a \emph{crossnorm} if
+\begin{equation}
+\label{eq:crossnorm}
+    \Bigl\|\bigotimes_{\alpha \in D} v_\alpha\Bigr\|_D
+    = \prod_{\alpha \in D} \|v_\alpha\|_\alpha
+    \quad \forall\, v_\alpha \in V_\alpha.
+\end{equation}
+The \emph{injective norm} $\injnorm$ on $\VD$ is defined by
+\begin{equation*}
+    \|\bv\|_\varepsilon
+    \coloneqq \sup\bigl\{
+        |(\bigotimes_{\alpha \in D} \varphi_\alpha)(\bv)| :
+        \varphi_\alpha \in \dual{V_\alpha},\;
+        \|\varphi_\alpha\|_{\dual{V_\alpha}} \leq 1
+    \bigr\}.
+\end{equation*}
+We say $\|\cdot\|_D$ satisfies condition \condINJ\ if
+$\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$.
+\end{definition}
+
+A crossnorm satisfies \condINJ\ if and only if it is a
+\emph{reasonable crossnorm} in the sense that its dual norm is also
+a crossnorm. The injective norm is the smallest reasonable crossnorm
+(see \cite{Hackbusch2019}, Chapter~4).
+
+\begin{remark}
+\label{rem:crossnorm_examples}
+The $L^p$ norm on $L^p(\prod_\alpha I_\alpha)$ is a reasonable
+crossnorm for $1 \leq p \leq \infty$
+(see \cite{Hackbusch2019}, Example~4.72).
+The Sobolev norm $\|\cdot\|_{(0,1),p}$ on
+$H^{1,p}(I_1) \atens H^{1,p}(I_2)$ is a crossnorm
+(Example~4.42 in \cite{Hackbusch2019}), hence satisfies \condINJ.
+\end{remark}
+
+\subsection*{Weak closedness of bounded-rank sets}
+
+\begin{theorem}[Weak closedness, {\cite[Theorem~5.1]{FH2012}}]
+\label{thm:weak_closed}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces and let
+$\|\cdot\|_D$ be a norm on $\VD$ satisfying condition \condINJ.
+Then the set $\Tucker{\leq\fr}{\VD}$ is weakly closed in $\VDnorm$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+Let $(\bv_n) \subset \Tucker{\leq\fr}{\VD}$ converge weakly to
+$\bv \in \VDnorm$. We must show $\bv \in \Tucker{\leq\fr}{\VD}$,
+i.e., $r_\alpha(\bv) \leq r_\alpha$ for all $\alpha \in D$.
+
+Fix $\alpha \in D$ and consider the $\alpha$-unfolding map
+$\Mmat{\alpha}: \VDnorm \to \cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$
+defined by $\Mmat{\alpha}(\bv)(\varphi) = (\varphi \otimes \Id{})(\bv)$.
+Since $r_\alpha(\bv_n) \leq r_\alpha$, we have
+$\rank \Mmat{\alpha}(\bv_n) \leq r_\alpha$ for all $n$. The condition
+\condINJ\ implies that $\Mmat{\alpha}$ is continuous for the weak
+topology on $\VDnorm$ and the weak operator topology on
+$\cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$. Since the set of
+operators of rank $\leq r_\alpha$ is closed in the weak operator topology
+(it is a closed variety), the limit $\Mmat{\alpha}(\bv)$ has rank
+$\leq r_\alpha$, i.e., $r_\alpha(\bv) \leq r_\alpha$.
+\end{proof}
+
+\subsection*{Existence of best approximations}
+
+\begin{theorem}[Best approximation, {\cite[Theorem~5.3]{FH2012}}]
+\label{thm:best_approx_tucker}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces, let $\|\cdot\|_D$
+be a norm on $\VD$ satisfying \condINJ, and assume that $\VDnorm$ is
+reflexive. Then for every $\bu \in \VDnorm$ and $\fr \in \AD{\VD}$,
+there exists $\bv_* \in \Tucker{\leq\fr}{\VDnorm}$ such that
+\begin{equation}
+\label{eq:best_approx}
+    \|\bu - \bv_*\|_D = \inf_{\bv \in \Tucker{\leq\fr}{\VDnorm}}
+    \|\bu - \bv\|_D.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Since $\VDnorm$ is reflexive, any bounded sequence has a weakly
+convergent subsequence (Eberlein--Šmulian theorem). Let
+$(\bv_n) \subset \Tucker{\leq\fr}{\VDnorm}$ be a minimising sequence
+for the infimum in~\eqref{eq:best_approx}. The sequence $(\bv_n)$ is
+bounded (the infimum is attained or approached by a bounded set), so
+by reflexivity there is a weakly convergent subsequence
+$\bv_{n_k} \rightharpoonup \bv_*$. By
+Theorem~\ref{thm:weak_closed}, $\bv_* \in \Tucker{\leq\fr}{\VDnorm}$.
+Since the norm is weakly lower semicontinuous,
+$\|\bu - \bv_*\|_D \leq \liminf_k \|\bu - \bv_{n_k}\|_D = \inf$,
+so $\bv_*$ is a best approximation.
+\end{proof}
+
+\begin{corollary}
+\label{cor:best_approx_lp}
+For $I_\alpha \subset \RR$ ($\alpha \in D$) and $1 < p < \infty$,
+the Banach tensor space $L^p(\prod_\alpha I_\alpha)$ is reflexive and
+its norm satisfies \condINJ\ (Example~\ref{rem:crossnorm_examples}).
+Hence every $f \in L^p(\prod_\alpha I_\alpha)$ has a best
+Tucker approximation of any prescribed rank.
+\end{corollary}
+
+\begin{corollary}
+\label{cor:best_approx_sobolev}
+For $1 < p < \infty$, $N \geq 1$, and bounded intervals $I_\alpha$:
+\begin{enumerate}
+\item[\textup{(i)}] $H^{N,p}(\prod_\alpha I_\alpha)$ with the standard
+    Sobolev norm is reflexive and satisfies \condINJ.
+\item[\textup{(ii)}] The space $H^{1,p}(I_1) \otimes_{\|\cdot\|_{(0,1),p}}
+    H^{1,p}(I_2)$ with the partial-derivative crossnorm satisfies \condINJ.
+\end{enumerate}
+In both cases, best Tucker approximations of any rank exist.
+\end{corollary}
+
+\begin{example}
+\label{ex:min:sobolev}
+Consider $d=2$, $V_1 = H^1(0,1)$, $V_2 = H^1(0,1)$, and the
+ambient space $V_1 \otimes_{H^1} V_2$ with the norm
+$\|f\|_{H^1}^2 = \|f\|_{L^2}^2 + \|\partial_{x_2} f\|_{L^2}^2$.
+This Banach tensor space is reflexive and satisfies \condINJ, so every
+$f \in V_1 \otimes_{H^1} V_2$ has a best approximation of
+rank $\leq r$ for any $r \geq 1$. This setting arises in parametric PDEs
+where $x_1$ is the spatial variable and $x_2$ is the stochastic parameter.
+\end{example}
+
+\subsection*{Extension to intersections}
+
+In many applications (including the tree-based format), the ambient
+space is an intersection of Banach tensor spaces, each with its own norm.
+
+\begin{theorem}[Best approximation in intersections, {\cite[Theorem~5.6]{FH2012}}]
+\label{thm:best_approx_intersection}
+Let $\VDnorm^{(1)}, \ldots, \VDnorm^{(k)}$ be reflexive Banach tensor
+spaces over the same algebraic tensor space $\VD$, each with a norm
+satisfying \condINJ. Equip the intersection
+$Z = \VDnorm^{(1)} \cap \cdots \cap \VDnorm^{(k)}$ with the norm
+$\|\bv\|_Z = \max_{i} \|\bv\|_i$. If $Z$ is reflexive (which holds,
+e.g., when $k=2$ and both norms are reflexive), then every $\bu \in Z$
+has a best approximation in $\Tucker{\leq\fr}{Z}$.
+\end{theorem}
+
+%------------------------------------------------------------
+\section{Historical notes and comparison with the literature}
+\label{sec:min:history}
+%------------------------------------------------------------
+
+The notion of minimal subspace was introduced in~\cite{FH2012}.
+It generalises to infinite dimensions the classical concept of matrix
+rank: for $d=2$ and finite-dimensional $V_\alpha$, the $\alpha$-rank
+$r_\alpha(\bv) = \rank \Mmat{\alpha}(\bv)$ coincides with the classical
+matrix rank of the $\alpha$-unfolding, introduced by
+Hitchcock~\cite{Hitchcock1927} in 1927. The higher-order version for
+finite-dimensional spaces was studied by Tucker~\cite{Tucker1966},
+De Lathauwer et al.~\cite{DeLathauwer2000}, and Kolda--Bader~\cite{KoldaBader2009}.
+
+The infinite-dimensional theory of~\cite{FH2012} is motivated by the
+numerical treatment of high-dimensional PDEs, where $V_\alpha = L^2(\RR^3)$
+or Sobolev spaces, and the ambient tensor space is infinite-dimensional.
+The existence of best approximations (Theorem~\ref{thm:best_approx_tucker})
+removes a fundamental obstacle in the convergence analysis of alternating
+least-squares and related iterative methods.
+
+The weak closedness argument of Theorem~\ref{thm:weak_closed} is
+modelled on Uschmajew's result for the case of the spectral norm
+on finite-dimensional spaces~\cite{Uschmajew2012}. The innovation
+of~\cite{FH2012} is the extension to general reflexive Banach spaces
+under the crossnorm condition \condINJ, which is the natural condition
+for tensor product norms.
+
+The connection between minimal subspaces and the geometry of Tucker
+manifolds is developed in Chapter~\ref{chap:tucker_manifold}, where
+the rank map $\varrho: \VD \to \prod_\alpha \Grass{r_\alpha}{V_\alpha}$
+defined by $\varrho(\bv) = (\Umin{\alpha}{\bv})_{\alpha \in D}$ plays
+a central role in the construction of local charts.
+
