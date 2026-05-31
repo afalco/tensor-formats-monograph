@@ -199,3 +199,418 @@ $m_0$. The flow map $(t, m_0) \mapsto \gamma(t)$ is $\mathcal{C}^\infty$.
 This theorem is applied in Chapter~\ref{chap:DF} to the Dirac--Frenkel
 projected vector field on the Tucker manifold
 $\Tucker{\fr}{\VD}$ and on $\FTv$.
+%============================================================
+%  app_manifolds_additions.tex
+%  NEW SECTIONS for Appendix A: Banach Manifolds — A Summary
+%
+%  Three sections to append after the existing §A.4
+%  (Vector fields and ODEs on Banach manifolds):
+%
+%    §A.5  The tangent bundle
+%    §A.6  Fibre bundles and the Tucker bundle structure
+%    §A.7  Why the quotient construction fails in infinite dimensions
+%
+%  Notation follows notation.tex throughout.
+%  New labels use prefix app:manifolds: to avoid clashes.
+%============================================================
+
+%------------------------------------------------------------
+\section{The tangent bundle}
+\label{app:manifolds:tangentbundle}
+%------------------------------------------------------------
+
+\subsection*{Construction}
+
+Let $\mathbb{M}$ be a $\mathcal{C}^p$-Banach manifold with $p \geq 1$.
+The \emph{tangent bundle} of $\mathbb{M}$ is the disjoint union
+\begin{equation}
+\label{eq:app:tangent_bundle}
+    T\mathbb{M} \coloneqq \bigsqcup_{m \in \mathbb{M}} T_m\mathbb{M}
+    = \{(m, v) : m \in \mathbb{M},\; v \in T_m\mathbb{M}\},
+\end{equation}
+equipped with the natural projection $\pi_{T\mathbb{M}} : T\mathbb{M} \to
+\mathbb{M}$, $(m,v) \mapsto m$.
+
+Each chart $(M_i, u_i)$ on $\mathbb{M}$, with model space $X_i$, gives
+rise to a \emph{chart on $T\mathbb{M}$}:
+\begin{equation*}
+    Tu_i : \pi_{T\mathbb{M}}^{-1}(M_i) \longrightarrow
+    u_i(M_i) \times X_i, \qquad
+    (m, v) \longmapsto \bigl(u_i(m),\, [v]_i\bigr),
+\end{equation*}
+where $[v]_i$ is the representative of the tangent vector $v \in
+T_m\mathbb{M}$ in the chart $(M_i, u_i)$. The collection
+$\{(\pi_{T\mathbb{M}}^{-1}(M_i), Tu_i)\}_{i \in A}$ is a
+$\mathcal{C}^{p-1}$-atlas on $T\mathbb{M}$, making it a
+$\mathcal{C}^{p-1}$-Banach manifold modelled on $X_i \times X_i$.
+
+\begin{proposition}[{\cite[Chapter~3]{Lang1999}}]
+\label{prop:app:tangent_bundle}
+Let $\mathbb{M}$ be a $\mathcal{C}^p$-Banach manifold modelled on a
+Banach space $X$. Then:
+\begin{enumerate}
+\item[\textup{(i)}] $T\mathbb{M}$ is a $\mathcal{C}^{p-1}$-Banach
+    manifold modelled on $X \times X$, and
+    $\pi_{T\mathbb{M}}: T\mathbb{M} \to \mathbb{M}$ is a
+    $\mathcal{C}^{p-1}$-submersion.
+\item[\textup{(ii)}] Each fibre $\pi_{T\mathbb{M}}^{-1}(m) =
+    T_m\mathbb{M}$ is a Banach space isomorphic to $X$.
+\item[\textup{(iii)}] The zero section
+    $\sigma_0: \mathbb{M} \to T\mathbb{M}$, $m \mapsto (m, 0)$,
+    is a $\mathcal{C}^{p-1}$-embedding.
+\end{enumerate}
+\end{proposition}
+
+\subsection*{Tangent maps and the chain rule}
+
+Given a $\mathcal{C}^p$-map $f: \mathbb{M} \to \mathbb{N}$ between
+Banach manifolds, the \emph{tangent map} (or \emph{differential}) of
+$f$ is the $\mathcal{C}^{p-1}$-map
+\begin{equation*}
+    Tf: T\mathbb{M} \longrightarrow T\mathbb{N}, \qquad
+    (m, v) \longmapsto \bigl(f(m),\, Tf(m)(v)\bigr),
+\end{equation*}
+where $Tf(m): T_m\mathbb{M} \to T_{f(m)}\mathbb{N}$ is the bounded
+linear map defined in any pair of charts by the Fréchet derivative of
+the local representative. The \emph{chain rule} holds: if
+$g: \mathbb{N} \to \mathbb{P}$ is $\mathcal{C}^p$, then
+\begin{equation*}
+    T(g \circ f)(m) = Tg(f(m)) \circ Tf(m).
+\end{equation*}
+
+\subsection*{Local triviality}
+
+Although $T\mathbb{M}$ is globally non-trivial in general (the tangent
+bundle of the sphere $S^2$ has no global frame, by the hairy ball
+theorem), it is always \emph{locally trivial}: for each chart domain
+$M_i$, the map $Tu_i$ gives a diffeomorphism
+$\pi_{T\mathbb{M}}^{-1}(M_i) \cong M_i \times X_i$. This local
+product structure is precisely the data of a \emph{vector bundle},
+which we define in the next section.
+
+\begin{remark}
+\label{rem:app:tangent_TM}
+For the Tucker manifold $\Tucker{\fr}{\VD}$, the tangent bundle
+$T\Tucker{\fr}{\VD}$ has fibres
+$T_\bv\Tucker{\fr}{\VD} \cong \Emodel{D}$
+(the model Banach space, see~\S\ref{app:manifolds:fibrebundle}).
+The inclusion $i: \Tucker{\fr}{\VD} \hookrightarrow \VDnorm$ induces a
+tangent map $Ti(\bv): \Emodel{D} \to \VDnorm$ whose image is the
+subspace $\ZD{\bv}$ studied in
+Chapters~\ref{chap:tucker_manifold}--\ref{chap:DF}. The immersion
+theorem (Theorem~\ref{thm:tucker_immersion}) asserts that
+$Ti(\bv)$ is injective with closed split image, i.e., that $i$ is a
+genuine immersion in the sense of
+Definition~\ref{app:manifolds:def}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Fibre bundles and the Tucker bundle structure}
+\label{app:manifolds:fibrebundle}
+%------------------------------------------------------------
+
+\subsection*{Vector bundles}
+
+A \emph{$\mathcal{C}^p$-vector bundle} over $\mathbb{M}$ with fibre
+$F$ (a Banach space) is a $\mathcal{C}^p$-Banach manifold $E$ together
+with a $\mathcal{C}^p$-surjection $\pi: E \to \mathbb{M}$ such that:
+\begin{enumerate}
+\item[(VB1)] Each fibre $E_m \coloneqq \pi^{-1}(m)$ is a Banach space
+    isomorphic to $F$.
+\item[(VB2)] There is an open cover $\{M_i\}$ of $\mathbb{M}$ and
+    $\mathcal{C}^p$-diffeomorphisms (local trivialisations)
+    $\Phi_i: \pi^{-1}(M_i) \xrightarrow{\;\sim\;} M_i \times F$
+    such that $\mathrm{pr}_1 \circ \Phi_i = \pi$.
+\item[(VB3)] The \emph{transition maps}
+    $\Phi_j \circ \Phi_i^{-1}: (M_i \cap M_j) \times F \to
+    (M_i \cap M_j) \times F$ have the form
+    $(m, v) \mapsto (m, g_{ij}(m)(v))$, where
+    $g_{ij}: M_i \cap M_j \to \GL{F}$ is $\mathcal{C}^p$.
+\end{enumerate}
+The tangent bundle $T\mathbb{M}$ is a vector bundle with fibre
+$X$ (the model space). The trivial bundle is $\mathbb{M} \times F$.
+
+\subsection*{Principal bundles}
+
+A \emph{$\mathcal{C}^p$-principal bundle} with structure group $G$ (a
+Lie group) is a fibre bundle $\pi: E \to \mathbb{M}$ on which $G$ acts
+freely and properly on the right, with $E/G \cong \mathbb{M}$ and local
+trivialisations equivariant under the $G$-action.
+
+\begin{example}[Frame bundle]
+\label{ex:app:frame_bundle}
+The \emph{frame bundle} $\mathrm{Fr}(\mathbb{M})$ of a Banach manifold
+$\mathbb{M}$ modelled on $X$ has fibre
+$\mathrm{Fr}_m(\mathbb{M}) = \GL{X, T_m\mathbb{M}}$ (bounded linear
+isomorphisms from $X$ to $T_m\mathbb{M}$). It is a principal
+$\GL{X}$-bundle over $\mathbb{M}$.
+\end{example}
+
+\subsection*{The Tucker manifold as a fibre bundle}
+
+The central structural theorem of Chapter~\ref{chap:tucker_manifold}
+can be stated in this language as follows.
+
+\begin{theorem}[Tucker fibre bundle,
+    Theorem~\ref{thm:Tucker_Banach_Manifold}]
+\label{thm:app:tucker_bundle}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces for $\alpha \in D$
+and let $\fr \in \AD{\VD}$ with $\Tucker{\fr}{\VD}$ proper. Then the
+rank map
+\begin{equation*}
+    \varrho_\fr : \Tucker{\fr}{\VD} \longrightarrow
+    \prod_{\alpha \in D} \Grass{r_\alpha}{V_\alpha},
+    \qquad
+    \bv \longmapsto \bigl(\Umin{\alpha}{\bv}\bigr)_{\alpha \in D},
+\end{equation*}
+makes $\Tucker{\fr}{\VD}$ into a $\mathcal{C}^\infty$-fibre bundle over
+the product of finite Grassmannians
+$\prod_\alpha \Grass{r_\alpha}{V_\alpha}$, with typical fibre
+\begin{equation*}
+    F_\fr \coloneqq \RR^{\times_{\alpha \in D} r_\alpha}_*
+    \coloneqq \bigl\{C^{(D)} \in \RR^{\times_\alpha r_\alpha} :
+    C^{(D)} \text{ has full Tucker rank } \fr \bigr\}.
+\end{equation*}
+\end{theorem}
+
+\begin{remark}[Special cases]
+\label{rem:app:tucker_bundle_special}
+\begin{enumerate}
+\item[\textup{(i)}] For $d = 2$ and any $r \geq 1$, the fibre $F_\fr
+    = \GL{r}{\RR}$ is the general linear group, making
+    $\Tucker{\fr}{\VD}$ a principal $\GL{r}$-bundle when $r_1 = r_2 = r$.
+\item[\textup{(ii)}] For $r_\alpha = 1$ for all $\alpha \in D$
+    (rank-one tensors), the fibre is $F_\fr = \RR^* = \RR \setminus
+    \{0\}$, a principal $\RR^*$-bundle (a line bundle).
+\item[\textup{(iii)}] In both cases (i) and (ii) the structure group is
+    a Lie group, making the bundle a principal bundle. For general
+    rank tuples $\fr$, the fibre $F_\fr$ is an open subset of a
+    Euclidean space, hence a smooth finite-dimensional manifold but
+    not a group.
+\end{enumerate}
+\end{remark}
+
+\subsection*{Trivialisation over a chart of the base}
+
+Fix $\bv \in \Tucker{\fr}{\VD}$ and let
+$(U_\alpha)_\alpha = \varrho_\fr(\bv) = (\Umin{\alpha}{\bv})_\alpha$.
+The chart domain at $\bv$ in the Tucker manifold atlas is
+\begin{equation*}
+    \mathcal{U}(\bv) = \varrho_\fr^{-1}
+    \Bigl(\prod_\alpha \GrassB{W_\alpha^{\min}(\bv), V_\alpha}\Bigr),
+\end{equation*}
+where $\GrassB{W, V} = \{U \in \GrassB{V} : V = U \oplus W\}$ is
+the chart domain of the Grassmannian of $V_\alpha$ at
+$\Umin{\alpha}{\bv}$. The local trivialisation is
+\begin{equation}
+\label{eq:app:tucker_triv}
+    \chi_\bv : \mathcal{U}(\bv)
+    \xrightarrow{\;\sim\;}
+    \prod_\alpha \GrassB{W_\alpha^{\min}(\bv), V_\alpha} \times F_\fr,
+    \qquad
+    \bw \longmapsto
+    \bigl((\Umin{\alpha}{\bw})_\alpha,\; C^{(D)}(\bw)\bigr),
+\end{equation}
+where $C^{(D)}(\bw)$ is the core tensor of $\bw$ in the basis induced
+by the chart. This is exactly the chart map $\xi_\bv$ of
+Theorem~\ref{thm:Tucker_Banach_Manifold}, split into its base and fibre
+components.
+
+%------------------------------------------------------------
+\section{Why the quotient construction fails in infinite dimensions}
+\label{app:manifolds:quotient}
+%------------------------------------------------------------
+
+In finite dimensions, $\Tucker{\fr}{\VD}$ is commonly described as a
+\emph{quotient manifold}. This section explains why that description
+does not extend to infinite dimensions, and why the explicit atlas
+approach of Chapter~\ref{chap:tucker_manifold} is necessary.
+
+\subsection*{The finite-dimensional quotient picture}
+
+Let $d = 2$ and $V_1 = \RR^{n_1}$, $V_2 = \RR^{n_2}$. A rank-$r$
+matrix $M \in \RR^{n_1 \times n_2}$ can be written as $M = A B^\top$
+with $A \in \RR^{n_1 \times r}_*$ (full column rank) and
+$B \in \RR^{n_2 \times r}_*$. The pair $(A, B)$ is not unique: for any
+$G \in \GL{r}{\RR}$, the pair $(AG, B(G^{-\top}))$ gives the same
+product. Thus, in finite dimensions,
+\begin{equation}
+\label{eq:app:quotient_fd}
+    \Tucker{r}{\RR^{n_1} \otimes \RR^{n_2}}
+    \cong
+    \bigl(\RR^{n_1 \times r}_* \times \RR^{n_2 \times r}_*\bigr)
+    \big/ \GL{r}{\RR},
+\end{equation}
+where $\GL{r}{\RR}$ acts by simultaneous right multiplication. Since
+$\RR^{n_j \times r}_*$ is an open subset of $\RR^{n_j \times r}$ and
+$\GL{r}{\RR}$ acts freely and properly, the quotient
+\eqref{eq:app:quotient_fd} is a smooth manifold by the principal bundle
+theorem.
+
+The same construction works for the Tucker format with $d \geq 3$: one
+takes the product $\prod_{\alpha \in D} \cL(U_\alpha, V_\alpha)_*$ of
+spaces of injective linear maps, modulo simultaneous gauge
+transformations by $\prod_\alpha \GL{r_\alpha}{\RR}$.
+
+\subsection*{Failure in infinite dimensions}
+
+When $V_\alpha$ are infinite-dimensional Banach spaces, the quotient
+construction \eqref{eq:app:quotient_fd} encounters two fundamental
+obstructions.
+
+\textbf{Obstruction 1: The stabiliser group is infinite-dimensional.}
+Replace $\RR^{n_j \times r}_*$ by the space of injective bounded
+operators $\cL_{\mathrm{inj}}(U_\alpha, V_\alpha)$ (where $U_\alpha
+\cong \RR^{r_\alpha}$ is finite-dimensional). The structure group
+$\prod_\alpha \GL{r_\alpha}{\RR}$ remains finite-dimensional, so this
+obstruction does not arise directly for the Tucker case. However, for
+the generalisation to tree-based formats, the relevant group includes
+automorphisms of the component spaces $V_\alpha$ at internal nodes of
+the tree, which are infinite-dimensional Banach spaces. Their
+automorphism group $\GL{V_\alpha}$ is an infinite-dimensional Lie group
+whose quotient topology may not be Hausdorff.
+
+\textbf{Obstruction 2: The quotient topology may not be well-behaved.}
+The \emph{principal bundle theorem} (which guarantees that $E/G$ is a
+smooth manifold when $G$ acts freely and properly on $E$) requires
+either that $G$ is a finite-dimensional Lie group, or that the action
+is a \emph{proper and slice-admitting} action in the sense of Palais.
+For infinite-dimensional $G$, these conditions are non-trivial and
+frequently fail. In particular:
+\begin{itemize}
+\item The orbit map $G \to G \cdot e$ need not be a homeomorphism onto
+    its image (the orbit may not be a submanifold).
+\item The quotient $E/G$ equipped with the quotient topology may not be
+    locally Euclidean (not locally modelled on a Banach space).
+\end{itemize}
+
+\begin{remark}[Tree-based formats]
+\label{rem:app:quotient_TBT}
+For tree-based tensor formats $\FTv$ with $\dep{\TD} \geq 2$, the
+natural gauge group includes transformations at internal nodes of the
+tree that act on the \emph{transfer tensors} $C^{(\alpha)}$. The
+stabiliser of a generic element includes change-of-basis matrices at
+each internal vertex, which, at nodes $\alpha$ with
+$\card{\alpha} \geq 2$, are automorphisms of the infinite-dimensional
+space $\bigotimes_{\beta \in S(\alpha)} V_\beta$. The quotient
+construction therefore fails more severely for tree-based formats than
+for the Tucker format.
+
+This is the precise reason why
+Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold} construct
+the manifold structure via explicit local charts rather than via
+the quotient approach.
+\end{remark}
+
+\subsection*{The explicit atlas as a resolution}
+
+The approach of~\cite{FHN2019} (Chapter~\ref{chap:tucker_manifold})
+bypasses both obstructions by working with the Grassmannian structure
+directly. The key observations are:
+
+\begin{enumerate}
+\item The map $\varrho_\fr: \Tucker{\fr}{\VD} \to \prod_\alpha
+    \Grass{r_\alpha}{V_\alpha}$ is well-defined without reference to
+    any group action: it sends $\bv$ to its minimal subspaces, which
+    are intrinsic.
+
+\item The fibre $\varrho_\fr^{-1}(U_\alpha)_\alpha$ over a fixed tuple
+    of subspaces is isomorphic to $F_\fr = \RR^{\times r_\alpha}_*$,
+    a finite-dimensional smooth manifold.
+
+\item The local trivialisations \eqref{eq:app:tucker_triv} are
+    constructed from the Grassmann charts
+    $\Psi_{U_\alpha \oplus W_\alpha}$, which are defined without
+    any group action and are automatically $\mathcal{C}^\infty$.
+\end{enumerate}
+
+The result is a description of $\Tucker{\fr}{\VD}$ as a fibre bundle
+over a product of Grassmannians, with finite-dimensional fibre and
+infinite-dimensional base, without any quotient. The structure group
+reduces to $\prod_\alpha \GL{r_\alpha}{\RR}$ (a finite-dimensional
+Lie group acting on the fibres), so the bundle is in fact a principal
+bundle in the finite-dimensional-structure-group sense, even though the
+total space and base are infinite-dimensional.
+
+\begin{remark}[The Uschmajew--Vandereycken approach]
+\label{rem:app:quotient_UV}
+Uschmajew and Vandereycken~\cite{Uschmajew2012} studied the HT manifold
+in finite dimensions as a quotient by a gauge group. Their approach
+gives the same manifold structure in finite dimensions (where both
+constructions are available), but does not extend to infinite dimensions.
+The comparison is discussed further in
+Chapter~\ref{chap:tucker_manifold} (historical notes).
+\end{remark}
+
+%------------------------------------------------------------
+\section{Connections, parallel transport, and curvature}
+\label{app:manifolds:connections}
+%------------------------------------------------------------
+
+This section briefly describes connections on vector bundles, included
+for completeness; the material is not used in the proofs of this
+monograph but is relevant to the open problems of
+Chapter~\ref{chap:open}.
+
+\subsection*{Connections on vector bundles}
+
+Let $\pi: E \to \mathbb{M}$ be a $\mathcal{C}^\infty$ vector bundle.
+A \emph{(linear) connection} on $E$ is a bilinear map
+$\nabla: \mathfrak{X}(\mathbb{M}) \times \Gamma(E) \to \Gamma(E)$,
+$(X, s) \mapsto \nabla_X s$, where $\mathfrak{X}(\mathbb{M})$ denotes
+the $\mathcal{C}^\infty$ vector fields and $\Gamma(E)$ the sections of
+$E$, satisfying:
+\begin{enumerate}
+\item[(C1)] $\nabla_{fX} s = f \nabla_X s$ for all
+    $f \in \mathcal{C}^\infty(\mathbb{M})$.
+\item[(C2)] $\nabla_X(fs) = (Xf) s + f \nabla_X s$
+    (Leibniz rule).
+\end{enumerate}
+In a local trivialisation, $\nabla$ is represented by a
+$\cL(F)$-valued $1$-form (the \emph{connection form}), and
+$\nabla_X s = X(s) + \omega(X)(s)$ where $\omega$ is the connection
+$1$-form.
+
+\subsection*{Parallel transport}
+
+Given a connection $\nabla$ and a $\mathcal{C}^1$-curve
+$\gamma: [0,1] \to \mathbb{M}$, \emph{parallel transport} along
+$\gamma$ is the family of isomorphisms
+$P_t: E_{\gamma(0)} \to E_{\gamma(t)}$ defined by solving the ODE
+$\nabla_{\dot\gamma(t)} s(t) = 0$, $s(0) = e_0$. Parallel transport
+preserves the fibre structure and is used to define the covariant
+derivative of sections along curves.
+
+\subsection*{The Levi-Civita connection on Riemannian manifolds}
+
+If $\mathbb{M}$ is a (possibly infinite-dimensional) Riemannian
+manifold — that is, each $T_m\mathbb{M}$ carries a smoothly varying
+inner product — then there is a unique torsion-free metric connection,
+the \emph{Levi-Civita connection}. Its curvature tensor
+$R(X,Y)Z = \nabla_X \nabla_Y Z - \nabla_Y \nabla_X Z -
+\nabla_{[X,Y]} Z$ measures the failure of parallel transport to
+commute around infinitesimal loops.
+
+\begin{remark}[Relevance to tensor manifolds]
+\label{rem:app:curvature_tensors}
+The Tucker manifold $\Tucker{\fr}{\VD}$ and the tree-based manifold
+$\FTv$ inherit a Riemannian structure from the ambient space $\VDnorm$
+whenever $\VDnorm$ is a Hilbert tensor space (e.g., $\bigotimes_{j=1}^d
+L^2(I_j)$). The Levi-Civita connection and its curvature tensor
+control the stability and accuracy of geometric integration schemes on
+these manifolds — in particular the projector-splitting integrator
+of Lubich~\cite{KochLubich2007}. In the Banach (non-Hilbert) setting,
+no natural Riemannian structure is available, and the curvature is
+replaced by more subtle nonlinear invariants. This is one of the
+sources of difficulty in Open Problem~\ref{prob:integrator}.
+\end{remark}
+
+\subsection*{Holonomy}
+
+The \emph{holonomy group} at $m \in \mathbb{M}$ is the group of
+parallel transport maps around closed loops based at $m$. For the
+Grassmannian $\Grass{r}{X}$ (with the natural $U(r)$-invariant
+connection in the Hilbert case), the holonomy group is $U(r)$.
+Understanding the holonomy of the Tucker and tree-based manifolds is
+related to Open Problem~\ref{prob:homotopy} (fundamental group and
+higher homotopy groups).

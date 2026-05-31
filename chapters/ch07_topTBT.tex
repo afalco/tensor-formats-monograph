@@ -274,22 +274,113 @@ $\bv \in \VDnorm$. Then for each $\alpha \in \TD \setminus \{D\}$:
 \end{equation}
 \end{theorem}
 
-\begin{proof}[Sketch]
-For $\alpha \in \Sons{D}$, the minimal subspace $\Umin{\alpha}{\bv}$
-is characterised as the closure of the range of the operator
-$\overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}$ applied to
-$\bv$, for $\varphi^{[\alpha]}$ ranging over the dual unit ball.
-Weak convergence $\bv_n \rightharpoonup \bv$ implies that
-$\overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}(\bv_n)
-\rightharpoonup \overline{\Id{\Vbigalpha} \otimes \varphi^{[\alpha]}}(\bv)$
-weakly in $\Valphanorm$ (by the continuity of the operator from
-Lemma~\ref{lem:min_extension}). The lower semicontinuity of the
-dimension then follows from the fact that the set of operators of
-rank $\leq r$ is weakly closed in the operator topology, analogously
-to Theorem~\ref{thm:weak_closed}. The extension to all $\alpha \in \TD$
-follows by induction on $\dep{\TD}$, using
-Proposition~\ref{prop:min_char_tree} to propagate the inequality
-from children to parents.
+\begin{proof}
+The proof proceeds in two stages: first for vertices $\alpha \in \Sons{D}$
+(children of the root), then by downward induction over the tree.
+
+\medskip
+\noindent\textbf{Stage 1: Vertices in $\Sons{D}$.}
+
+Fix $\alpha \in \Sons{D}$. By the extension formula~\eqref{eq:min_extension},
+for any $\varphi^{[\alpha]} \in {}_a\bigotimes_{\beta \in \Sons{D}
+\setminus \{\alpha\}} \Vbigbeta^*$, the operator
+\begin{equation*}
+    T_{\varphi^{[\alpha]}}
+    \coloneqq \overline{(\Id{\Vbigalpha} \otimes \varphi^{[\alpha]})}
+    \in \cL(\VDnorm,\, \Valphanorm)
+\end{equation*}
+is bounded, with $\|T_{\varphi^{[\alpha]}}\| \leq
+\|\varphi^{[\alpha]}\|_*$ by condition \condINJ[$T_D$]
+(which implies the contraction maps are controlled by the dual
+functional norms; see the proof of Lemma~\ref{lem:min_extension}).
+Hence weak convergence $\bv_n \rightharpoonup \bv$ in $\VDnorm$
+implies
+\begin{equation}
+\label{eq:Talpha_weak}
+    T_{\varphi^{[\alpha]}}(\bv_n)
+    \rightharpoonup T_{\varphi^{[\alpha]}}(\bv)
+    \quad \text{weakly in } \Valphanorm,
+    \qquad \forall\, \varphi^{[\alpha]}.
+\end{equation}
+
+Now suppose for contradiction that
+$\dim \Umin{\alpha}{\bv} > \liminf_{n \to \infty} \dim\Umin{\alpha}{\bv_n}$.
+Then there exists a subsequence (still denoted $(\bv_n)$) and an integer
+$m > 0$ such that $\dim \Umin{\alpha}{\bv_n} \leq m$ for all $n$,
+while $\dim \Umin{\alpha}{\bv} \geq m+1$.
+
+Choose $m+1$ functionals $\varphi^{[\alpha]}_1, \ldots,
+\varphi^{[\alpha]}_{m+1}$ such that the vectors
+$w_k \coloneqq T_{\varphi^{[\alpha]}_k}(\bv) \in \Umin{\alpha}{\bv}$
+are linearly independent (possible since $\dim \Umin{\alpha}{\bv}
+\geq m+1$). By~\eqref{eq:Talpha_weak},
+$T_{\varphi^{[\alpha]}_k}(\bv_n) \rightharpoonup w_k$ for each $k$.
+
+Since $T_{\varphi^{[\alpha]}_k}(\bv_n) \in \Umin{\alpha}{\bv_n}$ and
+$\dim \Umin{\alpha}{\bv_n} \leq m$, the $m+1$ vectors
+$T_{\varphi^{[\alpha]}_1}(\bv_n), \ldots, T_{\varphi^{[\alpha]}_{m+1}}(\bv_n)$
+are linearly dependent for every $n$. That is, there exist scalars
+$\lambda^n_1, \ldots, \lambda^n_{m+1}$, not all zero, with
+$\sum_k \lambda^n_k T_{\varphi^{[\alpha]}_k}(\bv_n) = 0$.
+Normalising so that $\max_k |\lambda^n_k| = 1$ and passing to a
+subsequence, we may assume $\lambda^n_k \to \lambda_k$ for each $k$,
+with $\max_k |\lambda_k| = 1$. The weak limit gives
+$\sum_k \lambda_k w_k = 0$, contradicting the linear independence of
+$w_1, \ldots, w_{m+1}$. Therefore
+\begin{equation}
+\label{eq:lsc_sons}
+    \dim \Umin{\alpha}{\bv} \leq
+    \liminf_{n \to \infty} \dim \Umin{\alpha}{\bv_n}
+    \quad \forall\, \alpha \in \Sons{D}.
+\end{equation}
+
+\medskip
+\noindent\textbf{Stage 2: Downward induction over $\TD$.}
+
+We now extend~\eqref{eq:lsc_sons} to every $\alpha \in \TD \setminus
+\{D\}$ by induction on the level $\lev{\alpha}$ of the vertex,
+proceeding from the root downward.
+
+\textit{Base case:} $\alpha \in \Sons{D}$. This is~\eqref{eq:lsc_sons}.
+
+\textit{Inductive step:} Let $\alpha \in \TD \setminus (\{D\} \cup \Leaves)$
+and assume that~\eqref{eq:rank_lsc} holds for $\alpha$ (established
+at the previous level). Fix $\beta \in \Sons{\alpha}$.
+
+By the tree-based characterisation of minimal subspaces
+(Proposition~\ref{prop:min_char_tree}), for any
+$\bv_\alpha \in \Umin{\alpha}{\bv}$ and any functional
+$\varphi^{(\alpha \setminus \beta)} \in
+({}_a\bigotimes_{\gamma \in \Sons{\alpha} \setminus \{\beta\}}
+\Vbigalpha[\gamma])^*$, the contraction
+\begin{equation*}
+    S_{\varphi^{(\alpha \setminus \beta)}}(\bv_\alpha)
+    \coloneqq
+    (\Id{\Vbigbeta} \otimes \varphi^{(\alpha \setminus \beta)})(\bv_\alpha)
+    \in \Umin{\beta}{\bv}.
+\end{equation*}
+Under condition \condINJ[$T_D$], the composition
+\begin{equation*}
+    R_\phi \coloneqq S_{\varphi^{(\alpha \setminus \beta)}} \circ
+    T_{\varphi^{[\alpha]}}
+    \in \cL(\VDnorm, \Vbigbeta)
+\end{equation*}
+is bounded, and $\bv_n \rightharpoonup \bv$ implies
+$R_\phi(\bv_n) \rightharpoonup R_\phi(\bv)$ weakly in $\Vbigbeta$.
+
+Since $R_\phi(\bv_n) \in \Umin{\beta}{\bv_n}$ and
+$\dim \Umin{\beta}{\bv_n} \leq \dim \Umin{\alpha}{\bv_n}$, the same
+contradiction argument as in Stage~1 applies: if
+$\dim \Umin{\beta}{\bv} > \liminf_n \dim \Umin{\beta}{\bv_n}$, we
+find linearly independent weak-limit vectors in $\Umin{\beta}{\bv}$
+that are linear combinations of weakly convergent sequences confined
+to a subspace of smaller dimension, yielding a contradiction.
+
+Hence $\dim \Umin{\beta}{\bv} \leq \liminf_{n \to \infty}
+\dim \Umin{\beta}{\bv_n}$ for all $\beta \in \Sons{\alpha}$.
+
+Applying this argument level by level from the root $D$ down to the
+leaves gives~\eqref{eq:rank_lsc} for all $\alpha \in \TD \setminus \{D\}$.
 \end{proof}
 
 \begin{theorem}[Weak closedness, {\cite[Theorem~3.5]{FHN2021}}]

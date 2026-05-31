@@ -359,17 +359,68 @@ $\fr = (r_\alpha)_{\alpha \in \TD} \in \ADTD$. Then
 where $\fr_k = (r_\alpha)_{\alpha \in \PkT{k}{\TD}}$.
 \end{theorem}
 
-\begin{proof}[Sketch]
-The inclusion $\FTv \subseteq \bigcap_k \Tucker{\fr_k}{\VD,\PkT{k}{\TD}}$
-is immediate: if $\dim \Umin{\alpha}{\bv} = r_\alpha$ for all
-$\alpha \in \TD$, then in particular for all $\alpha \in \PkT{k}{\TD}$
-at each level $k$. For the reverse inclusion, one uses
-Proposition~\ref{prop:min_inclusion_partition} inductively: from
-$\dim \Umin{\alpha}{\bv} = r_\alpha$ at the leaf level
-($k = \dep{\TD}$) and the compatibility condition
-$\Umin{\alpha}{\bv} \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}}
-\Umin{\beta}{\bv}$, one deduces $\dim \Umin{\alpha}{\bv} = r_\alpha$
-at all intermediate levels. See~\cite{FHN2023} for the complete proof.
+\begin{proof}
+We prove both inclusions.
+
+\medskip
+\noindent\textbf{($\supseteq$) Forward inclusion: $\FTv \subseteq
+\bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.}
+
+By definition, $\bv \in \FTv$ means $\dim \Umin{\alpha}{\bv} = r_\alpha$
+for every $\alpha \in \TD \setminus \{D\}$. Since each partition
+$\PkT{k}{\TD}$ consists of vertices of $\TD$ (at level $k$, plus any
+leaves at earlier levels), the condition
+$\dim \Umin{\alpha}{\bv} = r_\alpha$ holds in particular for each
+$\alpha \in \PkT{k}{\TD}$. Hence
+$\bv \in \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ for every $k$, and
+$\bv \in \bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.
+
+\medskip
+\noindent\textbf{($\subseteq$) Reverse inclusion:
+$\bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}} \subseteq \FTv$.}
+
+Let $\bv \in \bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.
+We must show that $\dim \Umin{\alpha}{\bv} = r_\alpha$ for
+every $\alpha \in \TD \setminus \{D\}$.
+
+We proceed by upward induction on the level of $\alpha$, starting
+from the leaves (deepest level) and going toward the root.
+
+\textit{Base case (leaves):} Every leaf $\alpha \in \Leaves$ belongs
+to the level-$\dep{\TD}$ partition $\PkT{\dep{\TD}}{\TD} = \Leaves$.
+Since $\bv \in \Tucker{\fr_{\dep{\TD}}}{\VD, \Leaves}$, we have
+$\dim \Umin{\alpha}{\bv} = r_\alpha$ for all $\alpha \in \Leaves$.
+
+\textit{Inductive step:} Let $\alpha \in \TD \setminus (\{D\} \cup \Leaves)$
+at level $k = \lev{\alpha}$, and suppose
+$\dim \Umin{\beta}{\bv} = r_\beta$ for all $\beta \in \Sons{\alpha}$
+(inductive hypothesis at level $k+1$).
+
+Since $\bv \in \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ and $\alpha \in
+\PkT{k}{\TD}$, we have $\dim \Umin{\alpha}{\bv} = r_\alpha$.
+(The membership in the $k$-th Tucker set directly gives the rank
+condition at level $k$.)
+
+This establishes $\dim \Umin{\alpha}{\bv} = r_\alpha$ for every
+internal vertex $\alpha$ at level $k$, and by induction from the
+leaves up, for every $\alpha \in \TD \setminus \{D\}$.
+
+\medskip
+\noindent\textbf{Remark on the inductive structure.}
+The key point is that the rank conditions at different levels are
+not independent: Proposition~\ref{prop:min_inclusion_partition}
+(and its tree version~\eqref{eq:min_inclusion_tree}) gives
+\begin{equation*}
+    \Umin{\alpha}{\bv}
+    \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv}
+    \quad \forall\, \alpha \in \TD \setminus \Leaves,
+\end{equation*}
+so the dimension satisfies
+$r_\alpha = \dim \Umin{\alpha}{\bv} \leq
+\prod_{\beta \in \Sons{\alpha}} r_\beta$.
+The admissibility condition $\fr \in \ADTD$ precisely requires this
+inequality to hold, so the intersection is non-empty and the
+inductive argument is consistent.
 \end{proof}
 
 \begin{remark}

@@ -207,21 +207,91 @@ $\bv_0 \in \Tucker{\fr}{\VD}$.
 \end{enumerate}
 \end{theorem}
 
-\begin{proof}[Sketch]
-\textbf{Existence.} The reduced ODE~\eqref{eq:DF_tucker} is an ODE on
-the Banach manifold $\Tucker{\fr}{\VD}$. By
-Theorem~\ref{thm:tucker_immersion}, $\ZD{\bv_r(t)}$ is a split
-subspace of $\VDnorm$ for each $\bv_r(t) \in \Tucker{\fr}{\VD}$.
-The right-hand side of~\eqref{eq:DF_tucker} depends smoothly on
-$\bv_r(t)$ (the metric projection onto a smoothly-varying split
-subspace is smooth), so local existence and uniqueness follow from the
-ODE existence theorem on Banach manifolds~\cite[Theorem~4.1.5]{Lang1999}.
+\begin{proof}
+We prove the two statements in order.
 
-\textbf{Characterisation.} Since $\ZD{\bv_r(t)}$ is closed and
-convex, Corollary~\ref{cor:best_proj_tangent} gives existence of the
-minimum in~\eqref{eq:DF_tucker_char}. The equivalence with the metric
-projection condition~\eqref{eq:DF_tucker} follows from the uniqueness
-(strict convexity) and Theorem~\ref{thm:metric_projection}.
+\medskip
+\noindent\textbf{Part 1: Existence and uniqueness.}
+
+\textit{Step 1.1: The right-hand side is a smooth vector field.}
+By Theorem~\ref{thm:tucker_immersion} (proved under \condINJ), for
+every $\bv \in \Tucker{\fr}{\VD}$ the tangent subspace $\ZD{\bv}$
+is a split subspace of $\VDnorm$. In local chart coordinates
+$(\lambda, L_\alpha)_{\alpha \in D}$ at $\bv_0$
+(cf.\ Section~\ref{sec:tucker_manifold:charts}), the map
+\begin{equation*}
+    \bv \mapsto \Pmetric{\bv}\bigl(\bF(t,\bv)\bigr)
+\end{equation*}
+is a composition of:
+\begin{enumerate}
+\item[\textup{(i)}] $\bv \mapsto \bF(t,\bv)$, which is
+    $\mathcal{C}^\infty$ in $\bv$ (by hypothesis on $\bF$);
+\item[\textup{(ii)}] $\bv \mapsto \ZD{\bv}$, which is
+    $\mathcal{C}^\infty$ because $\ZD{\bv}$ is defined in terms of
+    the minimal subspaces $\Umin{\alpha}{\bv}$ and their complements
+    $\Wmin{\alpha}{\bv}$, which vary smoothly with $\bv$ on
+    $\Tucker{\fr}{\VD}$ — this is the content of the local chart
+    construction in Section~\ref{sec:tucker_manifold:charts},
+    specifically the smooth dependence of the Grassmann chart maps
+    on the base point (Theorem~\ref{thm:grassmann_manifold} and
+    Lemma~\ref{lem:element});
+\item[\textup{(iii)}] the metric projection
+    $\dot{\bu} \mapsto \Pmetric{\bv}(\dot{\bu})$ onto a
+    fixed split subspace, which is a bounded linear projection
+    (hence $\mathcal{C}^\infty$) when $\VDnorm$ is strictly convex
+    and $\ZD{\bv}$ is split (Theorem~\ref{thm:tucker_immersion}).
+\end{enumerate}
+The composition is therefore $\mathcal{C}^\infty$ in the chart
+coordinates, so $\bv \mapsto \Pmetric{\bv}(\bF(t,\bv))$ defines a
+$\mathcal{C}^\infty$ vector field on $\Tucker{\fr}{\VD}$.
+
+\textit{Step 1.2: Application of the ODE theorem on Banach manifolds.}
+By Step~1.1, equation~\eqref{eq:DF_tucker} is an ODE of the form
+$\dot{\bv}_r = G(t, \bv_r)$ on the $\mathcal{C}^\infty$-Banach
+manifold $\Tucker{\fr}{\VD}$, where $G$ is $\mathcal{C}^\infty$
+jointly in $(t, \bv_r)$ (using the smoothness of $\bF$ in $t$).
+The ODE existence and uniqueness theorem on Banach manifolds
+(Theorem~\ref{thm:app:ode} in Appendix~\ref{app:manifolds}) gives a
+unique maximal $\mathcal{C}^1$-curve
+$t \mapsto \bv_r(t)$ in $\Tucker{\fr}{\VD}$, defined on an open
+interval $(-\varepsilon, \varepsilon)$ for some $\varepsilon > 0$,
+with $\bv_r(0) = \bv_0$.
+
+\medskip
+\noindent\textbf{Part 2: Characterisation.}
+
+\textit{Step 2.1: Existence of the minimum.}
+For each fixed $t$, the set $\ZD{\bv_r(t)}$ is a closed linear
+subspace of $\VDnorm$ (it is split by Theorem~\ref{thm:tucker_immersion},
+and every split subspace is closed). Since $\VDnorm$ is reflexive,
+every closed subspace is proximinal
+(Corollary~\ref{cor:best_proj_tangent}), so the infimum
+in~\eqref{eq:DF_tucker_char} is attained. Since $\VDnorm$ is
+strictly convex, the nearest point in the convex set
+$\ZD{\bv_r(t)}$ is unique. Thus the metric projection
+$\Pmetric{\bv_r(t)}(\bF(t,\bv_r(t)))$ is well-defined as a
+singleton.
+
+\textit{Step 2.2: Equivalence.}
+The characterisation~\eqref{eq:DF_tucker_char} says precisely that
+$\dot{\bv}_r(t)$ is the metric projection of $\bF(t,\bv_r(t))$
+onto $\ZD{\bv_r(t)}$, i.e., $\dot{\bv}_r(t) =
+\Pmetric{\bv_r(t)}(\bF(t,\bv_r(t)))$. This is the content of
+equation~\eqref{eq:DF_tucker}. The equivalence follows directly
+from the definition of the metric projection and the uniqueness
+established in Step~2.1: a point in a strictly convex Banach space
+achieves the minimum distance to a closed convex set if and only if
+it is the (unique) metric projection.
+
+More explicitly, Theorem~\ref{thm:metric_projection}(a)$\Leftrightarrow$(b)
+gives the further characterisation: $\dot{\bv}_r(t) = \Pmetric{\bv_r(t)}
+(\bF(t,\bv_r(t)))$ if and only if
+\begin{equation*}
+    \langle \dot{\bv} ,\, J(\bF(t,\bv_r(t)) - \dot{\bv}_r(t))
+    \rangle = 0
+    \quad \text{for all } \dot{\bv} \in \ZD{\bv_r(t)},
+\end{equation*}
+which is the Banach-space form of the Dirac--Frenkel variational condition.
 \end{proof}
 
 \begin{remark}[Kinematic equations]
