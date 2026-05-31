@@ -1,13 +1,484 @@
 %============================================================
-%  ch08_tucker_manifold.tex  —  The Tucker Manifold
-%  TODO: Write content
+%  ch08_tucker_manifold.tex
+%  Chapter 8: The Tucker Manifold
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2019 (Secs. 3-4)
+%  Estimated length: ~45 pp.
 %============================================================
 
 \chapter{The Tucker Manifold}
 \label{chap:tucker_manifold}
 
-\section*{To be written}
+This chapter establishes the central geometric result of the monograph:
+the set $\Tucker{\fr}{\VD}$ of tensors with fixed Tucker rank carries
+the structure of a $\mathcal{C}^\infty$-Banach manifold, and is an
+immersed submanifold of the ambient Banach tensor space $\VDnorm$.
+Section~\ref{sec:tucker_manifold:decomp} introduces the rank map and
+motivates the manifold structure.
+Section~\ref{sec:tucker_manifold:charts} constructs the local charts
+explicitly. Section~\ref{sec:tucker_manifold:cinfty} proves the
+$\mathcal{C}^\infty$ atlas and the fibre bundle structure
+(Theorem~\ref{thm:Tucker_Banach_Manifold}).
+Section~\ref{sec:tucker_manifold:tangent} identifies the tangent space.
+Section~\ref{sec:tucker_manifold:immersion} proves the immersion theorem
+(Theorem~\ref{thm:tucker_immersion}).
+Throughout, $D = \{1,\ldots,d\}$, $d \geq 2$, and $(V_\alpha,
+\|\cdot\|_\alpha)$ are normed spaces.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+%------------------------------------------------------------
+\section{The rank map and the decomposition of $\VD$}
+\label{sec:tucker_manifold:decomp}
+%------------------------------------------------------------
+
+Recall from Theorem~\ref{thm:tucker_decomposition_full} that
+\begin{equation*}
+    \VD = \bigsqcup_{\fr \in \AD{\VD}} \Tucker{\fr}{\VD}.
+\end{equation*}
+The map
+\begin{equation}
+\label{eq:rank_map}
+    \varrho : \VD \longrightarrow
+    \bigcup_{\fr \in \AD{\VD}}
+    \prod_{\alpha \in D} \Grass{r_\alpha}{V_\alpha},
+    \qquad
+    \bv \mapsto \bigl(\Umin{\alpha}{\bv}\bigr)_{\alpha \in D},
+\end{equation}
+sends each tensor to its tuple of minimal subspaces. For fixed
+$\fr \in \AD{\VD}$ with $\fr \neq \mathbf{0}$, the restriction
+\begin{equation}
+\label{eq:rank_map_restricted}
+    \varrho_\fr \coloneqq \varrho\big|_{\Tucker{\fr}{\VD}} :
+    \Tucker{\fr}{\VD} \longrightarrow
+    \prod_{\alpha \in D} \Grass{r_\alpha}{V_\alpha}
+\end{equation}
+is surjective: for any tuple $(U_\alpha)_{\alpha \in D}$ with
+$U_\alpha \in \Grass{r_\alpha}{V_\alpha}$, any full-rank tensor in
+${}_a\bigotimes_\alpha U_\alpha$ belongs to $\Tucker{\fr}{\VD}$ and
+maps to $(U_\alpha)$.
+
+The product of Grassmannians $\prod_{\alpha \in D}
+\Grass{r_\alpha}{V_\alpha}$ is a Banach manifold (Theorem~\ref{thm:grassmann_manifold}
+applied factor by factor), and the rank map $\varrho_\fr$ is its
+natural base for the bundle structure of $\Tucker{\fr}{\VD}$.
+
+%------------------------------------------------------------
+\section{Local charts}
+\label{sec:tucker_manifold:charts}
+%------------------------------------------------------------
+
+Fix $\fr \in \AD{\VD}$ with $\fr \neq \mathbf{0}$ and
+$\bv \in \Tucker{\fr}{\VD}$. Let $V_{\alpha,\|\cdot\|_\alpha}$
+denote the completion of $V_\alpha$ and choose for each $\alpha \in D$
+a closed complement $\Wmin{\alpha}{\bv}$ of $\Umin{\alpha}{\bv}$ in
+$V_{\alpha,\|\cdot\|_\alpha}$:
+\begin{equation*}
+    V_{\alpha,\|\cdot\|_\alpha}
+    = \Umin{\alpha}{\bv} \oplus \Wmin{\alpha}{\bv}.
+\end{equation*}
+Such a complement exists by Proposition~\ref{prop:finitedim_split},
+since $\Umin{\alpha}{\bv}$ is finite-dimensional.
+
+\subsection*{Chart domain}
+
+Define the \emph{chart domain at $\bv$} by
+\begin{equation}
+\label{eq:chart_domain}
+    \chart(\bv) \coloneqq
+    \bigl\{
+        \bw \in \Tucker{\fr}{\VD} :
+        \Umin{\alpha}{\bw} \in
+        \GrassB{\Wmin{\alpha}{\bv}, V_\alpha},\;
+        \forall \alpha \in D
+    \bigr\},
+\end{equation}
+where $\GrassB{W, X} = \{U \in \GrassB{X} : X = U \oplus W\}$ is
+the chart domain of the Grassmannian at $\Umin{\alpha}{\bv}$
+(see Section~\ref{sec:banach:grassmann}).
+
+\subsection*{Chart map}
+
+Fix bases $\{u^{(\alpha)}_{i_\alpha}\}_{i_\alpha=1}^{r_\alpha}$ of
+$\Umin{\alpha}{\bv}$ for each $\alpha \in D$. By
+Lemma~\ref{lem:tucker_characterisation}, there is a unique
+$\CD(\bv) \in \RR^{\times r_\alpha}_*$ such that $\bv$ has the
+Tucker representation~\eqref{eq:tucker_core}.
+For each $\bw \in \chart(\bv)$, define the \emph{chart map}
+\begin{equation}
+\label{eq:chart_map}
+    \chartmap{\bv} : \chart(\bv)
+    \longrightarrow
+    \prod_{\alpha \in D} \cL\bigl(\Umin{\alpha}{\bv},
+        \Wmin{\alpha}{\bv}\bigr)
+    \times \RR^{\times r_\alpha}_*,
+\end{equation}
+by sending $\bw = (\bigotimes_\alpha \exp(L_\alpha))(\bu(E^{(D)}))$
+to the pair $((L_\alpha)_{\alpha \in D},\, E^{(D)})$, where
+$(L_\alpha, E^{(D)})$ are uniquely determined by
+Lemma~\ref{lem:element} below.
+
+\begin{lemma}[Local representation, {\cite[Lemma~3.7]{FHN2019}}]
+\label{lem:element}
+Under the conditions above, for $\bw \in \Tucker{\fr}{\VD}$
+the following are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $\bw \in \chart(\bv)$.
+\item[\textup{(b)}] There exists a unique pair
+    $((L_\alpha)_{\alpha \in D},\, E^{(D)}) \in
+    \prod_\alpha \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})
+    \times \RR^{\times r_\alpha}_*$
+    such that
+    \begin{equation}
+    \label{eq:local_rep}
+        \bw = \Bigl(\bigotimes_{\alpha \in D} \exp(L_\alpha)\Bigr)
+              (\bu(E^{(D)})),
+    \end{equation}
+    where $\bu(E^{(D)}) \in \Tucker{\fr}({}_a\bigotimes_\alpha
+    \Umin{\alpha}{\bv})$ is the tensor with core $E^{(D)}$ in the
+    fixed bases.
+\end{enumerate}
+\end{lemma}
+
+Here $\exp(L_\alpha) = \Id{V_\alpha} + L_\alpha$ by the nilpotency
+of $L_\alpha \in \cL_{(\Umin{\alpha}{\bv},\Wmin{\alpha}{\bv})}(V_\alpha)$
+(Proposition~\ref{prop:nilpotent_algebra}), so the representation is
+polynomial and $\mathcal{C}^\infty$.
+
+\begin{remark}
+\label{rem:chart_geometric}
+Formula~\eqref{eq:local_rep} has a clean geometric interpretation:
+$\bw$ is obtained from the ``reference'' tensor $\bu(E^{(D)})$
+(which lives in the fixed subspaces $\Umin{\alpha}{\bv}$) by applying
+the ``rotation'' $\bigotimes_\alpha \exp(L_\alpha)$ which moves each
+subspace $\Umin{\alpha}{\bv}$ to $\Umin{\alpha}{\bw} = G(L_\alpha)
+= \spann\{(\Id{} + L_\alpha)(u^{(\alpha)}_{i_\alpha})\}$.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The $\mathcal{C}^\infty$-Banach manifold structure}
+\label{sec:tucker_manifold:cinfty}
+%------------------------------------------------------------
+
+\begin{lemma}[Smooth transitions, {\cite[Lemma~3.8]{FHN2019}}]
+\label{lem:premanifold}
+Under the continuity assumption on the tensor product map
+\eqref{eq:tensor_product_normed}, for $\bv, \bv' \in
+\Tucker{\fr}{\VD}$ with $\chart(\bv) \cap \chart(\bv') \neq \emptyset$,
+the transition map
+\begin{equation*}
+    \chartmap{\bv'} \circ \chartmap{\bv}^{-1} :
+    \chartmap{\bv}(\chart(\bv) \cap \chart(\bv'))
+    \longrightarrow
+    \chartmap{\bv'}(\chart(\bv) \cap \chart(\bv'))
+\end{equation*}
+is $\mathcal{C}^\infty$-Fréchet differentiable \textup{(}analytic if
+the $V_\alpha$ are complex Banach spaces\textup{)}.
+\end{lemma}
+
+\begin{proof}[Sketch]
+For $\bw \in \chart(\bv) \cap \chart(\bv')$, the transition map is
+\begin{equation*}
+    (L_\alpha, E^{(D)}) \mapsto
+    \bigl((\Psi^{(\alpha)}_{\bv'} \circ
+    (\Psi^{(\alpha)}_\bv)^{-1})(L_\alpha),\; f(\mathfrak{L}, \bu(E^{(D)}))\bigr),
+\end{equation*}
+where $\Psi^{(\alpha)}_\bv$ is the Grassmann chart map at
+$\Umin{\alpha}{\bv}$ (Theorem~\ref{thm:grassmann_manifold}),
+and $f(\mathfrak{L}, \bu(E^{(D)})) = (\bigotimes_\alpha \exp(L_\alpha -
+L'_\alpha))(\bu(E^{(D)}))$.
+The first component is analytic (transition map of the Grassmannian).
+The second is $\mathcal{C}^\infty$ by Proposition~\ref{prop:tensor_smooth}
+(tensor product of $\mathcal{C}^\infty$ maps) and the fact that the
+evaluation map is multilinear and continuous. See~\cite{FHN2019}
+for the complete argument.
+\end{proof}
+
+\begin{theorem}[$\mathcal{C}^\infty$ Tucker manifold,
+{\cite[Theorem~3.17]{FHN2019}}]
+\label{thm:Tucker_Banach_Manifold}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be normed spaces for $\alpha \in D$
+and let $\|\cdot\|_D$ be a norm on $\VD$ such that the tensor product
+map~\eqref{eq:tensor_product_normed} is continuous. Then:
+\begin{enumerate}
+\item[\textup{(i)}] The collection $\{(\chart(\bv), \chartmap{\bv})\}_{\bv \in
+    \Tucker{\fr}{\VD}}$ is a $\mathcal{C}^\infty$-atlas on
+    $\Tucker{\fr}{\VD}$, which is thus a $\mathcal{C}^\infty$-Banach
+    manifold modelled on the Banach space
+    \begin{equation}
+    \label{eq:tucker_model_space}
+        \Emodel{D} \coloneqq
+        \prod_{\alpha \in D}
+        \cL\bigl(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv}\bigr)
+        \times \RR^{\times_{\alpha \in D} r_\alpha}.
+    \end{equation}
+\item[\textup{(ii)}] The triple $(\Tucker{\fr}{\VD},\,
+    \prod_{\alpha \in D}\Grass{r_\alpha}{V_\alpha},\, \varrho_\fr)$
+    is a $\mathcal{C}^\infty$-fibre bundle with typical fibre
+    $\RR^{\times r_\alpha}_*$.
+\end{enumerate}
+If the $V_\alpha$ are complex Banach spaces, the manifold is analytic.
+\end{theorem}
+
+\begin{proof}
+The atlas conditions AT1--AT3 are verified as follows.
+AT1: $\{\chart(\bv)\}$ covers $\Tucker{\fr}{\VD}$ since every
+$\bv$ belongs to its own chart domain.
+AT2: $\chartmap{\bv}$ is a bijection onto
+$\prod_\alpha \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv}) \times
+\RR^{\times r_\alpha}_*$ by Lemma~\ref{lem:element}.
+AT3: Lemma~\ref{lem:premanifold} gives $\mathcal{C}^\infty$ transitions.
+The fibre bundle structure follows because $\varrho_\fr$ acts locally
+as the projection onto $\prod_\alpha \GrassB{\Wmin{\alpha}{\bv}, V_\alpha}$
+(the Grassmannian chart domain), with fibre $\RR^{\times r_\alpha}_*$.
+\end{proof}
+
+\begin{remark}[Independence from the norm]
+\label{rem:norm_independence}
+The manifold structure of $\Tucker{\fr}{\VD}$ is independent of the
+choice of $\|\cdot\|_D$: the chart maps $\chartmap{\bv}$ depend only
+on the splitting $V_{\alpha,\|\cdot\|_\alpha} = \Umin{\alpha}{\bv}
+\oplus \Wmin{\alpha}{\bv}$, and the $\mathcal{C}^\infty$ regularity
+follows from the continuity of the tensor product map, which holds for
+any crossnorm. Different norms give equivalent smooth structures.
+\end{remark}
+
+\begin{corollary}[Hilbert manifold]
+\label{cor:hilbert_manifold}
+If $V_{\alpha,\|\cdot\|_\alpha}$ is a Hilbert space for each
+$\alpha \in D$, then $\Tucker{\fr}{\VD}$ is a $\mathcal{C}^\infty$-Hilbert
+manifold modelled on
+$\prod_\alpha W^{r_\alpha}_\alpha \times \RR^{\times r_\alpha}$,
+where $W^{r_\alpha}_\alpha = (U_\alpha)^\perp \times \cdots$ (each
+$\cL(U_\alpha, W_\alpha) \cong W_\alpha^{r_\alpha}$ via the chosen
+orthonormal basis of $U_\alpha$).
+\end{corollary}
+
+\begin{example}
+\label{ex:tucker_mfd_Lp}
+For $1 < p < \infty$, the $L^p$ tensor space
+$L^p(\prod_\alpha I_\alpha)$ satisfies the hypotheses
+of Theorem~\ref{thm:Tucker_Banach_Manifold}. Hence
+$\Tucker{\fr}({}_a\bigotimes_\alpha L^p(I_\alpha))$ is a
+$\mathcal{C}^\infty$-Banach manifold. For $p=2$ it is a Hilbert
+manifold.
+\end{example}
+
+\begin{example}
+\label{ex:tucker_mfd_Sobolev}
+For $V_1 = H^{1,p}(I_1)$, $V_2 = H^{1,p}(I_2)$, and either the
+full Sobolev norm $\|\cdot\|_{H^{1,p}}$ or the partial norm
+$\|\cdot\|_{(0,1),p}$ on $V_1 \atens V_2$, both norms make the
+tensor product map continuous (see~\cite[Examples~4.41,~4.42]{Hackbusch2019}).
+Hence $\Tucker{(r,r)}{H^{1,p}(I_1) \atens H^{1,p}(I_2)}$ is a
+$\mathcal{C}^\infty$-Banach manifold modelled on
+$\cL(U_1, W_1) \times \cL(U_2, W_2) \times \GL{\RR^r}$.
+\end{example}
+
+%------------------------------------------------------------
+\section{The tangent space}
+\label{sec:tucker_manifold:tangent}
+%------------------------------------------------------------
+
+\begin{definition}[Tangent subspace $Z^{(D)}(\bv)$]
+\label{def:ZD}
+For $\bv \in \Tucker{\fr}{\VD}$, define the linear subspace
+\begin{equation}
+\label{eq:ZD}
+    \ZD{\bv} \coloneqq
+    {}_a\bigotimes_{\alpha \in D} \Umin{\alpha}{\bv}
+    \oplus
+    \bigoplus_{\alpha \in D}
+    \Wmin{\alpha}{\bv} \atens \Umin{D\setminus\{\alpha\}}{\bv}
+    \;\subset\; \VDnorm.
+\end{equation}
+\end{definition}
+
+$\ZD{\bv}$ is a direct sum of $d+1$ subspaces: the core subspace
+${}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$ (dimension $\prod r_\alpha$)
+and $d$ ``tangent directions'' $\Wmin{\alpha}{\bv} \atens
+\Umin{D\setminus\{\alpha\}}{\bv}$.
+
+\begin{proposition}[Tangent space identification,
+{\cite[Proposition~4.13]{FHN2019}}]
+\label{prop:tangent_space}
+Under the continuity assumption, the tangent map of the inclusion
+$\mathfrak{i}: \Tucker{\fr}{\VD} \hookrightarrow \VDnorm$ at $\bv$ is
+injective, and
+\begin{equation*}
+    T_\bv \mathfrak{i}\bigl(\mathbb{T}_\bv(\Tucker{\fr}{\VD})\bigr)
+    = \ZD{\bv}.
+\end{equation*}
+More explicitly, for $(\dot{\mathfrak{L}}, \dot{C}^{(D)}) \in
+\mathbb{T}_\bv(\Tucker{\fr}{\VD})$:
+\begin{equation}
+\label{eq:tangent_formula}
+    T_\bv \mathfrak{i}(\dot{\mathfrak{L}}, \dot{C}^{(D)})
+    = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)}
+      \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}
+    + \sum_{\alpha \in D} \sum_{i_\alpha=1}^{r_\alpha}
+      \dot{u}^{(\alpha)}_{i_\alpha} \otimes \bU^{(\alpha)}_{i_\alpha},
+\end{equation}
+where $\dot{u}^{(\alpha)}_{i_\alpha} = \dot{L}_\alpha(u^{(\alpha)}_{i_\alpha})
+\in \Wmin{\alpha}{\bv}$ and $\bU^{(\alpha)}_{i_\alpha} \in
+\Umin{D\setminus\{\alpha\}}{\bv}$ is given by~\eqref{eq:tucker_Ualpha}.
+\end{proposition}
+
+\begin{proof}
+The formula~\eqref{eq:tangent_formula} follows by differentiating
+$(\mathfrak{i} \circ \chartmap{\bv}^{-1})$ at the origin
+$(\mathfrak{0}, C^{(D)})$ using Proposition~\ref{prop:tensor_smooth}
+and the Leibniz rule for tensor products. Injectivity of $T_\bv\mathfrak{i}$
+follows from the linear independence of
+$\{\bigotimes_\alpha u^{(\alpha)}_{i_\alpha}\}$ (a basis of
+${}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$) and of
+$\{\bU^{(\alpha)}_{i_\alpha}\}_{i_\alpha}$ for each $\alpha$
+(a basis of $\Umin{D\setminus\{\alpha\}}{\bv}$). See~\cite{FHN2019}
+for the complete proof.
+\end{proof}
+
+%------------------------------------------------------------
+\section{Immersion in the ambient Banach space}
+\label{sec:tucker_manifold:immersion}
+%------------------------------------------------------------
+
+To show that $\Tucker{\fr}{\VD}$ is an immersed submanifold of
+$\VDnorm$, it remains to show that $\ZD{\bv} \in \GrassB{\VDnorm}$,
+i.e., that $\ZD{\bv}$ is a split subspace of the ambient Banach space.
+This requires condition~\condINJ.
+
+\begin{lemma}[{\cite[Lemma~4.13]{FHN2019}}]
+\label{lem:two_faces}
+Assume \condINJ\ holds. Let $\beta \in D$ and $W_\beta \in
+\GrassB{V_{\beta,\|\cdot\|_\beta}}$ with $V_{\beta,\|\cdot\|_\beta}
+= U_\beta \oplus W_\beta$ for some finite-dimensional $U_\beta$.
+Then for every finite-dimensional subspace $U_{[\beta]} \subset
+\Vbigalpha^{[\beta]}$:
+\begin{equation*}
+    W_\beta \atens U_{[\beta]} \in \GrassB{\VDnorm}.
+\end{equation*}
+\end{lemma}
+
+\begin{proof}
+The proof uses the continuity of the projection
+$\Id{\beta} \otimes P_{U_{[\beta]} \oplus W_{[\beta]}}$
+on $\VDnorm$ (which follows from \condINJ\ and a norm estimate
+via~\cite[Lemma~3.18]{FH2012}), and then decomposes
+$\Id{\beta} = P_{U_\beta \oplus W_\beta} + P_{W_\beta \oplus U_\beta}$
+to construct an explicit bounded projection onto
+$W_\beta \atens U_{[\beta]}$. See~\cite{FHN2019} for details.
+\end{proof}
+
+\begin{lemma}[{\cite[Lemma~4.14]{FHN2019}}]
+\label{lem:direct_sum_G}
+Let $X$ be a Banach space and $U, V \in \GrassB{X}$ with
+$U \cap V = \{0\}$. Then $U \oplus V \in \GrassB{X}$ and
+$U \cap V \in \GrassB{X}$.
+\end{lemma}
+
+\begin{proof}
+Since $U, V \in \GrassB{X}$ there exist $U', V' \in \GrassB{X}$ with
+$X = U \oplus U' = V \oplus V'$. Then
+$U \oplus V \oplus (U' \cap V') = (U \cap V') \oplus (V \cap U')
+\oplus (U' \cap V') = X$, proving $U \oplus V \in \GrassB{X}$.
+The second claim follows from $X = (U \cap V) \oplus (U \cap V')
+\oplus (V \cap U') \oplus (U' \cap V')$.
+\end{proof}
+
+\begin{theorem}[Immersion theorem, {\cite[Theorem~4.15]{FHN2019}}]
+\label{thm:tucker_immersion}
+Assume \condINJ\ holds. Then for each $\bv \in \Tucker{\fr}{\VD}$:
+\begin{equation}
+\label{eq:ZD_split}
+    \ZD{\bv} \in \GrassB{\VDnorm}.
+\end{equation}
+Consequently, $\Tucker{\fr}{\VD}$ is an immersed submanifold of
+$\VDnorm$.
+\end{theorem}
+
+\begin{proof}
+For each $\alpha \in D$: $\Wmin{\alpha}{\bv} \in
+\GrassB{V_{\alpha,\|\cdot\|_\alpha}}$ and $\Umin{D\setminus\{\alpha\}}{\bv}$
+is finite-dimensional. By Lemma~\ref{lem:two_faces},
+$\Wmin{\alpha}{\bv} \atens \Umin{D\setminus\{\alpha\}}{\bv}
+\in \GrassB{\VDnorm}$.
+Also, ${}_a\bigotimes_\alpha \Umin{\alpha}{\bv} \in \GrassB{\VDnorm}$
+(finite-dimensional, hence split by
+Proposition~\ref{prop:finitedim_split}).
+The $d+1$ summands in~\eqref{eq:ZD} have pairwise trivial intersection
+(by the linear independence properties of minimal subspaces
+and the direct sum structure), so Lemma~\ref{lem:direct_sum_G}
+applied iteratively gives $\ZD{\bv} \in \GrassB{\VDnorm}$.
+\end{proof}
+
+\begin{corollary}[Best projection onto tangent space]
+\label{cor:best_proj_tangent}
+If $\VDnorm$ is additionally reflexive, then for any $\bv \in
+\Tucker{\fr}{\VD}$ and $\dot{\bu} \in \VDnorm$, there exists
+$\dot{\bv}_\mathrm{best} \in \ZD{\bv}$ such that
+\begin{equation*}
+    \|\dot{\bu} - \dot{\bv}_\mathrm{best}\|_D
+    = \min_{\dot{\bv} \in \ZD{\bv}} \|\dot{\bu} - \dot{\bv}\|_D.
+\end{equation*}
+\end{corollary}
+
+\begin{proof}
+Since $\VDnorm$ is reflexive, every closed subspace is proximinal
+(proximinal = best approximations exist). $\ZD{\bv}$ is closed
+(it is a split subspace by Theorem~\ref{thm:tucker_immersion}).
+\end{proof}
+
+%------------------------------------------------------------
+\section{The tensor space as a Banach manifold}
+\label{sec:tucker_manifold:full}
+%------------------------------------------------------------
+
+\begin{corollary}[{\cite[Corollary~3.19]{FHN2019}}]
+\label{cor:VD_manifold}
+Under the continuity assumption on the tensor product map, the algebraic
+tensor space $\VD$ itself is a $\mathcal{C}^\infty$-Banach manifold
+(not modelled on a single Banach space), with atlas given by the
+disjoint union of the Tucker manifold atlases over all $\fr \in \AD{\VD}$:
+\begin{equation*}
+    \VD = \bigsqcup_{\fr \in \AD{\VD}} \Tucker{\fr}{\VD}.
+\end{equation*}
+\end{corollary}
+
+%------------------------------------------------------------
+\section{Historical notes and comparison}
+\label{sec:tucker_manifold:history}
+%------------------------------------------------------------
+
+The $\mathcal{C}^\infty$-Banach manifold structure of
+$\Tucker{\fr}{\VD}$ in infinite-dimensional spaces was established
+in~\cite{FHN2019}. Prior work had treated only finite-dimensional or
+Hilbert space settings:
+
+Koch and Lubich~\cite{KochLubich2007} proved that the Tucker manifold
+is a quotient manifold in finite dimensions and used it for the
+Dirac--Frenkel variational principle for the MCTDH method. Their
+approach, however, uses the Hilbert structure (metric projection)
+and does not extend to Banach spaces.
+
+Uschmajew and Vandereycken~\cite{Uschmajew2012} studied the HT
+manifold in finite dimensions as a quotient manifold
+$\GL{r_1} \times \cdots \times \GL{r_d} \backslash \FTv / G$
+for a gauge group $G$. The description in~\cite{FHN2019} is
+fundamentally different: it provides an \emph{explicit atlas}
+with local charts given by formula~\eqref{eq:local_rep}, valid
+in the infinite-dimensional Banach setting.
+
+The key novelties of~\cite{FHN2019} are:
+\begin{enumerate}
+\item The chart maps $\chartmap{\bv}$ are given explicitly in terms
+    of the Grassmann chart maps $\Psi^{(\alpha)}_\bv$, making the
+    geometric structure completely transparent.
+\item The immersion theorem (Theorem~\ref{thm:tucker_immersion})
+    holds in general Banach spaces under condition~\condINJ, without
+    requiring a Hilbert or reflexive structure.
+\item The fibre bundle structure identifies the typical fibre
+    as $\RR^{\times r_\alpha}_*$, a finite-dimensional
+    smooth manifold (an open subset of a Euclidean space).
+\end{enumerate}
 

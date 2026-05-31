@@ -1,13 +1,431 @@
 %============================================================
-%  ch09_TB_manifold.tex  —  The Tree-Based Manifold
-%  TODO: Write content
+%  ch09_TB_manifold.tex
+%  Chapter 9: The Tree-Based Manifold
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2023 (Secs. 4-5)
+%  Estimated length: ~40 pp.
 %============================================================
 
 \chapter{The Tree-Based Manifold}
 \label{chap:TB_manifold}
 
-\section*{To be written}
+This chapter establishes the geometric counterpart of
+Chapter~\ref{chap:tucker_manifold} for general tree-based tensor
+formats. The central result is that $\FTv$ — when it is a
+\emph{proper} set of tree-based tensors (Definition~\ref{def:proper_TBT})
+— carries a natural $\mathcal{C}^\infty$-Banach manifold structure
+that is compatible with the Tucker manifold structures at each
+level of the tree, and is an immersed submanifold of the ambient
+Banach tensor space $\VDnorm$.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+The key idea, due to~\cite{FHN2023}, is that
+$\FTv = \bigcap_{k=1}^{\dep{\TD}} \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$
+(Theorem~\ref{thm:intersection_representation}) is an intersection of
+Tucker manifolds, and its chart system is obtained by taking the
+intersection of the Tucker chart systems at each level. The resulting
+charts are natural and compatible with those of each Tucker factor.
+
+Throughout, $(V_\alpha, \|\cdot\|_\alpha)$ are normed spaces,
+$\|\cdot\|_D$ satisfies \condINJ\ at each level of $\TD$, and
+$\fr \in \ADTD$.
+
+%------------------------------------------------------------
+\section{Proper sets of tree-based tensors}
+\label{sec:TB_manifold:proper}
+%------------------------------------------------------------
+
+Not every $\FTv$ is a genuine intersection of Tucker manifolds — in
+degenerate cases it may coincide with a single Tucker manifold.
+The following definition isolates the non-degenerate case.
+
+\begin{definition}[Proper tree-based set]
+\label{def:proper_TBT}
+The set $\FTv$ is called a \emph{proper set of tree-based tensors}
+with rank $\fr$ if
+\begin{equation*}
+    \FTv \neq \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}
+    \quad \text{for all } 1 \leq k \leq \dep{\TD}.
+\end{equation*}
+\end{definition}
+
+\begin{example}[Degenerate case]
+\label{ex:degenerate}
+For $D = \{1,\ldots,6\}$ and the tree $\TD$ with
+$\Sons{D} = \{\{1\}, \{2,3,4,5,6\}\}$ (depth~2):
+\begin{align*}
+    \mathcal{P}_1(\TD) &= \bigl\{\{1\}, \{2,3,4,5,6\}\bigr\}, \\
+    \mathcal{P}_2(\TD) &= \Leaves.
+\end{align*}
+Since $\dim \Umin{\{1\}}{\bv} = \dim \Umin{\{2,3,4,5,6\}}{\bv}$ for all
+$\bv \in \VD$ (Theorem~\ref{thm:min_existence}), the constraint at level~1
+is automatically satisfied whenever the leaf-level constraints hold.
+Hence $\FTv = \Tucker{\fr_2}{\VD, \Leaves}$ and $\FTv$ is \emph{not}
+a proper set. The geometry reduces to the Tucker manifold.
+\end{example}
+
+In all examples arising from balanced binary trees (HT format),
+Tensor Train, and most practical trees with $\dep{\TD} \geq 2$,
+the set $\FTv$ is proper.
+
+%------------------------------------------------------------
+\section{The Laplacian-like map and the intersection of model spaces}
+\label{sec:TB_manifold:laplacian}
+%------------------------------------------------------------
+
+For each level $k$ of the tree, the Tucker manifold
+$\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ has model space
+\begin{equation*}
+    \Emodel{k} \coloneqq
+    \Bigl(\bigoplus_{\alpha \in \PkT{k}{\TD}}
+    \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})
+    \otimes \spann\{\mathbf{id}_{[\alpha]}\}\Bigr)
+    \times \RR^{\times_{\alpha \in \PkT{k}{\TD}} r_\alpha},
+\end{equation*}
+where $\mathbf{id}_{[\alpha]} = \bigotimes_{\beta \in \PkT{k}{\TD}
+\setminus \{\alpha\}} \Id{\Vbigbeta}$ is the identity on all factors
+except $\alpha$.
+
+The \emph{Laplacian-like map} $\Delta_k$ embeds the product of
+$\cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})$ spaces into $\cL(\VDnorm)$:
+\begin{equation}
+\label{eq:laplacian}
+    \Delta_k : \prod_{\alpha \in \PkT{k}{\TD}}
+    \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})
+    \longrightarrow \cL(\VDnorm),
+    \quad
+    (L_\alpha)_\alpha \mapsto \sum_{\alpha \in \PkT{k}{\TD}}
+    L_\alpha \otimes \mathbf{id}_{[\alpha]}.
+\end{equation}
+
+\begin{proposition}[{\cite[Proposition~4.5]{FHN2023}}]
+\label{prop:laplacian_exp}
+For $(L_\alpha)_{\alpha \in \PkT{k}{\TD}} \in \prod_\alpha
+\cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})$:
+\begin{equation}
+\label{eq:exp_laplacian}
+    \exp\bigl(\Delta_k((L_\alpha)_\alpha)\bigr)
+    = \bigotimes_{\alpha \in \PkT{k}{\TD}} \exp(L_\alpha).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Put $L = \sum_\alpha L_\alpha \otimes \mathbf{id}_{[\alpha]}$.
+For $\alpha \neq \beta$:
+$(L_\alpha \otimes \mathbf{id}_{[\alpha]}) \circ
+(L_\beta \otimes \mathbf{id}_{[\beta]}) =
+L_\alpha \otimes L_\beta \otimes \mathbf{id}_{[{\alpha,\beta}]}$,
+and by the nilpotency of $L_\alpha$ (Proposition~\ref{prop:nilpotent_algebra}),
+$\exp(L_\alpha \otimes \mathbf{id}_{[\alpha]}) = \exp(L_\alpha) \otimes
+\mathbf{id}_{[\alpha]}$. Since the summands commute,
+$\exp(L) = \bigodot_\alpha \exp(L_\alpha \otimes \mathbf{id}_{[\alpha]})
+= \bigotimes_\alpha \exp(L_\alpha)$.
+\end{proof}
+
+The critical consequence is that the local representation
+$\bw = \exp(L)(\bu)$ for $L \in \Emodel{k}$ is
+\emph{independent of $k$}: for any $k$ and any $L \in \Emodel{k}$
+with the same underlying tensor $L = \Delta_k((L_\alpha)_\alpha)$,
+the formula $\bw = (\bigotimes_\alpha \exp(L_\alpha))(\bu)$ gives
+the same $\bw$.
+
+%------------------------------------------------------------
+\section{Charts for the tree-based manifold}
+\label{sec:TB_manifold:charts}
+%------------------------------------------------------------
+
+\subsection*{Intersection of chart domains}
+
+For $\bv \in \FTv$, define the \emph{tree-based chart domain}:
+\begin{equation}
+\label{eq:TBT_chart_domain}
+    \mathcal{W}(\bv) \coloneqq
+    \bigcap_{k=1}^{\dep{\TD}} \chart^{(k)}(\bv),
+\end{equation}
+where $\chart^{(k)}(\bv)$ is the chart domain of
+$\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ at $\bv$
+(Section~\ref{sec:tucker_manifold:charts}).
+
+\subsection*{Model space}
+
+Define the \emph{tree-based model space}:
+\begin{equation}
+\label{eq:TBT_model}
+    \mathbf{E}(\bv) \coloneqq
+    \bigcap_{k=1}^{\dep{\TD}} \Emodel{k}
+    \subset \cL(\VDnorm),
+\end{equation}
+and the \emph{tree-based core set}:
+\begin{equation*}
+    \mathcal{O}(\bv) \coloneqq
+    \bigcap_{k=1}^{\dep{\TD}}
+    \Tucker{\fr_k}\Bigl({}_a\bigotimes_{\alpha \in \PkT{k}{\TD}}
+    \Umin{\alpha}{\bv}\Bigr).
+\end{equation*}
+
+\begin{lemma}[{\cite[Lemma~4.6]{FHN2023}}]
+\label{lem:TBT_chart_open}
+Under condition \condINJ\ at each level, $\mathbf{E}(\bv) \times
+\mathcal{O}(\bv)$ is an open subset of the Banach space
+$\mathbf{E}(\bv) \times {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}}
+\Umin{\alpha}{\bv}$.
+\end{lemma}
+
+\begin{proof}[Sketch]
+Each $\mathcal{O}_k \coloneqq \Tucker{\fr_k}({}_a\bigotimes_\alpha
+\Umin{\alpha}{\bv})$ is open in its finite-dimensional ambient space
+(it is defined by rank conditions, cf.\ Remark~\ref{rem:Rstar_open}).
+The intersection $\mathcal{O}(\bv) = \bigcap_k \mathcal{O}_k$ is
+taken in ${}_a\bigotimes_{\alpha \in \PkT{1}{\TD}} \Umin{\alpha}{\bv}$
+(since all factors have the same underlying space by the tree structure),
+and is an open subset. Each $\Emodel{k}$ is a closed subspace of
+$\cL(\VDnorm)$ (Lemma~\ref{lem:two_faces}), so $\mathbf{E}(\bv)$ is
+a Banach space and $\mathbf{E}(\bv) \times \mathcal{O}(\bv)$ is open.
+\end{proof}
+
+\subsection*{Tree-based chart map}
+
+Since $L \in \mathbf{E}(\bv)$ satisfies $L \in \Emodel{k}$ for all
+$k$, the formula $\bw = \exp(L)(\bu)$ is well-defined and independent
+of the level index $k$ by Proposition~\ref{prop:laplacian_exp}.
+This allows us to define:
+
+\begin{definition}[Tree-based chart]
+\label{def:TBT_chart}
+For $\bv \in \FTv$, the \emph{tree-based chart map}
+\begin{equation}
+\label{eq:TBT_chart_map}
+    \boldsymbol{\xi}_\bv : \mathcal{W}(\bv)
+    \longrightarrow \mathbf{E}(\bv) \times \mathcal{O}(\bv)
+\end{equation}
+is defined by $\boldsymbol{\xi}_\bv(\bw) = (L, \bu)$ where
+$\bw = \exp(L)(\bu)$, with $L \in \mathbf{E}(\bv)$ and
+$\bu \in \mathcal{O}(\bv)$ uniquely determined by any Tucker chart
+$\chartmap{\bv}^{(k)}$.
+\end{definition}
+
+%------------------------------------------------------------
+\section{The $\mathcal{C}^\infty$-Banach manifold structure}
+\label{sec:TB_manifold:cinfty}
+%------------------------------------------------------------
+
+\begin{theorem}[$\mathcal{C}^\infty$ tree-based manifold,
+{\cite[Theorem~4.7]{FHN2023}}]
+\label{thm:TBT_Banach_Manifold}
+Let $\TD$ be a dimension partition tree over $D$ with $\dep{\TD} \geq 2$,
+and let $\fr \in \ADTD$ be such that $\FTv$ is a proper set of
+tree-based tensors. Assume \condINJ\ holds at each level of $\TD$.
+Then:
+\begin{enumerate}
+\item[\textup{(i)}] The collection
+    $\{(\mathcal{W}(\bv), \boldsymbol{\xi}_\bv)\}_{\bv \in \FTv}$
+    is a $\mathcal{C}^\infty$-atlas on $\FTv$, making it a
+    $\mathcal{C}^\infty$-Banach manifold modelled on
+    $\mathbf{E}(\bv) \times {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}}
+    \Umin{\alpha}{\bv}$.
+
+\item[\textup{(ii)}] The atlas is compatible with the Tucker manifold
+    atlas at each level: the inclusion
+    \begin{equation*}
+        \mathfrak{i}_k : \FTv \hookrightarrow
+        \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}
+    \end{equation*}
+    is a $\mathcal{C}^\infty$-immersion for each $1 \leq k \leq \dep{\TD}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Sketch]
+The atlas conditions follow from Lemma~\ref{lem:TBT_chart_open}
+and the fact that the transition maps of the tree-based atlas are
+restrictions of the transition maps of the Tucker atlases (which are
+$\mathcal{C}^\infty$ by Lemma~\ref{lem:premanifold}). Compatibility
+with the Tucker atlases is a consequence of the identity
+$\boldsymbol{\xi}_\bv = \chartmap{\bv}^{(k)}|_{\mathcal{W}(\bv)}$
+for each $k$. See~\cite{FHN2023} for the complete proof.
+\end{proof}
+
+%------------------------------------------------------------
+\section{Tangent space of the tree-based manifold}
+\label{sec:TB_manifold:tangent}
+%------------------------------------------------------------
+
+\begin{proposition}[Tangent space]
+\label{prop:TBT_tangent}
+Under the assumptions of Theorem~\ref{thm:TBT_Banach_Manifold},
+for $\bv \in \FTv$:
+\begin{equation}
+\label{eq:TBT_tangent}
+    T_\bv \mathfrak{i}\bigl(\mathbb{T}_\bv(\FTv)\bigr)
+    = \bigcap_{k=1}^{\dep{\TD}}
+    T_\bv \mathfrak{i}_k
+    \bigl(\mathbb{T}_\bv(\Tucker{\fr_k}{\VD, \PkT{k}{\TD}})\bigr)
+    = \bigcap_{k=1}^{\dep{\TD}} \ZD[\PkT{k}{\TD}]{\bv},
+\end{equation}
+where $\ZD[\mathcal{P}]{\bv}$ is the tangent subspace
+\eqref{eq:ZD} for the partition $\mathcal{P}$.
+\end{proposition}
+
+\begin{proof}
+The model space of $\FTv$ is $\mathbf{E}(\bv) \times \mathcal{O}_1$,
+where $\mathbf{E}(\bv) = \bigcap_k \Emodel{k}$. Since $T_\bv \mathfrak{i}_k$
+is injective (Proposition~\ref{prop:tangent_space}), the tangent map
+$T_\bv \mathfrak{i}$ is also injective and its image is
+$\bigcap_k T_\bv \mathfrak{i}_k(\mathbb{T}_\bv \Tucker{\fr_k}{\VD, \PkT{k}})$.
+The last equality follows from the explicit formula
+\eqref{eq:tangent_formula} for each level.
+\end{proof}
+
+%------------------------------------------------------------
+\section{Immersion in the ambient Banach space}
+\label{sec:TB_manifold:immersion}
+%------------------------------------------------------------
+
+\begin{theorem}[Immersion of the tree-based manifold,
+{\cite[Corollary~4.9]{FHN2023}}]
+\label{thm:TBT_immersion}
+Under the assumptions of Theorem~\ref{thm:TBT_Banach_Manifold}:
+\begin{equation}
+\label{eq:TBT_tangent_split}
+    T_\bv \mathfrak{i}\bigl(\mathbb{T}_\bv(\FTv)\bigr)
+    \in \GrassB{\VDnorm}
+    \quad \text{for all } \bv \in \FTv.
+\end{equation}
+Consequently, $\FTv$ is an immersed submanifold of $\VDnorm$.
+\end{theorem}
+
+\begin{proof}
+From Theorem~\ref{thm:tucker_immersion} applied at each level,
+$\ZD[\PkT{k}]{\bv} \in \GrassB{\VDnorm}$ for $1 \leq k \leq \dep{\TD}$.
+By Proposition~\ref{prop:TBT_tangent}, the tangent space of $\FTv$
+is $\bigcap_k \ZD[\PkT{k}]{\bv}$. Applying
+Lemma~\ref{lem:direct_sum_G} iteratively (intersection of split
+subspaces is split), we obtain
+$\bigcap_k \ZD[\PkT{k}]{\bv} \in \GrassB{\VDnorm}$.
+\end{proof}
+
+\begin{remark}[Embedded vs.\ immersed]
+\label{rem:embedded_vs_immersed}
+Theorem~\ref{thm:TBT_immersion} shows that $\FTv$ is an
+\emph{immersed} submanifold of $\VDnorm$. Moreover,
+Theorem~\ref{thm:TBT_Banach_Manifold}(ii) shows it is an
+\emph{embedded} submanifold of each Tucker manifold
+$\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$. Whether $\FTv$ is embedded
+in $\VDnorm$ (i.e., the manifold topology coincides with the
+subspace topology) is a more delicate question related to the
+global topology discussed in Section~\ref{sec:TB_manifold:topology}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Comparison with alternative descriptions}
+\label{sec:TB_manifold:comparison}
+%------------------------------------------------------------
+
+The geometric description of $\FTv$ in~\cite{FHN2023} differs from
+earlier approaches in several respects.
+
+\paragraph{Uschmajew--Vandereycken \cite{Uschmajew2012}.}
+For the HT format in finite-dimensional spaces, they construct
+$\FTv$ as a quotient manifold
+$P \backslash \bigl(\GL{r_\alpha} \times \cdots\bigr)$
+for a gauge group $P$. This gives a finite-dimensional manifold
+and is well-suited for numerical algorithms (Riemannian gradient
+methods). However, it does not extend to infinite-dimensional
+spaces and does not make the compatibility with Tucker manifolds
+at each level explicit.
+
+\paragraph{Holtz--Rohwedder--Schneider \cite{HoltzRohwedderSchneider2012}.}
+For the TT format in finite dimensions, a similar quotient
+construction is used. The connection to the Tucker manifold at
+each level is not made explicit.
+
+\paragraph{Falcó--Hackbusch--Nouy (2015 preprint \cite{FHN2015}).}
+An earlier version of the atlas in~\cite{FHN2023} was proposed
+using a different chart system. The description in~\cite{FHN2023}
+is more natural because the chart maps are directly inherited from
+the Tucker manifold charts via the Laplacian map (Proposition~\ref{prop:laplacian_exp}).
+
+\paragraph{Key novelties of \cite{FHN2023}.}
+\begin{enumerate}
+\item The atlas $\{(\mathcal{W}(\bv), \boldsymbol{\xi}_\bv)\}$
+    is \emph{natural}: it is the restriction of the Tucker atlases
+    to the intersection $\FTv$, without any additional construction.
+\item The \emph{compatibility} with Tucker manifold structures at
+    each level is built into the definition, making the geometric
+    relationships transparent.
+\item The description holds in \emph{infinite-dimensional Banach
+    spaces} under the mild condition \condINJ.
+\item The tangent space formula \eqref{eq:TBT_tangent} is explicit
+    and computable.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Topology and connected components}
+\label{sec:TB_manifold:topology}
+%------------------------------------------------------------
+
+\begin{proposition}
+\label{prop:TBT_connected}
+For the Tucker manifold, $\Tucker{\fr}{\VD}$ is connected for any
+$\fr \in \AD{\VD}$ with $\fr \neq \mathbf{0}$. This follows because
+$\prod_\alpha \Grass{r_\alpha}{V_\alpha}$ is connected (each
+$\Grass{r}{V}$ is connected as a Banach manifold) and the fibre
+$\RR^{\times r_\alpha}_*$ is connected.
+\end{proposition}
+
+For general tree-based formats, the connectedness of $\FTv$ is an
+open problem in general. The following is known:
+
+\begin{proposition}
+\label{prop:TBT_connected_cases}
+\begin{enumerate}
+\item[\textup{(i)}] For the TT format and binary HT formats in
+    \emph{finite dimensions}, $\FTv$ is connected
+    (see~\cite{Uschmajew2012, HoltzRohwedderSchneider2012}).
+\item[\textup{(ii)}] For general $\TD$ and infinite-dimensional
+    spaces, connectedness of $\FTv$ is an open question.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}[Stratification]
+\label{rem:stratification}
+The decomposition
+$\VD = \bigsqcup_{\fr \in \ADTD} \FT{\fr}{\VD}{\TD}$
+(Theorem~\ref{thm:TBT_decomposition}) is a stratification of $\VD$
+by tree-based rank. Each stratum $\FTv$ is an immersed manifold,
+and $\FTleq{\fr}{\VD}{\TD} = \overline{\FTv}^{\text{weak}}$
+is the weak closure. The boundary strata
+$\partial \FTleq{\fr}{\VD}{\TD} = \FTleq{\fr}{\VD}{\TD} \setminus \FTv$
+consist of tensors with strictly smaller rank.
+This stratification is the tensor-format analogue of the rank
+stratification of matrices.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:TB_manifold:history}
+%------------------------------------------------------------
+
+The geometric structure of $\FTv$ as a Banach manifold was established
+in~\cite{FHN2023}. The fundamental observation — that the tree-based
+manifold is an intersection of Tucker manifolds and that its atlas can
+be obtained by intersecting the Tucker atlases — was made possible by
+the reformulation of the Tucker manifold charts using the Laplacian-like
+map $\Delta_k$ (Proposition~\ref{prop:laplacian_exp}).
+
+The compatibility condition between the tree-based atlas and the Tucker
+atlases at each level (Theorem~\ref{thm:TBT_Banach_Manifold}(ii)) is
+the key property that distinguishes the description of~\cite{FHN2023}
+from earlier work: it allows one to apply the Tucker manifold geometry
+(tangent spaces, projections, Dirac--Frenkel principle) at each level
+of the tree independently, and then combine the results.
+
+The Dirac--Frenkel variational principle for tree-based formats
+(Chapter~\ref{chap:DF}) exploits this compatibility in an essential
+way: the reduced ODE on $\FTv$ is obtained by projecting the vector
+field onto the tangent space $\bigcap_k \ZD[\PkT{k}]{\bv}$, and the
+existence of this projection (Corollary~\ref{cor:best_proj_tangent}
+applied at each level) follows from the fact that each $\ZD[\PkT{k}]{\bv}$
+is a split subspace of $\VDnorm$.
 
