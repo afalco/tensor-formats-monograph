@@ -1,13 +1,424 @@
 %============================================================
-%  ch01_introduction.tex  —  Introduction and Motivation
-%  TODO: Write content
+%  ch01_introduction.tex
+%  Chapter 1: Introduction and Motivation
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Estimated length: ~25 pp.
 %============================================================
 
 \chapter{Introduction and Motivation}
 \label{chap:intro}
 
-\section*{To be written}
+%------------------------------------------------------------
+\section{The curse of dimensionality}
+\label{sec:intro:curse}
+%------------------------------------------------------------
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+Many of the central problems in modern mathematics and its applications
+involve functions, operators, or data defined on high-dimensional
+product domains. A $d$-variate function $f: I_1 \times \cdots \times
+I_d \to \RR$ defined on a product of $d$ intervals, for example, lives
+in a space whose dimension grows exponentially with $d$: if each
+factor $I_\alpha$ is discretised with $n$ grid points, the natural
+approximation space has dimension $n^d$. For $d = 100$ and $n = 10$
+this is $10^{100}$, a number that no computer will ever handle directly.
+This exponential explosion of complexity was famously termed by Bellman
+the \emph{curse of dimensionality}.
+
+High-dimensional problems of this kind arise throughout science and
+engineering:
+\begin{itemize}
+\item \emph{Quantum chemistry:} the electronic Schrödinger equation
+    for an $N$-electron molecule lives in $\RR^{3N}$; realistic
+    molecules have $N$ in the hundreds.
+\item \emph{Uncertainty quantification:} the solution of a PDE with
+    $d$ uncertain parameters is a function on $\RR^d \times \Omega$,
+    where $\Omega$ is the spatial domain.
+\item \emph{Stochastic control and finance:} value functions in optimal
+    control problems typically satisfy PDEs in $\RR^d$ for large $d$.
+\item \emph{Machine learning:} the approximation of unknown functions
+    from data in $\RR^d$ is the fundamental task of supervised learning.
+\end{itemize}
+
+The common mathematical structure underlying all these problems is that
+the object of interest — a function, a quantum state, a probability
+density — is an element of a \emph{tensor product space}
+${}_a\bigotimes_{\alpha \in D} V_\alpha$, where $D = \{1,\ldots,d\}$
+and $V_\alpha$ is a function space on the $\alpha$-th variable.
+The curse of dimensionality is the statement that the dimension of this
+space grows exponentially with $\card{D} = d$.
+
+The strategy for circumventing the curse is to restrict attention to
+\emph{structured low-rank tensors}: elements of $\VD$ that can be
+represented using far fewer parameters than $n^d$. The systematic study
+of such representations — their algebraic structure, their topological
+properties in function spaces, and their geometry as differentiable
+manifolds — is the subject of this monograph.
+
+%------------------------------------------------------------
+\section{Tensor formats and the role of subspaces}
+\label{sec:intro:formats}
+%------------------------------------------------------------
+
+\subsection*{From matrices to tensors}
+
+The simplest non-trivial case is $d = 2$: here $\VD = V_1 \atens V_2$,
+and a tensor $\bv \in \VD$ corresponds to a linear map (a ``matrix'')
+from $V_1^*$ to $V_2$. The \emph{rank} of $\bv$ — the minimal $r$
+such that $\bv = \sum_{\nu=1}^r u_\nu \otimes w_\nu$ — determines the
+complexity of the representation. In finite dimensions this is the rank
+of the associated matrix; the Eckart--Young theorem gives the best
+rank-$r$ approximation in the spectral or Frobenius norm.
+
+The higher-order analogue of rank, however, is not straightforward.
+For $d \geq 3$ there is no single notion of ``tensor rank'' with all
+the good properties of matrix rank. Instead, several notions of rank
+have proven useful, each corresponding to a different way of
+decomposing the factors of $\VD$.
+
+\subsection*{Tucker format}
+
+The \emph{Tucker format}~\cite{Tucker1966} represents a tensor $\bv$
+as
+\begin{equation*}
+    \bv = \sum_{\substack{1 \leq i_\alpha \leq r_\alpha \\ \alpha \in D}}
+    C^{(D)}_{(i_\alpha)_{\alpha \in D}}
+    \bigotimes_{\alpha \in D} u^{(\alpha)}_{i_\alpha},
+\end{equation*}
+where $u^{(\alpha)}_{i_\alpha} \in V_\alpha$ and
+$C^{(D)} \in \RR^{r_1 \times \cdots \times r_d}$ is the \emph{core tensor}.
+The storage cost is $\sum_\alpha r_\alpha n_\alpha + \prod_\alpha r_\alpha$,
+which is linear in $d$ when the ranks $r_\alpha$ are bounded. The Tucker
+format is equivalent to the \emph{multilinear SVD} (HOSVD) of De Lathauwer,
+De Moor, and Vandewalle~\cite{DeLathauwer2000}.
+
+The correct functional-analytic description of the Tucker format is
+through \emph{minimal subspaces}: the minimal subspace
+$\Umin{\alpha}{\bv} \subset V_\alpha$ of $\bv$ is the smallest
+subspace such that $\bv \in \Umin{\alpha}{\bv} \atens V_{[\alpha]}$
+(Chapter~\ref{chap:minsubspaces}). The Tucker rank of $\bv$ is the
+tuple $(r_\alpha)_{\alpha \in D}$ where $r_\alpha = \dim \Umin{\alpha}{\bv}$.
+
+\subsection*{Hierarchical Tucker and Tensor Train formats}
+
+The Tucker format still suffers from the curse of dimensionality through
+its core tensor: $\prod_\alpha r_\alpha$ grows exponentially with $d$.
+The \emph{Hierarchical Tucker} (HT) format~\cite{HaKuehn2009} and the
+\emph{Tensor Train} (TT) format~\cite{Oseledets2011} resolve this by
+organising the dimensions into a \emph{hierarchy}, encoded by a rooted tree
+$\TD$. Each format restricts the tensor to satisfy rank constraints at
+every level of the tree, reducing the total storage to $O(d r^3)$ (HT)
+or $O(d r^2 n)$ (TT), where $r$ is the maximal rank.
+
+\subsection*{Tree-based tensor formats}
+
+This monograph studies all these formats within a single unified framework:
+\emph{tree-based Tucker formats}, introduced in~\cite{FHN2021}. Given a
+dimension partition tree $\TD$ over $D$ and a rank tuple $\fr$, the set
+\begin{equation*}
+    \FTv = \bigcap_{k=1}^{\dep{\TD}}
+    \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}
+\end{equation*}
+of tensors with fixed tree-based rank $\fr$ is an intersection of Tucker
+sets at each level of the tree. The Tucker format is the special case
+$\TD = \TDtuck$ (depth~1); HT and TT correspond to binary trees of
+depth $\lceil \log_2 d \rceil$ and $d-1$ respectively.
+
+%------------------------------------------------------------
+\section{Three fundamental questions}
+\label{sec:intro:questions}
+%------------------------------------------------------------
+
+The results of this monograph are organised around three fundamental
+mathematical questions, each corresponding to one part of the book.
+
+\paragraph{Question 1 (Chapter~\ref{chap:minsubspaces}).}
+\emph{Does every tensor $\bv$ in an infinite-dimensional Banach tensor
+space $\VDnorm$ have a best approximation from the set
+$\FTleq{\fr}{\VD}{\TD}$?}
+
+For convex sets in reflexive Banach spaces, best approximations always
+exist. The set $\FTleq{\fr}{\VD}{\TD}$ is not convex (it is not even a
+subspace), so the existence of best approximations is non-trivial.
+The answer, established in Chapters~\ref{chap:minsubspaces}
+and~\ref{chap:topTBT}, is \emph{yes}: under a natural condition on the
+norm (condition \condINJ, which holds for all $L^p$ and Sobolev spaces),
+$\FTleq{\fr}{\VD}{\TD}$ is weakly closed in $\VDnorm$, and reflexivity
+gives the best approximation.
+
+\paragraph{Question 2 (Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:TB_manifold}).}
+\emph{Does the set $\Tucker{\fr}{\VD}$ (or $\FTv$) of tensors with
+fixed rank carry the structure of a differentiable manifold, even in
+infinite dimensions?}
+
+In finite dimensions, $\Tucker{\fr}{\VD}$ is known to be a smooth
+manifold (a quotient of a matrix group). In infinite dimensions, the
+standard quotient construction fails because the stabiliser group is
+infinite-dimensional and the quotient topology may not be well-behaved.
+The answer, established in~\cite{FHN2019} for Tucker formats and
+in~\cite{FHN2023} for tree-based formats, is \emph{yes}: an explicit
+atlas with $\mathcal{C}^\infty$ transition maps can be constructed
+using the Grassmann--Banach manifold structure of the minimal subspaces.
+
+\paragraph{Question 3 (Chapter~\ref{chap:DF}).}
+\emph{Can the Dirac--Frenkel variational principle — the projection
+of the vector field onto the tangent space of the manifold — be
+extended from Hilbert to Banach tensor spaces?}
+
+The answer is \emph{yes}, provided the tangent space $\ZD{\bv}$ is a
+\emph{split subspace} of $\VDnorm$ (i.e., has a bounded projection
+onto it). The immersion theorems of Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:TB_manifold} — the deepest results of the monograph —
+establish exactly this.
+
+%------------------------------------------------------------
+\section{The four source papers}
+\label{sec:intro:papers}
+%------------------------------------------------------------
+
+This monograph synthesises and expands four research papers written
+by the author and his collaborators Wolfgang Hackbusch and Anthony Nouy:
+
+\medskip
+
+\noindent\textbf{[FH2012]} \emph{On Minimal Subspaces in Tensor
+Representations}~\cite{FH2012}. This paper introduces minimal subspaces
+as the fundamental algebraic object in tensor representations, proves
+their existence and uniqueness in general vector spaces, and establishes
+the existence of best Tucker approximations in reflexive Banach tensor
+spaces. It constitutes Part~I (Chapters~\ref{chap:algtensor}--\ref{chap:minsubspaces})
+of this monograph.
+
+\medskip
+
+\noindent\textbf{[FHN2019]} \emph{On the Dirac--Frenkel Variational
+Principle on Tensor Banach Spaces}~\cite{FHN2019}. This paper
+constructs the $\mathcal{C}^\infty$-Banach manifold structure of
+$\Tucker{\fr}{\VD}$ via explicit local charts, proves that the manifold
+is immersed in $\VDnorm$ under condition \condINJ, and extends the
+Dirac--Frenkel variational principle to Banach tensor spaces. It forms
+the basis of Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:DF}.
+
+\medskip
+
+\noindent\textbf{[FHN2021]} \emph{Tree-based Tensor
+Formats}~\cite{FHN2021}. This paper introduces the general framework
+of dimension partition trees, proves the existence of best tree-based
+approximations under conditions weaker than~\cite{FH2012}, and
+characterises tensors of fixed tree-based rank by means of transfer
+tensors. It underlies Chapters~\ref{chap:trees}--\ref{chap:topTBT}.
+
+\medskip
+
+\noindent\textbf{[FHN2023]} \emph{Geometry of Tree-based Tensor
+Formats in Tensor Banach Spaces}~\cite{FHN2023}. This paper provides
+the geometric description of $\FTv$ as an intersection of Tucker
+manifolds, proves that it is a $\mathcal{C}^\infty$-Banach manifold
+compatible with the Tucker structure at each level of the tree, and
+extends the Dirac--Frenkel principle to tree-based formats.
+It forms the basis of Chapter~\ref{chap:TB_manifold}.
+
+%------------------------------------------------------------
+\section{What this monograph adds}
+\label{sec:intro:added}
+%------------------------------------------------------------
+
+Beyond collecting and unifying the results of the four source papers,
+this monograph contributes the following:
+
+\begin{enumerate}
+\item \textbf{Unified notation.} The four papers were written over a
+    decade and use slightly different notational conventions. This
+    monograph adopts a single coherent system (detailed in the
+    Notation chapter), in which the Tucker format is the special
+    case $\TD = \TDtuck$ of the tree-based format, minimal subspaces
+    are always denoted $\Umin{\alpha}{\bv}$, and the model Banach
+    space of the Tucker manifold is always $\Emodel{D}$.
+
+\item \textbf{Expanded proofs.} Several results in the papers are stated
+    with proof sketches or references to earlier work. This monograph
+    provides complete proofs of the central theorems, including the
+    full proof of the local chart system (Lemma~\ref{lem:element}),
+    the $\mathcal{C}^\infty$ transition maps
+    (Lemma~\ref{lem:premanifold}), the tangent space identification
+    (Proposition~\ref{prop:tangent_space}), and the immersion theorems
+    (Theorems~\ref{thm:tucker_immersion} and~\ref{thm:TBT_immersion}).
+
+\item \textbf{Self-contained background.} Chapters~\ref{chap:banach}
+    and~\ref{chap:algtensor} provide the Banach space and algebraic
+    tensor product prerequisites in the form and notation used
+    throughout, so that the monograph is accessible without consulting
+    external references for the background.
+
+\item \textbf{Historical context and comparison.} Each chapter closes
+    with historical notes that place the results in context and compare
+    them with alternative approaches in the literature.
+
+\item \textbf{Open problems.} Chapter~\ref{chap:open} collects ten
+    concrete open problems arising naturally from the theory, ranging
+    from the global topology of tensor manifolds to learning theory on
+    tree-based manifolds.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Overview of the main results}
+\label{sec:intro:overview}
+%------------------------------------------------------------
+
+We summarise the principal theorems of the monograph, grouped by theme.
+
+\paragraph{Existence of best approximations
+(Chapters~\ref{chap:minsubspaces},~\ref{chap:topTBT}).}
+
+\begin{itemize}
+\item \emph{Theorem~\ref{thm:best_approx_tucker}} [FH2012]: In a
+    reflexive Banach tensor space $\VDnorm$ satisfying \condINJ,
+    every $\bu \in \VDnorm$ has a best Tucker approximation of any
+    prescribed rank.
+\item \emph{Theorem~\ref{thm:TBT_best_approx}} [FHN2021]: The same
+    holds for tree-based formats under the weaker local condition
+    \condINJ[$T_D$].
+\end{itemize}
+
+\paragraph{Manifold structure
+(Chapters~\ref{chap:tucker_manifold},~\ref{chap:TB_manifold}).}
+
+\begin{itemize}
+\item \emph{Theorem~\ref{thm:Tucker_Banach_Manifold}} [FHN2019]:
+    If the tensor product map is continuous, $\Tucker{\fr}{\VD}$
+    is a $\mathcal{C}^\infty$-Banach manifold modelled on
+    $\Emodel{D} = \prod_\alpha \cL(\Umin{\alpha}{\bv},
+    \Wmin{\alpha}{\bv}) \times \RR^{\times r_\alpha}$.
+    It is a fibre bundle over $\prod_\alpha \Grass{r_\alpha}{V_\alpha}$
+    with fibre $\RR^{\times r_\alpha}_*$.
+\item \emph{Theorem~\ref{thm:TBT_Banach_Manifold}} [FHN2023]:
+    Under \condINJ\ at each level, $\FTv$ is a $\mathcal{C}^\infty$-Banach
+    manifold, with an atlas compatible with the Tucker atlases at
+    each level of $\TD$.
+\end{itemize}
+
+\paragraph{Immersion theorems
+(Chapters~\ref{chap:tucker_manifold},~\ref{chap:TB_manifold}).}
+
+\begin{itemize}
+\item \emph{Theorem~\ref{thm:tucker_immersion}} [FHN2019]:
+    Under \condINJ, the tangent subspace $\ZD{\bv}$ is a split
+    subspace of $\VDnorm$, and $\Tucker{\fr}{\VD}$ is an immersed
+    submanifold of $\VDnorm$.
+\item \emph{Theorem~\ref{thm:TBT_immersion}} [FHN2023]:
+    The same holds for $\FTv$, with tangent space
+    $\bigcap_k \ZD[\PkT{k}{\TD}]{\bv}$.
+\end{itemize}
+
+\paragraph{Dirac--Frenkel variational principle (Chapter~\ref{chap:DF}).}
+
+\begin{itemize}
+\item \emph{Theorem~\ref{thm:DF_tucker}} [FHN2019]: In a reflexive,
+    strictly convex $\VDnorm$ satisfying \condINJ, the Dirac--Frenkel
+    ODE on $\Tucker{\fr}{\VD}$ has local solutions, and they are
+    characterised by the metric projection onto $\ZD{\bv_r(t)}$.
+\item \emph{Theorem~\ref{thm:DF_treebased}} [FHN2023]: The same
+    holds on $\FTv$.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Guide to the reader}
+\label{sec:intro:guide}
+%------------------------------------------------------------
+
+The monograph is organised into four parts.
+
+\textbf{Part~\ref{part:foundations}: Algebraic and Topological Foundations}
+(Chapters~\ref{chap:banach}--\ref{chap:minsubspaces}).
+Chapter~\ref{chap:banach} collects the necessary background from Banach
+space theory and infinite-dimensional differential geometry.
+Chapter~\ref{chap:algtensor} develops the algebraic theory of tensor
+products. Chapter~\ref{chap:minsubspaces} is the algebraic core of the
+monograph: it introduces minimal subspaces, proves their fundamental
+properties, and establishes the existence of best approximations.
+\emph{Readers familiar with Banach manifolds may skip
+Chapter~\ref{chap:banach} and refer back as needed.}
+
+\textbf{Part~\ref{part:tree}: Tree-Based Tensor Formats}
+(Chapters~\ref{chap:trees}--\ref{chap:topTBT}).
+Chapter~\ref{chap:trees} introduces dimension partition trees and
+proves the intersection representation $\FTv = \bigcap_k \Tucker{\fr_k}{}$.
+Chapter~\ref{chap:algTBT} develops the algebraic theory of tree-based
+formats, culminating in the transfer tensor representation
+(Theorem~\ref{thm:TBT_characterisation}).
+Chapter~\ref{chap:topTBT} treats the topological theory: the
+$T_D$-continuity condition, the identification theorem, and the
+existence of best tree-based approximations.
+\emph{Readers primarily interested in the Tucker format may focus on
+Chapters~\ref{chap:minsubspaces} and then jump to
+Part~\ref{part:geometry}.}
+
+\textbf{Part~\ref{part:geometry}: Differential Geometry of Tensor Formats}
+(Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold}).
+These two chapters contain the geometrically deepest results of the
+monograph. Chapter~\ref{chap:tucker_manifold} constructs the
+$\mathcal{C}^\infty$ Tucker manifold and proves its immersion in
+$\VDnorm$. Chapter~\ref{chap:TB_manifold} extends these results to
+tree-based formats via the Laplacian map and the intersection of Tucker
+atlases. \emph{The key technical result is the immersion theorem
+(Theorems~\ref{thm:tucker_immersion} and~\ref{thm:TBT_immersion}),
+which relies on Lemmas~\ref{lem:two_faces} and~\ref{lem:direct_sum_G}.}
+
+\textbf{Part~\ref{part:variational}: Variational Principles and Applications}
+(Chapters~\ref{chap:DF}--\ref{chap:open}).
+Chapter~\ref{chap:DF} applies the geometric results to the
+Dirac--Frenkel variational principle, establishing the existence and
+characterisation of solutions to the reduced ODE on tensor manifolds.
+Chapter~\ref{chap:open} collects ten open problems.
+
+The three appendices (Appendices~\ref{app:manifolds}--\ref{app:notation_index})
+provide quick references for Banach manifold theory, functional analysis,
+and the notation.
+
+\paragraph{Prerequisites.} The reader is assumed to be familiar with
+functional analysis at the level of a standard graduate course (Banach
+spaces, weak convergence, Hilbert spaces) and with differential
+manifolds at the level of a first course using smooth finite-dimensional
+manifolds. The infinite-dimensional theory (Banach manifolds,
+Grassmannians) is developed from scratch in Chapter~\ref{chap:banach}.
+
+\paragraph{Notation.} A complete list of symbols is given in the
+Notation chapter following this Introduction. All macros used in the
+text are defined in the file \texttt{notation.tex}.
+
+%------------------------------------------------------------
+\section{Historical context}
+\label{sec:intro:history}
+%------------------------------------------------------------
+
+The mathematical study of tensor approximation has roots in several
+independent traditions.
+
+In \emph{multilinear algebra}, Hitchcock~\cite{Hitchcock1927} introduced
+the notion of tensor rank in 1927. Tucker~\cite{Tucker1966} introduced
+the Tucker format in psychometrics in 1966. The HOSVD was introduced by
+De Lathauwer, De Moor, and Vandewalle~\cite{DeLathauwer2000} in 2000.
+
+In \emph{quantum physics}, the matrix product state (MPS) representation
+appeared in Vidal's work~\cite{Vidal2003} on quantum simulation and was
+independently proposed as the TT decomposition by Oseledets and
+Tyrtyshnikov~\cite{Oseledets2011}. The DMRG algorithm of White, which
+is equivalent to optimisation over MPS/TT manifolds, dates from 1992.
+
+In \emph{numerical analysis}, the HT format was introduced by Hackbusch
+and Kühn~\cite{HaKuehn2009} with the explicit goal of controlling storage
+costs for high-dimensional PDEs. The existence of best approximations
+in infinite-dimensional tensor spaces was first established in the
+present framework by Falcó and Hackbusch~\cite{FH2012}.
+
+The \emph{differential-geometric} treatment of tensor manifolds began
+with Koch and Lubich~\cite{KochLubich2007} in the finite-dimensional
+Hilbert space setting, motivated by the MCTDH method. The extension to
+infinite-dimensional Banach spaces in~\cite{FHN2019,FHN2023} required
+new ideas — notably the explicit chart construction via Grassmann charts
+and the immersion theorem — that form the core of this monograph.
 
