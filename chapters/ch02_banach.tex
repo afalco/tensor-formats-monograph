@@ -1,2 +1,561 @@
-% ---- placeholder ----
-% TODO: Write content
+%============================================================
+%  ch02_banach.tex
+%  Chapter 2: Banach Space Prerequisites
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Estimated length: ~30 pp.
+%============================================================
+
+\chapter{Banach Space Prerequisites}
+\label{chap:banach}
+
+This chapter collects the functional-analytic and differential-geometric
+background required throughout the monograph. The reader familiar with
+Banach space theory and infinite-dimensional differential geometry may
+proceed directly to Chapter~\ref{chap:algtensor}, referring back as needed.
+All vector spaces are over the field $\KK$, which is either $\RR$ or $\CC$;
+unless stated otherwise, $\KK = \RR$.
+
+%------------------------------------------------------------
+\section{Normed spaces and Banach spaces}
+\label{sec:banach:basics}
+%------------------------------------------------------------
+
+We begin by fixing notation and recalling the central notions of normed and
+Banach space theory that will be used throughout.
+
+\subsection*{Basic definitions}
+
+Let $X$ be a vector space over $\KK$. A \emph{norm} on $X$ is a map
+$\|\cdot\|: X \to [0,\infty)$ satisfying:
+\begin{enumerate}
+\item[(N1)] $\|x\| = 0$ if and only if $x = 0$,
+\item[(N2)] $\|\lambda x\| = |\lambda|\,\|x\|$ for all $\lambda \in \KK$,
+    $x \in X$,
+\item[(N3)] $\|x + y\| \leq \|x\| + \|y\|$ for all $x, y \in X$.
+\end{enumerate}
+The pair $(X, \|\cdot\|)$ is called a \emph{normed space}. A sequence
+$(x_n)_{n \in \NN}$ in $X$ is a \emph{Cauchy sequence} if
+$\|x_n - x_m\| \to 0$ as $n, m \to \infty$. A normed space in which every
+Cauchy sequence converges is called a \emph{Banach space}.
+
+Two norms $\|\cdot\|$ and $\|\cdot\|'$ on $X$ are \emph{equivalent} if
+there exist constants $c, C > 0$ such that
+$c\|x\| \leq \|x\|' \leq C\|x\|$ for all $x \in X$.
+Equivalent norms define the same topology, and hence the same Cauchy
+sequences, so they produce the same Banach space structure.
+
+\begin{example}
+\label{ex:banach:lp}
+Let $I \subset \RR$ be a measurable set and $1 \leq p < \infty$. The
+Lebesgue space $L^p(I)$, equipped with the norm
+$\|f\|_{L^p} = \bigl(\int_I |f(x)|^p\,dx\bigr)^{1/p}$,
+is a Banach space. For $p = \infty$ one uses the essential supremum norm.
+The case $p = 2$ gives a Hilbert space with inner product
+$\langle f, g\rangle = \int_I f(x)\overline{g(x)}\,dx$.
+\end{example}
+
+\begin{example}
+\label{ex:banach:sobolev}
+For a bounded open set $\Omega \subset \RR^n$, $1 \leq p < \infty$, and
+$k \in \NNz$, the Sobolev space $W^{k,p}(\Omega)$ consists of all functions
+$f \in L^p(\Omega)$ whose distributional derivatives $D^\alpha f$ of order
+$|\alpha| \leq k$ belong to $L^p(\Omega)$. Equipped with the norm
+\begin{equation*}
+    \|f\|_{W^{k,p}} = \Bigl(\sum_{|\alpha| \leq k}
+        \|D^\alpha f\|_{L^p}^p\Bigr)^{1/p},
+\end{equation*}
+it is a Banach space. For $p=2$ one writes $H^k(\Omega) = W^{k,2}(\Omega)$,
+which is a Hilbert space. These spaces appear as natural component spaces in
+high-dimensional tensor problems; see Example~\ref{ex:min:sobolev} and
+Section~\ref{sec:topTBT:bestapprox}.
+\end{example}
+
+\subsection*{Continuous linear maps}
+
+Let $X$ and $Y$ be normed spaces. A linear map $A: X \to Y$ is
+\emph{continuous} if and only if it is \emph{bounded}, meaning
+\begin{equation*}
+    \opnorm{A}{Y}{X} \coloneqq \sup_{x \neq 0} \frac{\|Ax\|_Y}{\|x\|_X}
+    = \sup_{\|x\|_X \leq 1} \|Ax\|_Y < \infty.
+\end{equation*}
+The quantity $\opnorm{A}{Y}{X}$ is the \emph{operator norm} of $A$.
+The space of all continuous linear maps from $X$ to $Y$, denoted
+$\cL(X, Y)$, is itself a normed space under the operator norm; it is a
+Banach space whenever $Y$ is complete. We write $\cL(X) \coloneqq \cL(X,X)$.
+The set of bounded linear automorphisms (bounded invertible maps with
+bounded inverse) is
+\begin{equation*}
+    \GL{X} \coloneqq \{A \in \cL(X) : A \text{ invertible}\}.
+\end{equation*}
+This is an open subset of $\cL(X)$, and hence a Banach manifold modelled
+on $\cL(X)$; see Example~\ref{ex:manifold:GL}.
+
+\subsection*{Dual spaces and reflexivity}
+
+The \emph{topological dual} of a normed space $(X, \|\cdot\|)$ is
+$\dual{X} \coloneqq \cL(X, \KK)$, equipped with the dual norm
+\begin{equation}
+\label{eq:dualnorm}
+    \|\varphi\|_{\dual{X}} \coloneqq \sup_{\|x\| \leq 1} |\varphi(x)|.
+\end{equation}
+The dual $\dual{X}$ is always a Banach space, regardless of whether $X$
+is complete. The \emph{bidual} $X^{**} \coloneqq (\dual{X})^*$ contains
+$X$ as a canonically embedded subspace via the isometric embedding
+$\iota: X \to X^{**}$, $\iota(x)(\varphi) = \varphi(x)$. When $\iota$ is
+surjective, $X$ is called \emph{reflexive}. All $L^p$ spaces with
+$1 < p < \infty$ are reflexive; $L^1$ and $L^\infty$ are not.
+
+Reflexivity plays an important role in the existence of best approximations.
+Recall that a closed set $C$ in a normed space $X$ is \emph{proximinal} if
+every point of $X$ has at least one nearest point in $C$. In a reflexive
+Banach space, every closed convex set is proximinal
+(see, e.g., \cite[p.\,61]{Hackbusch2019}). This fact will be used
+extensively in Chapter~\ref{chap:minsubspaces} to prove the existence
+of best low-rank tensor approximations.
+
+\subsection*{Convexity and smoothness}
+
+Two geometric properties of the norm are of particular importance for
+the Dirac--Frenkel variational principle in Chapter~\ref{chap:DF}.
+
+\begin{definition}
+\label{def:strictly_convex}
+A normed space $(X, \|\cdot\|)$ is \emph{strictly convex} (or
+\emph{rotund}) if $\|x + y\|/2 < 1$ for all $x, y \in X$ with
+$\|x\| = \|y\| = 1$ and $x \neq y$.
+\end{definition}
+
+\begin{definition}
+\label{def:uniformly_convex}
+A normed space $(X, \|\cdot\|)$ is \emph{uniformly convex} if for every
+$\varepsilon > 0$ there exists $\delta > 0$ such that
+$\|x + y\|/2 \leq 1 - \delta$ whenever $\|x\|, \|y\| \leq 1$ and
+$\|x - y\| \geq \varepsilon$.
+\end{definition}
+
+Every uniformly convex Banach space is reflexive and strictly convex
+(Clarkson's theorem). In particular, $L^p$ spaces with $1 < p < \infty$
+are uniformly convex. Strict convexity guarantees uniqueness of metric
+projections onto closed convex sets, a property needed for the
+well-posedness of the Dirac--Frenkel equation.
+
+\begin{definition}
+\label{def:smooth}
+A Banach space $X$ is \emph{smooth} if the limit
+$\lim_{t \to 0} \bigl(\|x + ty\| - \|x\|\bigr)/t$
+exists for all $x, y \in X$ with $\|x\| = 1$.
+\end{definition}
+
+Smoothness is the dual property to strict convexity in the following
+sense: $X$ is smooth if and only if $\dual{X}$ is strictly convex, and
+$X$ is strictly convex if and only if $\dual{X}$ is smooth.
+
+%------------------------------------------------------------
+\section{Complemented subspaces and projections}
+\label{sec:banach:complemented}
+%------------------------------------------------------------
+
+The central geometric notion underlying all manifold structures in this
+monograph is that of a complemented (or split) subspace. Unlike the
+Hilbert space setting, complementability is a non-trivial condition in
+general Banach spaces.
+
+\subsection*{Projections}
+
+A bounded linear map $P \in \cL(X)$ is a \emph{projection} if $P^2 = P$.
+In that case $\mathrm{Im}\,P$ is a closed subspace, $\mathrm{Ker}\,P$ is
+closed, and $X = \mathrm{Im}\,P \oplus \mathrm{Ker}\,P$ (as a direct sum
+of closed subspaces). The complementary projection is $\Id{X} - P$.
+
+\begin{definition}
+\label{def:split_subspace}
+Let $X$ be a Banach space. A closed subspace $U \subset X$ is a
+\emph{split subspace} (or \emph{complemented subspace}) of $X$ if
+there exists a closed subspace $W \subset X$ such that
+$X = U \oplus W$.
+The pair $(U, W)$ is then called a \emph{pair of complementary
+subspaces}, and $W$ is a \emph{(topological) complement} of $U$ in $X$.
+We write $\Proj{U}{W}$ for the unique continuous projection from $X$
+onto $U$ along $W$.
+\end{definition}
+
+The following proposition characterises split subspaces in terms of
+projections and provides three equivalent conditions that will each be
+used at different points of the text.
+
+\begin{proposition}[{\cite[Proposition~4.2]{FHHM}}]
+\label{prop:split_equiv}
+Let $X$ be a Banach space and $U \subset X$ a closed subspace. The
+following conditions are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $U$ is a split subspace of $X$.
+\item[\textup{(b)}] There exists $P \in \cL(X)$ with $P^2 = P$ and
+    $\mathrm{Im}\,P = U$.
+\item[\textup{(c)}] There exists $Q \in \cL(X)$ with $Q^2 = Q$ and
+    $\mathrm{Ker}\,Q = U$.
+\end{enumerate}
+\end{proposition}
+
+In condition~(b), the projection $P$ is none other than $\Proj{U}{W}$
+for any choice of closed complement $W$ of $U$; in~(c), one has $Q =
+\Proj{W}{U}$.
+
+\begin{proposition}[{\cite[Theorem~4.5]{FHHM}}]
+\label{prop:finitedim_split}
+Let $X$ be a Banach space. Every finite-dimensional subspace of $X$ is
+a split subspace.
+\end{proposition}
+
+In a Hilbert space, every closed subspace is complemented (the orthogonal
+complement provides the split). This is no longer true in general Banach
+spaces: by a classical result of Lindenstrauss and Tzafriri, a Banach
+space in which every closed subspace is complemented is necessarily
+isomorphic to a Hilbert space. The failure of complementability in
+non-Hilbert spaces is precisely what makes the immersion theorems of
+Chapter~\ref{chap:tucker_manifold} non-trivial.
+
+\subsection*{The nilpotent algebra associated to a splitting}
+
+The following result, central to the construction of local charts in
+Chapters~\ref{chap:tucker_manifold} and~\ref{chap:TB_manifold},
+identifies a particularly well-behaved sub-algebra of $\cL(X)$
+associated to any splitting $X = U \oplus W$.
+
+\begin{proposition}
+\label{prop:nilpotent_algebra}
+Let $X$ be a Banach space and $U, W \in \GrassB{X}$ with $X = U \oplus W$.
+Define
+\begin{equation*}
+    \cL_{(U,W)}(X) \coloneqq
+    \bigl\{
+        \Proj{W}{U} \circ S \circ \Proj{U}{W} : S \in \cL(X)
+    \bigr\}
+    \cong \cL(U, W).
+\end{equation*}
+Then:
+\begin{enumerate}
+\item[\textup{(i)}] The natural map
+    $\cL(U, W) \to \cL_{(U,W)}(X)$,
+    $L \mapsto \Proj{W}{U} \circ L \circ \Proj{U}{W}$,
+    is an isometric isomorphism.
+\item[\textup{(ii)}] $\cL_{(U,W)}(X)$ is a nilpotent sub-algebra of
+    $\cL(X)$: for every $L, L' \in \cL_{(U,W)}(X)$ one has $L \circ L' = 0$.
+\item[\textup{(iii)}] As a consequence, for every
+    $L \in \cL_{(U,W)}(X)$:
+    \begin{equation}
+    \label{eq:exp_nilpotent}
+        \exp(L) \coloneqq \sum_{n=0}^{\infty} \frac{L^n}{n!}
+        = \Id{X} + L,
+        \qquad
+        \exp(-L) = \Id{X} - L = (\Id{X} + L)^{-1}.
+    \end{equation}
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+For the isometry in~(i), note that
+$\|\Proj{W}{U} \circ L \circ \Proj{U}{W}\|_{X \leftarrow X}
+= \|L\|_{W \leftarrow U}$ by the definition of the operator norm.
+For~(ii): if $L = \Proj{W}{U} \circ S \circ \Proj{U}{W}$ and
+$L' = \Proj{W}{U} \circ S' \circ \Proj{U}{W}$, then
+\begin{equation*}
+    L \circ L' =
+    \Proj{W}{U} \circ S \circ (\Proj{U}{W} \circ \Proj{W}{U})
+    \circ S' \circ \Proj{U}{W} = 0,
+\end{equation*}
+since $\Proj{U}{W} \circ \Proj{W}{U} = 0$. Statement~(iii) follows
+immediately from~(ii) and the series definition of the exponential.
+\end{proof}
+
+The identity $\exp(L) = \Id{X} + L$ means that the exponential map on
+the nilpotent algebra $\cL_{(U,W)}(X)$ is a polynomial of degree one,
+and in particular a global analytic diffeomorphism. This is the key
+that makes the local charts of the Grassmann--Banach manifold and the
+Tucker manifold globally well-defined; see
+Section~\ref{sec:banach:grassmann}.
+
+\subsection*{Common complements and chart compatibility}
+
+The following lemma, which underlies the compatibility of overlapping
+charts in the Grassmann--Banach manifold, characterises when two split
+subspaces share a common complement.
+
+\begin{lemma}[{\cite[Lemma~2.1]{DRW}}]
+\label{lem:common_complement}
+Let $X$ be a Banach space and let $U, U', W \in \GrassB{X}$ with
+$X = U \oplus W = U' \oplus W$. The following conditions are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $U$ and $U'$ have $W$ as a common complement, i.e.,
+    $X = U \oplus W = U' \oplus W$.
+\item[\textup{(b)}] The restriction $\Proj{U}{W}\big|_{U'} : U' \to U$
+    is a linear isomorphism (with bounded inverse).
+\end{enumerate}
+Moreover, in this case
+$\bigl(\Proj{U}{W}\big|_{U'}\bigr)^{-1} = \Proj{U'}{W}\big|_U$.
+\end{lemma}
+
+%------------------------------------------------------------
+\section{The Grassmann--Banach manifold}
+\label{sec:banach:grassmann}
+%------------------------------------------------------------
+
+The Grassmannian of a Banach space is the natural parameter space for
+subspaces, and it serves as the base manifold for the Tucker and
+tree-based tensor manifolds.
+
+\begin{definition}
+\label{def:grassmannian}
+Let $X$ be a Banach space. The \emph{Grassmann manifold} (or
+\emph{Grassmannian}) of $X$ is
+\begin{equation*}
+    \GrassB{X} \coloneqq \{U \subset X : U \text{ is a split subspace of } X\}.
+\end{equation*}
+For $r \in \NNz$, the \emph{finite Grassmannian} is
+\begin{equation*}
+    \Grass{r}{X} \coloneqq
+    \{U \in \GrassB{X} : \dim U = r\}.
+\end{equation*}
+\end{definition}
+
+Both $X$ and $\{0\}$ belong to $\GrassB{X}$.
+By Proposition~\ref{prop:finitedim_split}, every $r$-dimensional subspace
+of $X$ belongs to $\GrassB{X}$, so $\Grass{r}{X}$ is well defined.
+
+\begin{theorem}[Grassmann--Banach manifold, {\cite{Douady1966}}]
+\label{thm:grassmann_manifold}
+Let $X$ be a Banach space. The Grassmannian $\GrassB{X}$ is an analytic
+Banach manifold, with atlas
+$\bigl\{\GrassB{W, X},\, \Psi_{U \oplus W}\bigr\}_{U \in \GrassB{X}}$,
+where for each splitting $X = U \oplus W$:
+\begin{enumerate}
+\item[\textup{(i)}] $\GrassB{W, X} \coloneqq
+    \{V \in \GrassB{X} : X = V \oplus W\}$
+    is the chart domain at $U$.
+\item[\textup{(ii)}] The chart map
+    $\Psi_{U \oplus W}: \GrassB{W, X} \to \cL(U, W)$
+    is defined by
+    \begin{equation}
+    \label{eq:grassmann_chart}
+        \Psi_{U \oplus W}(V) \coloneqq
+        \Proj{W}{U}\big|_V \circ \bigl(\Proj{U}{W}\big|_V\bigr)^{-1},
+    \end{equation}
+    with inverse
+    $\Psi_{U \oplus W}^{-1}(L) = G(L) \coloneqq
+    \{(\Id{X} + L)(u) : u \in U\}$.
+\end{enumerate}
+The transition maps are analytic. Each chart domain
+$\GrassB{W, X}$ is a Banach manifold modelled on $\cL(U, W)$.
+\end{theorem}
+
+The chart map $\Psi_{U \oplus W}$ sends a subspace $V \in \GrassB{W,X}$
+to the linear map $L: U \to W$ whose graph $G(L)$ equals $V$. The
+identity $\Psi_{U\oplus W}^{-1}(L) = \exp(L)(U)$, combined with
+Proposition~\ref{prop:nilpotent_algebra}, shows that the inverse chart is
+a degree-one polynomial map (hence analytic). Analyticity of the
+transition maps follows by a direct computation using
+Lemma~\ref{lem:common_complement}.
+
+\begin{remark}
+\label{rem:grassmann_not_modelled}
+The full Grassmannian $\GrassB{X}$ is a Banach manifold but is
+\emph{not} modelled on a single Banach space: if $U$ and $U'$ are
+finite-dimensional with $\dim U \neq \dim U'$, then $\cL(U, W)$ and
+$\cL(U', W')$ are non-isomorphic. This is not a deficiency but a
+structural fact: $\GrassB{X}$ decomposes into connected components
+$\GrassB{X} = \bigsqcup_{r \in \NNz} \Grass{r}{X}$, each of which
+\emph{is} modelled on a single Banach space.
+\end{remark}
+
+\begin{proposition}
+\label{prop:grassr_connected}
+For each $r \in \NNz$, the finite Grassmannian $\Grass{r}{X}$ is a
+connected component of $\GrassB{X}$, and it is an analytic Banach manifold
+modelled on $\cL(U, W)$ for any $U \in \Grass{r}{X}$ and complement $W$
+\textup{(}the isomorphism class of $\cL(U, W)$ does not depend on the
+choice of $U$ or $W$\textup{)}.
+\end{proposition}
+
+\begin{remark}[Grassmannian of a normed space]
+\label{rem:grassmann_normed}
+The construction extends to normed (non-complete) spaces. Let
+$(X, \|\cdot\|)$ be a normed space with completion $\bar X$. Define
+$\Grass{r}{X}$ as the set of $r$-dimensional subspaces of $X$ that are
+also split in $\bar X$. By Lemma~\ref{lem:normed_grassmann}, every chart
+domain $\GrassB{W, \bar X}$ is contained in $\Grass{r}{X}$, so the atlas
+of $\Grass{r}{\bar X}$ restricts to an analytic atlas on $\Grass{r}{X}$.
+This variant is needed in Section~\ref{sec:tucker_manifold:charts}, where
+the component spaces $V_\alpha$ are normed but not necessarily complete.
+\end{remark}
+
+The tangent space to $\GrassB{X}$ at $U$ is identified as follows.
+
+\begin{proposition}
+\label{prop:grassmann_tangent}
+For $U \in \GrassB{X}$ with complement $W$, the tangent space
+$T_U \GrassB{X} \cong \cL(U, W)$.
+\end{proposition}
+
+This identification is consistent with the finite-dimensional case: in
+$\RR^n$, the tangent space to the Grassmannian $Gr(r, n)$ at a subspace
+$U$ is the space of linear maps from $U$ to its orthogonal complement,
+recovering the classical description.
+
+%------------------------------------------------------------
+\section{Banach manifolds}
+\label{sec:banach:manifolds}
+%------------------------------------------------------------
+
+We recall the definition of a Banach manifold in its general form, since
+the full Grassmannian $\GrassB{X}$ and the full tensor space
+$\VDnorm$ are manifolds not modelled on a fixed Banach space.
+
+\begin{definition}
+\label{def:banach_manifold}
+Let $\mathbb{M}$ be a set. An \emph{atlas of class $\mathcal{C}^p$}
+(for $p \geq 0$ or $p = \infty$ or $p = \omega$, the analytic case)
+on $\mathbb{M}$ is a family of \emph{charts}
+$\{(M_i, u_i)\}_{i \in A}$ satisfying:
+\begin{enumerate}
+\item[\textup{(AT1)}] $\{M_i\}_{i\in A}$ covers $\mathbb{M}$.
+\item[\textup{(AT2)}] For each $i \in A$, the chart $u_i: M_i \to U_i$
+    is a bijection onto an open set $U_i$ in some Banach space $X_i$,
+    and for any $i, j \in A$, the set $u_i(M_i \cap M_j)$ is open in $X_i$.
+\item[\textup{(AT3)}] Whenever $M_i \cap M_j \neq \emptyset$,
+    the \emph{transition map}
+    $u_j \circ u_i^{-1} : u_i(M_i \cap M_j) \to u_j(M_i \cap M_j)$
+    is a diffeomorphism of class $\mathcal{C}^p$.
+\end{enumerate}
+Two atlases are \emph{compatible} if their union is again an atlas. A
+\emph{$\mathcal{C}^p$-Banach manifold} is a set $\mathbb{M}$ together
+with a maximal (complete) atlas of class $\mathcal{C}^p$. If all
+$X_i$ are isomorphic to a single Banach space $X$, we say $\mathbb{M}$
+is \emph{modelled on $X$}.
+\end{definition}
+
+\begin{example}
+\label{ex:manifold:banach_space}
+Every Banach space $X$ is a $\mathcal{C}^\infty$-Banach manifold
+modelled on itself, with the single chart $(X, \Id{X})$.
+\end{example}
+
+\begin{example}
+\label{ex:manifold:GL}
+If $X$ is a Banach space, then $\GL{X}$ is an open subset of $\cL(X)$,
+and hence an analytic Banach manifold modelled on $\cL(X)$. The maps
+$A \mapsto A^{-1}$ and $(A,B) \mapsto AB$ are analytic
+\textup{(}see~\cite[2.7, 2.8]{Upmeier}\textup{)}.
+\end{example}
+
+\begin{definition}
+\label{def:tangent_space}
+Let $\mathbb{M}$ be a $\mathcal{C}^p$-Banach manifold with $p \geq 1$
+and $m \in \mathbb{M}$. A \emph{tangent vector} at $m$ is an equivalence
+class of triples $(U_i, u_i, v)$ where $(U_i, u_i)$ is a chart at $m$
+and $v \in X_i$, under the equivalence
+$(U_i, u_i, v) \sim (U_j, u_j, w)$ if $D(u_j \circ u_i^{-1})(u_i(m)) v = w$.
+The \emph{tangent space} $T_m \mathbb{M}$ is the set of all tangent vectors
+at $m$, which inherits the structure of a Banach space from any chart.
+\end{definition}
+
+\begin{definition}
+\label{def:immersion}
+A $\mathcal{C}^1$-map $f: \mathbb{M} \to \mathbb{N}$ between Banach
+manifolds is an \emph{immersion} at $m$ if $Df(m): T_m\mathbb{M} \to
+T_{f(m)}\mathbb{N}$ is injective with closed split image. It is an
+\emph{immersion} if it is an immersion at every point. An
+\emph{immersed submanifold} of $\mathbb{N}$ is the image of an injective
+immersion.
+\end{definition}
+
+The closedness and split condition on the image of $Df(m)$ is automatic
+in finite dimensions and in Hilbert spaces (where every closed subspace is
+split), but is a genuine constraint in Banach spaces. This is the key
+difficulty resolved in Section~\ref{sec:tucker_manifold:immersion}.
+
+%------------------------------------------------------------
+\section{Multilinear maps and Fréchet differentiability}
+\label{sec:banach:multilinear}
+%------------------------------------------------------------
+
+Since the tensor product map is multilinear, the following general results
+will be used repeatedly.
+
+\begin{definition}
+A map $M: X_1 \times \cdots \times X_d \to Y$ between normed spaces is
+\emph{multilinear} if it is linear in each argument separately. It is
+\emph{bounded} (equivalently, \emph{continuous}) if
+\begin{equation*}
+    \|M\| \coloneqq \sup_{\substack{x_j \in X_j \\ \|x_j\|_j \leq 1}}
+    \|M(x_1, \ldots, x_d)\|_Y < \infty.
+\end{equation*}
+\end{definition}
+
+The following proposition shows that continuity implies a much stronger
+regularity.
+
+\begin{proposition}[{\cite[Proposition~79]{HJ}}]
+\label{prop:multilinear_smooth}
+Let $X_1, \ldots, X_d$ and $Y$ be normed spaces and let
+$M: X_1 \times \cdots \times X_d \to Y$ be a continuous multilinear map.
+Then $M$ is $\mathcal{C}^\infty$-Fréchet differentiable, and
+$D^k M = 0$ for all $k > d$.
+\end{proposition}
+
+The vanishing of derivatives beyond order $d$ reflects the polynomial
+nature of multilinear maps. In the complex case, a stronger conclusion
+holds.
+
+\begin{proposition}[{\cite[Theorem~160]{HJ}}]
+\label{prop:analytic_c1}
+Let $X$, $Y$ be complex Banach spaces and $U \subset X$ open. A map
+$f: U \to Y$ is analytic if and only if it is $\mathcal{C}^1$-Fréchet
+differentiable.
+\end{proposition}
+
+\begin{corollary}
+\label{cor:multilinear_analytic}
+Every continuous multilinear map between complex Banach spaces is analytic.
+\end{corollary}
+
+In real Banach spaces, $\mathcal{C}^\infty$ and analytic are distinct
+notions; the tensor product map is $\mathcal{C}^\infty$ but need not be
+analytic over $\RR$. For the real case, $\mathcal{C}^\infty$-regularity
+is sufficient for the manifold constructions in Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:TB_manifold}.
+
+\begin{remark}
+\label{rem:regularity_manifold}
+Proposition~\ref{prop:multilinear_smooth} is the reason why the Tucker
+and tree-based tensor manifolds are $\mathcal{C}^\infty$-Banach manifolds
+(and analytic over $\CC$): their chart transition maps are compositions of
+continuous multilinear maps with bounded linear projections, all of which
+are $\mathcal{C}^\infty$-Fréchet differentiable.
+\end{remark}
+
+\subsection*{The Grassmannian revisited: Lemma on normed spaces}
+
+For later use in Section~\ref{sec:tucker_manifold:charts}, we record
+the following lemma about Grassmannians of normed (non-complete) spaces.
+
+\begin{lemma}
+\label{lem:normed_grassmann}
+Let $(X, \|\cdot\|)$ be a normed space with completion $\bar X$. Let
+$U \in \Grass{r}{\bar X}$ with $U \subset X$, and suppose
+$\bar X = U \oplus W$ for some $W \in \GrassB{\bar X}$. Then every
+$V \in \GrassB{W, \bar X}$ satisfies $V \subset X$.
+\end{lemma}
+
+\begin{proof}
+Observe that $X = U \oplus (W \cap X)$, where $W \cap X$ is dense in $W$.
+Suppose for contradiction that there exists $V \in \GrassB{W, \bar X}$
+with $V \not\subset X$. Since $V$ is finite-dimensional and $\bar X =
+V \oplus W$, the subspace $V \cap X$ is a proper subspace of $V$. On
+the other hand, $X = (V \cap X) \oplus (W \cap X)$ implies $\bar X =
+(V \cap X) \oplus W$, so $V \cap X \in \GrassB{W, \bar X}$. But
+$\dim(V \cap X) < \dim V = r$, contradicting the fact that every element
+of $\GrassB{W, \bar X}$ has dimension $r$.
+\end{proof}
+
