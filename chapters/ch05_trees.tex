@@ -1,13 +1,454 @@
 %============================================================
-%  ch05_trees.tex  —  Dimension Partition Trees
-%  TODO: Write content
+%  ch05_trees.tex
+%  Chapter 5: Dimension Partition Trees
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: FHN2021 (Sec. 2.3), FHN2023 (Sec. 3)
+%  Estimated length: ~20 pp.
 %============================================================
 
 \chapter{Dimension Partition Trees}
 \label{chap:trees}
 
-\section*{To be written}
+The Tucker format developed in Chapters~\ref{chap:algtensor}
+and~\ref{chap:minsubspaces} corresponds to the shallowest possible
+hierarchical structure: all $d$ factor spaces are placed at the same
+level below the root. Richer formats arise by organising the dimensions
+into a \emph{hierarchy}, encoded by a rooted tree. This chapter
+introduces dimension partition trees, establishes their basic properties,
+and presents the principal examples (Tucker, Hierarchical Tucker, Tensor
+Train). The material prepares the ground for the algebraic
+(Chapter~\ref{chap:algTBT}) and topological (Chapter~\ref{chap:topTBT})
+development of tree-based tensor formats.
 
-This chapter is a placeholder. Content will be added in subsequent
-revisions.
+Throughout, $D = \{1, \ldots, d\}$ with $d \geq 2$.
+
+%------------------------------------------------------------
+\section{Definition and basic properties}
+\label{sec:trees:def}
+%------------------------------------------------------------
+
+\begin{definition}[Dimension partition tree]
+\label{def:partition_tree}
+A finite rooted tree $\TD$ is called a \emph{dimension partition tree
+of $D$} if:
+\begin{enumerate}
+\item[\textup{(a)}] Every vertex $\alpha \in \TD$ is a non-empty
+    subset of $D$.
+\item[\textup{(b)}] The root of $\TD$ is $D$ itself.
+\item[\textup{(c)}] Every non-leaf vertex $\alpha \in \TD$
+    (i.e., every $\alpha$ with $\card{\alpha} \geq 2$) has at
+    least two children, and the set of children of $\alpha$,
+    denoted $\Sons{\alpha}$, forms a \emph{non-trivial partition}
+    of $\alpha$ (i.e., a partition into at least two non-empty
+    subsets whose union is $\alpha$).
+\item[\textup{(d)}] Every vertex $\alpha$ with $\card{\alpha} = 1$
+    has no children; such vertices are called \emph{leaves}.
+\end{enumerate}
+\end{definition}
+
+The set of all leaves of $\TD$ is denoted $\Leaves$.
+Condition~(c) forces every non-leaf to have at least two children,
+so the tree is never a path of singletons. The following observation
+is immediate from the definition.
+
+\begin{proposition}
+\label{prop:leaves_trivial}
+For any dimension partition tree $\TD$, the set of leaves coincides
+with the set of singletons of $D$:
+\begin{equation*}
+    \Leaves = \bigl\{\{j\} : j \in D\bigr\}.
+\end{equation*}
+In particular, $\Leaves$ is the trivial partition of $D$ into
+singletons.
+\end{proposition}
+
+\begin{proof}
+By~(d), leaves are exactly the vertices with $\card{\alpha} = 1$,
+i.e., the singletons $\{j\}$ for $j \in D$. Since the root is $D$
+and each non-leaf splits into a partition of its label set, every
+$j \in D$ is eventually reached as a leaf by iterating the partition.
+\end{proof}
+
+\subsection*{Levels, depth, and level-partitions}
+
+\begin{definition}
+\label{def:level_depth}
+The \emph{level} of a vertex $\alpha \in \TD$ is defined recursively by
+\begin{equation*}
+    \lev{D} = 0,
+    \qquad
+    \lev{\beta} = \lev{\alpha} + 1
+    \quad \text{for } \beta \in \Sons{\alpha}.
+\end{equation*}
+The \emph{depth} of the tree is
+\begin{equation}
+\label{eq:depth}
+    \dep{\TD} \coloneqq \max_{\alpha \in \TD} \lev{\alpha}.
+\end{equation}
+\end{definition}
+
+Since leaves are the only vertices with $\card{\alpha} = 1$, and
+every path from root to leaf passes through a strictly decreasing
+chain of subset sizes, the depth satisfies $1 \leq \dep{\TD} \leq d-1$.
+
+\begin{definition}
+\label{def:level_partition}
+For $1 \leq k \leq \dep{\TD}$, the \emph{$k$-th level partition} of
+$D$ induced by $\TD$ is
+\begin{equation}
+\label{eq:level_partition}
+    \PkT{k}{\TD}
+    \coloneqq \bigl\{\alpha \in \TD : \lev{\alpha} = k\bigr\}.
+\end{equation}
+By convention, $\PkT{0}{\TD} = \{D\}$.
+\end{definition}
+
+\begin{proposition}
+\label{prop:level_partition_is_partition}
+For each $1 \leq k \leq \dep{\TD}$, the collection
+$\PkT{k}{\TD}$ is a partition of $D$. Moreover:
+\begin{enumerate}
+\item[\textup{(i)}] Every element of $\PkT{k}{\TD}$ is a subset of
+    some element of $\PkT{k-1}{\TD}$ \textup{(}refinement property\textup{)}.
+\item[\textup{(ii)}] $\PkT{\dep{\TD}}{\TD} = \Leaves$, the trivial
+    partition of $D$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+The elements of $\PkT{k}{\TD}$ are precisely the vertex labels at
+level $k$. Since each such vertex $\alpha$ is the child of a unique
+parent $\beta \in \PkT{k-1}{\TD}$ satisfying $\alpha \subset \beta$,
+and since $\Sons{\beta}$ partitions $\beta$, the elements of
+$\PkT{k}{\TD}$ at level $k$ partition $D$ by induction on $k$. Parts
+(i) and (ii) follow directly.
+\end{proof}
+
+The sequence of partitions
+$\PkT{0}{\TD} \succ \PkT{1}{\TD} \succ \cdots \succ
+\PkT{\dep{\TD}}{\TD} = \Leaves$
+(where $\mathcal{P} \succ \mathcal{Q}$ means $\mathcal{Q}$ refines
+$\mathcal{P}$) captures the hierarchical structure of the tree.
+This is the central object connecting dimension partition trees to
+tensor spaces: for each level $k$, the identification
+$\VD \cong \bigotimes_{\alpha \in \PkT{k}{\TD}} \Vbigalpha$
+(Equation~\eqref{eq:iterated_tensor}) allows one to view $\bv \in \VD$
+as a Tucker tensor at level $k$.
+
+%------------------------------------------------------------
+\section{Special trees and standard formats}
+\label{sec:trees:special}
+%------------------------------------------------------------
+
+The following three families of dimension partition trees correspond
+to the three most widely used tensor formats.
+
+\subsection*{The Tucker tree}
+
+\begin{example}[Tucker tree]
+\label{ex:tucker_tree}
+The \emph{Tucker tree} $\TDtuck$ over $D$ has depth~1 and satisfies
+\begin{equation*}
+    \TDtuck = \bigl\{D,\, \{1\},\, \{2\},\, \ldots,\, \{d\}\bigr\},
+    \qquad
+    \Sons{D} = \Leaves[\TDtuck] = \bigl\{\{j\} : j \in D\bigr\}.
+\end{equation*}
+The only non-trivial partition step is $D \to \{\{1\},\ldots,\{d\}\}$.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\synttree[$D$[$\{1\}$][$\{2\}$][$\{3\}$][$\{4\}$][$\{5\}$][$\{6\}$]]
+\caption{Tucker tree over $D=\{1,2,3,4,5,6\}$: depth~$1$,
+one level partition $\mathcal{P}_1 = \Leaves$.}
+\label{fig:tucker_tree}
+\end{figure}
+
+The Tucker tree is the unique tree of depth~1 over $D$. The corresponding
+tensor format is exactly the Tucker format of
+Chapter~\ref{chap:algtensor}:
+$\FT{\fr}{\VD}{\TDtuck} = \Tucker{\fr}{\VD}$.
+
+\subsection*{Binary trees and the Hierarchical Tucker format}
+
+\begin{definition}
+\label{def:binary_tree}
+A dimension partition tree $\TD$ is \emph{binary} if every non-leaf
+vertex has exactly two children:
+$\card{\Sons{\alpha}} = 2$ for all $\alpha \in \TD$ with
+$\card{\alpha} \geq 2$.
+\end{definition}
+
+Binary trees are the natural hierarchical structure for the
+\emph{Hierarchical Tucker} (HT) format introduced by
+Hackbusch and Kühn~\cite{HaKuehn2009}.
+
+\begin{example}[Hierarchical Tucker tree]
+\label{ex:HT_tree}
+For $D = \{1,2,3,4\}$, the balanced binary HT tree is
+\begin{equation*}
+    \TDht = \bigl\{D,\,\{1,2\},\,\{3,4\},\,\{1\},\,\{2\},\,\{3\},\,\{4\}\bigr\},
+\end{equation*}
+with $\Sons{D} = \{\{1,2\},\{3,4\}\}$,
+$\Sons{\{1,2\}} = \{\{1\},\{2\}\}$,
+$\Sons{\{3,4\}} = \{\{3\},\{4\}\}$.
+Here $\dep{\TDht} = 2$, with level partitions
+$\mathcal{P}_1 = \{\{1,2\},\{3,4\}\}$ and
+$\mathcal{P}_2 = \Leaves = \{\{1\},\{2\},\{3\},\{4\}\}$.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\synttree[$\{1,2,3,4\}$[$\{1,2\}$[$\{1\}$][$\{2\}$]][$\{3,4\}$[$\{3\}$][$\{4\}$]]]
+\caption{Balanced binary tree over $D=\{1,2,3,4\}$: depth~$2$,
+corresponding to the HT format.}
+\label{fig:HT_tree}
+\end{figure}
+
+\begin{example}[Non-binary tree]
+\label{ex:nonbinary_tree}
+For $D = \{1,2,3,4,5,6\}$:
+\begin{equation*}
+    \TD = \bigl\{D,\,\{1,2,3\},\,\{4,5\},\,\{6\},\,\{1\},\,\{2,3\},\,
+    \{4\},\,\{5\},\,\{2\},\,\{3\}\bigr\},
+\end{equation*}
+where $\Sons{D} = \{\{1,2,3\},\{4,5\},\{6\}\}$ (three children),
+$\Sons{\{1,2,3\}} = \{\{1\},\{2,3\}\}$,
+$\Sons{\{2,3\}} = \{\{2\},\{3\}\}$,
+$\Sons{\{4,5\}} = \{\{4\},\{5\}\}$.
+Here $\dep{\TD} = 3$, with
+$\mathcal{P}_1 = \{\{1,2,3\},\{4,5\},\{6\}\}$,
+$\mathcal{P}_2 = \{\{1\},\{2,3\},\{4\},\{5\},\{6\}\}$,
+$\mathcal{P}_3 = \Leaves$.
+\end{example}
+
+\begin{figure}[h]
+\centering
+\synttree[$\{1,2,3,4,5,6\}$
+  [$\{1,2,3\}$[$\{1\}$][$\{2,3\}$[$\{2\}$][$\{3\}$]]]
+  [$\{4,5\}$[$\{4\}$][$\{5\}$]]
+  [$\{6\}$]]
+\caption{Non-binary dimension partition tree over $D=\{1,2,3,4,5,6\}$:
+depth~$3$.}
+\label{fig:nonbinary_tree}
+\end{figure}
+
+\subsection*{The Tensor Train tree}
+
+\begin{example}[Tensor Train tree]
+\label{ex:TT_tree}
+For $D = \{1,\ldots,d\}$, $d \geq 2$, the \emph{Tensor Train} (TT)
+tree~\cite{Oseledets2011} is the linear (chain) binary tree
+\begin{equation*}
+    \TDtt = \{D\} \cup \bigl\{\{j\} : 1 \leq j \leq d\bigr\}
+           \cup \bigl\{\{1,\ldots,j\} : 2 \leq j \leq d-1\bigr\},
+\end{equation*}
+with $\Sons{\{1,\ldots,j\}} = \{\{1,\ldots,j-1\},\{j\}\}$
+for $j \geq 2$. Here $\dep{\TDtt} = d - 1$.
+The level partitions are:
+\begin{equation*}
+    \mathcal{P}_k(\TDtt) =
+    \bigl\{\{1,\ldots,d-k\},\,\{d-k+1\},\,\ldots,\,\{d\}\bigr\},
+    \quad 1 \leq k \leq d-1.
+\end{equation*}
+\end{example}
+
+\begin{figure}[h]
+\centering
+\synttree[$\{1,2,3,4,5\}$[$\{1,2,3,4\}$[$\{1,2,3\}$[$\{1,2\}$[$\{1\}$][$\{2\}$]][$\{3\}$]][$\{4\}$]][$\{5\}$]]
+\caption{Tensor Train tree over $D=\{1,2,3,4,5\}$: depth~$4$, linear
+binary structure.}
+\label{fig:TT_tree}
+\end{figure}
+
+\begin{remark}
+\label{rem:TT_as_HT}
+The TT format is a special case of the HT format: $\TDtt$ is a binary
+tree with maximal depth $d-1$ and a linear (path) structure, whereas HT
+trees are typically balanced with depth $\lceil \log_2 d \rceil$.
+This is reflected in their computational cost: TT has storage
+$O(dr^2 n)$ while balanced HT has $O(d r^3)$, with $r$ the maximal
+rank and $n = \max_j \dim V_j$~\cite{HaKuehn2009, Oseledets2011}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Graph-theoretic properties}
+\label{sec:trees:graph}
+%------------------------------------------------------------
+
+We record here the combinatorial facts about dimension partition trees
+that will be used in Chapters~\ref{chap:algTBT} and~\ref{chap:TB_manifold}.
+
+\begin{proposition}
+\label{prop:tree_cardinality}
+Let $\TD$ be a dimension partition tree over $D = \{1,\ldots,d\}$.
+Then:
+\begin{enumerate}
+\item[\textup{(i)}] $\card{\Leaves} = d$. The number of internal
+    \textup{(}non-leaf\textup{)} vertices satisfies
+    $\card{\TD \setminus \Leaves} \leq d - 1$.
+\item[\textup{(ii)}] If $\TD$ is binary, then
+    $\card{\TD} = 2d - 1$, with exactly $d - 1$ internal vertices.
+\item[\textup{(iii)}] $\dep{\TD} \leq d - 1$, with equality if and
+    only if $\TD = \TDtt$ (up to re-labelling).
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i): every leaf is a singleton $\{j\}$ for a unique $j \in D$,
+so $\card{\Leaves} = d$. The bound on internal vertices follows since
+each internal vertex contributes at least two children which are
+eventually singletons. Part~(ii): in a binary tree with $d$ leaves,
+the number of internal nodes is exactly $d - 1$, giving $2d-1$ total
+vertices. Part~(iii): the depth is maximised when each step reduces
+the largest set by exactly one element, giving the TT structure.
+\end{proof}
+
+\begin{proposition}[Recursive subtree structure]
+\label{prop:subtree}
+Let $\TD$ be a dimension partition tree over $D$ and
+$\alpha \in \TD$ with $\card{\alpha} \geq 2$. Then the restriction
+\begin{equation*}
+    \TD|_\alpha \coloneqq \{\beta \in \TD : \beta \subseteq \alpha\}
+\end{equation*}
+is itself a dimension partition tree over $\alpha$ (with root $\alpha$).
+\end{proposition}
+
+This recursive structure is fundamental to the inductive proofs
+in Chapter~\ref{chap:algTBT}: properties of tree-based tensor formats
+are proved by induction on $\dep{\TD}$, reducing at each step to the
+subtrees $\TD|_\beta$ for $\beta \in \Sons{D}$.
+
+%------------------------------------------------------------
+\section{The intersection representation}
+\label{sec:trees:intersection}
+%------------------------------------------------------------
+
+The central structural theorem of the tree-based theory expresses the
+set of tree-based tensors with fixed rank as an intersection of Tucker
+manifolds — one at each level of the tree. This is the key result
+connecting the tree structure to the geometry of Chapters~\ref{chap:TB_manifold}.
+
+For each level partition $\PkT{k}{\TD}$, recall from
+Section~\ref{sec:algtensor:tucker} that the identification
+$\VD \cong \bigotimes_{\alpha \in \PkT{k}{\TD}} \Vbigalpha$ allows one
+to define the Tucker set
+\begin{equation}
+\label{eq:tucker_level_k}
+    \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}
+    \coloneqq
+    \bigl\{\bv \in \VD :
+        \dim \Umin{\alpha}{\bv} = r_\alpha
+        \text{ for all } \alpha \in \PkT{k}{\TD}
+    \bigr\},
+\end{equation}
+where $\fr_k = (r_\alpha)_{\alpha \in \PkT{k}{\TD}}$.
+
+\begin{theorem}[Intersection representation, {\cite[Theorem~3.12]{FHN2023}}]
+\label{thm:intersection_representation}
+Let $\TD$ be a dimension partition tree over $D$ and
+$\fr = (r_\alpha)_{\alpha \in \TD} \in \ADTD$. Then
+\begin{equation}
+\label{eq:intersection_representation}
+    \FTv = \bigcap_{k=1}^{\dep{\TD}}
+    \Tucker{\fr_k}{\VD, \PkT{k}{\TD}},
+\end{equation}
+where $\fr_k = (r_\alpha)_{\alpha \in \PkT{k}{\TD}}$.
+\end{theorem}
+
+\begin{proof}[Sketch]
+The inclusion $\FTv \subseteq \bigcap_k \Tucker{\fr_k}{\VD,\PkT{k}{\TD}}$
+is immediate: if $\dim \Umin{\alpha}{\bv} = r_\alpha$ for all
+$\alpha \in \TD$, then in particular for all $\alpha \in \PkT{k}{\TD}$
+at each level $k$. For the reverse inclusion, one uses
+Proposition~\ref{prop:min_inclusion_partition} inductively: from
+$\dim \Umin{\alpha}{\bv} = r_\alpha$ at the leaf level
+($k = \dep{\TD}$) and the compatibility condition
+$\Umin{\alpha}{\bv} \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}}
+\Umin{\beta}{\bv}$, one deduces $\dim \Umin{\alpha}{\bv} = r_\alpha$
+at all intermediate levels. See~\cite{FHN2023} for the complete proof.
+\end{proof}
+
+\begin{remark}
+\label{rem:tucker_as_intersection}
+For $\TD = \TDtuck$ (depth~1), the intersection
+\eqref{eq:intersection_representation} reduces to a single factor:
+$\FT{\fr}{\VD}{\TDtuck} = \Tucker{\fr_1}{\VD, \Leaves} =
+\Tucker{\fr}{\VD}$, recovering the Tucker format.
+\end{remark}
+
+\begin{example}
+\label{ex:intersection_d4}
+For $D = \{1,2,3,4\}$ and the balanced HT tree
+$\TDht$ of Example~\ref{ex:HT_tree} with
+$\fr = (r_D, r_{\{1,2\}}, r_{\{3,4\}}, r_{\{1\}}, r_{\{2\}},
+r_{\{3\}}, r_{\{4\}})$:
+\begin{align*}
+    \FT{\fr}{\VD}{\TDht}
+    &= \Tucker{\fr_1}{\VD, \mathcal{P}_1}
+     \cap \Tucker{\fr_2}{\VD, \mathcal{P}_2},
+\end{align*}
+where $\mathcal{P}_1 = \{\{1,2\},\{3,4\}\}$ and
+$\mathcal{P}_2 = \Leaves$.
+Concretely:
+\begin{align*}
+    \Tucker{\fr_1}{\VD, \mathcal{P}_1}
+    &= \bigl\{\bv \in \VD :
+        \dim \Umin{\{1,2\}}{\bv} = r_{\{1,2\}},\;
+        \dim \Umin{\{3,4\}}{\bv} = r_{\{3,4\}}\bigr\}, \\
+    \Tucker{\fr_2}{\VD, \mathcal{P}_2}
+    &= \bigl\{\bv \in \VD :
+        \dim \Umin{\{j\}}{\bv} = r_{\{j\}},\; j=1,2,3,4\bigr\}.
+\end{align*}
+The intersection captures tensors that are simultaneously Tucker
+at the level of pairs $(\{1,2\},\{3,4\})$ and at the level of
+singletons.
+\end{example}
+
+\begin{remark}[Degenerate case]
+\label{rem:degenerate}
+Not all intersections define distinct sets. If for some internal
+vertex $\alpha \in \TD$ the rank $r_\alpha$ equals
+$\prod_{\beta \in \Sons{\alpha}} r_\beta$, the rank constraint at
+$\alpha$ is automatically satisfied whenever the constraints at
+the children are. In such cases one of the Tucker factors in
+\eqref{eq:intersection_representation} is redundant.
+This situation is analysed in detail in~\cite[Theorem~3.12]{FHN2023}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:trees:history}
+%------------------------------------------------------------
+
+Dimension partition trees formalise the hierarchical structure of
+tensor representations that had appeared in various forms in the
+literature. The HT format was introduced by Hackbusch and Kühn
+in~\cite{HaKuehn2009} using a binary tree structure, with the specific
+aim of reducing the exponential storage of full Tucker tensors to
+$O(d r^3)$. The TT format, independently introduced by Vidal~\cite{Vidal2003}
+in quantum information (under the name \emph{matrix product states}) and
+by Oseledets~\cite{Oseledets2011} in numerical mathematics
+(as \emph{TT decomposition}), corresponds to the linear chain binary tree.
+
+The general notion of a dimension partition tree, unifying these formats
+under a common combinatorial framework, was introduced in~\cite{FHN2021}.
+The intersection representation (Theorem~\ref{thm:intersection_representation})
+was established in~\cite{FHN2023} and is the key to the geometric theory
+of Chapter~\ref{chap:TB_manifold}: it reduces the analysis of the
+tree-based manifold $\FTv$ to the intersection of Tucker manifolds, each
+of which has the structure established in Chapter~\ref{chap:tucker_manifold}.
+
+The connection between dimension partition trees and quantum physics
+is deeper than a mere formal analogy. In quantum information, a tensor
+network is a collection of tensors connected by contraction along shared
+indices, and the tree structure encodes the entanglement structure of a
+quantum state. The area law for entanglement entropy in one-dimensional
+quantum systems~\cite{Vidal2003} is the physical motivation for the TT
+format; balanced binary trees encode area laws in higher-dimensional
+systems. This connection is discussed further in
+Chapter~\ref{chap:open}.
 
