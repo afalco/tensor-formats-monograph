@@ -1,0 +1,485 @@
+%============================================================
+%  app_algorithms.tex
+%  Appendix D: Computational Aspects and Algorithms
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%============================================================
+
+\chapter{Computational Aspects and Algorithms}
+\label{app:algorithms}
+
+The theory developed in this monograph --- minimal subspaces, Tucker
+and tree-based manifolds, the Dirac--Frenkel variational principle ---
+has direct computational consequences. This appendix describes the
+main algorithms used in practice, explains their connection to the
+mathematical structures of the main text, and identifies precisely
+where the Banach-space generalisations of
+Chapters~\ref{chap:minsubspaces}--\ref{chap:DF} modify or constrain
+the algorithmic picture.
+
+Each algorithm is stated with pseudocode, its cost is analysed, and
+its relationship to the abstract theory is made explicit. The principal
+references are~\cite{Hackbusch2019} (systematic treatment of tensor
+numerics), \cite{Bachmayr2016} (survey of tensor network methods), and
+\cite{UschmajewVandereycken2020} (Riemannian optimisation on tensor
+manifolds).
+
+%------------------------------------------------------------
+\section{Storage complexity of tensor formats}
+\label{app:alg:storage}
+%------------------------------------------------------------
+
+\subsection*{The curse of dimensionality, quantified}
+
+Let $V_j = \RR^n$ for $j = 1, \ldots, d$. The full tensor space
+$\VD = \bigotimes_{j=1}^d \RR^n$ has dimension $n^d$: intractable
+for moderate $n$ and $d$. Tensor formats replace this by structured
+low-dimensional parametrisations. The table below summarises storage
+cost in terms of maximal rank $r$ and mode size $n$:
+
+\medskip
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Format} & \textbf{Parameters}
+    & \textbf{Storage} & \textbf{Tree}\\
+\midrule
+Full & $n^d$ entries & $O(n^d)$ & ---\\
+Tucker & core $r^d$ + $d$ factor matrices $n\!\times\! r$
+    & $O(r^d + dnr)$ & $\TDtuck$\\
+HT (balanced binary)
+    & transfer tensors at $O(d)$ nodes, each $r\!\times\! r^2$
+    & $O(dr^3 + dnr)$ & $\TDht$\\
+TT (Tensor Train)
+    & $d$ core matrices, each $r\!\times\! n\!\times\! r$
+    & $O(dr^2n)$ & $\TDtt$\\
+\bottomrule
+\end{tabular}
+\end{center}
+\medskip
+
+\begin{remark}[Exponential vs.\ polynomial scaling]
+\label{rem:app:scaling}
+The Tucker format reduces factor storage to $O(dnr)$ (linear in $d$)
+but retains the core at $O(r^d)$. The HT and TT formats remove this
+remaining exponential cost by imposing rank constraints at each level
+of the tree, reducing core storage to $O(dr^3)$ and $O(dr^2n)$
+respectively. This is precisely the content of the intersection
+representation (Theorem~\ref{thm:intersection_representation}):
+$\FTv$ imposes rank constraints at \emph{every} level of $\TD$,
+not only at the leaves.
+\end{remark}
+
+\subsection*{Parameter count for tree-based formats}
+
+For a general dimension partition tree $\TD$ and rank tuple $\fr$,
+the total parameter count is:
+\begin{equation}
+\label{eq:app:param_count}
+    P(\fr,\TD)
+    = \sum_{j \in D} r_{\{j\}} n_j
+    + \sum_{\substack{\alpha \in \TD \setminus (\Leaves \cup \{D\})}}
+      r_\alpha \prod_{\beta \in \Sons{\alpha}} r_\beta
+    + \prod_{\beta \in \Sons{D}} r_\beta,
+\end{equation}
+where the three terms count, respectively, the leaf factor matrices,
+the internal transfer tensors, and the root tensor.
+
+%------------------------------------------------------------
+\section{The Higher-Order SVD}
+\label{app:alg:hosvd}
+%------------------------------------------------------------
+
+\subsection*{Setup and goal}
+
+The \emph{Higher-Order SVD} (HOSVD) of De Lathauwer, De Moor, and
+Vandewalle~\cite{DeLathauwer2000} computes a Tucker approximation.
+Given $\bv \in \VD = \bigotimes_{j=1}^d \RR^{n_j}$ and target ranks
+$\fr = (r_j)_{j \in D}$, it produces:
+\begin{enumerate}
+\item[(i)] Factor matrices $U_j \in \RR^{n_j \times r_j}$ with
+    orthonormal columns, approximating $\Umin{j}{\bv}$.
+\item[(ii)] A core tensor
+    $C^{(D)} \in \RR^{r_1 \times \cdots \times r_d}$ such that
+    $\bv \approx \sum_{(i_j)} C^{(D)}_{(i_j)}
+    \bigotimes_j u_{i_j}^{(j)}$.
+\end{enumerate}
+
+\subsection*{Algorithm}
+
+\noindent\textbf{Algorithm D.1} (HOSVD).\\
+\textit{Input:} tensor $\bv \in \RR^{n_1 \times \cdots \times n_d}$,
+target ranks $(r_1,\ldots,r_d)$.\\
+\textit{Output:} core tensor $C^{(D)}$, factor matrices
+$U_1,\ldots,U_d$.
+\begin{enumerate}
+\item \textbf{Mode unfoldings.} For each $j = 1,\ldots,d$:
+    \begin{enumerate}
+    \item Compute the $j$-mode unfolding
+        $M_j = \Mmat{\{j\}}(\bv) \in \RR^{n_j \times \prod_{k \neq j} n_k}$.
+    \item Compute the truncated SVD: $M_j \approx U_j \Sigma_j V_j^\top$,
+        retaining the $r_j$ largest singular values.
+        Set $U_j \in \RR^{n_j \times r_j}$ (left singular vectors).
+    \end{enumerate}
+\item \textbf{Core compression.} Compute
+    \begin{equation*}
+        C^{(D)}_{i_1,\ldots,i_d}
+        = \sum_{k_1,\ldots,k_d}
+          (U_1)_{k_1 i_1} \cdots (U_d)_{k_d i_d}\;
+          \bv_{k_1,\ldots,k_d},
+    \end{equation*}
+    i.e., project $\bv$ onto the subspaces $\spann(U_j)$ in each mode.
+\item \textbf{Output.} Return $(C^{(D)}, U_1,\ldots,U_d)$.
+\end{enumerate}
+
+\subsection*{Cost and approximation quality}
+
+The dominant cost is $d$ SVDs of unfolding matrices of size
+$n_j \times \prod_{k \neq j} n_k$, giving arithmetic cost
+$O(dn^{d+1})$, which still scales exponentially in $d$.
+For tensors already in a low-rank format, recompression costs
+$O(dr^{d+1})$ or $O(dr^3)$ depending on the tree structure.
+
+\begin{theorem}[HOSVD quasi-optimality; {\cite[Theorem~4.2]{DeLathauwer2000}}]
+\label{thm:app:hosvd}
+Let $\bv \in \VD$ and let $\bw$ be the output of \textup{Algorithm~D.1}
+with ranks $(r_j)_j$. Then
+\begin{equation}
+\label{eq:app:hosvd_bound}
+    \|\bv - \bw\|_F
+    \leq \sqrt{d}\;
+    \min_{\bu \in \Tucker{\leq\fr}{\VD}} \|\bv - \bu\|_F.
+\end{equation}
+The HOSVD is not a best-approximation algorithm, but provides a
+quasi-optimal approximation with factor $\sqrt{d}$.
+\end{theorem}
+
+\begin{remark}[Connection to minimal subspaces]
+\label{rem:app:hosvd_min}
+The factor matrix $U_j$ is the best rank-$r_j$ approximation to
+the column space of the $j$-mode unfolding $M_j$, whose column space
+is exactly $\Umin{j}{\bv}$ when $r_j = r_j(\bv)$ (the exact rank).
+Algorithm~D.1 is therefore a computational procedure for approximating
+the minimal subspaces of Chapter~\ref{chap:minsubspaces}.
+
+In the Banach setting (non-Hilbert $V_j$), the SVD is replaced by a
+best rank-$r_j$ approximation in the operator norm of
+$\cL(V_j^*,\Vbigalpha^{[j]})$. Its existence is guaranteed by
+Theorem~\ref{thm:best_approx_tucker}, but the quasi-optimality
+factor $\sqrt{d}$ may worsen depending on the Banach--Mazur distance
+of $\VDnorm$ from a Hilbert space.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Alternating Least Squares}
+\label{app:alg:als}
+%------------------------------------------------------------
+
+\subsection*{The ALS problem and microiterations}
+
+Given $\bu \in \VDnorm$ and rank tuple $\fr$, the best Tucker
+approximation problem is
+\begin{equation}
+\label{eq:app:als_problem}
+    \min_{\bw \in \Tucker{\leq\fr}{\VD}} \|\bu - \bw\|_D^2.
+\end{equation}
+\emph{Alternating Least Squares} (ALS) solves this by fixing all
+factor matrices but one and optimising over the remaining one,
+cycling over all modes.
+
+\medskip
+\noindent\textbf{Algorithm D.2} (ALS for Tucker format).\\
+\textit{Input:} $\bu \in \VDnorm$, ranks $\fr$, initial factor
+matrices $\{U_j^{(0)}\}_{j=1}^d$.\\
+\textit{Repeat until convergence:}
+\begin{enumerate}
+\item For $j = 1,\ldots,d$:
+    \begin{enumerate}
+    \item \textbf{Fix} all $U_k$ for $k \neq j$ at their current values.
+    \item \textbf{Form the reduced right-hand side:} compute the array
+        \begin{equation*}
+            \bigl(R_j\bigr)_{i_j, (i_k)_{k \neq j}}
+            \coloneqq
+            \sum_{(k_l)} \bu_{k_1,\ldots,k_d}
+            \prod_{l \neq j} (U_l)_{k_l, i_l},
+        \end{equation*}
+        which is the tensor $\bu$ projected onto all modes except $j$.
+        This gives $R_j \in \RR^{n_j \times \prod_{k \neq j} r_k}$.
+    \item \textbf{Solve the mode-$j$ subproblem:}
+        \begin{equation*}
+            U_j^{\mathrm{new}}
+            = \argmin_{U \in \RR^{n_j \times r_j}}
+              \bigl\|R_j - U\, H_j\bigr\|_F^2,
+        \end{equation*}
+        where $H_j \in \RR^{r_j \times \prod_{k \neq j} r_k}$ is the
+        Gram factor assembled from the other modes.
+    \item \textbf{Orthonormalise:} $U_j \leftarrow U_j^{\mathrm{new}}$
+        after a QR step.
+    \end{enumerate}
+\item \textbf{Update the core:}
+    $C^{(D)}_{i_1,\ldots,i_d} \leftarrow
+    \sum_{k_1,\ldots,k_d} \bu_{k_1,\ldots,k_d}
+    \prod_j (U_j)_{k_j,i_j}$.
+\end{enumerate}
+
+\subsection*{Convergence}
+
+\begin{theorem}[ALS convergence in Hilbert spaces;
+    {\cite[Theorem~4.1]{UschmajewVandereycken2020}}]
+\label{thm:app:als_convergence}
+Let $\VDnorm$ be a Hilbert tensor space and let $(\bw^{(k)})$ be
+the sequence generated by \textup{Algorithm~D.2}. Then:
+\begin{enumerate}
+\item[\textup{(i)}] The residuals $\|\bu - \bw^{(k)}\|$ are monotonically
+    non-increasing.
+\item[\textup{(ii)}] Every accumulation point $\bw^*$ satisfies
+    the first-order optimality conditions in each mode direction:
+    $\langle \bu - \bw^*, v \otimes \bw^*_{[j]}\rangle = 0$
+    for all $v \in V_j$, $j = 1,\ldots,d$.
+\item[\textup{(iii)}] Global convergence to a best approximation is
+    not guaranteed; ALS may converge to a local minimum or saddle point.
+\end{enumerate}
+\end{theorem}
+
+\begin{remark}[ALS in Banach spaces]
+\label{rem:app:als_banach}
+In a reflexive Banach tensor space $\VDnorm$, the mode-$j$ subproblem
+in step~1(c) becomes: find the best rank-$r_j$ operator approximation
+in the norm $\|\cdot\|_D$ projected onto mode~$j$. This is a convex
+problem whose unique solution exists by
+Theorem~\ref{thm:best_approx_tucker}. Monotone decrease of part~(i)
+holds in full generality. The characterisation of accumulation points
+in part~(ii) must be rephrased using the duality mapping $J$
+(Appendix~\ref{app:functional}) in place of the inner product:
+\begin{equation*}
+    \langle v \otimes \bw^*_{[j]},\,
+    J(\bu - \bw^*)\rangle = 0
+    \quad \forall\, v \in V_j,\; j = 1,\ldots,d.
+\end{equation*}
+The convergence analysis in this Banach setting is Open
+Problem~\ref{prob:ALS}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The projector-splitting integrator}
+\label{app:alg:splitting}
+%------------------------------------------------------------
+
+\subsection*{The Dirac--Frenkel ODE}
+
+Consider the Dirac--Frenkel reduced model on $\Tucker{\fr}{\VD}$
+(Chapter~\ref{chap:DF}):
+\begin{equation}
+\label{eq:app:df_reduced}
+    \dot{\bv}_r(t)
+    = \Pmetric{\bv_r(t)}\bigl(\bF(t,\bv_r(t))\bigr),
+    \quad \bv_r(0) = \bv_0.
+\end{equation}
+Direct integration requires evaluating $\Pmetric{\bv_r(t)}$ at each
+step. The \emph{projector-splitting integrator}
+of~\cite{LubichOseledetsVandereycken2015} avoids this by decomposing
+the projection into a sequence of simpler updates.
+
+\subsection*{The TT case}
+
+For the TT format ($\TD = \TDtt$, bond dimensions
+$r_1,\ldots,r_{d-1}$), the tangent space projection splits as
+\begin{equation}
+\label{eq:app:splitting}
+    \Pmetric{\bv_r}
+    = \sum_{k=1}^{d} P_k
+      - \sum_{k=1}^{d-1} P_{k,k+1},
+\end{equation}
+where $P_k$ projects onto the subspace with the $k$-th component free
+and $P_{k,k+1}$ is the correction at the $(k,k{+}1)$ interface.
+
+\medskip
+\noindent\textbf{Algorithm D.3} (Projector-splitting, one step $h$).\\
+\textit{Input:} $\bv_r^n$ in TT format, vector field $\bF$, step $h$.\\
+\textit{Output:} $\bv_r^{n+1}$ in TT format.
+\begin{enumerate}
+\item \textbf{Forward sweep} ($k = 1,\ldots,d$): integrate the
+    $k$-th component ODE
+    \begin{equation*}
+        \dot{C}^{(k)}(t)
+        = \bigl\langle \bF(t,\bv_r(t)),\,
+          P_k(\,\cdot\,) \bigr\rangle
+    \end{equation*}
+    from $t^n$ to $t^n + h$; left-orthogonalise via QR.
+\item \textbf{Correction sweep} ($k = d-1,\ldots,1$): apply the
+    correction steps $-P_{k,k+1}$ symmetrically.
+\item \textbf{Return} the updated TT tensor $\bv_r^{n+1}$.
+\end{enumerate}
+
+\begin{theorem}[Error bound in Hilbert spaces;
+    {\cite[Theorem~4.1]{LubichOseledetsVandereycken2015}}]
+\label{thm:app:splitting_error}
+Let $\VDnorm$ be a Hilbert tensor space and $\bF$ Lipschitz with
+constant $L$. Then there exists $C > 0$ (depending on $L$, the
+curvature of $\Tucker{\fr}{\VD}$, and the initial data) such that
+\begin{equation}
+\label{eq:app:splitting_bound}
+    \|\bu(t^n) - \bv_r^n\|
+    \leq Ch + O\!\bigl(\delta_{\fr}(\bu)\bigr),
+\end{equation}
+where $\delta_{\fr}(\bu)
+= \inf_{\bw \in \Tucker{\leq\fr}{\VD}} \|\bu - \bw\|$ is the
+best-approximation error.
+\end{theorem}
+
+The curvature term in $C$ is the quantity whose Banach-space
+analogue appears in Open Problem~\ref{prob:integrator}. For general
+tree-based formats, the splitting integrator
+of~\cite{CerutiLubichWalach2020} applies a level-by-level sweep along
+$\TD$ at cost $O(\dep{\TD} \cdot dr^3)$ per time step.
+
+%------------------------------------------------------------
+\section{DMRG and the Tucker manifold}
+\label{app:alg:dmrg}
+%------------------------------------------------------------
+
+\subsection*{DMRG as ALS on the TT manifold}
+
+The \emph{Density Matrix Renormalisation Group} (DMRG), introduced by
+White~\cite{White1992}, is the most widely used algorithm for
+ground-state computation in quantum many-body systems. In its modern
+formulation~\cite{HoltzRohwedderSchneider2012}, DMRG is equivalent to
+ALS on the TT manifold applied to the eigenvalue problem
+$H\bu = \lambda\bu$: each microiteration updates one TT component
+while fixing all others, producing an effective eigenvalue problem
+of size $r^2 n$.
+
+\begin{remark}[Gauge conditions and the Tucker bundle]
+\label{rem:app:dmrg}
+The \emph{left-orthogonal gauge} in DMRG requires each component tensor
+$C^{(k)} \in \RR^{r_{k-1} \times n_k \times r_k}$ to satisfy
+\begin{equation*}
+    \sum_{i_k=1}^{n_k}
+    \bigl(C^{(k)}\bigr)_{:,i_k,:}^{\!\top}
+    \bigl(C^{(k)}\bigr)_{:,i_k,:}
+    = I_{r_k}.
+\end{equation*}
+This is the computational analogue of fixing the complement $W_k$ at
+each tree node to be the orthogonal complement of $\spann(C^{(k)})$,
+giving a canonical trivialisation of the Tucker bundle
+(Theorem~\ref{thm:app:tucker_bundle} in Appendix~\ref{app:manifolds}).
+The gauge group $\prod_k \GL{r_k}{\RR}$ of
+Remark~\ref{rem:gauge_freedom} is quotiented out by the QR
+orthogonalisation step.
+\end{remark}
+
+\subsection*{Two-site DMRG and rank adaptation}
+
+One-site DMRG cannot change the bond dimensions $r_k$. \emph{Two-site
+DMRG} optimises two adjacent components simultaneously, forming an
+effective tensor of rank $r_k \cdot r_{k+1}$ which is then truncated
+by SVD to obtain updated bond dimensions. Geometrically, this
+corresponds to moving between strata of the stratification
+$\VD = \bigsqcup_\fr \Tucker{\fr}{\VD}$
+(Theorem~\ref{thm:tucker_decomposition_full}).
+
+%------------------------------------------------------------
+\section{Retraction-based optimisation on tensor manifolds}
+\label{app:alg:retraction}
+%------------------------------------------------------------
+
+\subsection*{Riemannian gradient methods}
+
+In the Hilbert case, the Tucker manifold is a Riemannian submanifold
+of $\VDnorm$. Riemannian gradient descent~\cite{UschmajewVandereycken2020}
+for minimising $f: \VDnorm \to \RR$ over $\Tucker{\fr}{\VD}$ reads:
+\begin{equation}
+\label{eq:app:riem_gradient}
+    \bv_{k+1}
+    = \mathrm{Ret}_{\bv_k}\!\bigl(
+        -\alpha_k\,\Pmetric{\bv_k}(\nabla f(\bv_k))
+    \bigr),
+\end{equation}
+where $\Pmetric{\bv}(\nabla f(\bv))$ is the Riemannian gradient and
+$\mathrm{Ret}_\bv: \ZD{\bv} \to \Tucker{\fr}{\VD}$ is a retraction.
+
+\begin{definition}[Retraction]
+\label{def:app:retraction}
+A \emph{retraction} on a Banach manifold $\mathbb{M}$ is a
+$\mathcal{C}^1$-map $\mathrm{Ret}: T\mathbb{M} \to \mathbb{M}$
+such that, for each $m \in \mathbb{M}$:
+\begin{enumerate}
+\item[\textup{(i)}] $\mathrm{Ret}_m(0_m) = m$,
+\item[\textup{(ii)}] $D(\mathrm{Ret}_m)(0_m) = \Id{T_m\mathbb{M}}$.
+\end{enumerate}
+\end{definition}
+
+\begin{example}[Tucker retraction via HOSVD truncation]
+\label{ex:app:tucker_retraction}
+A practical retraction on $\Tucker{\fr}{\VD}$ is:
+\begin{equation*}
+    \mathrm{Ret}_{\bv}(\dot\bv)
+    = \mathrm{HOSVD}_\fr(\bv + \dot\bv),
+\end{equation*}
+i.e., apply Algorithm~D.1 to $\bv + \dot\bv$ and truncate to rank
+$\fr$. This satisfies (i) and (ii) with quasi-optimality constant
+$\sqrt{d}$ (Theorem~\ref{thm:app:hosvd}), and remains valid in Banach
+spaces as long as the best-approximation step is solvable ---
+guaranteed by Theorem~\ref{thm:best_approx_tucker}.
+\end{example}
+
+\subsection*{The Banach case: duality-mapping gradient}
+
+In a non-Hilbert Banach tensor space $\VDnorm$, the Riemannian gradient
+is replaced by the \emph{duality-mapping gradient}: the unique element
+$\nabla_B f(\bv) \in \ZD{\bv}$ satisfying
+\begin{equation}
+\label{eq:app:banach_gradient}
+    \bigl\langle \nabla_B f(\bv),\,
+    J\!\bigl(\bv - \bu\bigr)\bigr\rangle
+    = Df(\bv)[\bv - \bu]
+    \qquad \forall\,\bu \in \Tucker{\fr}{\VD},
+\end{equation}
+where $J: \VDnorm \to (\VDnorm)^*$ is the normalised duality mapping
+(Appendix~\ref{app:functional}, \S\ref{app:functional:geometry}).
+The iteration~\eqref{eq:app:riem_gradient} becomes a generalised
+gradient step using the generalised projection $\Pi_{\bv}$ of
+Appendix~\ref{app:functional} in place of $\Pmetric{\bv}$. Convergence
+analysis in this setting is related to Open Problem~\ref{prob:finsler}.
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{app:alg:history}
+%------------------------------------------------------------
+
+\paragraph{Tucker decomposition and HOSVD.}
+The Tucker decomposition~\cite{Tucker1966} was introduced as a
+psychometric tool and has been used in data analysis since the 1970s.
+The HOSVD as an algorithm for best Tucker approximations was introduced
+by De Lathauwer, De Moor, and Vandewalle~\cite{DeLathauwer2000}; the
+quasi-optimality bound~\eqref{eq:app:hosvd_bound} is from the same
+paper. A comprehensive survey of tensor decompositions is given in
+Kolda and Bader~\cite{KoldaBader2009}.
+
+\paragraph{Tensor Train and DMRG.}
+The TT decomposition was introduced independently by Vidal~\cite{Vidal2003}
+(matrix product states, MPS) and by Oseledets and
+Tyrtyshnikov~\cite{Oseledets2011}. The DMRG algorithm of
+White~\cite{White1992} predates both and was recognised
+in~\cite{HoltzRohwedderSchneider2012} as ALS on the TT manifold.
+The TT-SVD of~\cite{Oseledets2011} provides quasi-optimal TT
+approximations analogous to the HOSVD for Tucker.
+
+\paragraph{Projector-splitting integrators.}
+The projector-splitting integrator for TT formats was introduced by
+Lubich, Oseledets, and Vandereycken~\cite{LubichOseledetsVandereycken2015},
+building on the matrix case of Koch and Lubich~\cite{KochLubich2007}
+(MCTDH). The extension to general tree-based formats is
+in~\cite{CerutiLubichWalach2020}. Convergence in the Banach setting
+is Open Problem~\ref{prob:integrator}.
+
+\paragraph{Riemannian optimisation.}
+Riemannian gradient methods on Tucker and TT manifolds were
+systematically developed by Uschmajew and
+Vandereycken~\cite{UschmajewVandereycken2020}, using the Riemannian
+structure in a way that parallels
+Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold} but
+restricted to the Hilbert case. The Banach generalisation is related
+to Open Problem~\ref{prob:finsler}.
