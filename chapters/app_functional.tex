@@ -1,643 +1,130 @@
 %============================================================
-%  app_functional.tex  —  Functional Analysis: Selected Results
+%  app_functional.tex — Functional Analysis: Reference Summary
 %  Tensor Formats in Banach Spaces
 %  Antonio Falcó, CEU Universities
 %============================================================
 
-\chapter{Functional Analysis: Selected Results}
+\chapter{Functional Analysis: Reference Summary}
 \label{app:functional}
 
-This appendix collects classical results from Banach space theory and
-convex analysis that are used at various points in the monograph but
-whose proofs would interrupt the main narrative. Standard references
-are~\cite{Hackbusch2019} (tensor analysis viewpoint)
-and~\cite{Lang1999} (differential-geometric perspective).
+This appendix is a reference guide to the Banach space results used
+in the monograph. The full exposition --- with complete proofs,
+examples, and motivation --- is in Chapters~\ref{chap:banach}
+and~\ref{chap:minsubspaces}. This appendix records the precise
+statements for quick lookup, and contains the Picard--Lindelöf theorem
+(used in Chapter~\ref{chap:DF}) and the Hahn--Banach theorem (used
+implicitly throughout).
+
+Standard references: \cite{Hackbusch2019}, \cite{Megginson1998},
+\cite{Ryan2002}.
 
 %------------------------------------------------------------
-\section{Geometry of Banach spaces}
-\label{app:functional:geometry}
+\section{Quick-reference index}
+\label{app:functional:index}
 %------------------------------------------------------------
 
-\subsection*{Strict and uniform convexity}
-
-\begin{definition}
-A normed space $(X, \|\cdot\|)$ is:
-\begin{enumerate}
-\item[\textup{(i)}] \emph{Strictly convex} (rotund) if
-    $\|x+y\|/2 < 1$ whenever $\|x\| = \|y\| = 1$ and $x \neq y$.
-\item[\textup{(ii)}] \emph{Uniformly convex} if for every
-    $\varepsilon > 0$ there exists $\delta > 0$ such that
-    $\|x+y\|/2 \leq 1-\delta$ whenever $\|x\|,\|y\| \leq 1$ and
-    $\|x-y\| \geq \varepsilon$.
-\item[\textup{(iii)}] \emph{Smooth} if
-    $\lim_{t\to 0}(\|x+ty\|-\|x\|)/t$ exists for all $x,y$ with
-    $\|x\| = 1$.
-\end{enumerate}
-\end{definition}
-
-Uniform convexity implies strict convexity and reflexivity
-(Clarkson's theorem). The $L^p$ spaces satisfy:
-$L^p$ is uniformly convex for $1 < p < \infty$; $L^1$ and $L^\infty$
-are neither strictly convex nor smooth in general.
-The duality relations are: $X$ is smooth $\Leftrightarrow$ $X^*$ is
-strictly convex, and $X$ is strictly convex $\Leftrightarrow$ $X^*$ is
-smooth.
-
-\subsection*{Duality mapping}
-
-\begin{definition}
-The \emph{normalised duality mapping} $J: X \to 2^{X^*}$ of a Banach
-space $X$ is
-\begin{equation*}
-    J(x) \coloneqq \bigl\{f \in X^* : \langle x, f\rangle = \|x\|^2
-    = \|f\|_{X^*}^2 \bigr\}.
-\end{equation*}
-\end{definition}
-
-The duality mapping is:
-\begin{itemize}
-\item Always non-empty (Hahn--Banach theorem).
-\item Single-valued on $X \setminus \{0\}$ if and only if $X$ is smooth.
-\item The Riesz isomorphism $J: H \to H^*$, $J(x) = \langle x,\cdot\rangle$,
-    when $X = H$ is a Hilbert space.
-\item Uniformly continuous on bounded sets when $X$ is uniformly smooth.
-\end{itemize}
-
-\subsection*{Metric and generalised projections}
-
-Let $C \subset X$ be a closed convex subset of a Banach space $X$.
-
-\begin{definition}
-\begin{enumerate}
-\item[\textup{(i)}] The \emph{metric projection} $P_C: X \to 2^C$ assigns
-    to each $x \in X$ the set of nearest points in $C$:
-    \begin{equation*}
-        P_C(x) \coloneqq \argmin_{c \in C} \|x - c\|.
-    \end{equation*}
-\item[\textup{(ii)}] The \emph{Lyapunov functional} is
-    $\phi(x,y) \coloneqq \|x\|^2 - 2\langle x, J(y)\rangle + \|y\|^2$.
-\item[\textup{(iii)}] The \emph{generalised projection}
-    $\Pi_C: X \to 2^C$ is
-    \begin{equation*}
-        \Pi_C(x) \coloneqq \argmin_{c \in C} \phi(c, x).
-    \end{equation*}
-\end{enumerate}
-\end{definition}
-
-Key properties:
-\begin{itemize}
-\item $P_C(x)$ is non-empty for all $x$ if and only if $C$ is
-    \emph{proximinal}. Every closed convex set in a reflexive Banach
-    space is proximinal (see~\cite[p.~61]{Hackbusch2019}).
-\item $P_C(x)$ is a singleton for all $x$ if $X$ is strictly convex.
-\item $\Pi_C(x)$ is non-empty whenever $X$ is reflexive and smooth;
-    it is a singleton whenever $X$ is additionally strictly convex.
-\item In a Hilbert space, $\phi(x,y) = \|x-y\|^2$, so
-    $P_C = \Pi_C$ (orthogonal projection).
-\end{itemize}
-
-\begin{proposition}[\cite{Alber1996}]
-\label{prop:app:projection}
-Let $X$ be reflexive and strictly convex, and $C \subset X$ closed
-convex. For $x \in X$ and $c_* \in C$, the following are equivalent:
-\begin{enumerate}
-\item[\textup{(a)}] $c_* = P_C(x)$ (metric projection).
-\item[\textup{(b)}] $\langle c_* - c,\, J(x - c_*)\rangle \geq 0$
-    for all $c \in C$.
-\item[\textup{(c)}] $\langle c,\, J(x - c_*)\rangle = 0$ for all
-    $c \in C$ \textup{(}when $C$ is a closed linear subspace\textup{)}.
-\end{enumerate}
-\end{proposition}
-
-Condition~(c) is the Banach-space analogue of orthogonality and is
-used in Chapter~\ref{chap:DF} to characterise the Dirac--Frenkel
-projection onto the tangent space $\ZD{\bv}$.
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}p{7.5cm}l@{}}
+\toprule
+\textbf{Concept} & \textbf{Location} \\
+\midrule
+Strict/uniform convexity, smoothness
+    & Defs.~\ref{def:strictly_convex}--\ref{def:smooth},
+      \S\ref{sec:banach:basics} \\
+Duality mapping $J:X\to 2^{X^*}$
+    & \S\ref{sec:DF:projection} \\
+Metric projection $P_C$, generalised projection $\Pi_C$
+    & \S\ref{sec:DF:projection} \\
+Characterisation of metric projection via $J$
+    & Thm.~\ref{thm:metric_projection}, \S\ref{sec:DF:projection} \\
+Reflexivity: definition, James's theorem
+    & Thm.~\ref{thm:james}, \S\ref{sec:min:reflexivity} \\
+Reflexivity stability, reflexivity of tensor products
+    & Props.~\ref{prop:reflexivity_stability}--\ref{prop:reflexivity_tensor},
+      \S\ref{sec:min:reflexivity} \\
+Injective norm $\|\cdot\|_\varepsilon$, condition \condINJ
+    & Def.~\ref{def:crossnorm}, \S\ref{sec:min:bestapprox} \\
+Dual bound $\|\varphi_1\otimes\cdots\otimes\varphi_d\|_*
+    \leq\prod\|\varphi_\alpha\|$
+    & Prop.~\ref{prop:injnorm_dual}, \S\ref{sec:min:reflexivity} \\
+Eberlein--\v{S}mulian theorem
+    & Used in proof of Thm.~\ref{thm:best_approx_tucker},
+      \S\ref{sec:min:bestapprox} \\
+Mazur's theorem (convex closed $=$ weakly closed)
+    & Used in Thm.~\ref{thm:weak_closed},
+      \S\ref{sec:min:bestapprox} \\
+Weak lower semicontinuity of the norm
+    & Used in Thm.~\ref{thm:best_approx_tucker},
+      \S\ref{sec:min:bestapprox} \\
+Crossnorms, \condCROSS, \condINJ\ examples
+    & Rem.~\ref{rem:crossnorm_examples},
+      \S\ref{sec:min:bestapprox} \\
+Grothendieck inequality, equivalence in Hilbert case
+    & Rem.~\ref{rem:grothendieck_hilbert},
+      \S\ref{sec:algtensor:history} \\
+Split operators, Fredholm theory
+    & \S\ref{sec:banach:complemented} \\
+\bottomrule
+\end{tabular}
+\end{center}
 
 %------------------------------------------------------------
-\section{Weak topology and weak convergence}
-\label{app:functional:weak}
-%------------------------------------------------------------
-
-\begin{theorem}[Eberlein--\v{S}mulian]
-\label{thm:app:eberlein}
-A Banach space $X$ is reflexive if and only if every bounded sequence
-has a weakly convergent subsequence.
-\end{theorem}
-
-\begin{theorem}[Mazur]
-\label{thm:app:mazur}
-A convex subset of a Banach space is weakly closed if and only if it
-is norm-closed.
-\end{theorem}
-
-\begin{corollary}
-\label{cor:app:lsc}
-The norm $\|\cdot\|$ is weakly lower semicontinuous: if
-$x_n \rightharpoonup x$, then $\|x\| \leq \liminf_n \|x_n\|$.
-\end{corollary}
-
-These results are used in Chapter~\ref{chap:minsubspaces} (and
-Chapter~\ref{chap:topTBT}) to prove existence of best Tucker and
-tree-based approximations: a minimising sequence in the weakly closed
-set $\Tucker{\leq\fr}{\VDnorm}$ has a weakly convergent subsequence
-(by reflexivity), whose limit lies in the set (by weak closedness)
-and achieves the infimum (by weak lower semicontinuity of the norm).
-
-%------------------------------------------------------------
-\section{Crossnorms and the injective norm condition}
-\label{app:functional:crossnorms}
-%------------------------------------------------------------
-
-Let $V_1, \ldots, V_d$ be normed spaces and $\VD = \bigotimes_{j=1}^d V_j$
-their algebraic tensor product.
-
-\begin{definition}
-A norm $\|\cdot\|_D$ on $\VD$ is:
-\begin{enumerate}
-\item[\textup{(i)}] A \emph{crossnorm} if
-    $\|\bigotimes_{j} v_j\|_D = \prod_j \|v_j\|_j$ for all
-    $v_j \in V_j$.
-\item[\textup{(ii)}] A \emph{reasonable crossnorm} (or satisfies
-    \condINJ) if it is a crossnorm and
-    $\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$,
-    where $\|\bv\|_\varepsilon$ is the injective (or spatial) norm
-    \begin{equation*}
-        \|\bv\|_\varepsilon \coloneqq \sup\bigl\{
-            |(\bigotimes_j \varphi_j)(\bv)| :
-            \varphi_j \in V_j^*,\; \|\varphi_j\|_{V_j^*} \leq 1
-        \bigr\}.
-    \end{equation*}
-\end{enumerate}
-\end{definition}
-
-The injective norm $\|\cdot\|_\varepsilon$ is the smallest reasonable
-crossnorm; the projective norm $\|\cdot\|_\pi$ is the largest crossnorm.
-For $d=2$:
-$\|A\|_\varepsilon = \|A\|_{\cL(V_1^*, V_2)} = \|A\|_{\cL(V_2^*, V_1)}$
-(operator norm), and $\|A\|_\pi = \inf\{\sum_k \|u_k\|\|v_k\| :
-A = \sum_k u_k \otimes v_k\}$ (nuclear norm).
-
-Condition \condINJ\ plays a central role in:
-\begin{itemize}
-\item The weak closedness of $\Tucker{\leq\fr}{\VD}$
-    (Theorem~\ref{thm:weak_closed}).
-\item The existence of best Tucker and tree-based approximations
-    (Theorems~\ref{thm:best_approx_tucker}
-    and~\ref{thm:TBT_best_approx}).
-\item The Dirac--Frenkel immersion theorems
-    (Theorems~\ref{thm:tucker_immersion} and~\ref{thm:TBT_immersion}).
-\end{itemize}
-
-\begin{remark}[Examples of reasonable crossnorms]
-\label{ex:app:crossnorms}
-\begin{enumerate}
-\item[\textup{(i)}] The $L^p$-norm on $L^p(\prod_j I_j)$ is a
-    reasonable crossnorm for $1 \leq p \leq \infty$.
-\item[\textup{(ii)}] The Sobolev norm on
-    $H^{N,p}(\prod_j I_j)$ with $1 < p < \infty$, $N \geq 0$, is a
-    reasonable crossnorm.
-\item[\textup{(iii)}] The partial-derivative norm
-    $\|f\|^2 = \|f\|_{L^2}^2 + \|\partial_{x_j} f\|_{L^2}^2$ on
-    $H^{1,2}(I_1) \otimes H^{1,2}(I_2)$ is a crossnorm satisfying
-    \condINJ.
-\end{enumerate}
-\end{remark}
-
-%------------------------------------------------------------
-\section{Fredholm theory and split operators}
-\label{app:functional:fredholm}
-%------------------------------------------------------------
-
-\begin{definition}
-A bounded operator $T \in \cL(X, Y)$ between Banach spaces is:
-\begin{enumerate}
-\item[\textup{(i)}] \emph{Fredholm} if $\ker T$ and
-    $Y / \overline{\operatorname{Im}\, T}$ are finite-dimensional.
-\item[\textup{(ii)}] \emph{Split} (or \emph{normally solvable}) if
-    $\operatorname{Im}\, T$ is closed and complemented in $Y$.
-\end{enumerate}
-\end{definition}
-
-\begin{proposition}
-\label{prop:app:split_map}
-Let $T \in \cL(X,Y)$. The following are equivalent:
-\begin{enumerate}
-\item[\textup{(a)}] $T$ is split.
-\item[\textup{(b)}] $\operatorname{Im}\, T$ is closed in $Y$ and
-    split as a subspace of $Y$.
-\item[\textup{(c)}] There exists $S \in \cL(Y,X)$ such that
-    $T \circ S \circ T = T$ \textup{(}$T$ has a bounded
-    generalised inverse\textup{)}.
-\end{enumerate}
-\end{proposition}
-
-This characterisation is used in the proof of the immersion theorems
-in Chapters~\ref{chap:tucker_manifold} and~\ref{chap:TB_manifold}:
-the tangent map of the inclusion $\Tucker{\fr}{\VD} \hookrightarrow \VDnorm$
-is shown to be split by exhibiting an explicit bounded right inverse.
-
-%------------------------------------------------------------
-\section{The Cauchy--Lipschitz theorem in Banach spaces}
-\label{app:functional:cauchy}
-%------------------------------------------------------------
-
-\begin{theorem}[Picard--Lindelöf in Banach spaces]
-\label{thm:app:picard}
-Let $X$ be a Banach space, $U \subset X$ open, and
-$F: [0,T] \times U \to X$ continuous with $F(t,\cdot)$ locally
-Lipschitz uniformly in $t$. For every $x_0 \in U$ there exist
-$\varepsilon > 0$ and a unique $\mathcal{C}^1$-solution
-$x: [0, \varepsilon) \to U$ to $\dot x(t) = F(t, x(t))$,
-$x(0) = x_0$.
-\end{theorem}
-
-Applied to the Dirac--Frenkel ODE on the Tucker manifold
-$\Tucker{\fr}{\VD}$ (Chapter~\ref{chap:DF}), with
-$F(t, \bv_r) = \Pmetric{\bv_r}(\bF(t, \bv_r))$. The local Lipschitz
-condition follows from the $\mathcal{C}^\infty$-regularity of the
-manifold and the vector field.
-%============================================================
-%  app_functional_additions.tex
-%  NEW SECTIONS for Appendix B: Functional Analysis — Selected Results
-%
-%  Three sections to append after the existing §B.5
-%  (The Cauchy–Lipschitz theorem in Banach spaces):
-%
-%    §B.6  Reflexivity and the theorem of James
-%    §B.7  The Hahn–Banach theorem and its tensor consequences
-%    §B.8  Grothendieck's theorem and tensor norms in the Hilbert case
-%
-%  These sections provide the functional-analytic depth
-%  that underpins the existence results of Chapters 4 and 7
-%  and the norm conditions used throughout the monograph.
-%============================================================
-
-%------------------------------------------------------------
-\section{Reflexivity and the theorem of James}
-\label{app:functional:james}
-%------------------------------------------------------------
-
-Reflexivity is the single most important hypothesis in the existence
-theorems of this monograph (Theorems~\ref{thm:best_approx_tucker}
-and~\ref{thm:TBT_best_approx}). This section collects the main
-characterisations and stability properties of reflexive Banach spaces.
-
-\subsection*{Characterisations of reflexivity}
-
-Recall that a Banach space $X$ is \emph{reflexive} if the canonical
-embedding $J_X : X \to X^{**}$, $J_X(x)(f) = f(x)$, is surjective.
-Equivalently, the closed unit ball $B_X = \{x \in X : \|x\| \leq 1\}$
-is weakly compact (Alaoglu–Kakutani theorem). The following theorem
-gives a deeper characterisation.
-
-\begin{theorem}[James, 1957; \cite{James1957}]
-\label{thm:app:james}
-A Banach space $X$ is reflexive if and only if every continuous linear
-functional $f \in X^*$ attains its norm on the closed unit ball, i.e.,
-there exists $x_f \in B_X$ such that $f(x_f) = \|f\|_{X^*}$.
-\end{theorem}
-
-\begin{remark}
-James's theorem is non-trivial even in separable spaces. The
-``only if'' direction is an immediate consequence of the Krein--Milman
-theorem (every continuous linear functional on a weakly compact convex
-set attains its maximum). The ``if'' direction — that norm-attainment
-of all functionals forces reflexivity — is the hard part, proved by
-James in~\cite{James1957} with a subtle diagonal argument.
-\end{remark}
-
-\begin{corollary}
-\label{cor:app:james_lp}
-The spaces $L^p(\Omega, \mu)$ are reflexive for $1 < p < \infty$, and
-not reflexive for $p = 1$ or $p = \infty$. The Sobolev spaces
-$W^{k,p}(\Omega)$ are reflexive for $1 < p < \infty$. These are the
-standard component spaces $V_j$ in applications of this monograph.
-\end{corollary}
-
-\subsection*{Reflexivity of tensor products}
-
-The reflexivity of the ambient tensor space $\VDnorm$ is not automatic
-even when all component spaces are reflexive. The following proposition
-summarises the known results.
-
-\begin{proposition}
-\label{prop:app:reflexive_tensor}
-Let $(V_j, \|\cdot\|_j)$ be Banach spaces for $j = 1, \ldots, d$ and
-let $\|\cdot\|_D$ be a reasonable crossnorm on $\VD$.
-\begin{enumerate}
-\item[\textup{(i)}] If all $V_j$ are reflexive and $\|\cdot\|_D$ is
-    the \emph{projective norm} $\|\cdot\|_\pi$, then the completion
-    $V_1 \otimes_\pi V_2$ is \emph{not} reflexive in general (it fails
-    already for $V_1 = V_2 = \ell^2$).
-\item[\textup{(ii)}] If all $V_j$ are Hilbert spaces and $\|\cdot\|_D$
-    is the Hilbert tensor norm (the unique crossnorm making $\VDnorm$
-    a Hilbert space), then $\VDnorm$ is reflexive.
-\item[\textup{(iii)}] If all $V_j$ are reflexive and the norm
-    $\|\cdot\|_D$ is both a crossnorm and satisfies \condINJ, the
-    reflexivity of $\VDnorm$ must be verified case by case. In
-    practice (e.g., for the mixed Sobolev norm
-    $\|\cdot\|_{\mathrm{mix}}$ on $\bigotimes_j H^N(I_j)$), it can
-    be established by duality arguments; see~\cite{FH2012}.
-\end{enumerate}
-\end{proposition}
-
-\begin{remark}[Reflexivity in Chapters 4 and 7]
-\label{rem:app:reflexivity_used}
-The proofs of best-approximation existence
-(Theorem~\ref{thm:best_approx_tucker} for Tucker formats and
-Theorem~\ref{thm:TBT_best_approx} for tree-based formats) use
-reflexivity of $\VDnorm$ in a single step: a minimising sequence
-$(\bv_n) \subset \Tucker{\leq\fr}{\VDnorm}$ is bounded (since the
-sequence approaches the infimum), hence weakly precompact by reflexivity.
-A weakly convergent subsequence $\bv_{n_k} \rightharpoonup \bv_*$
-lies in $\Tucker{\leq\fr}{\VDnorm}$ (which is weakly closed by
-Theorem~\ref{thm:weak_closed}), and $\|\bv - \bv_*\| \leq
-\liminf_k \|\bv - \bv_{n_k}\|$ (weak lower semicontinuity of the norm,
-Corollary~\ref{cor:app:lsc}) shows $\bv_*$ is a best approximation.
-\end{remark}
-
-\subsection*{Stability properties}
-
-\begin{proposition}
-\label{prop:app:reflexive_stability}
-The class of reflexive Banach spaces is stable under:
-\begin{enumerate}
-\item[\textup{(i)}] Closed subspaces: every closed subspace of a
-    reflexive space is reflexive.
-\item[\textup{(ii)}] Quotients: every quotient of a reflexive space
-    by a closed subspace is reflexive.
-\item[\textup{(iii)}] Finite direct sums: $X \oplus Y$ is reflexive
-    if and only if both $X$ and $Y$ are reflexive.
-\item[\textup{(iv)}] Isomorphisms: reflexivity is preserved under
-    bounded linear isomorphisms (but not mere homeomorphisms of the
-    underlying topological spaces).
-\end{enumerate}
-\end{proposition}
-
-Property~(i) is relevant to the monograph since the Tucker manifold
-$\Tucker{\fr}{\VD}$ (as a subset of $\VDnorm$, not a subspace) is
-not itself a Banach space; but the tangent spaces $\ZD{\bv}$, being
-closed subspaces of $\VDnorm$, are reflexive when $\VDnorm$ is.
-This matters for the existence of the metric projection in
-Chapter~\ref{chap:DF}.
-
-%------------------------------------------------------------
-\section{The Hahn--Banach theorem and its tensor consequences}
+\section{The Hahn--Banach theorem}
 \label{app:functional:hahnbanach}
 %------------------------------------------------------------
 
-The Hahn--Banach theorem and its geometric forms are the foundational
-separation tools used throughout the monograph — principally in the
-proofs of weak closedness (Chapter~\ref{chap:minsubspaces}) and in the
-duality arguments for crossnorms.
-
-\subsection*{The analytic Hahn--Banach theorem}
+The Hahn--Banach theorem is used implicitly throughout the monograph
+(in the definition of the injective norm and in duality arguments).
+We state it here for reference.
 
 \begin{theorem}[Hahn--Banach extension theorem]
 \label{thm:app:hahn_banach}
-Let $X$ be a real vector space, $p: X \to \RR$ a sublinear functional
-\textup{(}$p(x+y) \leq p(x) + p(y)$, $p(\lambda x) = \lambda p(x)$
-for $\lambda \geq 0$\textup{)}, $Y \subset X$ a linear subspace, and
-$f: Y \to \RR$ linear with $f(y) \leq p(y)$ for all $y \in Y$.
-Then there exists a linear extension $F: X \to \RR$ with $F|_Y = f$
-and $F(x) \leq p(x)$ for all $x \in X$.
+Let $X$ be a real vector space, $p:X\to\RR$ sublinear, $Y\subset X$
+a subspace, and $f:Y\to\RR$ linear with $f\leq p|_Y$. Then there
+exists $F:X\to\RR$ linear with $F|_Y=f$ and $F\leq p$.
 
-In particular, for any normed space $(X, \|\cdot\|)$, subspace $Y$,
-and bounded linear functional $f \in Y^*$, there exists $F \in X^*$
-with $F|_Y = f$ and $\|F\|_{X^*} = \|f\|_{Y^*}$.
+In particular: for any normed space $X$, subspace $Y\subset X$, and
+$f\in Y^*$, there exists $F\in X^*$ with $F|_Y=f$ and
+$\|F\|_{X^*}=\|f\|_{Y^*}$.
 \end{theorem}
 
-\begin{corollary}[Separation of points by functionals]
+\begin{corollary}[Separation of points]
 \label{cor:app:hb_separation}
-Let $X$ be a normed space. Then:
-\begin{enumerate}
-\item[\textup{(i)}] For every $x \in X$ with $x \neq 0$, there exists
-    $f \in X^*$ with $\|f\|_{X^*} = 1$ and $f(x) = \|x\|$.
-\item[\textup{(ii)}] The dual $X^*$ separates points of $X$: if
-    $f(x) = f(y)$ for all $f \in X^*$, then $x = y$.
-\item[\textup{(iii)}] The canonical embedding $J_X : X \to X^{**}$
-    is an isometry.
-\end{enumerate}
+For any normed space $X$: \textup{(i)} for every $x\neq 0$ there
+exists $f\in X^*$ with $\|f\|=1$ and $f(x)=\|x\|$;
+\textup{(ii)} $X^*$ separates points of $X$.
 \end{corollary}
 
-\subsection*{Geometric forms}
-
-\begin{theorem}[Hahn--Banach separation theorem]
+\begin{theorem}[Hahn--Banach separation]
 \label{thm:app:hb_separation}
-Let $X$ be a locally convex topological vector space \textup{(}in
-particular, any normed space\textup{)}.
-\begin{enumerate}
-\item[\textup{(i)}] \emph{Strict separation}: If $A, B \subset X$ are
-    convex, $A$ is open, and $A \cap B = \emptyset$, then there exists
-    a continuous linear functional $f: X \to \RR$ and $c \in \RR$ with
-    $f(a) < c \leq f(b)$ for all $a \in A$, $b \in B$.
-\item[\textup{(ii)}] \emph{Closed convex sets}: A closed convex subset
-    $C \subset X$ is the intersection of the closed half-spaces
-    $\{x : f(x) \leq c\}$ containing it, over all $f \in X^*$.
-\end{enumerate}
+In a locally convex space $X$: if $A,B\subset X$ are convex, $A$
+open, and $A\cap B=\emptyset$, then there exists $f\in X^*$ and
+$c\in\RR$ with $f(a)<c\leq f(b)$ for all $a\in A$, $b\in B$.
+A closed convex set is the intersection of all closed half-spaces
+containing it.
 \end{theorem}
-
-\subsection*{Consequences for tensor spaces}
-
-The Hahn--Banach theorem has two direct consequences for the tensor
-theory of this monograph.
-
-\begin{proposition}[Dual characterisation of the injective norm]
-\label{prop:app:hb_injnorm}
-For $\bv \in \VD = \bigotimes_{j=1}^d V_j$,
-\begin{equation}
-\label{eq:app:injnorm_dual}
-    \|\bv\|_\varepsilon
-    = \sup\Bigl\{
-        \bigl|(\bigotimes_j \varphi_j)(\bv)\bigr| :
-        \varphi_j \in V_j^*,\; \|\varphi_j\|_{V_j^*} \leq 1
-    \Bigr\}
-    = \sup\Bigl\{
-        |F(\bv)| : F \in (\VD)^*,\;
-        F = \bigotimes_j \varphi_j,\; \|F\|_{(\VD)^*} \leq 1
-    \Bigr\}.
-\end{equation}
-In particular, $\|\bv\|_\varepsilon = 0$ implies $\bv = 0$, so the
-injective norm is indeed a norm. This follows from the Hahn--Banach
-theorem: for any $\bv \neq 0$ there exists a functional $F$ in the
-algebraic dual of $\VD$ that does not vanish on $\bv$, and this
-functional can be chosen to be a tensor product of functionals.
-\end{proposition}
-
-\begin{proposition}[Weak closedness via duality]
-\label{prop:app:weak_closed_dual}
-Let $C \subset \VDnorm$ be convex. The following are equivalent:
-\begin{enumerate}
-\item[\textup{(a)}] $C$ is weakly closed.
-\item[\textup{(b)}] $C$ is norm-closed \textup{(}by Mazur's theorem,
-    Theorem~\ref{thm:app:mazur}\textup{)}.
-\item[\textup{(c)}] For every $\bv \notin C$, there exists
-    $F \in (\VDnorm)^*$ such that $F(\bv) > \sup_{\bu \in C} F(\bu)$.
-\end{enumerate}
-The equivalence of \textup{(a)} and \textup{(b)} uses Mazur's theorem;
-the equivalence of \textup{(b)} and \textup{(c)} is the geometric
-Hahn--Banach theorem applied to the pair $\{\bv\}$ and $C$.
-\end{proposition}
-
-The set $\Tucker{\leq\fr}{\VDnorm}$ is shown to be weakly (hence
-norm-) closed in Theorem~\ref{thm:weak_closed} using the
-characterisation of~(b): one shows that weak limits of sequences in
-$\Tucker{\leq\fr}{\VDnorm}$ remain in the set by exploiting the
-semicontinuity of the minimal subspace dimension established in
-Theorem~\ref{thm:TBT_rank_lsc}.
 
 %------------------------------------------------------------
-\section{Grothendieck's theorem and tensor norms in the Hilbert case}
-\label{app:functional:grothendieck}
+\section{The Picard--Lindelöf theorem in Banach spaces}
+\label{app:functional:cauchy}
 %------------------------------------------------------------
 
-Grothendieck's 1953 Résumé introduced the systematic study of tensor
-norms and established several deep results about their coincidence in
-special cases. This section summarises the results most directly
-relevant to the monograph.
+This theorem underlies the existence result for ODEs on Banach
+manifolds (Theorem~\ref{thm:app:ode}) and is used in
+Chapter~\ref{chap:DF}.
 
-\subsection*{The Grothendieck inequality}
-
-The foundational result of Grothendieck's tensor norm theory is the
-following inequality, which controls the gap between the injective and
-projective norms.
-
-\begin{theorem}[Grothendieck inequality; \cite{Grothendieck1953}]
-\label{thm:app:grothendieck}
-There exists a universal constant $K_G > 0$ \textup{(}the
-\emph{Grothendieck constant}\textup{)} such that for any Hilbert spaces
-$H_1, H_2$ and any bounded bilinear form $B: H_1 \times H_2 \to \RR$,
-\begin{equation}
-\label{eq:app:grothendieck}
-    \sup\Bigl\{
-        \bigl|\sum_{i,j} a_{ij} \langle x_i, y_j\rangle\bigr| :
-        x_i \in H_1,\; y_j \in H_2,\;
-        \|x_i\|, \|y_j\| \leq 1
-    \Bigr\}
-    \leq K_G \sup\Bigl\{
-        \bigl|\sum_{i,j} a_{ij} s_i t_j\bigr| :
-        |s_i|, |t_j| \leq 1
-    \Bigr\}.
-\end{equation}
-Equivalently, for bilinear forms on Hilbert spaces,
-$\|\cdot\|_\pi \leq K_G \|\cdot\|_\varepsilon$, so the projective and
-injective norms are equivalent on $H_1 \otimes H_2$.
+\begin{theorem}[Picard--Lindelöf in Banach spaces]
+\label{thm:app:picard}
+Let $X$ be a Banach space, $U\subset X$ open, and
+$F:[0,T]\times U\to X$ continuous with $F(t,\cdot)$ locally Lipschitz
+uniformly in $t$. For every $x_0\in U$ there exist $\varepsilon>0$
+and a unique $\mathcal{C}^1$-solution $x:[0,\varepsilon)\to U$ to
+$\dot x(t)=F(t,x(t))$, $x(0)=x_0$.
 \end{theorem}
 
-\begin{remark}
-The exact value of $K_G$ is unknown; the best known bounds are
-$1.676 \leq K_G \leq \pi/(2\ln(1+\sqrt{2})) \approx 1.782$
-(real case). The significance of the theorem is that it shows the
-injective and projective norms on a tensor product of Hilbert spaces
-are equivalent, with a universal constant independent of the spaces.
-This does \emph{not} hold for general Banach spaces: $c_0 \otimes c_0$
-has non-equivalent injective and projective norms.
-\end{remark}
-
-\subsection*{Coincidence of norms on Hilbert tensor products}
-
-The following result is more directly relevant to the monograph: for
-two-factor Hilbert tensor products, the injective norm, the Hilbert
-tensor norm, and the projective norm can all be identified.
-
-\begin{theorem}
-\label{thm:app:hilbert_tensor_norms}
-Let $H_1, H_2$ be Hilbert spaces with inner products $\langle\cdot,\cdot\rangle_j$.
-On $H_1 \otimes H_2$:
-\begin{enumerate}
-\item[\textup{(i)}] The Hilbert tensor norm $\|\cdot\|_{H_1 \otimes H_2}$
-    is the unique crossnorm induced by the inner product
-    $\langle u_1 \otimes u_2, v_1 \otimes v_2\rangle =
-    \langle u_1, v_1\rangle_1 \langle u_2, v_2\rangle_2$.
-\item[\textup{(ii)}] The completion $H_1 \otimes_H H_2$ under this
-    norm is a Hilbert space, isometrically isomorphic to the space of
-    Hilbert--Schmidt operators from $H_1$ to $H_2$:
-    $H_1 \otimes_H H_2 \cong \mathcal{HS}(H_1, H_2)$.
-\item[\textup{(iii)}] The Hilbert tensor norm satisfies
-    $\|\cdot\|_\varepsilon \leq \|\cdot\|_{H} \leq \|\cdot\|_\pi$,
-    with equality $\|\cdot\|_{H} = \|\cdot\|_\varepsilon$ if and only
-    if one of the spaces is finite-dimensional.
-\item[\textup{(iv)}] For $d$ factors, $\bigotimes_{j=1}^d H_j$ under
-    the Hilbert tensor norm is isometrically isomorphic to
-    $L^2(\Omega_1 \times \cdots \times \Omega_d)$ when $H_j =
-    L^2(\Omega_j)$, via the identification $f_1 \otimes \cdots
-    \otimes f_d \leftrightarrow (x_1, \ldots, x_d) \mapsto
-    \prod_j f_j(x_j)$.
-\end{enumerate}
-\end{theorem}
-
-Part~(iv) is the key fact underlying the identification of the
-algebraic tensor space $\bigotimes_j L^2(I_j)$ with a dense subspace
-of $L^2(I_1 \times \cdots \times I_d)$, which motivates the entire
-framework of tensor formats as low-complexity approximations of
-multivariate functions.
-
-\subsection*{The Hilbert--Schmidt identification and rank}
-
-\begin{proposition}[Rank-one operators and elementary tensors]
-\label{prop:app:hs_rank}
-Under the identification $H_1 \otimes_H H_2 \cong
-\mathcal{HS}(H_1, H_2)$:
-\begin{enumerate}
-\item[\textup{(i)}] An elementary tensor $u \otimes v$ corresponds to
-    the rank-one operator $x \mapsto \langle x, u\rangle_1 v$.
-\item[\textup{(ii)}] An element $T \in \mathcal{HS}(H_1, H_2)$ has
-    Tucker rank $(r_1, r_2)$ if and only if it has operator rank $r$
-    with $r = \min(r_1, r_2)$. The minimal subspaces satisfy
-    $\Umin{1}{T} = \ker(T)^\perp \subset H_1$ and
-    $\Umin{2}{T} = \overline{\operatorname{Im}(T)} \subset H_2$.
-\item[\textup{(iii)}] The Schmidt decomposition of $T$ is the
-    singular value decomposition: $T = \sum_{k=1}^r \sigma_k\,
-    u_k \otimes v_k$ with $\{u_k\}$ orthonormal in $H_1$,
-    $\{v_k\}$ orthonormal in $H_2$, and $\sigma_k > 0$.
-\end{enumerate}
-\end{proposition}
-
-This proposition shows that the abstract minimal subspace theory of
-Chapter~\ref{chap:minsubspaces} reduces, in the Hilbert case $d=2$,
-to the classical Schmidt decomposition (or singular value decomposition
-for matrices). The minimal subspaces are the column space and row space
-of the corresponding operator, and the admissible rank condition
-$r_1 = r_2 = r$ is the condition that the operator has rank exactly $r$.
-
-\subsection*{Grothendieck's theorem for general tensor norms}
-
-We close with a statement of Grothendieck's classification theorem for
-tensor norms, which places the injective and projective norms as the
-two extremes of a rich landscape.
-
-\begin{theorem}[{\cite{Grothendieck1953}}]
-\label{thm:app:grothendieck_class}
-Let $\alpha$ be a \emph{tensor norm} \textup{(}a rule assigning to
-each pair of Banach spaces $X, Y$ a norm $\alpha$ on $X \otimes Y$,
-natural with respect to bounded linear maps\textup{)}. Then:
-\begin{enumerate}
-\item[\textup{(i)}] $\|\cdot\|_\varepsilon \leq \alpha \leq
-    \|\cdot\|_\pi$ for all Banach spaces $X, Y$.
-\item[\textup{(ii)}] There are exactly fourteen distinct tensor norms
-    in the sense of Grothendieck for two-factor products
-    \textup{(}the ``Grothendieck 14''\/\textup{)}.
-\item[\textup{(iii)}] In the Hilbert space case, any natural tensor
-    norm $\alpha$ satisfies
-    $\|\cdot\|_\varepsilon \leq \alpha \leq K_G \|\cdot\|_\varepsilon$
-    \textup{(}by the Grothendieck inequality\textup{)}, so all
-    reasonable crossnorms on $H_1 \otimes H_2$ are equivalent.
-\end{enumerate}
-\end{theorem}
-
-\begin{remark}[Relevance to the monograph]
-\label{rem:app:grothendieck_relevance}
-The condition \condINJ\ ($\|\cdot\|_D \geq \|\cdot\|_\varepsilon$)
-is precisely Grothendieck's condition that the tensor norm is
-``reasonable'': it lies above the minimal reasonable crossnorm. Part~(i)
-of Theorem~\ref{thm:app:grothendieck_class} guarantees that any
-reasonable crossnorm satisfies \condINJ\ automatically. Part~(iii)
-implies that in the Hilbert case, the condition \condINJ\ imposes no
-effective constraint: all reasonable crossnorms are equivalent.
-This is why the Hilbert case of the theory (e.g., $\bigotimes_j L^2(I_j)$
-with the natural norm) is somewhat simpler: the specific choice of
-norm $\|\cdot\|_D$ does not affect the qualitative conclusions, only
-the constants. In the Banach case (e.g., $\bigotimes_j L^p(I_j)$ with
-$p \neq 2$), the choice of norm matters more, and \condINJ\ is a
-genuine hypothesis.
-\end{remark}
+Applied to the projected vector field
+$F(t,\bv_r)=\Pmetric{\bv_r}(\bF(t,\bv_r))$ on $\Tucker{\fr}{\VD}$
+in Chapter~\ref{chap:DF}. Local Lipschitz continuity follows from
+the $\mathcal{C}^\infty$-regularity of the manifold
+(Theorem~\ref{thm:Tucker_Banach_Manifold}).
