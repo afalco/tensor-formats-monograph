@@ -7,10 +7,11 @@
 %  Antonio Falcó, CEU Universities
 %
 %  This appendix develops the operator-theoretic vocabulary
-%  needed for Part V (Chapters 12--13). It is self-contained
-%  and uses exclusively standard mathematical notation;
-%  the Dirac bra-ket notation is not used (see
-%  Remark~\ref{rem:app:dirac} for a comparison).
+%  needed for Part V (Chapters 12 and 13). The setting is
+%  throughout a separable complex Hilbert space of arbitrary
+%  (possibly infinite) dimension. Standard mathematical
+%  notation is used exclusively; the Dirac bra-ket notation
+%  is not used (see Remark~\ref{rem:app:dirac}).
 %
 %  Estimated length: ~22 pp.
 %============================================================
@@ -19,12 +20,12 @@
 \label{app:quantum}
 
 This appendix collects the operator-theoretic foundations needed for
-Part~V (Chapters~12 and~13). The presentation is self-contained and
-mathematically rigorous; no prior knowledge of quantum mechanics is
-assumed. All vector spaces are over $\CC$ in this appendix unless
-stated otherwise. Standard references are~\cite{ReedSimon1972}
-and~\cite{BratteliRobinson1987}; for the trace-class and
-Hilbert-Schmidt theory from the perspective of tensor norms
+Part~V (Chapters~12 and~13). The presentation is self-contained,
+mathematically rigorous, and set throughout in a separable complex
+Hilbert space $H$ of \emph{arbitrary dimension} (finite or infinite).
+No prior knowledge of quantum mechanics is assumed. Standard references
+are~\cite{ReedSimon1972} and~\cite{BratteliRobinson1987}; for
+Schatten ideals and their tensor-product interpretation
 see~\cite{Ryan2002}.
 
 %------------------------------------------------------------
@@ -36,94 +37,104 @@ see~\cite{Ryan2002}.
 
 A \emph{complex Hilbert space} is a complex vector space $H$ equipped
 with an \emph{inner product} $\langle \cdot, \cdot \rangle: H \times H
-\to \CC$, which is:
-\begin{enumerate}
-\item[(IP1)] \emph{Sesquilinear}: linear in the second argument and
-    conjugate-linear in the first, i.e.,
-    $\langle u, \alpha v + \beta w\rangle = \alpha\langle u,v\rangle
-    + \beta\langle u,w\rangle$ and
-    $\langle \alpha u, v\rangle = \overline{\alpha}\langle u,v\rangle$.
-\item[(IP2)] \emph{Hermitian}: $\langle u,v\rangle = \overline{\langle v,u\rangle}$.
-\item[(IP3)] \emph{Positive definite}: $\langle u,u\rangle > 0$ for
-    all $u \neq 0$.
-\end{enumerate}
+\to \CC$, sesquilinear (conjugate-linear in the first argument, linear
+in the second), Hermitian ($\langle u,v\rangle = \overline{\langle v,u\rangle}$),
+and positive definite ($\langle u,u\rangle > 0$ for $u \neq 0$).
 The induced norm $\|u\| \coloneqq \sqrt{\langle u,u\rangle}$ makes $H$
-a normed space. When $H$ is complete with respect to this norm, it is
-a \emph{Hilbert space}.
+a normed space; when complete it is a \emph{Hilbert space}.
 
-\begin{remark}[Convention on sesquilinearity]
+\begin{remark}[Convention]
 \label{rem:app:sesqui}
-The convention adopted here --- linearity in the second argument ---
-is standard in mathematics. Physics texts often use the opposite
-convention. Since the monograph works exclusively in the mathematical
-convention, all statements below are consistent with it.
+We adopt the convention standard in mathematics: the inner product is
+linear in the \emph{second} argument. Physics texts often reverse this.
 \end{remark}
+
+Throughout this appendix, $H$ denotes a \emph{separable} complex
+Hilbert space, i.e., one admitting a countable orthonormal basis.
+No finite-dimensionality is assumed unless explicitly stated.
 
 \begin{example}
 \label{ex:app:l2}
-The space $\ell^2(\NN) \coloneqq \{(a_n)_{n \in \NN} \subset \CC :
-\sum_n |a_n|^2 < \infty\}$ with $\langle a, b\rangle = \sum_n
-\overline{a_n} b_n$ is a Hilbert space. More generally, for any
-measure space $(\Omega, \mu)$, the space $L^2(\Omega, \mu; \CC)$
-of square-integrable complex-valued functions with
-$\langle f,g\rangle = \int_\Omega \overline{f}\, g\, d\mu$
-is a Hilbert space.
+The space $\ell^2(\NN; \CC) = \{(a_n)_{n \geq 1} \subset \CC :
+\sum_n |a_n|^2 < \infty\}$ with
+$\langle a, b\rangle = \sum_n \overline{a_n} b_n$
+is an infinite-dimensional separable Hilbert space. More generally,
+$L^2(\Omega, \mu; \CC)$ for any $\sigma$-finite measure space $(\Omega,\mu)$
+with $L^2(\Omega,\mu;\CC)$ separable is a Hilbert space. These are the
+component spaces that arise in multipartite quantum systems.
 \end{example}
 
-Throughout Part~V and this appendix, $H$ denotes a
-\emph{separable} complex Hilbert space, i.e., one that admits a
-countable (finite or infinite) orthonormal basis.
+\subsection*{Orthonormal bases and Parseval's identity}
 
-\subsection*{Orthonormal bases}
-
-A family $\{e_k\}_{k \in K}$ in $H$ is \emph{orthonormal} if
-$\langle e_j, e_k\rangle = \delta_{jk}$. It is a \emph{(Hilbert)
-orthonormal basis} if, in addition, its closed linear span is all of
-$H$. Every separable Hilbert space has an orthonormal basis, and any
-two orthonormal bases of $H$ have the same cardinality (finite or
-countably infinite). If $H$ is infinite-dimensional and $\{e_k\}_{k\geq 1}$
-is an orthonormal basis, every $u \in H$ has a unique expansion
+A countable family $\{e_k\}_{k \geq 1}$ is an \emph{orthonormal basis}
+of $H$ if $\langle e_j, e_k\rangle = \delta_{jk}$ and every $u \in H$
+has the norm-convergent expansion
 \begin{equation}
 \label{eq:app:fourier}
     u = \sum_{k=1}^\infty \langle e_k, u\rangle\, e_k,
     \qquad
-    \|u\|^2 = \sum_{k=1}^\infty |\langle e_k, u\rangle|^2.
+    \|u\|^2 = \sum_{k=1}^\infty |\langle e_k, u\rangle|^2
+    \quad \text{(Parseval)}.
 \end{equation}
+All separable infinite-dimensional Hilbert spaces over $\CC$ are
+isometrically isomorphic to $\ell^2(\NN;\CC)$.
 
-\subsection*{The Riesz isomorphism}
+\subsection*{The Riesz isomorphism and the dual $H^*$}
 
-By the Riesz representation theorem, for every bounded linear
-functional $\varphi \in H^*$ there exists a unique $v_\varphi \in H$
-such that $\varphi(u) = \langle v_\varphi, u\rangle$ for all $u \in H$.
-The map $J: H \to H^*$, $J(v) \coloneqq \langle v, \cdot\rangle$,
-is a conjugate-linear isometric isomorphism, called the \emph{Riesz
-isomorphism}.
+The topological dual of $H$ is $H^* \coloneqq \cL(H, \CC)$, equipped
+with the operator norm. By the Riesz representation theorem, the map
+\begin{equation}
+\label{eq:app:riesz}
+    J : H \longrightarrow H^*, \qquad
+    J(v) \coloneqq \langle v, \cdot\rangle,
+\end{equation}
+is a conjugate-linear isometric isomorphism (i.e., $J(\lambda v)
+= \overline{\lambda} J(v)$ and $\|J(v)\|_{H^*} = \|v\|_H$).
+Thus $H$ and $H^*$ are isometrically isomorphic as real Banach spaces,
+but not as complex Banach spaces (the isomorphism is conjugate-linear,
+not linear).
 
-\begin{remark}[Riesz isomorphism vs.\ duality mapping]
+\begin{remark}[Dual vs.\ conjugate space]
+\label{rem:app:dual_vs_conjugate}
+The \emph{conjugate space} $\overline{H}$ is defined as $H$ with the
+same additive structure but scalar multiplication twisted by conjugation:
+$\lambda \cdot_{\overline{H}} v \coloneqq \overline{\lambda} \cdot_H v$.
+The Riesz map $J: H \to H^*$ is a conjugate-linear isomorphism, and so
+is the canonical map $H \to \overline{H}$, $v \mapsto \bar v$.
+Hence $H^*$ and $\overline{H}$ are \emph{canonically isomorphic as
+complex Banach spaces} via $J(v) \leftrightarrow \bar v$.
+However, the identification $H^* \cong \overline{H}$ is
+\emph{not canonical in the absence of a chosen inner product}: $H^*$ is
+defined purely in terms of the norm, whereas $\overline{H}$ uses the
+linear structure. In this appendix we work with $H^*$ (the topological
+dual) as the primary object, which is the correct setting for
+infinite-dimensional tensor products; see
+Remarks~\ref{rem:app:hs_tensor} and~\ref{rem:app:trace_projective}.
+\end{remark}
+
+\begin{remark}[Duality mapping vs.\ Riesz isomorphism]
 \label{rem:app:riesz_duality}
 In the real Banach space setting of Chapter~\ref{chap:banach}, the
-duality mapping $J: X \to 2^{X^*}$ is in general set-valued and
-nonlinear. In a complex Hilbert space, $J$ is single-valued and
-conjugate-linear (hence $\RR$-linear). This simplification is the
-reason why projection and best-approximation problems are simpler in
-Hilbert spaces: every closed subspace is complemented via orthogonal
-projection, and the metric projection onto a closed convex set is
-given by the (linear) orthogonal projection when the set is a subspace.
+duality mapping $J: X \to 2^{X^*}$ is set-valued and nonlinear in
+general. In a complex Hilbert space, $J: H \to H^*$ is single-valued
+and conjugate-linear. This simplification is the reason why
+best-approximation and projection problems are easier in Hilbert spaces:
+every closed subspace is complemented via orthogonal projection, and the
+metric projection onto a closed convex set is linear when the set is a
+subspace.
 \end{remark}
 
 \begin{remark}[Dirac notation]
 \label{rem:app:dirac}
-In the physics literature, the inner product $\langle u, v\rangle$ is
-written $\langle u | v\rangle$, with $u$ called a \emph{bra} and $v$
-a \emph{ket}. An element $v \in H$ is written $|v\rangle$, its Riesz
-dual $\langle v, \cdot\rangle \in H^*$ is written $\langle v|$, and
-the rank-one operator $u \mapsto \langle v, u\rangle w$ is written
-$|w\rangle\langle v|$. This notation, introduced by Dirac~\cite{Dirac1930},
-is compact for computation but obscures the mathematical structure.
-This monograph uses exclusively standard mathematical notation:
-$\langle v, u\rangle$ for the inner product, $v \otimes \varphi$ for
-rank-one operators (where $\varphi = J(v) \in H^*$), and
-$P_S$ for the orthogonal projection onto a subspace $S \subset H$.
+In the physics literature, elements of $H$ are written $|v\rangle$
+(\emph{kets}) and elements of $H^*$ are written $\langle v|$
+(\emph{bras}), with $\langle v| = J(v) \in H^*$ under our convention.
+The inner product $\langle u, v\rangle_H$ becomes $\langle u|v\rangle$.
+This notation, introduced by Dirac~\cite{Dirac1930}, is compact for
+computation. This monograph uses exclusively standard mathematical
+notation: $\langle u, v\rangle$ for the inner product, $J(v) \in H^*$
+for the Riesz dual of $v$, and $u \otimes J(v) \in H \otimes H^*$
+for rank-one operators.
 \end{remark}
 
 %------------------------------------------------------------
@@ -131,19 +142,23 @@ $P_S$ for the orthogonal projection onto a subspace $S \subset H$.
 \label{app:quantum:bounded}
 %------------------------------------------------------------
 
-\subsection*{The operator algebra $\cL(H)$}
+\subsection*{The C*-algebra $\cL(H)$}
 
-The space $\cL(H)$ of bounded linear operators $A: H \to H$, equipped
-with the operator norm $\|A\| \coloneqq \sup_{\|u\| \leq 1} \|Au\|$,
-is a Banach algebra: $\|AB\| \leq \|A\|\|B\|$ and $\|I\| = 1$.
-Moreover, $\cL(H)$ is a \emph{C*-algebra}: every $A \in \cL(H)$ has
-an \emph{adjoint} $A^* \in \cL(H)$ characterised by
+The space $\cL(H)$ of bounded $\CC$-linear operators $A: H \to H$,
+with operator norm $\|A\| \coloneqq \sup_{\|u\|\leq 1}\|Au\|$, is a
+Banach algebra satisfying $\|AB\| \leq \|A\|\|B\|$. It is moreover a
+\emph{C*-algebra}: every $A \in \cL(H)$ has a unique \emph{adjoint}
+$A^* \in \cL(H)$ characterised by
 \begin{equation}
 \label{eq:app:adjoint}
     \langle A^* u, v\rangle = \langle u, Av\rangle
     \quad \forall\, u, v \in H,
 \end{equation}
 satisfying $\|A^*\| = \|A\|$ and $\|A^*A\| = \|A\|^2$ (C*-identity).
+The adjoint is the operator-theoretic analogue of the dual map
+$A^T: Y^* \to X^*$ from Banach space theory, adapted to the inner
+product structure: $A^* = J^{-1} \circ A^T \circ J$ where $A^T$ is
+the Banach-space transpose.
 
 \subsection*{Special classes of operators}
 
@@ -152,69 +167,64 @@ satisfying $\|A^*\| = \|A\|$ and $\|A^*A\| = \|A\|^2$ (C*-identity).
 An operator $A \in \cL(H)$ is:
 \begin{enumerate}
 \item[\textup{(i)}] \emph{Self-adjoint} if $A = A^*$.
-\item[\textup{(ii)}] \emph{Positive} (written $A \geq 0$ or
-    $A \succeq 0$) if $\langle u, Au\rangle \geq 0$ for all $u \in H$.
-\item[\textup{(iii)}] \emph{Strictly positive} (written $A > 0$ or
-    $A \succ 0$) if $\langle u, Au\rangle > 0$ for all $u \neq 0$.
+\item[\textup{(ii)}] \emph{Positive} ($A \geq 0$ or $A \succeq 0$)
+    if $\langle u, Au\rangle \geq 0$ for all $u \in H$.
+\item[\textup{(iii)}] \emph{Strictly positive} ($A > 0$ or $A \succ 0$)
+    if $\langle u, Au\rangle > 0$ for all $u \neq 0$.
 \item[\textup{(iv)}] \emph{Unitary} if $A^*A = AA^* = I$.
 \item[\textup{(v)}] An \emph{orthogonal projection} if $A^2 = A = A^*$.
 \end{enumerate}
 \end{definition}
 
-\begin{proposition}
-\label{prop:app:positive_equiv}
-For $A \in \cL(H)$ self-adjoint, the following are equivalent:
-\begin{enumerate}
-\item[\textup{(a)}] $A \geq 0$.
-\item[\textup{(b)}] $A = B^*B$ for some $B \in \cL(H)$.
-\item[\textup{(c)}] The spectrum $\sigma(A) \subset [0, \infty)$.
-\end{enumerate}
-\end{proposition}
-
 Every positive operator $A \geq 0$ has a unique positive square root
-$A^{1/2} \geq 0$ with $(A^{1/2})^2 = A$; its \emph{absolute value}
-is $|A| \coloneqq (A^*A)^{1/2}$.
+$A^{1/2} \geq 0$, and its \emph{absolute value} is
+$|A| \coloneqq (A^*A)^{1/2}$.
 
-\begin{proposition}[Orthogonal projections and subspaces]
+\begin{proposition}[Orthogonal projections and closed subspaces]
 \label{prop:app:proj_subspace}
-There is a bijection between:
-\begin{enumerate}
-\item[\textup{(a)}] Closed subspaces $S \subset H$, and
-\item[\textup{(b)}] Orthogonal projections $P \in \cL(H)$,
-\end{enumerate}
-given by $S = \mathrm{Im}(P)$. The orthogonal complement of $S$ is
-$S^\perp = \ker(P)$, and $H = S \oplus S^\perp$ (orthogonal direct sum).
-The operator $P_S \coloneqq P$ is called the \emph{orthogonal
-projection onto $S$}.
+There is a bijection between closed subspaces $S \subset H$ and
+orthogonal projections $\PS{S} \in \cL(H)$, given by $S = \mathrm{Im}(\PS{S})$.
+For every closed subspace $S$, the orthogonal decomposition
+$H = S \oplus S^\perp$ holds, where $S^\perp = \ker(\PS{S})$.
 \end{proposition}
 
-\begin{remark}[Hilbert vs.\ Banach: complementability]
-Every closed subspace of a Hilbert space is complemented
-(Proposition~\ref{prop:app:proj_subspace}); its orthogonal complement
-provides the split. As noted in Chapter~\ref{chap:banach}, this fails
-in general Banach spaces and is the source of the genuine difficulty
-in the immersion theorems of Chapters~\ref{chap:tucker_manifold}
-and~\ref{chap:TB_manifold}.
-\end{remark}
+In particular, \emph{every closed subspace of a Hilbert space is
+complemented} (Proposition~\ref{prop:finitedim_split} gives this for
+finite-dimensional subspaces of general Banach spaces; in Hilbert spaces
+it holds for all closed subspaces). This is the key distinction between
+Hilbert spaces and general Banach spaces noted in
+Chapter~\ref{chap:banach}.
 
 \subsection*{Rank-one operators}
 
-For $u, v \in H$, the \emph{rank-one operator} $u \otimes \overline{v}$
-is defined by
+For $u \in H$ and $\varphi \in H^*$, the \emph{rank-one operator}
+$u \otimes \varphi \in \cL(H)$ is defined by
 \begin{equation}
 \label{eq:app:rank_one}
-    (u \otimes \overline{v})(w)
-    \coloneqq \langle v, w\rangle\, u,
-    \quad w \in H.
+    (u \otimes \varphi)(w) \coloneqq \varphi(w)\, u, \quad w \in H,
 \end{equation}
-Its adjoint is $(u \otimes \overline{v})^* = v \otimes \overline{u}$,
-and its norm is $\|u \otimes \overline{v}\| = \|u\|\|v\|$.
-The orthogonal projection onto $\spann\{u\}$ (for $u \neq 0$) is
+with norm $\|u \otimes \varphi\| = \|u\|_H \|\varphi\|_{H^*}$.
+When $\varphi = J(v)$ for some $v \in H$, equation~\eqref{eq:app:rank_one}
+gives $(u \otimes J(v))(w) = \langle v, w\rangle\, u$.
+The orthogonal projection onto $\spann\{u\}$ (for $\|u\|=1$) is
 \begin{equation}
 \label{eq:app:rank_one_proj}
-    P_{\spann\{u\}}
-    = \frac{u \otimes \overline{u}}{\|u\|^2}.
+    \PS{\spann\{u\}} = u \otimes J(u).
 \end{equation}
+
+\begin{remark}[Rank-one operators and the tensor product $H \otimes H^*$]
+\label{rem:app:rank_one_tensor}
+The space of finite-rank operators is the algebraic tensor product
+$H \otimes_a H^*$ embedded in $\cL(H)$ via~\eqref{eq:app:rank_one}.
+This embedding is the starting point for the identification of Schatten
+ideals with completions of $H \otimes_a H^*$ under appropriate tensor
+norms; see Sections~\ref{app:quantum:hs} and~\ref{app:quantum:trace}.
+Note that $H^*$ (not $H$) is the correct second factor: the map
+$(u, \varphi) \mapsto u \otimes \varphi$ is \emph{bilinear} (linear in
+both arguments), whereas $(u, v) \mapsto u \otimes J(v)$ is
+sesquilinear. Working with $H^*$ therefore preserves the algebraic
+tensor product structure of Chapter~\ref{chap:algtensor}.
+\end{remark}
 
 %------------------------------------------------------------
 \section{Compact operators and singular values}
@@ -224,61 +234,49 @@ The orthogonal projection onto $\spann\{u\}$ (for $u \neq 0$) is
 \subsection*{Compact operators}
 
 An operator $A \in \cL(H)$ is \emph{compact} if the image of the
-closed unit ball under $A$ is relatively compact (has compact closure).
-The set $\cK(H) \subset \cL(H)$ of compact operators is a closed
-two-sided ideal. Every finite-rank operator is compact; the closure
-of finite-rank operators in $\cL(H)$ is $\cK(H)$ (when $H$ is
-separable).
+unit ball under $A$ is relatively compact. The set $\cK(H) \subset \cL(H)$
+of compact operators is a closed two-sided ideal. In a separable Hilbert
+space, $\cK(H)$ is the norm-closure of the finite-rank operators.
 
 \begin{theorem}[Spectral theorem for compact self-adjoint operators]
 \label{thm:app:spectral}
-Let $A \in \cK(H)$ be self-adjoint. Then there exists an orthonormal
-sequence $\{u_k\}_{k \geq 1}$ in $H$ (finite or infinite) and a
-real sequence $(\lambda_k)$ with $\lambda_k \to 0$, such that
+Let $A \in \cK(H)$ be self-adjoint. Then there exist an orthonormal
+sequence $\{u_k\}$ in $H$ and real scalars $\lambda_k \to 0$ such that
 \begin{equation}
 \label{eq:app:spectral}
-    A = \sum_{k=1}^\infty \lambda_k\, u_k \otimes \overline{u_k},
+    A = \sum_{k=1}^\infty \lambda_k\, u_k \otimes J(u_k),
 \end{equation}
-where the series converges in operator norm. The $\lambda_k$ are
-the non-zero eigenvalues of $A$ (with multiplicity) and the $u_k$ the
-corresponding eigenvectors. The decomposition~\eqref{eq:app:spectral}
-is called the \emph{spectral decomposition} of $A$.
+with convergence in operator norm. The $\lambda_k$ are the non-zero
+eigenvalues of $A$ with eigenvectors $u_k$.
 \end{theorem}
 
-\subsection*{Singular values and singular value decomposition}
+\subsection*{Singular values}
 
-For any $A \in \cK(H)$, the operator $A^*A \in \cK(H)$ is compact
-and positive, so its spectral theorem gives eigenvalues
-$s_1(A)^2 \geq s_2(A)^2 \geq \cdots \geq 0$.
-
-\begin{definition}
-\label{def:app:singular_values}
-The \emph{singular values} of $A \in \cK(H)$ are
-$s_k(A) \coloneqq \lambda_k(|A|)^{1/2}$, where $|A| = (A^*A)^{1/2}$
-and $\lambda_k(|A|)$ are the eigenvalues of $|A|$ in decreasing order.
-\end{definition}
+For $A \in \cK(H)$, the operator $|A| = (A^*A)^{1/2}$ is compact,
+positive, and self-adjoint. Its eigenvalues, denoted $s_1(A) \geq s_2(A)
+\geq \cdots \geq 0$ and called the \emph{singular values} of $A$,
+satisfy $s_k(A) \to 0$.
 
 \begin{theorem}[Singular value decomposition]
 \label{thm:app:svd}
-For $A \in \cK(H)$ with singular values $s_1(A) \geq s_2(A) \geq
-\cdots > 0$ there exist orthonormal sequences $\{u_k\}$ and $\{v_k\}$
-in $H$ such that
+For $A \in \cK(H)$ with non-zero singular values $(s_k(A))_{k \geq 1}$
+there exist orthonormal sequences $\{u_k\}$ and $\{v_k\}$ in $H$ and
+functionals $\varphi_k = J(u_k) \in H^*$ such that
 \begin{equation}
 \label{eq:app:svd}
-    A = \sum_{k=1}^\infty s_k(A)\, v_k \otimes \overline{u_k},
+    A = \sum_{k=1}^\infty s_k(A)\, v_k \otimes J(u_k),
 \end{equation}
-with convergence in operator norm. The $u_k$ are eigenvectors of $A^*A$
-and the $v_k$ of $AA^*$.
+with norm convergence. Here $\{u_k\}$ are eigenvectors of $A^*A$ and
+$\{v_k\}$ of $AA^*$, so $Au_k = s_k(A) v_k$.
 \end{theorem}
 
-\begin{remark}[Connection to Tucker rank]
+\begin{remark}[SVD and Tucker rank]
 \label{rem:app:svd_tucker}
-For $d = 2$ and Hilbert spaces $H_1, H_2$, the SVD~\eqref{eq:app:svd}
+For $d=2$ and Hilbert spaces $H_1$, $H_2$, the SVD~\eqref{eq:app:svd}
 is the Schmidt decomposition of a tensor in $H_1 \otimes_H H_2$
-(Proposition~\ref{prop:app:hs_rank} in Appendix~\ref{app:functional}).
-The number of non-zero singular values is the Tucker rank $r_1 = r_2 = r$.
-An operator has finite rank $r$ if and only if it has exactly $r$
-non-zero singular values.
+(Theorem~\ref{thm:app:hilbert_tensor_norms} and
+Proposition~\ref{prop:app:hs_rank}). The number of non-zero singular
+values is the Tucker rank $r_1(v) = r_2(v) = r$.
 \end{remark}
 
 %------------------------------------------------------------
@@ -295,72 +293,73 @@ An operator $A \in \cL(H)$ is \emph{Hilbert--Schmidt} if
 \label{eq:app:hs_norm}
     \|A\|_2^2 \coloneqq \sum_{k=1}^\infty \|A e_k\|^2 < \infty
 \end{equation}
-for some (equivalently, every) orthonormal basis $\{e_k\}$ of $H$.
-The space of Hilbert--Schmidt operators is denoted $\cT{2}(H)$.
+for some (equivalently every) orthonormal basis $\{e_k\}$. The space
+of Hilbert--Schmidt operators is $\cT{2}(H)$, with $\|A\|_2 =
+(\Tr(A^*A))^{1/2} = (\sum_k s_k(A)^2)^{1/2}$.
 \end{definition}
-
-The quantity $\|A\|_2$ is independent of the choice of orthonormal
-basis and satisfies $\|A\|_2^2 = \Tr(A^*A) = \sum_k s_k(A)^2$.
 
 \begin{proposition}
 \label{prop:app:hs_properties}
-The space $\cT{2}(H)$ of Hilbert--Schmidt operators satisfies:
+$\cT{2}(H)$ satisfies:
 \begin{enumerate}
-\item[\textup{(i)}] $\cT{2}(H)$ is a Hilbert space under the
-    \emph{Hilbert--Schmidt inner product}
-    \begin{equation}
-    \label{eq:app:hs_inner}
-        \langle A, B\rangle_{\mathrm{HS}}
-        \coloneqq \sum_{k=1}^\infty \langle A e_k, B e_k\rangle
-        = \Tr(A^*B).
-    \end{equation}
+\item[\textup{(i)}] It is a Hilbert space under
+    $\langle A, B\rangle_{\mathrm{HS}} \coloneqq \Tr(A^*B)
+    = \sum_k \langle Ae_k, Be_k\rangle$.
 \item[\textup{(ii)}] $\cT{2}(H) \subset \cK(H)$ and
-    $\|A\| \leq \|A\|_2$ for all $A \in \cT{2}(H)$.
-\item[\textup{(iii)}] $\cT{2}(H)$ is a two-sided ideal in $\cL(H)$:
-    if $A \in \cT{2}(H)$ and $B \in \cL(H)$, then
-    $AB, BA \in \cT{2}(H)$ with $\|BA\|_2 \leq \|B\|\|A\|_2$.
-\item[\textup{(iv)}] $A \in \cT{2}(H)$ if and only if
-    $A^* \in \cT{2}(H)$, with $\|A^*\|_2 = \|A\|_2$.
+    $\|A\| \leq \|A\|_2$.
+\item[\textup{(iii)}] $\cT{2}(H)$ is a two-sided ideal:
+    $\|BA\|_2 \leq \|B\|\|A\|_2$ for $B \in \cL(H)$.
+\item[\textup{(iv)}] $A \in \cT{2}(H)$ iff $A^* \in \cT{2}(H)$,
+    with $\|A^*\|_2 = \|A\|_2$.
 \end{enumerate}
 \end{proposition}
 
 \subsection*{Tensor product identification}
-
-The following identification connects Hilbert--Schmidt operators with
-the Hilbert tensor product of Appendix~\ref{app:functional}
-(Theorem~\ref{thm:app:hilbert_tensor_norms}).
 
 \begin{theorem}
 \label{thm:app:hs_tensor}
 There is a canonical isometric isomorphism of Hilbert spaces
 \begin{equation}
 \label{eq:app:hs_tensor_iso}
-    \cT{2}(H) \cong H \otimes_H \overline{H},
+    \cT{2}(H) \cong H \otimes_H H^*,
 \end{equation}
-where $\overline{H}$ denotes the \emph{conjugate Hilbert space}
-\textup{(}same underlying set, same addition, scalar multiplication
-by $\overline{\lambda}$, inner product
-$\langle u, v\rangle_{\overline{H}} = \overline{\langle u,v\rangle_H}$\textup{)}.
-Explicitly, the elementary tensor $u \otimes \overline{v}$
-\textup{(}for $u \in H$, $\overline{v} \in \overline{H}$\textup{)}
-corresponds to the rank-one operator $w \mapsto \langle v, w\rangle u$.
+where $H \otimes_H H^*$ denotes the Hilbert tensor product of $H$ and
+$H^*$ \textup{(}with the inner product on $H^*$ induced by $J$:
+$\langle J(u), J(v)\rangle_{H^*} \coloneqq \langle u, v\rangle_H$\textup{)}.
+Explicitly, the elementary tensor $u \otimes \varphi \in H \otimes_a H^*$
+corresponds under~\eqref{eq:app:hs_tensor_iso} to the rank-one operator
+$w \mapsto \varphi(w)\, u$.
 \end{theorem}
+
+\begin{remark}[Why $H^*$ and not $\overline{H}$]
+\label{rem:app:hs_tensor}
+In finite dimensions $H^* \cong H$ (both isomorphic to $\CC^n$), so
+the distinction between $H \otimes H^*$ and $H \otimes H$ is invisible.
+In infinite dimensions $H$ and $H^*$ are not linearly isomorphic as
+complex Banach spaces (the Riesz map is conjugate-linear, not linear).
+Writing $\cT{2}(H) \cong H \otimes_H H^*$ is correct: the bilinear map
+$(u, \varphi) \mapsto (u \otimes \varphi)$ is $\CC$-bilinear and extends
+to the tensor product. Writing $\cT{2}(H) \cong H \otimes_H \overline{H}$
+is also seen in the literature (since $\overline{H} \cong H^*$ as Banach
+spaces via $J$), but introduces a conjugate-linear identification that
+obscures the purely algebraic tensor structure. In this monograph we use
+$H \otimes H^*$ to remain consistent with the Banach-space tensor
+framework of Chapter~\ref{chap:algtensor}.
+\end{remark}
 
 \begin{remark}[Hilbert--Schmidt operators as Tucker rank-$(r,r)$ tensors]
 \label{rem:app:hs_tucker}
-Under the identification~\eqref{eq:app:hs_tensor_iso}, a
-Hilbert--Schmidt operator $A \in \cT{2}(H)$ of rank $r$ corresponds
-to a tensor in $H \otimes_H \overline{H}$ of Tucker rank $(r,r)$
-(Proposition~\ref{prop:app:hs_rank}).
-Its singular value decomposition~\eqref{eq:app:svd} is precisely
-the Tucker decomposition of this tensor:
+Under~\eqref{eq:app:hs_tensor_iso}, a Hilbert--Schmidt operator of rank
+$r$ corresponds to a tensor in $H \otimes_H H^*$ of Tucker rank $(r,r)$
+(Proposition~\ref{prop:app:hs_rank} in Appendix~\ref{app:functional}).
+Its SVD~\eqref{eq:app:svd} is the Tucker decomposition:
 \begin{equation*}
-    A = \sum_{k=1}^r s_k(A)\, v_k \otimes \overline{u_k}
-    \in H \otimes_H \overline{H},
+    A = \sum_{k=1}^r s_k(A)\, v_k \otimes J(u_k)
+    \in H \otimes_H H^*,
 \end{equation*}
-with $\{u_k\}$, $\{v_k\}$ orthonormal bases of the minimal subspaces
-$\Umin{1}{A} = \overline{\mathrm{Im}(A^*)}$ and
-$\Umin{2}{A} = \overline{\mathrm{Im}(A)}$ respectively.
+with $\Umin{1}{A} = \overline{\mathrm{Im}(A^*)} \subset H$ and
+$\Umin{2}{A} = J(\overline{\mathrm{Im}(A)}) \subset H^*$ the minimal
+subspaces in the two directions.
 \end{remark}
 
 %------------------------------------------------------------
@@ -375,129 +374,132 @@ $\Umin{2}{A} = \overline{\mathrm{Im}(A)}$ respectively.
 An operator $A \in \cL(H)$ is \emph{trace class} if
 \begin{equation}
 \label{eq:app:trace_norm}
-    \|A\|_1 \coloneqq \Tr\,|A|
-    = \sum_{k=1}^\infty s_k(A) < \infty.
+    \|A\|_1 \coloneqq \Tr|A| = \sum_{k=1}^\infty s_k(A) < \infty.
 \end{equation}
-The space of trace-class operators is denoted $\cT{1}(H)$.
+The space of trace-class operators is $\cT{1}(H)$.
 \end{definition}
 
 \begin{proposition}[Trace]
 \label{prop:app:trace}
-For $A \in \cT{1}(H)$ and any orthonormal basis $\{e_k\}$ of $H$,
-the series
+For $A \in \cT{1}(H)$ and any orthonormal basis $\{e_k\}$, the series
 \begin{equation}
 \label{eq:app:trace}
     \Tr(A) \coloneqq \sum_{k=1}^\infty \langle e_k, A e_k\rangle
 \end{equation}
-converges absolutely and is independent of the choice of basis.
+converges absolutely, independently of the choice of basis.
 \end{proposition}
-
-The trace is the unique linear functional on $\cT{1}(H)$ satisfying
-$\Tr(AB) = \Tr(BA)$ for all $A \in \cT{1}(H)$,
-$B \in \cL(H)$, and $\Tr(P) = \dim \mathrm{Im}(P)$ for every
-finite-rank orthogonal projection $P$.
-
-\subsection*{Properties of $\cT{1}(H)$}
 
 \begin{proposition}
 \label{prop:app:trace_class_properties}
-The space $\cT{1}(H)$ of trace-class operators satisfies:
+$\cT{1}(H)$ satisfies:
 \begin{enumerate}
-\item[\textup{(i)}] $\cT{1}(H) \subset \cT{2}(H) \subset \cK(H)$, with
-    $\|A\| \leq \|A\|_2 \leq \|A\|_1$.
+\item[\textup{(i)}] $\cT{1}(H) \subset \cT{2}(H) \subset \cK(H)$,
+    with $\|A\| \leq \|A\|_2 \leq \|A\|_1$.
 \item[\textup{(ii)}] $(\cT{1}(H), \|\cdot\|_1)$ is a Banach space
     \textup{(}not a Hilbert space\textup{)}.
-\item[\textup{(iii)}] $\cT{1}(H)$ is a two-sided ideal in $\cL(H)$:
-    $\|BA\|_1 \leq \|B\|\|A\|_1$ for $A \in \cT{1}(H)$, $B \in \cL(H)$.
-\item[\textup{(iv)}] \emph{Duality:} The trace pairing
+\item[\textup{(iii)}] $\cT{1}(H)$ is a two-sided ideal:
+    $\|BA\|_1 \leq \|B\|\|A\|_1$.
+\item[\textup{(iv)}] \emph{Duality:} the trace pairing
     $\langle A, X\rangle \coloneqq \Tr(A^*X)$
-    identifies $(\cT{1}(H))^* \cong \cL(H)$ isometrically.
-\item[\textup{(v)}] The spectral decomposition of a self-adjoint
-    $A \in \cT{1}(H)$ is~\eqref{eq:app:spectral} with
-    $\sum_k |\lambda_k| < \infty$, and
-    $\|A\|_1 = \sum_k |\lambda_k|$.
+    identifies $\cT{1}(H)^* \cong \cL(H)$ isometrically.
+\item[\textup{(v)}] Spectral decomposition: for self-adjoint
+    $A \in \cTsa{1}(H)$, the series~\eqref{eq:app:spectral} holds
+    with $\sum_k |\lambda_k| = \|A\|_1 < \infty$.
 \end{enumerate}
 \end{proposition}
 
-\begin{remark}[Trace-class as Banach tensor norm]
+\begin{remark}[Trace-class operators as projective tensor product]
 \label{rem:app:trace_projective}
-The trace norm $\|\cdot\|_1$ on $\cT{1}(H)$ coincides with the
-\emph{projective tensor norm} $\|\cdot\|_\pi$ on
-$H \otimes_\pi \overline{H}$ (under the identification
-$\cT{1}(H) \cong H \otimes_\pi \overline{H}$). This is the dual to
-the injective norm: $(\cT{1}(H))^* \cong \cK(H)$ under the Hilbert--Schmidt
-metric and $(\cT{1}(H))^* \cong \cL(H)$ under the trace pairing.
-In the language of Chapter~\ref{chap:algtensor}:
-\begin{equation*}
-    \|\cdot\|_\varepsilon \leq \|\cdot\|_H
-    \leq \|\cdot\|_\pi = \|\cdot\|_1
-    \quad \text{on } H \otimes \overline{H},
-\end{equation*}
-where $\|\cdot\|_H$ is the Hilbert tensor norm and $\|\cdot\|_\varepsilon$
-is the injective norm. The trace norm is the natural norm for
-quantum states because it controls distinguishability: for two states
-$\rho$ and $\sigma$, $\frac{1}{2}\|\rho - \sigma\|_1$ is the
-\emph{total variation distance}, the maximum probability of distinguishing
-$\rho$ from $\sigma$ by any quantum measurement.
+The identification
+\begin{equation}
+\label{eq:app:tc_projective}
+    \cT{1}(H) \cong H \otimes_\pi H^*
+\end{equation}
+holds isometrically, where $\|\cdot\|_\pi$ is the projective tensor
+norm on $H \otimes H^*$~\cite{Grothendieck1953,Ryan2002}. This places
+the trace norm firmly within the framework of Chapter~\ref{chap:algtensor}:
+\begin{equation}
+\label{eq:app:norm_chain}
+    \|\cdot\|_\varepsilon \leq \|\cdot\|_H \leq \|\cdot\|_1
+    = \|\cdot\|_\pi \quad \text{on } H \otimes_a H^*,
+\end{equation}
+where $\|\cdot\|_H$ is the Hilbert tensor norm of $H \otimes_H H^*$
+and $\|\cdot\|_\varepsilon$ is the injective norm. The trace norm is
+the \emph{largest} reasonable crossnorm; the Hilbert--Schmidt norm
+is a reasonable crossnorm strictly between $\|\cdot\|_\varepsilon$
+and $\|\cdot\|_\pi$ when $H$ is infinite-dimensional. Both satisfy
+condition~\condINJ\ of Definition~\ref{def:crossnorm}. The identification
+$\cT{1}(H)^* \cong \cL(H)$ (Proposition~\ref{prop:app:trace_class_properties}(iv))
+is precisely the duality $(\|\cdot\|_\pi)^* = \|\cdot\|_\varepsilon$
+from Chapter~\ref{chap:algtensor}.
+\end{remark}
+
+\begin{remark}[The trace norm and quantum distinguishability]
+For two density operators $\rho, \sigma \in \mathcal{D}(H)$ (defined
+in Section~\ref{app:quantum:states}), the quantity
+$\tfrac{1}{2}\|\rho - \sigma\|_1$ is the \emph{total variation distance}
+between the two states: the maximum probability of distinguishing
+$\rho$ from $\sigma$ by any quantum measurement. This operational
+interpretation is why $\|\cdot\|_1$ is the natural norm for the
+state space, in contrast to the Hilbert--Schmidt norm $\|\cdot\|_2$
+which is computationally convenient but lacks a direct operational meaning.
 \end{remark}
 
 \subsection*{Partial trace}
 
-Let $H = H_1 \otimes_H H_2$ be a Hilbert tensor product. For
-$A \in \cT{1}(H)$, the \emph{partial trace} over $H_2$ is the unique
-operator $\TrS{2}(A) \in \cT{1}(H_1)$ satisfying
+Let $H = H_1 \otimes_H H_2$. For $A \in \cT{1}(H)$, the
+\emph{partial trace over $H_2$} is the unique $\TrS{2}(A) \in \cT{1}(H_1)$
+satisfying
 \begin{equation}
 \label{eq:app:partial_trace}
-    \TrS{H_1}\bigl(B\, \TrS{2}(A)\bigr)
+    \Tr_{H_1}\bigl(B\, \TrS{2}(A)\bigr)
     = \Tr_{H}\bigl((B \otimes I_2)\, A\bigr)
     \quad \forall\, B \in \cL(H_1).
 \end{equation}
-For an orthonormal basis $\{f_j\}$ of $H_2$:
-\begin{equation*}
-    \TrS{2}(A) = \sum_j (I_1 \otimes f_j^*)
-    \, A\, (I_1 \otimes f_j) \in \cT{1}(H_1).
-\end{equation*}
+For any orthonormal basis $\{f_j\}$ of $H_2$ and
+$\varphi_j = J(f_j) \in H_2^*$:
+\begin{equation}
+\label{eq:app:partial_trace_formula}
+    \TrS{2}(A) = \sum_j (I_1 \otimes \varphi_j)\,
+    A\, (I_1 \otimes J^{-1}(\varphi_j))^* \in \cT{1}(H_1),
+\end{equation}
+the series converging in $\|\cdot\|_1$.
 
 \begin{proposition}[Partial trace and minimal subspaces]
 \label{prop:app:partial_trace_min}
 Let $v \in H_1 \otimes_H H_2$ with $\|v\|=1$ and let
-$A_v = v \otimes \overline{v} \in \cT{1}(H)$ be the associated
+$\rho_v = v \otimes J(v) \in \cT{1}(H)$ be the associated
 rank-one operator. Then:
 \begin{enumerate}
-\item[\textup{(a)}] $\TrS{2}(A_v) \in \cT{1}(H_1)$ is
-    a positive operator with trace $1$ and
+\item[\textup{(a)}] $\TrS{2}(\rho_v) \in \cT{1}(H_1)$ is positive
+    with $\Tr(\TrS{2}(\rho_v)) = 1$ and
     \begin{equation*}
-        \supp\bigl(\TrS{2}(A_v)\bigr)
+        \supp\bigl(\TrS{2}(\rho_v)\bigr)
         = \Umin{1}{v},
     \end{equation*}
-    where $\Umin{1}{v}$ is the minimal subspace of $v$ in the
-    direction $\{1\}$ \textup{(}Definition~\ref{def:minimal_subspace}\textup{)}.
-\item[\textup{(b)}] $\mathrm{rank}\bigl(\TrS{2}(A_v)\bigr)
+    where $\Umin{1}{v}$ is the minimal subspace of $v$ in direction
+    $\{1\}$ \textup{(}Definition~\ref{def:minimal_subspace}\textup{)}.
+\item[\textup{(b)}] $\mathrm{rank}\bigl(\TrS{2}(\rho_v)\bigr)
     = r_1(v)$, the Tucker $1$-rank of $v$.
-\item[\textup{(c)}] The non-zero eigenvalues of $\TrS{2}(A_v)$
-    are $s_k(v)^2 / \|v\|^2$, where $s_k(v)$ are the singular values
-    of $v$ viewed as an operator $H_1 \to H_2$.
+\item[\textup{(c)}] The non-zero eigenvalues of $\TrS{2}(\rho_v)$
+    are $s_k(v)^2$, where $s_k(v)$ are the singular values of $v$
+    viewed as a Hilbert--Schmidt operator $H_1 \to H_2$.
 \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-Write $v = \sum_{k=1}^r s_k\, u_k \otimes w_k$ (Schmidt decomposition,
-Theorem~\ref{thm:app:svd} applied to $v$ as an operator $H_1 \to H_2$).
-Then
+Write $v = \sum_{k=1}^r s_k\, u_k \otimes_H w_k$ (Schmidt decomposition,
+i.e., SVD of $v: H_1 \to H_2$). Then
+$\rho_v = v \otimes J(v) = \sum_{j,k} s_j s_k
+(u_j \otimes_H w_j) \otimes J(u_k \otimes_H w_k)$.
+Using~\eqref{eq:app:partial_trace_formula} and $\langle w_l, w_j\rangle
+= \delta_{lj}$:
 \begin{equation*}
-    A_v = v \otimes \overline{v}
-    = \sum_{j,k} s_j s_k\,
-    (u_j \otimes \overline{u_k}) \otimes (w_j \otimes \overline{w_k}).
+    \TrS{2}(\rho_v)
+    = \sum_k s_k^2\, u_k \otimes J(u_k) \in \cT{1}(H_1).
 \end{equation*}
-Applying the partial trace:
-\begin{align*}
-    \TrS{2}(A_v)
-    &= \sum_{j,k} s_j s_k\, (u_j \otimes \overline{u_k})
-       \sum_l \langle w_l, w_j\rangle\langle w_k, w_l\rangle \\
-    &= \sum_{j,k} s_j s_k\, (u_j \otimes \overline{u_k})\, \delta_{jk}
-     = \sum_k s_k^2\, u_k \otimes \overline{u_k}.
-\end{align*}
-This has support $\spann\{u_k : s_k > 0\} = \Umin{1}{v}$ and rank $r_1(v)$.
+This has $\supp = \spann\{u_k : s_k > 0\} = \Umin{1}{v}$,
+rank $r_1(v)$, and eigenvalues $s_k^2$.
 \end{proof}
 
 %------------------------------------------------------------
@@ -505,18 +507,13 @@ This has support $\spann\{u_k : s_k > 0\} = \Umin{1}{v}$ and rank $r_1(v)$.
 \label{app:quantum:states}
 %------------------------------------------------------------
 
-\subsection*{The space of states}
+\subsection*{The state space}
 
 \begin{definition}
 \label{def:app:density}
-Let $H$ be a separable complex Hilbert space. An operator
-$\rho \in \cTsa{1}(H) \coloneqq \{A \in \cT{1}(H) : A = A^*\}$
-is a \emph{density operator} (or \emph{quantum state}) if
-\begin{enumerate}
-\item[(i)] $\rho \geq 0$ \quad (positivity),
-\item[(ii)] $\Tr(\rho) = 1$ \quad (normalisation).
-\end{enumerate}
-The set of all density operators is
+A \emph{density operator} on $H$ is an operator
+$\rho \in \cTsa{1}(H)$ satisfying $\rho \geq 0$ and $\Tr(\rho) = 1$.
+The \emph{state space} is
 \begin{equation}
 \label{eq:app:state_space}
     \Dstate{H}
@@ -527,138 +524,107 @@ The set of all density operators is
 \end{equation}
 \end{definition}
 
-$\Dstate{H}$ is a convex subset of the affine hyperplane
-$\{\Tr = 1\} \subset \cTsa{1}(H)$.
+$\Dstate{H}$ is a convex subset of the Banach space $\cTsa{1}(H)$,
+contained in the affine hyperplane $\{\Tr = 1\}$. It is
+\emph{not} a manifold globally — it has rank singularities and
+boundary phenomena — but each fixed-rank stratum is a smooth
+Banach manifold; see Section~\ref{app:quantum:core} and Chapter~12.
 
 \subsection*{Pure and mixed states}
 
 \begin{definition}
 \label{def:app:pure_mixed}
-A density operator $\rho \in \Dstate{H}$ is:
-\begin{enumerate}
-\item[\textup{(i)}] \emph{Pure} if $\mathrm{rank}(\rho) = 1$, equivalently
-    $\rho^2 = \rho$ (it is an orthogonal projection of rank one).
-\item[\textup{(ii)}] \emph{Mixed} if $\mathrm{rank}(\rho) \geq 2$.
-\end{enumerate}
+$\rho \in \Dstate{H}$ is \emph{pure} if $\mathrm{rank}(\rho) = 1$,
+equivalently $\rho^2 = \rho$. Otherwise it is \emph{mixed}.
 \end{definition}
 
-Every pure state has the form $\rho = v \otimes \overline{v}$ for some
-unit vector $v \in H$. Two unit vectors $v$ and $e^{i\theta}v$ ($\theta
-\in \RR$) give the same pure state. Thus the set of pure states is in
-bijection with the \emph{projective Hilbert space}
-$\mathbb{P}(H) \coloneqq (H \setminus \{0\})/\CC^*$.
+Every pure state has the form $\rho = u \otimes J(u)$ for some unit
+vector $u \in H$; two unit vectors $u$ and $e^{i\theta}u$ give the
+same pure state. The set of pure states is in bijection with the
+\emph{projective Hilbert space} $\mathbb{P}(H) = (H\setminus\{0\})/\CC^*$.
 
-Every mixed state $\rho$ has a spectral decomposition
+Every mixed state $\rho \in \Drank{r}{H}$ has a spectral decomposition
 \begin{equation}
 \label{eq:app:spectral_state}
-    \rho = \sum_{k=1}^r \lambda_k\, v_k \otimes \overline{v_k},
+    \rho = \sum_{k=1}^r \lambda_k\, v_k \otimes J(v_k),
 \end{equation}
-where $r = \mathrm{rank}(\rho)$, $\{v_k\}_{k=1}^r$ is an orthonormal
-system, and $\lambda_k > 0$ with $\sum_k \lambda_k = 1$.
+with $\{v_k\}$ orthonormal, $\lambda_k > 0$, $\sum_k \lambda_k = 1$.
 
-\begin{remark}[The fundamental connection with minimal subspaces]
+\begin{remark}[The fundamental connection: minimal subspaces and quantum states]
 \label{rem:app:states_minimal}
-Let $v \in H$ be non-zero. The rank-one operator
+Let $v \in H$ be non-zero. The pure state
 \begin{equation}
 \label{eq:app:pure_state}
-    \rho_v \coloneqq \frac{v \otimes \overline{v}}{\|v\|^2}
-    \in \Dstate{H}
+    \rho_v \coloneqq \frac{v \otimes J(v)}{\|v\|^2} \in \Dstate{H}
 \end{equation}
-is the pure state associated to $v$.
-Its \emph{support} $\supp(\rho_v) = \mathrm{Im}(\rho_v)
-= \spann\{v\}$ is exactly the minimal subspace
-$\Umin{\{1,\ldots,d\}}{v}$ of $v$ in the full index set $D$
-(Definition~\ref{def:minimal_subspace}).
+has support $\supp(\rho_v) = \mathrm{Im}(\rho_v) = \spann\{v\}$,
+which is the minimal subspace of $v$ in $H$.
 
-In a multipartite system $H = \bigotimes_{j=1}^d H_j$, the
-partial trace $\rho_\alpha \coloneqq \Tr_{\alpha^c}(\rho_v)$
-satisfies, by Proposition~\ref{prop:app:partial_trace_min}:
+In a multipartite system $H = \bigotimes_{j=1}^d H_j$, the partial
+trace $\rho_\alpha \coloneqq \Tr_{\alpha^c}(\rho_v)$ satisfies, by
+Proposition~\ref{prop:app:partial_trace_min}:
 \begin{equation}
 \label{eq:app:supp_minimal}
     \supp(\rho_\alpha) = \Umin{\alpha}{v},
     \qquad
     \mathrm{rank}(\rho_\alpha) = r_\alpha(v).
 \end{equation}
-This is the cornerstone of Chapter~12: the
-Tucker rank vector $(r_\alpha(v))_{\alpha \in D}$ encodes the
-\emph{entanglement structure} of the pure state $\rho_v$.
+This is the cornerstone of Chapter~12: the Tucker rank vector
+$(r_\alpha(v))_{\alpha \in D}$ encodes the \emph{entanglement structure}
+of the pure state $\rho_v$.
 \end{remark}
 
 \subsection*{The rank stratification}
 
 \begin{definition}
 \label{def:app:rank_strata}
-For $r \in \NN$, the \emph{rank-$r$ stratum} of $\Dstate{H}$ is
-\begin{equation}
-\label{eq:app:rank_stratum}
-    \Drank{r}{H}
-    \coloneqq \bigl\{ \rho \in \Dstate{H} :
-    \mathrm{rank}(\rho) = r \bigr\}.
-\end{equation}
+The \emph{rank-$r$ stratum} is
+$\Drank{r}{H} \coloneqq \{\rho \in \Dstate{H} : \mathrm{rank}(\rho) = r\}$.
 \end{definition}
 
-The full state space decomposes as a disjoint union:
-\begin{equation}
-\label{eq:app:state_stratification}
-    \Dstate{H} = \bigsqcup_{r=1}^\infty \Drank{r}{H}
-    \cup \mathcal{D}_\infty(H),
-\end{equation}
-where $\mathcal{D}_\infty(H)$ denotes the infinite-rank states.
-This mirrors the disjoint decomposition $\VD = \bigsqcup_\fr
-\Tucker{\fr}{\VD}$ of Theorem~\ref{thm:tucker_decomposition_full}.
+The decomposition $\Dstate{H} = \bigsqcup_{r \geq 1} \Drank{r}{H}
+\cup \mathcal{D}_\infty(H)$ mirrors the disjoint decomposition
+$\VD = \bigsqcup_\fr \Tucker{\fr}{\VD}$ of
+Theorem~\ref{thm:tucker_decomposition_full}.
 
-\begin{proposition}[Closure relations]
+\begin{proposition}[Rank lower semicontinuity]
 \label{prop:app:state_closure}
-In the trace-norm topology:
-\begin{enumerate}
-\item[\textup{(i)}] $\overline{\Drank{r}{H}}^{\|\cdot\|_1}
-    = \bigcup_{k=1}^r \mathcal{D}_k(H)$
-    \textup{(}rank is lower semicontinuous\textup{)}.
-\item[\textup{(ii)}] $\mathcal{D}_k(H) \subset
-    \overline{\Drank{r}{H}}^{\|\cdot\|_1}$ for all $1 \leq k \leq r$.
-\end{enumerate}
+In the trace-norm topology, $\overline{\Drank{r}{H}}^{\|\cdot\|_1}
+= \bigcup_{k=1}^r \Drank{k}{H}$: rank is weakly lower semicontinuous.
 \end{proposition}
 
-These closure relations are the quantum analogues of the weak lower
-semicontinuity of Tucker rank established in
-Theorem~\ref{thm:TBT_rank_lsc}.
+This is the quantum analogue of Theorem~\ref{thm:TBT_rank_lsc}.
 
 %------------------------------------------------------------
-\section{Positive core and the support decomposition}
+\section{The positive core and support decomposition}
 \label{app:quantum:core}
 %------------------------------------------------------------
 
-This section develops the local parametrisation of $\Drank{r}{H}$
-that will be used in Chapter~12.
-
 \subsection*{The positive core manifold}
 
-For an $r$-dimensional subspace $S \in \Grass{r}{H}$, define
+Fix $S \in \Grass{r}{H}$ and let $V_S: \CC^r \to H$ be an isometry
+with $\mathrm{Im}(V_S) = S$. Define
 \begin{equation}
 \label{eq:app:pos_core}
     \Dpos{S}
     \coloneqq \bigl\{
     \sigma \in \cTsa{1}(S) : \sigma > 0,\;
     \TrS{S}(\sigma) = 1
-    \bigr\}.
+    \bigr\}
+    \cong \Dpos{\CC^r},
 \end{equation}
+where the isomorphism is induced by $V_S$. Since $\dim S = r < \infty$,
+$\cTsa{1}(S)$ is the space of self-adjoint $r \times r$ complex matrices
+(isomorphic to $\RR^{r^2}$), and $\Dpos{S}$ is an open convex subset
+of the hyperplane $\{\TrS{S} = 1\}$, a smooth manifold of real dimension
+$r^2 - 1$.
 
-\begin{proposition}
-\label{prop:app:pos_core_manifold}
-$\Dpos{S}$ is an open convex subset of the affine hyperplane
-$\{\TrS{S} = 1\} \subset \cTsa{1}(S) \cong \RR^{r^2 - 1}$,
-hence a smooth finite-dimensional manifold of real dimension $r^2 - 1$.
-\end{proposition}
-
-\begin{remark}[Core as Tucker format over $\RR$]
+\begin{remark}[Core as finite-dimensional Tucker fibre]
 \label{rem:app:core_tucker}
-In the notation of Chapter~\ref{chap:algtensor}, a density operator
-$\sigma \in \Dpos{S}$ is (after choosing a basis of $S$) an
-element of $M_r(\CC)^{sa}_+ \cap \{\Tr = 1\}$, i.e., a positive
-definite Hermitian matrix of trace 1. This is the finite-dimensional
-fibre in the Tucker bundle structure of $\Drank{r}{H}$, playing the
-role of the core tensor $C^{(D)} \in \RR^{\times r_\alpha}_*$ from
-Chapter~\ref{chap:tucker_manifold}.
+$\Dpos{S}$ plays the role of the full-rank core space $\RR^{\times r_\alpha}_*$
+from Chapter~\ref{chap:tucker_manifold}: it is the finite-dimensional
+fibre of the bundle $\Drank{r}{H} \to \Grass{r}{H}$
+(Theorem~3.8 of~\cite{AcevedoFalco2026} and Chapter~12 of this monograph).
 \end{remark}
 
 \subsection*{The support map and local coordinates}
@@ -666,25 +632,27 @@ Chapter~\ref{chap:tucker_manifold}.
 The \emph{support map}
 \begin{equation}
 \label{eq:app:support_map}
-    \pi: \Drank{r}{H} \longrightarrow \Grass{r}{H},
-    \qquad
-    \pi(\rho) \coloneqq \supp(\rho) = \mathrm{Im}(\rho),
+    \pi: \Drank{r}{H} \to \Grass{r}{H},
+    \qquad \pi(\rho) \coloneqq \supp(\rho) = \mathrm{Im}(\rho),
 \end{equation}
 is the quantum analogue of the rank map $\varrho_\fr$ of
 Chapter~\ref{chap:tucker_manifold}.
 
 \begin{proposition}[Local coordinates for $\Drank{r}{H}$]
 \label{prop:app:local_coords}
-Fix $\rho_0 \in \Drank{r}{H}$ and set $S_0 = \supp(\rho_0)$.
-Let $V_0: \CC^r \to H$ be an isometry with $\mathrm{Im}(V_0) = S_0$.
-For $A \in \cL(\CC^r, S_0^\perp)$ sufficiently small, define the
-isometric embedding
+Fix $\rho_0 \in \Drank{r}{H}$, $S_0 = \supp(\rho_0)$, and an isometry
+$V_0: \CC^r \to H$ with $\mathrm{Im}(V_0) = S_0$. Let $P_0 = V_0 V_0^*
+\in \cL(H)$ be the orthogonal projection onto $S_0$. For
+$A \in \cL(\CC^r, S_0^\perp)$ sufficiently small in operator norm,
+define
 \begin{equation}
 \label{eq:app:va}
-    V_A \coloneqq (V_0 + AV_0)(I + V_0^*A^*AV_0)^{-1/2}
-    \in \cL(\CC^r, H), \quad V_A^* V_A = I.
+    V_A \coloneqq (V_0 + \iota A)(I_{\CC^r} + A^*A)^{-1/2}
+    \in \cL(\CC^r, H), \quad V_A^* V_A = I_{\CC^r},
 \end{equation}
-Then the map
+where $\iota: S_0^\perp \hookrightarrow H$ is the inclusion. Then:
+\begin{enumerate}
+\item[\textup{(i)}] The map
 \begin{equation}
 \label{eq:app:chart_states}
     \Phi_{S_0}: (A, \sigma)
@@ -692,15 +660,20 @@ Then the map
     \in \Drank{r}{H}
 \end{equation}
 is a $\mathcal{C}^\infty$-diffeomorphism from a neighbourhood of
-$(0, V_0^*\rho_0 V_0)$ in
-$\cL(\CC^r, S_0^\perp) \times \mathcal{D}_+(S_0^\perp\text{-free})$
+$(0, V_0^*\rho_0 V_0)$ in $\cL(\CC^r, S_0^\perp) \times \Dpos{\CC^r}$
 onto a neighbourhood of $\rho_0$ in $\Drank{r}{H}$.
+\item[\textup{(ii)}] The Grassmann variable $A \in \cL(\CC^r, S_0^\perp)$
+encodes the motion of the support subspace
+$S_0 \leadsto \mathrm{Im}(V_A)$, and the core variable
+$\sigma \in \Dpos{\CC^r}$ encodes the positive degrees of freedom
+within the support.
+\end{enumerate}
 \end{proposition}
 
-This local chart is the quantum specialisation of the Tucker manifold
-chart map (Lemma~\ref{lem:element}): the Grassmann variable $A$ encodes
-the motion of the support subspace, and the core variable $\sigma$
-encodes the positive degrees of freedom within that subspace.
+This is the quantum specialisation of the Tucker manifold chart
+(Lemma~\ref{lem:element}): the Grassmann variable $A$ plays the role
+of $L_\alpha \in \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})$, and
+$\sigma$ plays the role of the core tensor $C^{(D)}$.
 
 %------------------------------------------------------------
 \section{Historical notes}
@@ -708,50 +681,54 @@ encodes the positive degrees of freedom within that subspace.
 %------------------------------------------------------------
 
 \paragraph{Mathematical foundations of quantum mechanics.}
-The description of quantum states by operators on Hilbert spaces was
-introduced by von Neumann~\cite{vonNeumann1932}, whose 1932 monograph
-established the functional-analytic framework of quantum mechanics.
-The use of density operators (rather than pure state vectors) to
-describe mixed states goes back to von Neumann's 1927 papers on
-entropy and measurement.
+The description of quantum states by density operators on Hilbert spaces
+was introduced by von Neumann~\cite{vonNeumann1932}. His 1932 monograph
+established the functional-analytic framework that remains standard today.
+The use of mixed states (density operators of rank $> 1$) to describe
+statistical mixtures appears in von Neumann's 1927 papers.
 
-\paragraph{Trace-class operators.}
-The systematic study of trace-class operators as a Banach space was
-developed by Schatten~\cite{Schatten1950}, who introduced the ideals
-$\cT{p}(H)$ (now called \emph{Schatten $p$-classes}) with norm
-$\|A\|_p = (\sum_k s_k(A)^p)^{1/p}$. The cases $p=1$ (trace class)
-and $p=2$ (Hilbert--Schmidt) are the most important. The duality
-$(\cT{1}(H))^* \cong \cL(H)$ is the non-commutative analogue of the
-duality $(\ell^1)^* \cong \ell^\infty$.
+\paragraph{Schatten ideals.}
+The systematic study of trace-class and Hilbert--Schmidt operators as
+Banach ideals is due to Schatten~\cite{Schatten1950}, who introduced
+the scale $\cT{p}(H)$ with norm $\|A\|_p = (\sum_k s_k(A)^p)^{1/p}$.
+The duality $\cT{1}(H)^* \cong \cL(H)$ is the non-commutative
+analogue of $(\ell^1)^* \cong \ell^\infty$.
 
-\paragraph{Tensor norms and the trace.}
-The identification $\cT{1}(H) \cong H \otimes_\pi \overline{H}$
-(Remark~\ref{rem:app:trace_projective}) was established by
-Grothendieck~\cite{Grothendieck1953} as part of his study of tensor
-norms. This places the trace norm firmly within the framework of
-Chapter~\ref{chap:algtensor}: it is the projective tensor norm on
-$H \otimes \overline{H}$, the largest reasonable crossnorm.
-The Hilbert--Schmidt norm is the Hilbert tensor norm, which lies
-strictly between the projective and injective norms when $H$ is
-infinite-dimensional (Theorem~\ref{thm:app:hilbert_tensor_norms}).
+\paragraph{Tensor norms and the trace class.}
+The identification $\cT{1}(H) \cong H \otimes_\pi H^*$
+(Remark~\ref{rem:app:trace_projective}) is due to
+Grothendieck~\cite{Grothendieck1953}, who established it as part of
+his classification of tensor norms. It places the trace norm firmly
+within the framework of Chapter~\ref{chap:algtensor}: it is the
+projective tensor norm on $H \otimes H^*$, the largest reasonable
+crossnorm. The Hilbert--Schmidt identification $\cT{2}(H) \cong
+H \otimes_H H^*$ (Theorem~\ref{thm:app:hs_tensor}) is the
+non-commutative version of the $L^2$-tensor isomorphism $L^2(\Omega_1)
+\otimes_H L^2(\Omega_2) \cong L^2(\Omega_1 \times \Omega_2)$
+(Example~\ref{ex:Lp_tensor}).
+
+\paragraph{The correct tensor product: $H \otimes H^*$ vs.\ $H \otimes H$.}
+In the finite-dimensional literature, density matrices are often
+written as elements of $H \otimes H$ via the identification
+$H^* \cong H$ provided by the inner product. In infinite dimensions
+this conflates two structurally distinct spaces: the dual $H^*$
+(defined by the norm alone) and the conjugate $\overline{H}$ (defined
+by the linear structure). Working with $H \otimes H^*$ throughout,
+as we do in this appendix, keeps the tensor product framework of
+Chapter~\ref{chap:algtensor} fully valid without any
+infinite-dimensional caveats.
 
 \paragraph{Minimal subspaces and partial traces.}
-The identification of the support of the partial trace with the
-minimal subspace (Proposition~\ref{prop:app:partial_trace_min} and
-Remark~\ref{rem:app:states_minimal}) appears implicitly in the quantum
-information literature as the \emph{Schmidt rank}, introduced for
-bipartite pure states by Schmidt (1907) long before the tensor
-formalism. The generalisation to multipartite systems and the
-systematic treatment as minimal subspaces is the contribution of
-Falcó and Hackbusch~\cite{FH2012}, which is the foundation of
-Chapters~\ref{chap:minsubspaces} and~12 of
-this monograph.
+The identification of the support of the partial trace with the minimal
+subspace (Proposition~\ref{prop:app:partial_trace_min} and
+Remark~\ref{rem:app:states_minimal}) makes precise a connection implicit
+in the quantum information literature since Schmidt (1907). The
+systematic development as minimal subspaces in the context of tensor
+Banach spaces is the contribution of~\cite{FH2012}, which forms the
+algebraic foundation of Chapters~\ref{chap:minsubspaces} and~12.
 
-\paragraph{The Grassmann-Banach structure of $\Drank{r}{H}$.}
+\paragraph{The Banach manifold structure of $\Drank{r}{H}$.}
 The local chart structure of Proposition~\ref{prop:app:local_coords}
-— decomposing a neighbourhood of $\rho$ in $\Drank{r}{H}$ into a
-Grassmannian direction (the support) and a finite-dimensional core
-(the positive operator on the support) — is developed in full detail
-in the companion paper~\cite{AcevedoFalco2026}, whose results form
-the mathematical content of Chapters~12
-and~13.
+is developed in full detail, with all proofs, in the companion
+paper~\cite{AcevedoFalco2026}. The main results of that paper form
+the content of Chapters~12 and~13 of this monograph.
