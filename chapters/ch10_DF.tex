@@ -224,252 +224,24 @@ projection condition~\eqref{eq:DF_tucker} follows from the uniqueness
 (strict convexity) and Theorem~\ref{thm:metric_projection}.
 \end{proof}
 
-%------------------------------------------------------------
-\section{Kinematic equations for the Tucker manifold}
-\label{sec:DF:kinematic}
-%------------------------------------------------------------
-
-The Dirac--Frenkel ODE~\eqref{eq:DF_tucker} is an abstract equation
-on the Banach manifold $\Tucker{\fr}{\VD}$. In this section we derive
-its explicit form in local chart coordinates, obtaining a coupled
-system of ODEs for the factor matrices and the core tensor. This
-system is the Banach-space analogue of the MCTDH equations of
-quantum dynamics.
-
-\subsection*{Setup and notation}
-
-Fix $\bv_r(t) \in \Tucker{\fr}{\VD}$ and choose at each time $t$:
-\begin{itemize}
-\item Bases $\{u^{(\alpha)}_{i_\alpha}(t)\}_{i_\alpha=1}^{r_\alpha}$
-    of $\Umin{\alpha}{\bv_r(t)}$ for each $\alpha \in D$, normalised
-    so that the Gram matrices
-    $G^{(\alpha)}_{ij}(t) \coloneqq
-    \langle u^{(\alpha)}_i(t), u^{(\alpha)}_j(t)\rangle_\alpha$
-    satisfy $G^{(\alpha)}(t) = I_{r_\alpha}$ when $V_\alpha$ is a
-    Hilbert space (orthonormal basis), or more generally
-    $G^{(\alpha)}(t) = I_{r_\alpha}$ modulo a choice of
-    normalisation adapted to the Banach space structure.
-\item The core tensor $C^{(D)}(t) \in \RR^{\times r_\alpha}_*$
-    uniquely determined by
-    $\bv_r(t) = \sum_{(i_\alpha)} C^{(D)}_{(i_\alpha)}(t)
-    \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}(t)$.
-\end{itemize}
-We also define, for each $\alpha \in D$ and $i_\alpha = 1,\ldots,r_\alpha$:
-\begin{equation}
-\label{eq:DF:Ualpha}
-    \bU^{(\alpha)}_{i_\alpha}(t)
-    \coloneqq \sum_{(i_\beta)_{\beta \neq \alpha}}
-    C^{(D)}_{(i_\alpha, (i_\beta)_{\beta \neq \alpha})}(t)
-    \bigotimes_{\beta \neq \alpha} u^{(\beta)}_{i_\beta}(t)
-    \in \Umin{D \setminus \{\alpha\}}{\bv_r(t)},
-\end{equation}
-and the \emph{mean-field matrix}
-\begin{equation}
-\label{eq:DF:meanfield}
-    F^{(\alpha)}_{i_\alpha j_\alpha}(t)
-    \coloneqq
-    \bigl\langle
-        \bU^{(\alpha)}_{i_\alpha}(t),\;
-        \bigl(\Id{\alpha} \otimes
-        T_\psi^{[\alpha]}\bigr)(\bF(t, \bv_r(t)))
-        [\psi = u^{(\alpha)}_{j_\alpha}(t)]
-    \bigr\rangle_{[\alpha]},
-\end{equation}
-where $T_\psi^{[\alpha]}(\bw) \coloneqq
-(\psi \otimes \Id{[\alpha]})(\bw) \in \Vbigalpha^{[\alpha]}$
-denotes the contraction of $\bw$ with $\psi \in V_\alpha^*$
-in the $\alpha$-direction.
-
-\subsection*{Derivation of the kinematic system}
-
-By the tangent space identification
-(Proposition~\ref{prop:tangent_space}), any velocity
-$\dot{\bv}_r(t) \in \ZD{\bv_r(t)}$ can be written uniquely as
-\begin{equation}
-\label{eq:DF:tangent_decomp}
+\begin{remark}[Kinematic equations]
+\label{rem:kinematic}
+In local chart coordinates $(L_\alpha, C^{(D)})$ at $\bv_r(t)$,
+the reduced ODE~\eqref{eq:DF_tucker} takes the form of a system
+of coupled equations for the subspace parameters $L_\alpha(t)$ and
+the core tensor $C^{(D)}(t)$. The tangent formula~\eqref{eq:tangent_formula}
+makes this explicit:
+\begin{equation*}
     \dot{\bv}_r(t)
-    = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)}(t)
-      \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}(t)
-    + \sum_{\alpha \in D} \sum_{i_\alpha=1}^{r_\alpha}
-      \dot{u}^{(\alpha)}_{i_\alpha}(t) \otimes \bU^{(\alpha)}_{i_\alpha}(t),
-\end{equation}
-where $\dot{u}^{(\alpha)}_{i_\alpha}(t) \in \Wmin{\alpha}{\bv_r(t)}$
-(the complement of $\Umin{\alpha}{\bv_r(t)}$ in $V_\alpha$).
-
-The Dirac--Frenkel condition
-(Theorem~\ref{thm:metric_projection}(a)$\Leftrightarrow$(c)):
-\begin{equation}
-\label{eq:DF:variational_banach}
-    \bigl\langle \xi,\;
-    J\bigl(\bF(t,\bv_r(t)) - \dot{\bv}_r(t)\bigr)
-    \bigr\rangle = 0
-    \quad \text{for all } \xi \in \ZD{\bv_r(t)},
-\end{equation}
-must hold for all basis elements of $\ZD{\bv_r(t)}$. Testing
-against each type of basis element yields two families of equations.
-
-\medskip
-\noindent\textbf{Equations for the core tensor.}
-
-Testing~\eqref{eq:DF:variational_banach} against
-$\xi = \bigotimes_\alpha u^{(\alpha)}_{j_\alpha}(t)$ (the core basis
-elements) gives, for each multi-index $(j_\alpha)_{\alpha \in D}$:
-\begin{equation}
-\label{eq:DF:core_eq}
-    \dot{C}^{(D)}_{(j_\alpha)}(t)
-    = \bigl\langle
-        \bigotimes_\alpha u^{(\alpha)}_{j_\alpha}(t),\;
-        J\bigl(\bF(t,\bv_r(t))\bigr)
-      \bigr\rangle
-    - \sum_\alpha \sum_{i_\alpha}
-      \bigl\langle
-        \bU^{(\alpha)}_{i_\alpha}(t) \otimes
-        u^{(\alpha)}_{j_\alpha}(t),\;
-        J(\dot{u}^{(\alpha)}_{i_\alpha}(t))
-      \bigr\rangle
-      C^{(D)}_{\ldots i_\alpha \ldots}(t),
-\end{equation}
-where $J: \VDnorm \to (\VDnorm)^*$ is the duality mapping. In a
-Hilbert space (where $J$ is the Riesz isomorphism and
-$\langle \cdot, J(\cdot)\rangle = \langle \cdot, \cdot\rangle$),
-this reduces to
-\begin{equation}
-\label{eq:DF:core_hilbert}
-    \dot{C}^{(D)}_{(j_\alpha)}(t)
-    = \bigl\langle
-        \bF(t,\bv_r(t)),\;
-        \bigotimes_\alpha u^{(\alpha)}_{j_\alpha}(t)
-      \bigr\rangle_D
-    - \sum_\alpha \sum_{i_\alpha}
-      \langle \dot{u}^{(\alpha)}_{i_\alpha}, u^{(\alpha)}_{j_\alpha}\rangle_\alpha
-      \, C^{(D)}_{\ldots i_\alpha \ldots}(t).
-\end{equation}
-
-\medskip
-\noindent\textbf{Equations for the basis vectors.}
-
-Testing~\eqref{eq:DF:variational_banach} against
-$\xi = w \otimes \bU^{(\alpha)}_{j_\alpha}(t)$ for each
-$\alpha \in D$, $j_\alpha \in \{1,\ldots,r_\alpha\}$, and
-$w \in \Wmin{\alpha}{\bv_r(t)}$ gives:
-\begin{equation}
-\label{eq:DF:basis_eq}
-    \bigl\langle
-        w \otimes \bU^{(\alpha)}_{j_\alpha}(t),\;
-        J\bigl(\bF(t,\bv_r(t)) - \dot{\bv}_r(t)\bigr)
-    \bigr\rangle = 0
-    \quad \forall\, w \in \Wmin{\alpha}{\bv_r(t)}.
-\end{equation}
-This can be rewritten, using the tensor product structure and the
-mean-field matrix~\eqref{eq:DF:meanfield}, as:
-\begin{equation}
-\label{eq:DF:basis_explicit}
-    P^{(\alpha)}_{W}(t)\,
-    \Bigl[
-        \sum_{j_\alpha} F^{(\alpha)}_{j_\alpha \cdot}(t)\,
-        u^{(\alpha)}_{j_\alpha}(t)
-        - \sum_{j_\alpha} M^{(\alpha)}_{j_\alpha \cdot}(t)\,
-        \dot{u}^{(\alpha)}_{j_\alpha}(t)
-    \Bigr] = 0,
-\end{equation}
-where $P^{(\alpha)}_W(t) = \Proj{\Wmin{\alpha}{\bv_r(t)}}{\Umin{\alpha}{\bv_r(t)}}$
-is the projection onto the complement, and
-$M^{(\alpha)}_{ij}(t) \coloneqq
-\langle \bU^{(\alpha)}_i(t), \bU^{(\alpha)}_j(t)\rangle_{[\alpha]}$
-is the \emph{mass matrix} (the Gram matrix of the $\bU^{(\alpha)}_{i_\alpha}$ vectors).
-
-\begin{remark}[Gauge freedom and the MCTDH constraint]
-\label{rem:gauge}
-The kinematic equations~\eqref{eq:DF:core_eq}
-and~\eqref{eq:DF:basis_explicit} are underdetermined: one can add
-to $\dot{u}^{(\alpha)}_{i_\alpha}$ any vector in $\Umin{\alpha}{\bv_r(t)}$
-without changing $\dot{\bv}_r(t)$ (since such a change stays within
-the core subspace and is absorbed by $\dot{C}^{(D)}$). This is the
-\emph{gauge freedom} of the Tucker format
-(Remark~\ref{rem:gauge_freedom} in Chapter~\ref{chap:algTBT}).
-
-The standard choice to remove this degeneracy is the
-\emph{tangential constraint}:
-\begin{equation}
-\label{eq:DF:tangential}
-    \langle \dot{u}^{(\alpha)}_{i_\alpha}(t),
-    u^{(\alpha)}_{j_\alpha}(t) \rangle_\alpha = 0
-    \quad \text{for all } i_\alpha, j_\alpha \in \{1,\ldots,r_\alpha\},
-    \; \alpha \in D,
-\end{equation}
-which forces $\dot{u}^{(\alpha)}_{i_\alpha}(t) \in
-\Wmin{\alpha}{\bv_r(t)}$ (orthogonal to the current subspace).
-In the Hilbert case, this is the MCTDH tangential constraint
-of~\cite{KochLubich2007}.
-\end{remark}
-
-\subsection*{The kinematic system in the Hilbert case}
-
-In a Hilbert tensor space $\VDnorm = \bigotimes_j H_j$ with
-orthonormal bases $\{u^{(\alpha)}_{i_\alpha}(t)\}$, imposing the
-tangential constraint~\eqref{eq:DF:tangential} gives the closed system:
-
-\begin{subequations}
-\label{eq:DF:MCTDH}
-\begin{align}
-    \dot{C}^{(D)}_{(j_\alpha)}(t)
-    &= \bigl\langle \bF(t,\bv_r(t)),
-       \bigotimes_\alpha u^{(\alpha)}_{j_\alpha}(t)\bigr\rangle_D,
-    \label{eq:DF:MCTDH_core}\\[4pt]
-    \dot{u}^{(\alpha)}_{j_\alpha}(t)
-    &= P^{(\alpha)}_W(t)
-       \bigl[M^{(\alpha)}(t)^{-1}\bigr]_{j_\alpha \cdot}
-       \sum_{i_\alpha} F^{(\alpha)}_{i_\alpha \cdot}(t)\,
-       u^{(\alpha)}_{i_\alpha}(t),
-    \label{eq:DF:MCTDH_basis}
-\end{align}
-\end{subequations}
-where
-\begin{equation}
-\label{eq:DF:mean_field_hilbert}
-    F^{(\alpha)}_{i_\alpha j_\alpha}(t)
-    = \bigl\langle \bU^{(\alpha)}_{i_\alpha}(t),
-        (\Id{\alpha} \otimes
-        \langle u^{(\alpha)}_{j_\alpha}(t), \cdot\rangle_\alpha)
-        \bF(t,\bv_r(t))
-    \bigr\rangle_{[\alpha]}.
-\end{equation}
-
-\begin{remark}[Connection to MCTDH]
-\label{rem:MCTDH_connection}
-Equations~\eqref{eq:DF:MCTDH} are precisely the
-\emph{Multi-Configuration Time-Dependent Hartree} (MCTDH) equations
-of~\cite{KochLubich2007}, generalised from the rank-one case
-$\fr = \mathbf{1}$ to arbitrary Tucker rank $\fr$.
-For $\fr = \mathbf{1}$ (Hartree manifold, Example~\ref{ex:hartree}):
-\begin{itemize}
-\item The core reduces to a scalar $C^{(D)}(t) = \lambda(t) \in \RR^*$,
-    and~\eqref{eq:DF:MCTDH_core} gives
-    $\dot\lambda = \langle \bF, \bigotimes_\alpha v_\alpha\rangle_D$.
-\item The mean-field matrix $F^{(\alpha)}$ reduces to a scalar
-    $F^{(\alpha)} = \langle \bu_0, (\Id\otimes\langle v_\alpha,\cdot\rangle)\bF\rangle$
-    (the standard mean-field force), and~\eqref{eq:DF:MCTDH_basis}
-    gives $\dot{v}_\alpha = \lambda^{-1} P_W^{(\alpha)} F^{(\alpha)}$,
-    recovering the classical Hartree equations.
-\end{itemize}
-\end{remark}
-
-\begin{remark}[Banach case: the duality mapping replaces the inner product]
-\label{rem:kinematic_banach}
-In a non-Hilbert Banach tensor space, the kinematic equations
-carry through with the duality mapping $J$ in place of the inner product.
-The core equation~\eqref{eq:DF:core_eq} involves $\langle \cdot, J(\cdot)\rangle$
-instead of $\langle\cdot,\cdot\rangle_D$. The basis equations involve the
-duality pairing between $V_\alpha$ and $V_\alpha^*$, which replaces the
-inner product. The mass matrix $M^{(\alpha)}$ must be replaced by the
-\emph{duality mass matrix}
-$M^{(\alpha)}_{ij}(t) \coloneqq \langle \bU^{(\alpha)}_i(t),
-J(\bU^{(\alpha)}_j(t))\rangle_{[\alpha]}$, which is still invertible
-(since the $\bU^{(\alpha)}_{i_\alpha}$ are linearly independent by
-Proposition~\ref{prop:tangent_space}) but no longer symmetric.
-The resulting system retains the same structure as~\eqref{eq:DF:MCTDH}
-but with all inner products replaced by duality pairings — this is
-the general Banach-space form of the MCTDH equations.
+    = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)} \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}
+    + \sum_\alpha \sum_{i_\alpha} \dot{u}^{(\alpha)}_{i_\alpha}
+      \otimes \bU^{(\alpha)}_{i_\alpha}.
+\end{equation*}
+The Dirac--Frenkel condition~\eqref{eq:DF_tucker_char} then yields
+coupled evolution equations for the basis vectors
+$u^{(\alpha)}_{i_\alpha}(t) \in V_\alpha$ and the core tensor
+$C^{(D)}(t)$, which generalise the MCTDH equations to arbitrary
+Tucker ranks in Banach spaces.
 \end{remark}
 
 \subsection*{The Hartree manifold}
@@ -558,116 +330,205 @@ Ceruti, Lubich, and Walach~\cite{CerutiLubichWalach2020}.
 \end{remark}
 
 %------------------------------------------------------------
-\section{Kinematic equations for tree-based formats}
-\label{sec:DF:kinematic_TBT}
+\section{Worked examples}
+\label{sec:DF:examples}
 %------------------------------------------------------------
 
-The derivation of the kinematic system extends naturally to tree-based
-formats via the intersection structure of the tangent space.
+This section illustrates the Dirac--Frenkel principle through two
+concrete problems: a linear diffusion equation and a bipartite quantum
+system. Both examples show explicitly how the abstract ODE on
+$\Tucker{\fr}{\VD}$ reduces to a finite system of ODEs.
 
-\subsection*{Parametrisation of the tangent space}
+\subsection*{Example 1: The heat equation on $L^2([0,1]^2)$}
 
-For $\bv_r(t) \in \FTv$, the tangent space is
-$\bigcap_{k=1}^{\dep{\TD}} \ZD[\PkT{k}{\TD}]{\bv_r(t)}$
-(Proposition~\ref{prop:TBT_tangent}). A natural parametrisation
-is provided by the tree-based chart coordinates:
-\begin{itemize}
-\item For each leaf $j \in \Leaves$: a basis
-    $\{u^{(j)}_{i_j}(t)\}_{i_j=1}^{r_j}$ of $\Umin{j}{\bv_r(t)}$.
-\item For each internal vertex $\alpha \in \TD \setminus (\{D\} \cup \Leaves)$:
-    a basis $\{U^{(\alpha)}_{i_\alpha}(t)\}_{i_\alpha=1}^{r_\alpha}$
-    of $\Umin{\alpha}{\bv_r(t)} \subset \bigotimes_{\beta \in \Sons{\alpha}}
-    \Umin{\beta}{\bv_r(t)}$.
-\item The transfer tensors $C^{(\alpha)}(t)$ at each internal vertex,
-    encoding the coefficients of $\Umin{\alpha}{\bv_r(t)}$ in
-    $\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv_r(t)}$.
-\end{itemize}
-
-A tangent vector $\dot{\bv}_r(t) \in \bigcap_k \ZD[\PkT{k}]{\bv_r(t)}$
-decomposes at each level $k$ according to
-Proposition~\ref{prop:tangent_space}:
+\begin{example}[Low-rank dynamics for the heat equation]
+\label{ex:DF:heat}
+Let $\VDnorm = L^2([0,1]^2)$ with $V_1 = V_2 = L^2([0,1])$ and
+the Hilbert tensor norm. Consider the heat equation
 \begin{equation}
-\label{eq:DF:TBT_tangent_decomp}
-    \dot{\bv}_r(t)
-    = \sum_{\alpha \in \PkT{k}{\TD}} \sum_{(i_\alpha)}
-      \dot{C}^{(\alpha)}_{(i_\alpha)}(t)
-      \bigotimes_{\alpha \in \PkT{k}{\TD}} u^{(\alpha)}_{i_\alpha}(t)
-    + \sum_{\alpha \in \PkT{k}{\TD}} \sum_{i_\alpha}
-      \dot{u}^{(\alpha)}_{i_\alpha}(t) \otimes
-      \bU^{(\alpha)}_{i_\alpha}(t),
+\label{eq:DF:heat}
+    \partial_t u(x_1,x_2,t) = \Delta u(x_1,x_2,t),
+    \quad (x_1,x_2) \in [0,1]^2,\quad t > 0,
 \end{equation}
-where the decomposition is independent of the level $k$ by
-Proposition~\ref{prop:laplacian_exp}.
+with homogeneous Dirichlet boundary conditions and initial condition
+$u(\cdot,\cdot,0) = u_0 \in \Tucker{(r,r)}{L^2([0,1]^2)}$.
+The vector field is $\bF(\bv) = \Delta \bv$, where
+$\Delta = \partial_{x_1}^2 + \partial_{x_2}^2$.
 
-\subsection*{The kinematic system}
+\paragraph{Tucker rank evolution.}
+The exact solution $u(t) = e^{t\Delta}u_0$ preserves the Tucker rank
+$(r,r)$ when the Laplacian acts separately on each factor. More
+precisely, writing $u_0 = \sum_{k=1}^r \lambda_k \phi_k \otimes \psi_k$
+in Tucker format, the exact solution is
+\begin{equation*}
+    u(t) = \sum_{k=1}^r
+    \sum_{j=1}^r \lambda_k
+    \langle e^{t\partial_{x_1}^2}\phi_k,\, e_j\rangle
+    \langle e^{t\partial_{x_2}^2}\psi_k,\, f_j\rangle
+    e_j \otimes f_j,
+\end{equation*}
+where $\{e_j\}$ and $\{f_j\}$ are eigenbases of $\partial_{x_1}^2$
+and $\partial_{x_2}^2$. This shows that the Tucker rank of $u(t)$ can
+grow to $r^2$ in finite time, even if $u_0$ has rank $r$. The
+Dirac--Frenkel principle projects this growth back onto the manifold
+$\Tucker{(r,r)}{L^2}$, keeping the rank fixed.
 
-The Dirac--Frenkel condition~\eqref{eq:DF:variational_banach} tested
-against basis elements of $\bigcap_k \ZD[\PkT{k}]{\bv_r(t)}$ yields
-a system indexed by the tree structure.
-
-\medskip
-\noindent\textbf{Equations for the root transfer tensor.}
-Testing against $\xi = \bigotimes_{\alpha \in \PkT{1}{\TD}}
-u^{(\alpha)}_{j_\alpha}(t)$ (for each multi-index
-$(j_\alpha)_{\alpha \in \PkT{1}{\TD}}$):
+\paragraph{Kinematic equations in the eigenbasis.}
+Choose $u^{(1)}_{i}(t) = e_{\sigma_1(i)}$ and $u^{(2)}_j(t) =
+f_{\sigma_2(j)}$ as (time-independent) eigenbases of the respective
+Laplacians, with $-\partial_{x_\alpha}^2 e_k = \mu_k^{(\alpha)} e_k$,
+$\mu_k^{(\alpha)} = k^2\pi^2$. The core tensor $C^{(D)}(t)
+\in \RR^{r \times r}_*$ then satisfies, by~\eqref{eq:DF:MCTDH_core}
+(gauge condition: fixed basis, so $\dot{u}^{(\alpha)} = 0$):
 \begin{equation}
-\label{eq:DF:TBT_root}
-    \dot{C}^{(D)}_{(j_\alpha)}(t)
-    = \bigl\langle
-        \bigotimes_{\alpha \in \PkT{1}{\TD}} u^{(\alpha)}_{j_\alpha}(t),\;
-        J\bigl(\bF(t,\bv_r(t))\bigr)
-    \bigr\rangle
-    + \text{(gauge correction terms)}.
+\label{eq:DF:heat_core}
+    \dot{C}^{(D)}_{ij}(t)
+    = \langle \Delta(C^{(D)}(t) \cdot e \otimes f),\, e_i \otimes f_j\rangle
+    = -(\mu_i^{(1)} + \mu_j^{(2)})\, C^{(D)}_{ij}(t),
 \end{equation}
+giving $C^{(D)}_{ij}(t) = C^{(D)}_{ij}(0)\, e^{-(\mu_i^{(1)}
++ \mu_j^{(2)})t}$.
 
-\noindent\textbf{Equations for the internal transfer tensors.}
-For each internal vertex $\alpha \in \TD \setminus (\{D\} \cup \Leaves)$,
-testing against $\xi = w^{(\alpha)} \otimes \bU^{(\alpha)}_{j_\alpha}(t)$
-with $w^{(\alpha)} \in \Wmin{\alpha}{\bv_r(t)}$:
-\begin{equation}
-\label{eq:DF:TBT_internal}
-    P^{(\alpha)}_W(t)
-    \Bigl[
-        \sum_{i_\alpha} F^{(\alpha)}_{i_\alpha j_\alpha}(t)\,
-        U^{(\alpha)}_{i_\alpha}(t)
-        - M^{(\alpha)}(t)\, \dot{U}^{(\alpha)}_{j_\alpha}(t)
-    \Bigr] = 0,
-\end{equation}
-where $F^{(\alpha)}_{i_\alpha j_\alpha}(t)$ is the mean-field matrix
-at the $\alpha$-level (defined analogously to~\eqref{eq:DF:meanfield}),
-and $M^{(\alpha)}(t)$ is the mass matrix of the $\bU^{(\alpha)}_{i_\alpha}$.
+\paragraph{Comparison with the exact solution.}
+The projected solution is $\bv_r(t) = \sum_{i,j=1}^r C^{(D)}_{ij}(t)
+e_i \otimes f_j$. The exact solution in the same eigenbasis has
+components $u_{ij}(t) = u_{ij}(0)\, e^{-(\mu_i^{(1)}+\mu_j^{(2)})t}$
+for all $i,j \geq 1$. Since the initial condition $u_0$ has Tucker
+rank $r$, we have $u_{ij}(0) = 0$ for $\max(i,j) > r$, so the
+projected and exact solutions agree: $\bv_r(t) = u(t)$ for all $t > 0$.
 
-\noindent\textbf{Equations for the leaf basis vectors.}
-For each leaf $j \in \Leaves$ and $\dot{u}^{(j)}_{i_j}(t) \in
-\Wmin{j}{\bv_r(t)}$, the equation has the same form
-as~\eqref{eq:DF:basis_explicit}.
-
-\begin{remark}[Recursive structure and the projector-splitting integrator]
-\label{rem:TBT_kinematic_recursive}
-The kinematic system~\eqref{eq:DF:TBT_root}--\eqref{eq:DF:TBT_internal}
-has a recursive structure matching the tree $\TD$: the equation at each
-internal vertex $\alpha$ involves only the transfer tensors of $\alpha$
-and its children $\Sons{\alpha}$. This recursive structure is precisely
-what the \emph{projector-splitting integrator}
-of~\cite{CerutiLubichWalach2020} exploits: it solves the kinematic
-system level by level, from the root down to the leaves (forward sweep)
-and back (backward sweep), at cost $O(\dep{\TD} \cdot dr^3)$ per
-time step.
-
-For the TT format ($\TD = \TDtt$, $\dep{\TD} = d-1$), the system
-reduces to $d$ coupled equations — one per bond — each involving only
-adjacent components. This is the TT version of the projector-splitting
-integrator of~\cite{LubichOseledetsVandereycken2015}:
-\begin{equation}
-\label{eq:DF:TT_splitting}
-    \dot{C}^{(k)}(t)
-    = P^{(k)}_W(t)\bigl[M^{(k)}(t)^{-1}
-      F^{(k)}(t)\bigr],
-    \quad k = 1, \ldots, d,
-\end{equation}
-where $C^{(k)}(t)$ is the $k$-th TT component and $F^{(k)}(t)$
-is the mean-field force from the left and right environments.
+\begin{remark}
+This agrees with the general principle: when the ambient vector field
+$\bF$ is \emph{tangential} to $\Tucker{\fr}{\VD}$ (i.e., $\bF(\bv)
+\in \ZD{\bv}$ for all $\bv \in \Tucker{\fr}{\VD}$), the Dirac--Frenkel
+projected solution equals the exact solution. For the heat equation
+with a product Laplacian, this holds when the initial condition has
+Tucker rank $\leq r$ and the eigenbasis is fixed: the vector field
+$\Delta\bv = (\partial_{x_1}^2 + \partial_{x_2}^2)\bv$ stays in the
+tangent space since both $\partial_{x_\alpha}^2$ act separately on the
+$\alpha$-factor.
 \end{remark}
+
+\paragraph{Non-trivial projection: non-product Laplacian.}
+A more instructive example is the operator with a coupling term:
+$\bF(\bv) = \Delta \bv + \varepsilon\, (x_1 x_2)\, \bv$ for
+$\varepsilon > 0$. The multiplication operator $x_1 x_2$ has the effect
+of coupling all modes and increases the Tucker rank of $\bF(\bv)$
+beyond $r$. The Dirac--Frenkel projection then gives non-trivial
+kinematic equations: both the core $C^{(D)}(t)$ and the basis vectors
+$u^{(\alpha)}_i(t)$ evolve, with the mean-field matrices
+$F^{(\alpha)}_{ij}(t)$ encoding the effect of the coupling.
+\end{example}
+
+\subsection*{Example 2: Time-dependent Schrödinger equation for a
+bipartite quantum system}
+
+\begin{example}[Two-body Schrödinger equation and entanglement]
+\label{ex:DF:schrodinger}
+Let $H_1 = H_2 = L^2(\RR^3)$ and $\VDnorm = H_1 \otimes_H H_2
+= L^2(\RR^6)$. Consider the time-dependent Schrödinger equation
+for a two-particle quantum system:
+\begin{equation}
+\label{eq:DF:schrodinger}
+    i\,\partial_t \psi(x_1, x_2, t)
+    = \mathcal{H}\,\psi(x_1, x_2, t),
+\end{equation}
+where $\mathcal{H}$ is the Hamiltonian operator
+\begin{equation}
+\label{eq:DF:hamiltonian}
+    \mathcal{H} = \mathcal{H}_1 \otimes I + I \otimes \mathcal{H}_2
+    + V_{12}(x_1, x_2),
+\end{equation}
+with $\mathcal{H}_\alpha = -\tfrac{1}{2}\Delta_{x_\alpha} + V_\alpha(x_\alpha)$
+the single-particle Hamiltonians and $V_{12}$ the interaction potential.
+
+\paragraph{The vector field.}
+The vector field is $\bF(\bv) = -i\mathcal{H}\bv$, which is a
+(possibly unbounded) skew-adjoint operator on $L^2(\RR^6)$. In the
+Hilbert-space setting of this example, the metric projection
+$\Pmetric{\bv_r(t)}$ is the orthogonal projection onto $\ZD{\bv_r(t)}$
+(Hilbert-space Dirac--Frenkel, equation~\eqref{eq:DF:hilbert}).
+
+\paragraph{Tucker rank $r=1$: the Hartree approximation.}
+For $\fr = (1,1)$, the Tucker manifold $\Tucker{(1,1)}{L^2(\RR^6)}$
+consists of product states $\psi = \phi_1 \otimes \phi_2$ with
+$\phi_\alpha \in H_\alpha$. The kinematic equations~\eqref{eq:DF:MCTDH}
+reduce to:
+\begin{subequations}
+\label{eq:DF:hartree}
+\begin{align}
+    i\,\dot\phi_1(t) &= \mathcal{H}_1 \phi_1(t)
+    + \langle \phi_2(t), V_{12}\,\phi_2(t)\rangle_{H_2}\,\phi_1(t),
+    \label{eq:DF:hartree1}\\
+    i\,\dot\phi_2(t) &= \mathcal{H}_2 \phi_2(t)
+    + \langle \phi_1(t), V_{12}\,\phi_1(t)\rangle_{H_1}\,\phi_2(t),
+    \label{eq:DF:hartree2}
+\end{align}
+\end{subequations}
+where $\langle \phi_\alpha, V_{12}\,\phi_\alpha\rangle_{H_\alpha}$
+denotes the \emph{mean-field potential}: the average of $V_{12}$ with
+respect to the state of the other particle. These are exactly the
+time-dependent Hartree equations of~\cite{Lubich2008}.
+
+\paragraph{Tucker rank $r \geq 2$: the MCTDH equations.}
+For $\fr = (r,r)$ with $r \geq 2$, the Tucker manifold
+$\Tucker{(r,r)}{L^2(\RR^6)}$ consists of two-body states with Schmidt
+rank $\leq r$, which by Theorem~\ref{thm:qs:minimal_partial_trace}
+(Chapter~\ref{chap:quantum_states}) are exactly the states with
+entanglement entropy $S \leq \log r$. The kinematic
+equations~\eqref{eq:DF:MCTDH} give:
+
+\emph{Core equation}~\eqref{eq:DF:MCTDH_core}:
+\begin{equation}
+\label{eq:DF:mctdh_core}
+    i\,\dot{C}^{(D)}_{ij}(t)
+    = \sum_{k,l=1}^r \langle u^{(1)}_k(t) \otimes u^{(2)}_l(t),\,
+    V_{12}\, u^{(1)}_i(t) \otimes u^{(2)}_j(t)\rangle\,
+    C^{(D)}_{kl}(t)
+    + (\mu_i^{(1)} + \mu_j^{(2)})\,C^{(D)}_{ij}(t),
+\end{equation}
+where $\mathcal{H}_\alpha u^{(\alpha)}_i = \mu_i^{(\alpha)}
+u^{(\alpha)}_i$ (eigenvalue equation for the single-particle
+Hamiltonians; in practice one uses instantaneous eigenstates).
+
+\emph{Basis equations}~\eqref{eq:DF:MCTDH_basis}: for each $\alpha \in
+\{1,2\}$ and $j = 1,\ldots,r$,
+\begin{equation}
+\label{eq:DF:mctdh_basis}
+    i\,\dot{u}^{(\alpha)}_j(t)
+    = \mathcal{H}_\alpha u^{(\alpha)}_j(t)
+    + P^{(\alpha)}_W(t)
+    \bigl[M^{(\alpha)}(t)^{-1}\bigr]_{j\cdot}
+    \sum_{k=1}^r F^{(\alpha)}_{k\cdot}(t)\,
+    u^{(\alpha)}_k(t),
+\end{equation}
+where $F^{(\alpha)}_{ij}(t) = \langle \bU^{(\alpha)}_i(t),
+V_{12} u^{(\alpha)}_j(t) \otimes \bU^{(\alpha)}_i(t) \rangle$
+is the mean-field matrix at rank $r$, and $P^{(\alpha)}_W(t)$
+projects onto the orthogonal complement of $\Umin{\alpha}{\bv_r(t)}$.
+
+\paragraph{Entanglement and rank.}
+The Tucker rank $r$ controls the entanglement of the approximate
+solution: $\bv_r(t) \in \Tucker{(r,r)}{L^2(\RR^6)}$ implies
+$S_1(\bv_r(t)) \leq \log r$ (Remark~\ref{rem:qs:tucker_entanglement}
+in Chapter~\ref{chap:quantum_states}). The Dirac--Frenkel projection
+\emph{enforces} this bound throughout the evolution: the entanglement
+entropy of the projected solution cannot exceed $\log r$ at any time.
+This is the Banach-space analogue of the entanglement barrier in tensor
+network simulations, and it gives a rigorous meaning to the informal
+statement that ``MCTDH captures up to $r$ entangled modes''.
+
+\paragraph{Comparison: Banach vs.\ Hilbert case.}
+If one replaces $L^2(\RR^3)$ by $W^{1,p}(\RR^3)$ with $p \neq 2$
+(relevant for relativistic corrections or $p$-Laplacian models),
+the inner product is no longer available and the Hilbert-space projection
+must be replaced by the metric projection $\Pmetric{\bv_r(t)}$ of
+Definition~\ref{def:metric_projection}. The kinematic equations retain
+the same form~\eqref{eq:DF:MCTDH_core}--\eqref{eq:DF:MCTDH_basis}
+but with $\langle \cdot, \cdot\rangle$ replaced by the duality pairing
+$\langle \cdot, J(\cdot)\rangle$ and the mass matrix replaced by the
+duality mass matrix of Remark~\ref{rem:kinematic_banach}.
+\end{example}
 
 %------------------------------------------------------------
 \section{Historical notes}

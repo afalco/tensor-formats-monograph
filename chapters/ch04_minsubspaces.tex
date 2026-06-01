@@ -15,11 +15,8 @@
 In Chapter~\ref{chap:algtensor} we introduced the Tucker format and
 defined the minimal subspace $\Umin{\alpha}{\bv}$ informally, taking
 its existence and properties for granted. This chapter provides the
-complete theory: a discussion of reflexivity and why it is the right
-hypothesis for best-approximation problems
-(Section~\ref{sec:min:reflexivity}), existence and uniqueness of
-minimal subspaces (Section~\ref{sec:min:existence}), the lattice
-structure and inclusion under refinement of partitions
+complete theory: existence and uniqueness (Section~\ref{sec:min:existence}),
+the lattice structure and inclusion under refinement of partitions
 (Section~\ref{sec:min:lattice}), admissible ranks and the disjoint
 decomposition of $\VD$ (Section~\ref{sec:min:admissible}), and the
 existence of best approximations in Banach tensor spaces
@@ -28,207 +25,11 @@ taken from~\cite{FH2012}, expanded with complete proofs and additional
 examples.
 
 %------------------------------------------------------------
-\section{Reflexivity and best approximations}
-\label{sec:min:reflexivity}
-%------------------------------------------------------------
-
-The main existence result of this chapter
-(Theorem~\ref{thm:best_approx_tucker}) requires the ambient Banach
-tensor space $\VDnorm$ to be \emph{reflexive}. This section explains
-why reflexivity is the right hypothesis, states the key characterisation
-theorem of James, and verifies reflexivity for the tensor spaces that
-arise in applications.
-
-\subsection*{Why reflexivity?}
-
-The standard strategy for proving existence of best approximations in
-a non-convex set $A \subset X$ is:
-\begin{enumerate}
-\item[(i)] take a minimising sequence $(\bv_n) \subset A$,
-    $\|\bu - \bv_n\| \to \inf_{\bv \in A} \|\bu - \bv\|$;
-\item[(ii)] extract a convergent subsequence;
-\item[(iii)] show the limit belongs to $A$.
-\end{enumerate}
-In step~(ii), norm convergence cannot be guaranteed (the set $A =
-\Tucker{\leq\fr}{\VD}$ is not compact for infinite-dimensional $V_\alpha$).
-The substitute is \emph{weak} convergence: in a reflexive Banach space,
-every bounded sequence has a weakly convergent subsequence
-(Eberlein--Šmulian theorem). The norm is then weakly lower
-semicontinuous, so step~(ii)--(iii) go through provided $A$ is weakly
-closed. Theorem~\ref{thm:weak_closed} establishes exactly this
-for $A = \Tucker{\leq\fr}{\VD}$ under condition \condINJ.
-
-Reflexivity is not merely a technical convenience: it is also
-\emph{necessary} for certain best-approximation properties, as
-expressed by the following classical result.
-
-\begin{theorem}[James, \cite{James1957}]
-\label{thm:james}
-A Banach space $X$ is reflexive if and only if every bounded linear
-functional $f \in \dual{X}$ attains its norm on the closed unit ball
-$B_X = \{x \in X : \|x\| \leq 1\}$, i.e., there exists $x_f \in B_X$
-such that $f(x_f) = \|f\|_{\dual{X}}$.
-\end{theorem}
-
-\begin{proof}
-The ``only if'' direction follows from the Krein--Milman theorem:
-in a reflexive space $B_X$ is weakly compact, and every continuous
-linear functional on a weakly compact convex set attains its supremum.
-For the ``if'' direction --- that norm-attainment of all functionals
-forces reflexivity --- we refer to the original argument
-of~\cite{James1957}, which uses a subtle diagonal construction. A
-streamlined proof can be found in~\cite{Megginson1998}.
-\end{proof}
-
-\begin{remark}[James's theorem and tensor approximation]
-\label{rem:james_tensor}
-James's theorem has a direct bearing on tensor approximation: if
-$\VDnorm$ is not reflexive, there exists a linear functional
-$F \in (\VDnorm)^*$ that does not attain its norm. By duality, one
-can construct a tensor $\bu \in \VDnorm$ whose best approximation
-from a rank-one slice $\{v \otimes \bw : v \in V_\alpha,\,
-\bw \in \Vbigalpha^{[\alpha]}\}$ does not exist — the infimum is
-not achieved. For example, in $L^1([0,1]) \otimes L^1([0,1])$
-(which is not reflexive), best rank-$r$ approximations may fail to
-exist even for simple target functions. This is why
-Theorem~\ref{thm:best_approx_tucker} requires reflexivity.
-\end{remark}
-
-\subsection*{Characterisations and stability of reflexivity}
-
-\begin{proposition}[Stability of reflexivity]
-\label{prop:reflexivity_stability}
-The class of reflexive Banach spaces is stable under:
-\begin{enumerate}
-\item[\textup{(i)}] Closed subspaces: every closed subspace of a
-    reflexive space is reflexive.
-\item[\textup{(ii)}] Quotients: every quotient of a reflexive space
-    by a closed subspace is reflexive.
-\item[\textup{(iii)}] Finite direct sums: $X \oplus Y$ is reflexive
-    if and only if both $X$ and $Y$ are reflexive.
-\item[\textup{(iv)}] Isomorphisms: reflexivity is preserved under
-    bounded linear isomorphisms.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-Statements~(i)--(iv) are classical; see~\cite[Theorem~1.11.17]{Megginson1998}.
-Property~(i) will be used in Chapter~\ref{chap:DF}: the tangent spaces
-$\ZD{\bv}$, being closed subspaces of the reflexive space $\VDnorm$,
-are themselves reflexive, ensuring that the metric projection onto
-$\ZD{\bv}$ exists.
-\end{proof}
-
-\subsection*{Reflexivity of tensor product spaces}
-
-The key question for applications is whether the ambient tensor space
-$\VDnorm$ is reflexive when the component spaces $V_\alpha$ are.
-
-\begin{proposition}[Reflexivity of tensor products]
-\label{prop:reflexivity_tensor}
-Let $(V_\alpha, \|\cdot\|_\alpha)$ be Banach spaces for $\alpha \in D$
-and let $\|\cdot\|_D$ be a reasonable crossnorm on $\VD$.
-\begin{enumerate}
-\item[\textup{(i)}] If all $V_\alpha$ are Hilbert spaces and
-    $\|\cdot\|_D$ is the Hilbert tensor norm, then $\VDnorm$ is a
-    Hilbert space and hence reflexive.
-\item[\textup{(ii)}] If all $V_\alpha = L^p(I_\alpha)$ with
-    $1 < p < \infty$ and $\|\cdot\|_D = \|\cdot\|_{L^p}$, then
-    $\VDnorm \cong L^p(\prod_\alpha I_\alpha)$ is reflexive.
-\item[\textup{(iii)}] If all $V_\alpha$ are reflexive and $\|\cdot\|_D$
-    is the \emph{projective norm} $\|\cdot\|_\pi$, then $\VDnorm$ is
-    in general \emph{not} reflexive, even for $d=2$ and
-    $V_1 = V_2 = \ell^2$.
-\end{enumerate}
-\end{proposition}
-
-\begin{proof}
-Part~(i) follows because the Hilbert tensor norm makes $\VDnorm$ a
-Hilbert space (completion of the algebraic tensor product under the
-inner product $\langle \bigotimes u_\alpha, \bigotimes v_\alpha\rangle
-= \prod_\alpha \langle u_\alpha, v_\alpha\rangle_\alpha$).
-Part~(ii) follows from the Fubini isomorphism
-$L^p(I_1) \otimes \cdots \otimes L^p(I_d) \cong L^p(\prod I_\alpha)$
-and the reflexivity of $L^p$ for $1 < p < \infty$.
-For part~(iii): $\ell^2 \otimes_\pi \ell^2$ contains an isomorphic
-copy of $\ell^1$ (via the trace-class operators), which is not
-reflexive; see~\cite[Example~2.19]{Ryan2002}.
-\end{proof}
-
-\begin{remark}[Which norm to choose?]
-\label{rem:reflexivity_norm_choice}
-Proposition~\ref{prop:reflexivity_tensor} shows that the choice of
-norm $\|\cdot\|_D$ on $\VD$ matters for reflexivity. For the purposes
-of this monograph, we work with norms satisfying \condINJ\ that also
-make $\VDnorm$ reflexive. The typical examples --- $L^p$ spaces with
-$1 < p < \infty$, Sobolev spaces $W^{k,p}$ with $1 < p < \infty$, and
-Hilbert spaces --- all fall into this category. The projective norm is
-excluded by Proposition~\ref{prop:reflexivity_tensor}(iii), and so
-are the endpoint cases $L^1$ and $L^\infty$.
-\end{remark}
-
-\subsection*{Dual characterisation of the injective norm}
-
-The injective norm condition \condINJ\ has a natural dual interpretation
-that will be used in the proof of Theorem~\ref{thm:weak_closed}.
-
-\begin{proposition}[Dual characterisation of $\|\cdot\|_\varepsilon$]
-\label{prop:injnorm_dual}
-For any $\bv \in \VD$:
-\begin{equation}
-\label{eq:injnorm_dual}
-    \|\bv\|_\varepsilon
-    = \sup\Bigl\{
-        \bigl|(\textstyle\bigotimes_{\alpha \in D}\varphi_\alpha)(\bv)\bigr|
-        :
-        \varphi_\alpha \in \dual{V_\alpha},\;
-        \|\varphi_\alpha\|_{\dual{V_\alpha}} \leq 1
-    \Bigr\}.
-\end{equation}
-In particular, if $\|\cdot\|_D$ satisfies \condINJ, then for any
-$\varphi_\alpha \in \dual{V_\alpha}$:
-\begin{equation}
-\label{eq:injnorm_dual_bound}
-    \|\varphi_1 \otimes \cdots \otimes \varphi_d\|_{(\VDnorm)^*}
-    \leq \prod_{\alpha \in D} \|\varphi_\alpha\|_{\dual{V_\alpha}}.
-\end{equation}
-\end{proposition}
-
-\begin{proof}
-Equation~\eqref{eq:injnorm_dual} is the definition of the injective
-norm. For~\eqref{eq:injnorm_dual_bound}: since
-$|(\bigotimes_\alpha \varphi_\alpha)(\bv)|
-\leq \|\bv\|_\varepsilon \cdot \prod_\alpha \|\varphi_\alpha\|$
-(from the definition) and $\|\bv\|_\varepsilon \leq \|\bv\|_D$
-(from \condINJ), we get
-$|(\bigotimes_\alpha \varphi_\alpha)(\bv)|
-\leq \prod_\alpha \|\varphi_\alpha\| \cdot \|\bv\|_D$,
-which is exactly~\eqref{eq:injnorm_dual_bound}.
-
-That $\|\bv\|_\varepsilon = 0$ implies $\bv = 0$ follows from the
-Hahn--Banach theorem: for any $\bv \neq 0$, by Corollary~\ref{cor:app:hb_separation}
-there exists a functional that separates $\bv$ from $0$, and this
-functional can be chosen as a tensor product of functionals
-(using the tensor product structure of $\VD$).
-\end{proof}
-
-\begin{remark}[Role of \condINJ\ in the proof of weak closedness]
-\label{rem:condINJ_role}
-Proposition~\ref{prop:injnorm_dual} is the precise reason why
-\condINJ\ appears as a hypothesis in Theorem~\ref{thm:weak_closed}:
-it ensures that the contraction operators $T_\varphi =
-\overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}$ are bounded on
-$\VDnorm$, which is needed for the weak continuity argument in
-Step~1 of the proof. Without \condINJ, the contraction operators
-need not extend to bounded operators on $\VDnorm$, and the weak
-convergence argument breaks down.
-\end{remark}
-%------------------------------------------------------------
-
-%------------------------------------------------------------
 \section{Existence and uniqueness of minimal subspaces}
 \label{sec:min:existence}
 %------------------------------------------------------------
+
+\subsection*{The case $d = 2$: Schmidt decomposition}
 
 The case of two factors $\VD = V_1 \atens V_2$ is classical and serves
 as the inductive base. The key observation is a lattice property of
@@ -661,54 +462,22 @@ $\|\cdot\|_D$ be a norm on $\VD$ satisfying condition \condINJ.
 Then the set $\Tucker{\leq\fr}{\VD}$ is weakly closed in $\VDnorm$.
 \end{theorem}
 
-\begin{proof}
+\begin{proof}[Sketch]
 Let $(\bv_n) \subset \Tucker{\leq\fr}{\VD}$ converge weakly to
-$\bv \in \VDnorm$. We must show $r_\alpha(\bv) \leq r_\alpha$ for
-all $\alpha \in D$.
+$\bv \in \VDnorm$. We must show $\bv \in \Tucker{\leq\fr}{\VD}$,
+i.e., $r_\alpha(\bv) \leq r_\alpha$ for all $\alpha \in D$.
 
-\medskip
-\noindent\textbf{Step 1: Weak continuity of contraction operators.}
-
-Fix $\alpha \in D$. For each $\varphi \in \dual{V_\alpha}$, the
-\emph{contraction operator}
-$T_\varphi \coloneqq \overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}:
-\VDnorm \to \Vbigalpha^{[\alpha]}$
-is bounded: for any $\psi \in \dual{(\Vbigalpha^{[\alpha]})}$,
-\begin{equation*}
-    |\langle T_\varphi(\bv), \psi\rangle|
-    = |(\varphi \otimes \psi)(\bv)|
-    \leq \|\varphi\|_{\dual{V_\alpha}}
-        \|\psi\|_{\dual{(\Vbigalpha^{[\alpha]})}}
-        \|\bv\|_D,
-\end{equation*}
-where the last inequality uses
-Proposition~\ref{prop:injnorm_dual}~\eqref{eq:injnorm_dual_bound}.
-Hence $T_\varphi$ is bounded with $\|T_\varphi\| \leq
-\|\varphi\|_{\dual{V_\alpha}}$, so weak convergence
-$\bv_n \rightharpoonup \bv$ implies
-$T_\varphi(\bv_n) \rightharpoonup T_\varphi(\bv)$ weakly in
-$\Vbigalpha^{[\alpha]}$ for all $\varphi \in \dual{V_\alpha}$.
-
-\medskip
-\noindent\textbf{Step 2: Rank is weakly lower semicontinuous.}
-
-By the contraction characterisation (Theorem~\ref{thm:min_contraction}),
-$\Umin{\alpha}{\bv_n} = \overline{\spann\{T_\varphi(\bv_n) : \varphi \in
-\dual{V_\alpha}\}}$ and $\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$.
-Suppose for contradiction that $\dim \Umin{\alpha}{\bv} > r_\alpha$.
-Then there exist $r_\alpha + 1$ linearly independent vectors
-$w_k = T_{\varphi_k}(\bv)$, $k = 1,\ldots, r_\alpha+1$, in
-$\Umin{\alpha}{\bv}$. Step 1 gives $T_{\varphi_k}(\bv_n) \rightharpoonup w_k$
-weakly. Since $T_{\varphi_k}(\bv_n) \in \Umin{\alpha}{\bv_n}$ and
-$\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$, the vectors
-$T_{\varphi_1}(\bv_n), \ldots, T_{\varphi_{r_\alpha+1}}(\bv_n)$
-are linearly dependent for each $n$. Linear dependence is preserved
-under weak limits (it is a closed algebraic condition), so $w_1,
-\ldots, w_{r_\alpha+1}$ are linearly dependent --- contradiction.
-Therefore $r_\alpha(\bv) \leq r_\alpha$.
-
-Since the argument holds for every $\alpha \in D$, we conclude
-$\bv \in \Tucker{\leq\fr}{\VDnorm}$.
+Fix $\alpha \in D$ and consider the $\alpha$-unfolding map
+$\Mmat{\alpha}: \VDnorm \to \cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$
+defined by $\Mmat{\alpha}(\bv)(\varphi) = (\varphi \otimes \Id{})(\bv)$.
+Since $r_\alpha(\bv_n) \leq r_\alpha$, we have
+$\rank \Mmat{\alpha}(\bv_n) \leq r_\alpha$ for all $n$. The condition
+\condINJ\ implies that $\Mmat{\alpha}$ is continuous for the weak
+topology on $\VDnorm$ and the weak operator topology on
+$\cL(\dual{(V_\alpha)}, \Vbigalpha^{[\alpha]})$. Since the set of
+operators of rank $\leq r_\alpha$ is closed in the weak operator topology
+(it is a closed variety), the limit $\Mmat{\alpha}(\bv)$ has rank
+$\leq r_\alpha$, i.e., $r_\alpha(\bv) \leq r_\alpha$.
 \end{proof}
 
 \subsection*{Existence of best approximations}
@@ -787,6 +556,159 @@ $\|\bv\|_Z = \max_{i} \|\bv\|_i$. If $Z$ is reflexive (which holds,
 e.g., when $k=2$ and both norms are reflexive), then every $\bu \in Z$
 has a best approximation in $\Tucker{\leq\fr}{Z}$.
 \end{theorem}
+
+%------------------------------------------------------------
+\section{Worked examples}
+\label{sec:min:examples}
+%------------------------------------------------------------
+
+This section illustrates the abstract theory through two concrete
+examples that arise naturally in scientific computing.
+
+\subsection*{Example 1: A Gaussian kernel in $L^2([0,1]^2)$}
+
+\begin{example}[Gaussian kernel]
+\label{ex:min:gaussian}
+Let $V_1 = V_2 = L^2([0,1])$ and consider the function
+\begin{equation}
+\label{eq:gaussian_kernel}
+    f(x_1, x_2) \coloneqq e^{-\gamma(x_1 - x_2)^2},
+    \quad (x_1, x_2) \in [0,1]^2,\quad \gamma > 0.
+\end{equation}
+We identify $f$ with a Hilbert--Schmidt operator
+$T_f: L^2([0,1]) \to L^2([0,1])$ via
+$(T_f g)(x_1) = \int_0^1 f(x_1, x_2) g(x_2)\,dx_2$.
+
+\paragraph{Minimal subspaces.}
+Since $T_f$ is a compact self-adjoint positive operator
+(the kernel is symmetric and positive definite), its spectral
+decomposition is
+\begin{equation*}
+    T_f = \sum_{k=1}^\infty \lambda_k\, \phi_k \otimes \phi_k,
+    \quad \lambda_1 \geq \lambda_2 \geq \cdots > 0, \quad
+    \sum_k \lambda_k < \infty,
+\end{equation*}
+with $\{\phi_k\}_{k \geq 1}$ an orthonormal basis of $L^2([0,1])$
+consisting of eigenfunctions of $T_f$. In the tensor product notation,
+\begin{equation*}
+    f = \sum_{k=1}^\infty \lambda_k\, \phi_k \otimes \phi_k
+    \in L^2([0,1]) \otimes_H L^2([0,1]),
+\end{equation*}
+so $r_1(f) = r_2(f) = \infty$ (the kernel has infinite rank). For any
+$r \in \NN$, however, the minimal subspaces of the rank-$r$ truncation
+\begin{equation*}
+    f_r \coloneqq \sum_{k=1}^r \lambda_k\, \phi_k \otimes \phi_k
+\end{equation*}
+are $\Umin{1}{f_r} = \Umin{2}{f_r} = \spann\{\phi_1, \ldots, \phi_r\}$,
+and $f_r \in \Tucker{(r,r)}{L^2([0,1])^{\otimes 2}}$.
+
+\paragraph{Best approximation.}
+By the Eckart--Young theorem (the $d=2$ case of
+Theorem~\ref{thm:best_approx_tucker}), $f_r$ is the
+best approximation of $f$ of Tucker rank $(r,r)$ in the Hilbert tensor
+norm:
+\begin{equation*}
+    \|f - f_r\|_{L^2([0,1]^2)}^2
+    = \sum_{k > r} \lambda_k^2
+    = \inf_{\bg \in \Tucker{\leq(r,r)}{L^2}} \|f - \bg\|^2.
+\end{equation*}
+
+\paragraph{Decay of eigenvalues.}
+For $\gamma > 0$, the eigenvalues of the Gaussian kernel
+decay super-algebraically: $\lambda_k \sim C e^{-c\sqrt{k}}$
+for constants $C, c > 0$ depending on $\gamma$. This rapid decay
+means that $f_r$ approximates $f$ to any prescribed accuracy with
+$r$ growing only polylogarithmically with the tolerance. More
+precisely, for tolerance $\varepsilon > 0$:
+\begin{equation}
+\label{eq:gaussian_rank}
+    \|f - f_r\|_{L^2}^2 \leq \varepsilon^2
+    \quad \text{requires } r = O\bigl(\log(1/\varepsilon)^2\bigr).
+\end{equation}
+This is the mathematical reason why low-rank approximations work
+exceptionally well for functions with smooth integral kernels: the
+minimal subspace dimension needed for $\varepsilon$-accuracy grows only
+logarithmically with $1/\varepsilon$.
+\end{example}
+
+\subsection*{Example 2: Parametric partial differential equations}
+
+The main motivation for the tensor framework of this monograph is the
+numerical treatment of high-dimensional PDEs. The following example
+shows how the minimal subspace dimension encodes the sensitivity of the
+solution with respect to parameters.
+
+\begin{example}[Parametric elliptic PDE]
+\label{ex:min:parametric_pde}
+Let $D_x = (0,1) \subset \RR$ and $\Gamma = [-1,1]^s \subset \RR^s$
+be a parameter space ($s \geq 1$). Consider the parametric family of
+elliptic problems: find $u(\cdot, \bm{y}): D_x \to \RR$ such that
+\begin{equation}
+\label{eq:parametric_pde}
+    -\frac{\partial}{\partial x}
+    \Bigl[a(x, \bm{y})\,\frac{\partial u}{\partial x}(x, \bm{y})\Bigr]
+    = f(x),
+    \quad x \in D_x,\; \bm{y} = (y_1, \ldots, y_s) \in \Gamma,
+\end{equation}
+with homogeneous Dirichlet boundary conditions $u(0,\bm{y}) =
+u(1,\bm{y}) = 0$. The diffusion coefficient has the affine form
+\begin{equation*}
+    a(x, \bm{y}) = a_0(x) + \sum_{j=1}^s y_j a_j(x),
+\end{equation*}
+where $a_0, a_1, \ldots, a_s \in L^\infty(D_x)$ with
+$a(x, \bm{y}) \geq a_{\min} > 0$ uniformly.
+
+\paragraph{Tensor product setting.}
+The solution map $\bm{y} \mapsto u(\cdot, \bm{y})$ defines an element
+\begin{equation*}
+    \bm{u} \in \mathcal{V} \coloneqq
+    H_0^1(D_x) \otimes L^2(\Gamma, \pi),
+\end{equation*}
+where $\pi$ is the uniform measure on $\Gamma$ and the tensor product
+norm satisfies \condINJ\ (Corollary~\ref{cor:best_approx_sobolev}).
+
+\paragraph{Minimal subspaces and parameter sensitivity.}
+The $\alpha$-rank $r_\alpha(\bm{u})$ for $\alpha = \{x\}$ (the physical
+variable) equals the effective rank of the solution manifold
+$\{u(\cdot, \bm{y}) : \bm{y} \in \Gamma\} \subset H_0^1(D_x)$:
+\begin{equation*}
+    \Umin{x}{\bm{u}}
+    = \overline{\spann\{u(\cdot, \bm{y}) : \bm{y} \in \Gamma\}}
+    \subset H_0^1(D_x).
+\end{equation*}
+If $a_0$ dominates (i.e., the perturbations $y_j a_j$ are small),
+the solution $u(\cdot, \bm{y})$ varies little with $\bm{y}$, and
+$r_x(\bm{u})$ is small. More precisely, the Kolmogorov $n$-width
+\begin{equation*}
+    d_n\bigl(\{u(\cdot,\bm{y}) : \bm{y}\in\Gamma\},\,H_0^1(D_x)\bigr)
+    \coloneqq \inf_{\substack{W \subset H_0^1(D_x) \\ \dim W = n}}
+    \sup_{\bm{y} \in \Gamma}
+    \inf_{w \in W} \|u(\cdot,\bm{y}) - w\|_{H_0^1}
+\end{equation*}
+decays at a rate determined by the smoothness of $a$ in the parameters
+$\bm{y}$. When $a$ is analytic in $\bm{y}$ (which holds when the
+$a_j$ are bounded away from zero), the $n$-width decays exponentially:
+$d_n \leq C e^{-cn^{1/s}}$ for constants $C, c > 0$
+(see~\cite{Nouy2017}).
+
+\paragraph{Best approximation from Tucker format.}
+The best Tucker-$(r,r)$ approximation of $\bm{u}$ in $\mathcal{V}$
+is
+\begin{equation*}
+    \bm{u}_r = \sum_{k=1}^r \lambda_k\, v_k^{(x)} \otimes v_k^{(\bm{y})},
+    \quad
+    \|\bm{u} - \bm{u}_r\|_{\mathcal{V}}^2 = \sum_{k > r} \lambda_k^2,
+\end{equation*}
+where $\lambda_k$ are the singular values of the solution operator
+$\bm{y} \mapsto u(\cdot, \bm{y})$ as a Hilbert--Schmidt operator. The
+existence of this best approximation is guaranteed by
+Corollary~\ref{cor:best_approx_sobolev}. The spatial basis functions
+$v_k^{(x)} \in H_0^1(D_x)$ are the principal components of the
+solution manifold, and $v_k^{(\bm{y})} \in L^2(\Gamma)$ encode the
+parameter dependence. This decomposition is the starting point for
+the \emph{proper orthogonal decomposition} (POD) and reduced basis
+methods used in uncertainty quantification; see~\cite{Nouy2017}.
+\end{example}
 
 %------------------------------------------------------------
 \section{Historical notes and comparison with the literature}
