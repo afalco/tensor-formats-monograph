@@ -173,16 +173,67 @@ $\mathbf{E}(\bv) \times {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}}
 \Umin{\alpha}{\bv}$.
 \end{lemma}
 
-\begin{proof}[Sketch]
-Each $\mathcal{O}_k \coloneqq \Tucker{\fr_k}({}_a\bigotimes_\alpha
-\Umin{\alpha}{\bv})$ is open in its finite-dimensional ambient space
-(it is defined by rank conditions, cf.\ Remark~\ref{rem:Rstar_open}).
-The intersection $\mathcal{O}(\bv) = \bigcap_k \mathcal{O}_k$ is
-taken in ${}_a\bigotimes_{\alpha \in \PkT{1}{\TD}} \Umin{\alpha}{\bv}$
-(since all factors have the same underlying space by the tree structure),
-and is an open subset. Each $\Emodel{k}$ is a closed subspace of
-$\cL(\VDnorm)$ (Lemma~\ref{lem:two_faces}), so $\mathbf{E}(\bv)$ is
-a Banach space and $\mathbf{E}(\bv) \times \mathcal{O}(\bv)$ is open.
+\begin{proof}
+We show separately that $\mathcal{O}(\bv)$ is open in
+${}_a\bigotimes_{\alpha \in \PkT{1}{\TD}} \Umin{\alpha}{\bv}$
+and that $\mathbf{E}(\bv)$ is a Banach space.
+
+\medskip
+\noindent\textbf{Step 1: $\mathcal{O}(\bv)$ is open.}
+
+Fix $k \in \{1, \ldots, \dep{\TD}\}$. The space
+$A_k \coloneqq {}_a\bigotimes_{\alpha \in \PkT{k}{\TD}} \Umin{\alpha}{\bv}$
+is finite-dimensional, since each $\Umin{\alpha}{\bv}$ is
+finite-dimensional (Theorem~\ref{thm:min_existence}).
+The set $\mathcal{O}_k \coloneqq \Tucker{\fr_k}(A_k)$ consists of
+tensors in $A_k$ with $\alpha$-ranks equal to $r_\alpha$ for all
+$\alpha \in \PkT{k}{\TD}$. Its complement is the zero set of the
+rank-$r_\alpha$ minors of the unfolding matrices; since these are
+polynomial conditions on the coordinates of $A_k$, the complement is
+a closed algebraic variety. Hence $\mathcal{O}_k$ is open in $A_k$.
+
+Now, all spaces $A_k$ are identified with
+$A_1 = {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}} \Umin{\alpha}{\bv}$
+via the canonical isomorphisms induced by the tree structure (each
+$\Vbigalpha[\alpha]$ for $\alpha \in \PkT{k}{\TD}$ is a subspace of
+$\Vbigalpha[\beta]$ for the appropriate $\beta \in \PkT{1}{\TD}$).
+Under this identification, $\mathcal{O}_k$ becomes an open subset of
+$A_1$, and $\mathcal{O}(\bv) = \bigcap_{k=1}^{\dep{\TD}} \mathcal{O}_k$
+is a finite intersection of open sets in the finite-dimensional space
+$A_1$, hence open.
+
+\medskip
+\noindent\textbf{Step 2: $\mathbf{E}(\bv)$ is a Banach space.}
+
+For each level $k$, the model space $\Emodel{k}$ embeds into
+$\cL(\VDnorm)$ via the Laplacian map $\Delta_k$
+(equation~\eqref{eq:laplacian}). The image is:
+\begin{equation*}
+    \Delta_k\Bigl(\prod_{\alpha \in \PkT{k}{\TD}}
+    \cL\bigl(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv}\bigr)\Bigr)
+    = \Bigl\{\sum_{\alpha \in \PkT{k}{\TD}}
+      L_\alpha \otimes \mathbf{id}_{[\alpha]} :
+      L_\alpha \in \cL\bigl(\Umin{\alpha}{\bv},
+      \Wmin{\alpha}{\bv}\bigr)\Bigr\},
+\end{equation*}
+which is a closed subspace of $\cL(\VDnorm)$: it is the image of a
+finite-dimensional Banach space under a bounded linear map, hence
+finite-dimensional and therefore closed. Therefore $\Emodel{k}
+\subset \cL(\VDnorm)$ is closed.
+
+The intersection $\mathbf{E}(\bv) = \bigcap_{k=1}^{\dep{\TD}} \Emodel{k}$
+is a finite intersection of closed subspaces of $\cL(\VDnorm)$, hence
+closed, and therefore a Banach space in its own right.
+
+\medskip
+\noindent\textbf{Conclusion.}
+
+Since $\mathbf{E}(\bv)$ is a Banach space and $\mathcal{O}(\bv)$ is
+open in the finite-dimensional space $A_1$, the product
+$\mathbf{E}(\bv) \times \mathcal{O}(\bv)$ is open in
+$\mathbf{E}(\bv) \times A_1 =
+\mathbf{E}(\bv) \times {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}}
+\Umin{\alpha}{\bv}$.
 \end{proof}
 
 \subsection*{Tree-based chart map}
@@ -236,14 +287,100 @@ Then:
 \end{enumerate}
 \end{theorem}
 
-\begin{proof}[Sketch]
-The atlas conditions follow from Lemma~\ref{lem:TBT_chart_open}
-and the fact that the transition maps of the tree-based atlas are
-restrictions of the transition maps of the Tucker atlases (which are
-$\mathcal{C}^\infty$ by Lemma~\ref{lem:premanifold}). Compatibility
-with the Tucker atlases is a consequence of the identity
+\begin{proof}
+We verify the atlas conditions AT1--AT3 for the collection
+$\{(\mathcal{W}(\bv), \boldsymbol{\xi}_\bv)\}_{\bv \in \FTv}$
+and then establish the compatibility with the Tucker atlases.
+
+\medskip
+\noindent\textbf{AT1: Coverage.}
+
+For each $\bv \in \FTv$, we have $\bv \in \mathcal{W}(\bv)$ since
+$\bv$ belongs to every Tucker chart domain $\chart^{(k)}(\bv)$
+(each Tucker chart is centred at $\bv$ by definition).
+Hence $\bigcup_{\bv \in \FTv} \mathcal{W}(\bv) = \FTv$.
+
+\medskip
+\noindent\textbf{AT2: $\boldsymbol{\xi}_\bv$ is a bijection.}
+
+For $\bw \in \mathcal{W}(\bv)$, we have $\bw \in \chart^{(k)}(\bv)$
+for all $k$. By Lemma~\ref{lem:element} applied at level $k$
+(Theorem~\ref{thm:Tucker_Banach_Manifold}), there exists a unique
+pair $(L^{(k)}, \bu^{(k)})$ with $L^{(k)} \in \Emodel{k}$ and
+$\bu^{(k)} \in \mathcal{O}_k$ such that $\bw = \exp(L^{(k)})(\bu^{(k)})$.
+
+By Proposition~\ref{prop:laplacian_exp}, the map $\exp(L)$ for
+$L \in \Emodel{k}$ acts as $\bigotimes_{\alpha \in \PkT{k}{\TD}}
+\exp(L_\alpha)$. Since the representation is independent of the
+level $k$ used (the same tensor $\bw$ is represented), we get
+$L^{(k)} = L^{(k')}$ and $\bu^{(k)} = \bu^{(k')}$ for all $k, k'$.
+In particular, $L \coloneqq L^{(1)} \in \bigcap_k \Emodel{k}
+= \mathbf{E}(\bv)$ and $\bu \coloneqq \bu^{(1)} \in
+\bigcap_k \mathcal{O}_k = \mathcal{O}(\bv)$.
+
+The map $\boldsymbol{\xi}_\bv(\bw) = (L, \bu)$ is therefore
+well-defined and injective (since $(L, \bu)$ uniquely determines
+$\bw = \exp(L)(\bu)$). It is surjective onto $\mathbf{E}(\bv)
+\times \mathcal{O}(\bv)$ by the converse: for any
+$(L, \bu) \in \mathbf{E}(\bv) \times \mathcal{O}(\bv)$, the tensor
+$\bw = \exp(L)(\bu)$ belongs to every $\chart^{(k)}(\bv)$ (since
+$L \in \Emodel{k}$ and $\bu \in \mathcal{O}_k$ for all $k$), so
+$\bw \in \mathcal{W}(\bv)$.
+
+\medskip
+\noindent\textbf{AT3: Smooth transitions.}
+
+Let $\bv, \bv' \in \FTv$ with $\mathcal{W}(\bv) \cap \mathcal{W}(\bv')
+\neq \emptyset$. We must show that
+$\boldsymbol{\xi}_{\bv'} \circ \boldsymbol{\xi}_\bv^{-1}$ is
+$\mathcal{C}^\infty$.
+
+For any $\bw \in \mathcal{W}(\bv) \cap \mathcal{W}(\bv')$,
+pick any level $k$. Since $\bw \in \chart^{(k)}(\bv) \cap
+\chart^{(k)}(\bv')$, the transition map
+\begin{equation*}
+    \chartmap{\bv'}^{(k)} \circ (\chartmap{\bv}^{(k)})^{-1}
+\end{equation*}
+is $\mathcal{C}^\infty$ by Lemma~\ref{lem:premanifold}
+(applied to the Tucker manifold $\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$).
+The tree-based chart maps satisfy
 $\boldsymbol{\xi}_\bv = \chartmap{\bv}^{(k)}|_{\mathcal{W}(\bv)}$
-for each $k$. See~\cite{FHN2023} for the complete proof.
+for every $k$ (by the uniqueness proved in AT2). Therefore
+\begin{equation*}
+    \boldsymbol{\xi}_{\bv'} \circ \boldsymbol{\xi}_\bv^{-1}
+    = \chartmap{\bv'}^{(k)} \circ (\chartmap{\bv}^{(k)})^{-1}
+    \big|_{\boldsymbol{\xi}_\bv(\mathcal{W}(\bv) \cap \mathcal{W}(\bv'))},
+\end{equation*}
+which is the restriction of a $\mathcal{C}^\infty$ map to an open
+subset, hence $\mathcal{C}^\infty$.
+
+\medskip
+\noindent\textbf{Part (ii): Compatibility with Tucker atlases.}
+
+For each $k$, the inclusion $\mathfrak{i}_k: \FTv \hookrightarrow
+\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ satisfies, in charts,
+\begin{equation*}
+    \chartmap{\bv}^{(k)} \circ \mathfrak{i}_k
+    \circ \boldsymbol{\xi}_\bv^{-1}
+    = \chartmap{\bv}^{(k)} \circ (\chartmap{\bv}^{(k)})^{-1}
+    \big|_{\mathbf{E}(\bv) \times \mathcal{O}(\bv)}
+    = \text{inclusion}\;
+    \mathbf{E}(\bv) \times \mathcal{O}(\bv)
+    \hookrightarrow \Emodel{k} \times \mathcal{O}_k,
+\end{equation*}
+which is a bounded linear injection (hence $\mathcal{C}^\infty$ and an
+immersion). Since this holds for every choice of charts and every $k$,
+$\mathfrak{i}_k$ is a $\mathcal{C}^\infty$-immersion.
+
+\medskip
+\noindent\textbf{Manifold structure.}
+
+The atlas $\{(\mathcal{W}(\bv), \boldsymbol{\xi}_\bv)\}_{\bv \in \FTv}$
+satisfies AT1--AT3, so $\FTv$ is a $\mathcal{C}^\infty$-Banach manifold.
+The model space is $\mathbf{E}(\bv) \times \mathcal{O}(\bv)$, which is
+open in $\mathbf{E}(\bv) \times {}_a\bigotimes_{\alpha \in \PkT{1}{\TD}}
+\Umin{\alpha}{\bv}$ by Lemma~\ref{lem:TBT_chart_open}, so $\FTv$ is
+modelled on this Banach space.
 \end{proof}
 
 %------------------------------------------------------------
@@ -325,7 +462,7 @@ global topology discussed in Section~\ref{sec:TB_manifold:topology}.
 The geometric description of $\FTv$ in~\cite{FHN2023} differs from
 earlier approaches in several respects.
 
-\paragraph{Uschmajew--Vandereycken \cite{UschmajewVandereycken2013}.}
+\paragraph{Uschmajew--Vandereycken \cite{Uschmajew2012}.}
 For the HT format in finite-dimensional spaces, they construct
 $\FTv$ as a quotient manifold
 $P \backslash \bigl(\GL{r_\alpha} \times \cdots\bigr)$
@@ -382,7 +519,7 @@ open problem in general. The following is known:
 \begin{enumerate}
 \item[\textup{(i)}] For the TT format and binary HT formats in
     \emph{finite dimensions}, $\FTv$ is connected
-    (see~\cite{UschmajewVandereycken2013, HoltzRohwedderSchneider2012}).
+    (see~\cite{Uschmajew2012, HoltzRohwedderSchneider2012}).
 \item[\textup{(ii)}] For general $\TD$ and infinite-dimensional
     spaces, connectedness of $\FTv$ is an open question.
 \end{enumerate}
