@@ -172,3 +172,42 @@
 % Math operators (added for Ch.10)
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
+
+% ============================================================
+% Part V: Quantum States (Appendix E + Chapters 12--13)
+% ============================================================
+
+% ---- Operator ideals on Hilbert spaces -------------------
+\newcommand{\cT}[1]{\mathcal{T}_{#1}}      % \cT{1}(H) = trace-class
+                                             % \cT{2}(H) = Hilbert-Schmidt
+\newcommand{\cTsa}[1]{\mathcal{T}_{#1}^{sa}}% \cTsa{1}(H) = self-adjoint trace-class
+\newcommand{\cK}{\mathcal{K}}               % compact operators \cK(H)
+
+% ---- Trace and singular values ---------------------------
+\newcommand{\Tr}{\mathrm{Tr}}              % trace
+\newcommand{\TrS}[1]{\mathrm{Tr}_{#1}}    % partial trace \TrS{2}(\rho)
+\newcommand{\svals}[1]{s_{#1}}             % singular values s_k(A)
+\newcommand{\supp}{\mathrm{supp}}          % support of an operator
+
+% ---- Quantum state spaces --------------------------------
+\newcommand{\Dstate}[1]{\mathcal{D}(#1)}   % all density operators
+\newcommand{\Drank}[2]{\mathcal{D}_{#1}(#2)}% rank-r stratum \Drank{r}{H}
+\newcommand{\Dpos}[1]{\mathcal{D}_+(#1)}   % positive core \Dpos{S}
+
+% ---- Rank-one operators ----------------------------------
+% u \roten v  =  the rank-one operator w \mapsto <v,w> u
+\newcommand{\roten}{\otimes_{\overline{\phantom{v}}}}
+% Usage: u \roten v  (read: u tensor conjugate-v)
+% Displayed as: u \otimes \overline{v}  in the text
+
+% ---- Hilbert tensor product ------------------------------
+\newcommand{\Htens}{\otimes_H}             % Hilbert tensor product
+\newcommand{\Hbar}[1]{\overline{#1}}       % conjugate Hilbert space
+
+% ---- Projectors ------------------------------------------
+\newcommand{\PS}[1]{P_{#1}}               % orthogonal projection onto S
+\newcommand{\Prho}{\hat{P}_\rho}          % tangent projector at rho (Ch.13)
+
+% ---- Lindblad / GKSL objects ----------------------------
+\newcommand{\Lind}{\mathcal{L}}            % Lindblad generator
+\newcommand{\Stiefel}[2]{\mathrm{St}(#1,#2)}% Stiefel manifold St(r,H)
