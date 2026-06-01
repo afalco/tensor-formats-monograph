@@ -560,6 +560,49 @@ $\|\cdot\|_D$ is a crossnorm. This interplay between algebraic and
 topological structure is a recurring theme throughout the monograph.
 \end{remark}
 
+\begin{remark}[Crossnorms and \condINJ\ in the Hilbert case]
+\label{rem:grothendieck_hilbert}
+The crossnorm condition \condCROSS\ and the injective norm condition
+\condINJ\ (to be introduced formally in
+Definition~\ref{def:crossnorm}) express two levels of compatibility
+between the norm $\|\cdot\|_D$ and the tensor product structure. The
+injective norm $\|\cdot\|_\varepsilon$ is the smallest reasonable
+crossnorm, and \condINJ\ says that $\|\cdot\|_D$ dominates it.
+
+In the Hilbert case, this condition is automatically satisfied and
+imposes no effective constraint. More precisely:
+
+\begin{enumerate}
+\item[\textup{(i)}]
+\textit{All reasonable crossnorms are equivalent on Hilbert tensor
+products.}
+By the Grothendieck inequality~\cite{Grothendieck1953}, there exists
+a universal constant $K_G \leq \pi/(2\ln(1+\sqrt{2})) \approx 1.78$
+such that $\|\cdot\|_\pi \leq K_G \|\cdot\|_\varepsilon$ on
+$H_1 \otimes H_2$ for any Hilbert spaces $H_1$, $H_2$. Since every
+reasonable crossnorm satisfies
+$\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$, all
+reasonable crossnorms on $H_1 \otimes H_2$ are equivalent with
+constant $K_G$.
+\item[\textup{(ii)}] \textit{The Hilbert tensor norm is the unique norm making
+$\VDnorm$ a Hilbert space.} For $H_\alpha = L^2(I_\alpha)$, the
+Hilbert tensor norm satisfies $\bigotimes_j L^2(I_j) \cong
+L^2(\prod_j I_j)$ isometrically (via the Fubini identification
+$\bigotimes f_j \leftrightarrow \prod_j f_j(x_j)$). This is the
+natural norm for quantum mechanics and function approximation, and
+it satisfies \condINJ\ with equality ($\|\cdot\|_D = \|\cdot\|_H$
+dominates $\|\cdot\|_\varepsilon$ by definition of the Hilbert norm).
+\end{enumerate}
+
+In contrast, in the Banach case ($V_\alpha = L^p(I_\alpha)$ with
+$p \neq 2$), different reasonable crossnorms are genuinely inequivalent,
+and the condition \condINJ\ is a non-trivial hypothesis that must be
+verified for each choice of $\|\cdot\|_D$. This is one of the reasons
+why the Banach-space theory of this monograph is substantially harder
+than the Hilbert-space theory of~\cite{KochLubich2007}: in the Banach
+case, the geometry depends on the specific choice of norm, not just
+the isomorphism class of the spaces.
+\end{remark}
 
 %------------------------------------------------------------
 \section{Historical notes}
@@ -574,51 +617,47 @@ the approach of Greub~\cite{Greub1981}, which is well suited to the
 infinite-dimensional setting: the algebraic tensor product is defined
 by the universal property, without any choice of basis or norm.
 
+\paragraph{Crossnorms and Grothendieck's theory.}
 The projective and injective tensor norms were introduced by
-Grothendieck in his 1953 Résumé, which also established the fundamental
-inequality $\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$
-for any crossnorm $\|\cdot\|_D$, and identified the dual of
-$V_1 \otimes_\pi V_2$ as the space of bounded bilinear forms on
-$V_1 \times V_2$. This work, largely unrecognised at the time, later
-became the foundation of Banach space theory through the notion of
+Grothendieck in his 1953 Résumé~\cite{Grothendieck1953}, which
+established the fundamental hierarchy
+$\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$
+for any reasonable crossnorm, identified the dual of
+$V_1 \otimes_\pi V_2$ as the space of bounded bilinear forms, and
+proved the inequality that now bears his name
+(Remark~\ref{rem:grothendieck_hilbert}). This work, largely
+unrecognised at the time, became foundational through the notion of
 tensor norms and operator ideals. A systematic treatment appears
-in~\cite{Hackbusch2019}, Chapters~3--4.
+in~\cite{Hackbusch2019} and~\cite{Ryan2002}.
 
-\paragraph{Crossnorms and tensor product norms.}
-The crossnorm condition \condCROSS\ and the injective norm condition
-\condINJ\ are formulated in~\cite{FH2012} as the minimal hypotheses
-under which the algebraic structure of minimal subspaces extends to
-the topological setting. The condition \condINJ\ (the norm dominates
-the injective norm) is the natural analogue of the ``reasonable
-crossnorm'' condition in Grothendieck's theory and holds for all the
-standard function-space tensor products ($L^p$, Sobolev) used in
-numerical applications; see Remark~\ref{rem:crossnorm_examples}.
+The condition \condINJ\ is the natural analogue of the
+``reasonable crossnorm'' condition in Grothendieck's theory and holds
+for all standard function-space tensor products ($L^p$, Sobolev);
+see Remark~\ref{rem:crossnorm_examples} in
+Chapter~\ref{chap:minsubspaces}.
 
 \paragraph{Tucker format and tensor rank.}
 The Tucker decomposition~\cite{Tucker1966} was introduced as a
 psychometric tool for three-mode factor analysis. It generalises the
-singular value decomposition (SVD) to higher-order tensors: just as
-every matrix $A \in \RR^{m \times n}$ can be written as
-$A = U \Sigma V^\top$ with $U \in \RR^{m \times r}$,
-$V \in \RR^{n \times r}$ orthogonal and $\Sigma$ diagonal,
-a $d$-th order Tucker tensor is represented by a core array and
-a set of factor matrices in each mode.
+singular value decomposition to higher-order tensors: just as every
+matrix $A \in \RR^{m \times n}$ can be written as $A = U \Sigma V^\top$
+with orthogonal factor matrices, a Tucker tensor is represented by a
+core array and a set of factor matrices in each mode.
 
 The notion of tensor rank for $d \geq 3$ is far more subtle than for
 matrices: the maximum rank of a real $n \times n \times n$ tensor is
 not known in general, and computing the rank is NP-hard
-(Håstad, 1990). The minimal-subspace framework of
+(H\aa stad, 1990). The minimal-subspace framework of
 Chapter~\ref{chap:minsubspaces} avoids these difficulties by working
 with the subspace rank $(r_\alpha)_{\alpha \in D}$ rather than the
 canonical (CP) rank; the former has a clean algebraic characterisation
-and leads to a well-posed approximation problem.
+and leads to a well-posed approximation problem in Banach spaces.
 
 \paragraph{Tensor product map and the manifold structure.}
 The differential of the tensor product map
 (Section~\ref{sec:algtensor:tensmap}) is the key ingredient in the
-construction of the tangent space to the Tucker manifold. The formula
-$D\tau(\bv)[\delta\bv] = \sum_j \tau^{(j)}(\delta v_j)$, where
-$\tau^{(j)}$ inserts $\delta v_j$ in the $j$-th slot, is the
-multilinear analogue of the product rule and appears in~\cite{FHN2019}
-as the starting point for the identification
+construction of the tangent space to the Tucker manifold. The
+formula~\eqref{eq:diff_tensor_product} is the multilinear analogue
+of the product rule and appears in~\cite{FHN2019} as the starting
+point for the identification
 $T_{\bv}\Tucker{\fr}{\VD} \cong \ZD{\bv}$.
