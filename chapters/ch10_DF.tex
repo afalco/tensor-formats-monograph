@@ -288,6 +288,83 @@ the system solved numerically by MCTDH.
 \end{example}
 
 %------------------------------------------------------------
+\section{Kinematic equations for the Tucker manifold}
+\label{sec:DF:kinematic}
+%------------------------------------------------------------
+
+\subsection*{Setup}
+
+Fix $\bv_r(t) \in \Tucker{\fr}{\VD}$ and orthonormal bases
+$\{u^{(\alpha)}_{i_\alpha}(t)\}_{i_\alpha=1}^{r_\alpha}$ of
+$\Umin{\alpha}{\bv_r(t)}$ for each $\alpha \in D$. Define the
+\emph{mean-field vectors}
+\begin{equation}
+\label{eq:DF:Ualpha2}
+    \bU^{(\alpha)}_{i_\alpha}(t)
+    \coloneqq \sum_{(i_\beta)_{\beta \neq \alpha}}
+    C^{(D)}_{(i_\alpha,(i_\beta)_{\beta\neq\alpha})}(t)
+    \bigotimes_{\beta \neq \alpha} u^{(\beta)}_{i_\beta}(t)
+    \in \Umin{D\setminus\{\alpha\}}{\bv_r(t)},
+\end{equation}
+and the \emph{mean-field matrix}
+\begin{equation}
+\label{eq:DF:meanfield}
+    F^{(\alpha)}_{i_\alpha j_\alpha}(t)
+    \coloneqq
+    \bigl\langle
+    \bU^{(\alpha)}_{i_\alpha}(t),\;
+    \bigl(\Id{\alpha} \otimes
+    T_\psi^{[\alpha]}\bigr)(\bF(t,\bv_r(t)))
+    \big|_{\psi=u^{(\alpha)}_{j_\alpha}(t)}
+    \bigr\rangle_{[\alpha]},
+\end{equation}
+where $T_\psi^{[\alpha]}(\bw) \coloneqq (\psi \otimes \Id{[\alpha]})(\bw)$
+is the contraction with $\psi \in V_\alpha^*$.
+
+\subsection*{Tangent decomposition}
+
+By Proposition~\ref{prop:tangent_space}, every velocity
+$\dot{\bv}_r(t) \in \ZD{\bv_r(t)}$ decomposes as
+\begin{equation}
+\label{eq:DF:tangent_decomp}
+    \dot{\bv}_r(t)
+    = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)}(t)
+      \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}(t)
+    + \sum_{\alpha \in D} \sum_{i_\alpha}
+      \dot{u}^{(\alpha)}_{i_\alpha}(t) \otimes \bU^{(\alpha)}_{i_\alpha}(t),
+\end{equation}
+with $\dot{u}^{(\alpha)}_{i_\alpha}(t) \in \Wmin{\alpha}{\bv_r(t)}$.
+Imposing the \emph{tangential constraint}
+\begin{equation}
+\label{eq:DF:tangential}
+    \langle \dot{u}^{(\alpha)}_{i_\alpha}(t),
+    u^{(\alpha)}_{j_\alpha}(t) \rangle_\alpha = 0
+    \quad \forall\, i_\alpha, j_\alpha,\;\alpha \in D,
+\end{equation}
+removes the gauge freedom. In the Hilbert case, the closed kinematic
+system is~\eqref{eq:DF:MCTDH} with mean-field matrix
+\begin{equation}
+\label{eq:DF:mean_field_hilbert}
+    F^{(\alpha)}_{i_\alpha j_\alpha}(t)
+    = \bigl\langle \bU^{(\alpha)}_{i_\alpha}(t),
+      (\Id{\alpha} \otimes
+      \langle u^{(\alpha)}_{j_\alpha}(t), \cdot\rangle_\alpha)
+      \bF(t,\bv_r(t))
+      \bigr\rangle_{[\alpha]}.
+\end{equation}
+
+\begin{remark}[Banach case: duality mapping]
+\label{rem:kinematic_banach}
+In a non-Hilbert Banach space, the inner products in~\eqref{eq:DF:MCTDH}
+are replaced by the duality pairing $\langle\cdot, J(\cdot)\rangle$.
+The mass matrix $M^{(\alpha)}_{ij} = \langle \bU^{(\alpha)}_i,
+\bU^{(\alpha)}_j\rangle_{[\alpha]}$ becomes the \emph{duality mass matrix}
+$M^{(\alpha)}_{ij} = \langle \bU^{(\alpha)}_i, J(\bU^{(\alpha)}_j)\rangle_{[\alpha]}$,
+still invertible (by Proposition~\ref{prop:tangent_space}) but no longer
+symmetric.
+\end{remark}
+
+%------------------------------------------------------------
 \section{Extension to tree-based formats}
 \label{sec:DF:treebased}
 %------------------------------------------------------------

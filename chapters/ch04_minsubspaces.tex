@@ -15,14 +15,87 @@
 In Chapter~\ref{chap:algtensor} we introduced the Tucker format and
 defined the minimal subspace $\Umin{\alpha}{\bv}$ informally, taking
 its existence and properties for granted. This chapter provides the
-complete theory: existence and uniqueness (Section~\ref{sec:min:existence}),
-the lattice structure and inclusion under refinement of partitions
+complete theory: a discussion of reflexivity and best-approximation
+hypotheses (Section~\ref{sec:min:reflexivity}), existence and uniqueness
+of minimal subspaces (Section~\ref{sec:min:existence}), the lattice
+structure and inclusion under refinement of partitions
 (Section~\ref{sec:min:lattice}), admissible ranks and the disjoint
-decomposition of $\VD$ (Section~\ref{sec:min:admissible}), and the
-existence of best approximations in Banach tensor spaces
-(Section~\ref{sec:min:bestapprox}). The results in this chapter are
+decomposition of $\VD$ (Section~\ref{sec:min:admissible}), existence of
+best approximations (Section~\ref{sec:min:bestapprox}), and worked examples
+(Section~\ref{sec:min:examples}). The results in this chapter are
 taken from~\cite{FH2012}, expanded with complete proofs and additional
 examples.
+
+%------------------------------------------------------------
+\section{Reflexivity and best approximations}
+\label{sec:min:reflexivity}
+%------------------------------------------------------------
+
+The main existence result of this chapter
+(Theorem~\ref{thm:best_approx_tucker}) requires $\VDnorm$ to be
+\emph{reflexive}. This section explains why, and verifies reflexivity
+for the standard tensor spaces.
+
+\begin{theorem}[James, {\cite{James1957}}]
+\label{thm:james}
+A Banach space $X$ is reflexive if and only if every $f \in \dual{X}$
+attains its norm on $B_X = \{x : \|x\| \leq 1\}$.
+\end{theorem}
+
+\begin{proof}
+The ``only if'' direction follows from the Krein--Milman theorem (the
+unit ball of a reflexive space is weakly compact). The ``if'' direction
+is proved in~\cite{James1957}; a streamlined proof is in~\cite{Megginson1998}.
+\end{proof}
+
+\begin{remark}[James's theorem and tensor approximation]
+\label{rem:james_tensor}
+If $\VDnorm$ is not reflexive there exists $F \in (\VDnorm)^*$ not
+attaining its norm, and one can construct $\bu \in \VDnorm$ whose best
+rank-one approximation does not exist. For instance, in
+$L^1([0,1]) \otimes L^1([0,1])$ (non-reflexive), best rank-$r$
+approximations may fail to exist. This is why
+Theorem~\ref{thm:best_approx_tucker} requires reflexivity.
+\end{remark}
+
+\begin{proposition}[Reflexivity of tensor products]
+\label{prop:reflexivity_tensor}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be Banach spaces with a reasonable
+crossnorm $\|\cdot\|_D$ on $\VD$.
+\begin{enumerate}
+\item[\textup{(i)}] If all $V_\alpha$ are Hilbert spaces and $\|\cdot\|_D$
+    is the Hilbert tensor norm, then $\VDnorm$ is reflexive.
+\item[\textup{(ii)}] If all $V_\alpha = L^p(I_\alpha)$ with $1 < p < \infty$,
+    then $\VDnorm \cong L^p(\prod_\alpha I_\alpha)$ is reflexive.
+\item[\textup{(iii)}] With the projective norm $\|\cdot\|_\pi$, $\VDnorm$
+    may fail to be reflexive even when all $V_\alpha$ are reflexive.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i): the Hilbert tensor norm makes $\VDnorm$ a Hilbert space.
+Part~(ii): Fubini isomorphism and reflexivity of $L^p$ for $1<p<\infty$.
+Part~(iii): $\ell^2 \otimes_\pi \ell^2$ contains an isomorphic copy of
+$\ell^1$; see~\cite[Example~2.19]{Ryan2002}.
+\end{proof}
+
+\begin{proposition}[Dual bound under \condINJ]
+\label{prop:injnorm_dual}
+If $\|\cdot\|_D$ satisfies \condINJ, then for any
+$\varphi_\alpha \in \dual{V_\alpha}$:
+\begin{equation}
+\label{eq:injnorm_dual_bound}
+    \|\varphi_1 \otimes \cdots \otimes \varphi_d\|_{(\VDnorm)^*}
+    \leq \prod_{\alpha \in D} \|\varphi_\alpha\|_{\dual{V_\alpha}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Follows directly from the definition of the injective norm and \condINJ:
+$|(\bigotimes_\alpha \varphi_\alpha)(\bv)|
+\leq \|\bv\|_\varepsilon \cdot \prod_\alpha \|\varphi_\alpha\|
+\leq \|\bv\|_D \cdot \prod_\alpha \|\varphi_\alpha\|$.
+\end{proof}
 
 %------------------------------------------------------------
 \section{Existence and uniqueness of minimal subspaces}
@@ -562,152 +635,46 @@ has a best approximation in $\Tucker{\leq\fr}{Z}$.
 \label{sec:min:examples}
 %------------------------------------------------------------
 
-This section illustrates the abstract theory through two concrete
-examples that arise naturally in scientific computing.
-
-\subsection*{Example 1: A Gaussian kernel in $L^2([0,1]^2)$}
-
-\begin{example}[Gaussian kernel]
+\begin{example}[Gaussian kernel in $L^2([0,1]^2)$]
 \label{ex:min:gaussian}
-Let $V_1 = V_2 = L^2([0,1])$ and consider the function
-\begin{equation}
-\label{eq:gaussian_kernel}
-    f(x_1, x_2) \coloneqq e^{-\gamma(x_1 - x_2)^2},
-    \quad (x_1, x_2) \in [0,1]^2,\quad \gamma > 0.
-\end{equation}
-We identify $f$ with a Hilbert--Schmidt operator
-$T_f: L^2([0,1]) \to L^2([0,1])$ via
-$(T_f g)(x_1) = \int_0^1 f(x_1, x_2) g(x_2)\,dx_2$.
-
-\paragraph{Minimal subspaces.}
-Since $T_f$ is a compact self-adjoint positive operator
-(the kernel is symmetric and positive definite), its spectral
-decomposition is
+Let $f(x_1,x_2) = e^{-\gamma(x_1-x_2)^2}$, $\gamma > 0$, in
+$L^2([0,1]^2)$. Viewed as a Hilbert--Schmidt operator
+$T_f: L^2([0,1]) \to L^2([0,1])$, the spectral decomposition gives
 \begin{equation*}
-    T_f = \sum_{k=1}^\infty \lambda_k\, \phi_k \otimes \phi_k,
-    \quad \lambda_1 \geq \lambda_2 \geq \cdots > 0, \quad
-    \sum_k \lambda_k < \infty,
+    f = \sum_{k=1}^\infty \lambda_k\, \phi_k \otimes \phi_k,
 \end{equation*}
-with $\{\phi_k\}_{k \geq 1}$ an orthonormal basis of $L^2([0,1])$
-consisting of eigenfunctions of $T_f$. In the tensor product notation,
-\begin{equation*}
-    f = \sum_{k=1}^\infty \lambda_k\, \phi_k \otimes \phi_k
-    \in L^2([0,1]) \otimes_H L^2([0,1]),
-\end{equation*}
-so $r_1(f) = r_2(f) = \infty$ (the kernel has infinite rank). For any
-$r \in \NN$, however, the minimal subspaces of the rank-$r$ truncation
-\begin{equation*}
-    f_r \coloneqq \sum_{k=1}^r \lambda_k\, \phi_k \otimes \phi_k
-\end{equation*}
-are $\Umin{1}{f_r} = \Umin{2}{f_r} = \spann\{\phi_1, \ldots, \phi_r\}$,
-and $f_r \in \Tucker{(r,r)}{L^2([0,1])^{\otimes 2}}$.
-
-\paragraph{Best approximation.}
-By the Eckart--Young theorem (the $d=2$ case of
-Theorem~\ref{thm:best_approx_tucker}), $f_r$ is the
-best approximation of $f$ of Tucker rank $(r,r)$ in the Hilbert tensor
-norm:
-\begin{equation*}
-    \|f - f_r\|_{L^2([0,1]^2)}^2
-    = \sum_{k > r} \lambda_k^2
-    = \inf_{\bv \in \Tucker{\leq(r,r)}{L^2}} \|f - \bv\|^2.
-\end{equation*}
-
-\paragraph{Decay of eigenvalues.}
-For $\gamma > 0$, the eigenvalues of the Gaussian kernel
-decay super-algebraically: $\lambda_k \sim C e^{-c\sqrt{k}}$
-for constants $C, c > 0$ depending on $\gamma$. This rapid decay
-means that $f_r$ approximates $f$ to any prescribed accuracy with
-$r$ growing only polylogarithmically with the tolerance. More
-precisely, for tolerance $\varepsilon > 0$:
-\begin{equation}
-\label{eq:gaussian_rank}
-    \|f - f_r\|_{L^2}^2 \leq \varepsilon^2
-    \quad \text{requires } r = O\bigl(\log(1/\varepsilon)^2\bigr).
-\end{equation}
-This is the mathematical reason why low-rank approximations work
-exceptionally well for functions with smooth integral kernels: the
-minimal subspace dimension needed for $\varepsilon$-accuracy grows only
-logarithmically with $1/\varepsilon$.
+so $r_1(f) = r_2(f) = \infty$. The rank-$r$ truncation
+$f_r = \sum_{k=1}^r \lambda_k\, \phi_k \otimes \phi_k$ is the best
+Tucker-$(r,r)$ approximation (Eckart--Young), with error
+$\|f - f_r\|^2 = \sum_{k>r} \lambda_k^2$. For the Gaussian kernel
+the eigenvalues decay super-algebraically:
+$\lambda_k \sim C e^{-c\sqrt{k}}$, so achieving tolerance $\varepsilon$
+requires only $r = O(\log(1/\varepsilon)^2)$ terms.
 \end{example}
-
-\subsection*{Example 2: Parametric partial differential equations}
-
-The main motivation for the tensor framework of this monograph is the
-numerical treatment of high-dimensional PDEs. The following example
-shows how the minimal subspace dimension encodes the sensitivity of the
-solution with respect to parameters.
 
 \begin{example}[Parametric elliptic PDE]
 \label{ex:min:parametric_pde}
-Let $D_x = (0,1) \subset \RR$ and $\Gamma = [-1,1]^s \subset \RR^s$
-be a parameter space ($s \geq 1$). Consider the parametric family of
-elliptic problems: find $u(\cdot, \bmy): D_x \to \RR$ such that
+Let $\Gamma = [-1,1]^s$ and consider the family of elliptic problems
 \begin{equation}
 \label{eq:parametric_pde}
     -\frac{\partial}{\partial x}
-    \Bigl[a(x, \bmy)\,\frac{\partial u}{\partial x}(x, \bmy)\Bigr]
-    = f(x),
-    \quad x \in D_x,\; \bmy = (y_1, \ldots, y_s) \in \Gamma,
+    \Bigl[a(x,\bmy)\,\frac{\partial u}{\partial x}(x,\bmy)\Bigr] = f(x),
+    \quad x \in (0,1),\;\bmy \in \Gamma,
 \end{equation}
-with homogeneous Dirichlet boundary conditions $u(0,\bmy) =
-u(1,\bmy) = 0$. The diffusion coefficient has the affine form
-\begin{equation*}
-    a(x, \bmy) = a_0(x) + \sum_{j=1}^s y_j a_j(x),
-\end{equation*}
-where $a_0, a_1, \ldots, a_s \in L^\infty(D_x)$ with
-$a(x, \bmy) \geq a_{\min} > 0$ uniformly.
-
-\paragraph{Tensor product setting.}
-The solution map $\bmy \mapsto u(\cdot, \bmy)$ defines an element
-\begin{equation*}
-    \bu \in \mathcal{V} \coloneqq
-    H_0^1(D_x) \otimes L^2(\Gamma, \pi),
-\end{equation*}
-where $\pi$ is the uniform measure on $\Gamma$ and the tensor product
-norm satisfies \condINJ\ (Corollary~\ref{cor:best_approx_sobolev}).
-
-\paragraph{Minimal subspaces and parameter sensitivity.}
-The $\alpha$-rank $r_\alpha(\bu)$ for $\alpha = \{x\}$ (the physical
-variable) equals the effective rank of the solution manifold
-$\{u(\cdot, \bmy) : \bmy \in \Gamma\} \subset H_0^1(D_x)$:
+with $a(x,\bmy) = a_0(x) + \sum_{j=1}^s y_j a_j(x) \geq a_{\min} > 0$.
+The solution $\bmy \mapsto u(\cdot,\bmy)$ defines an element
+$\bu \in H_0^1(0,1) \otimes L^2(\Gamma)$. The minimal subspace
 \begin{equation*}
     \Umin{x}{\bu}
-    = \overline{\spann\{u(\cdot, \bmy) : \bmy \in \Gamma\}}
-    \subset H_0^1(D_x).
+    = \overline{\spann\{u(\cdot,\bmy) : \bmy \in \Gamma\}}
+    \subset H_0^1(0,1)
 \end{equation*}
-If $a_0$ dominates (i.e., the perturbations $y_j a_j$ are small),
-the solution $u(\cdot, \bmy)$ varies little with $\bmy$, and
-$r_x(\bu)$ is small. More precisely, the Kolmogorov $n$-width
-\begin{equation*}
-    d_n\bigl(\{u(\cdot,\bmy) : \bmy\in\Gamma\},\,H_0^1(D_x)\bigr)
-    \coloneqq \inf_{\substack{W \subset H_0^1(D_x) \\ \dim W = n}}
-    \sup_{\bmy \in \Gamma}
-    \inf_{w \in W} \|u(\cdot,\bmy) - w\|_{H_0^1}
-\end{equation*}
-decays at a rate determined by the smoothness of $a$ in the parameters
-$\bmy$. When $a$ is analytic in $\bmy$ (which holds when the
-$a_j$ are bounded away from zero), the $n$-width decays exponentially:
-$d_n \leq C e^{-cn^{1/s}}$ for constants $C, c > 0$
-(see~\cite{Nouy2017}).
-
-\paragraph{Best approximation from Tucker format.}
-The best Tucker-$(r,r)$ approximation of $\bu$ in $\mathcal{V}$
-is
-\begin{equation*}
-    \bu_r = \sum_{k=1}^r \lambda_k\, v_k^{(x)} \otimes v_k^{(\bmy)},
-    \quad
-    \|\bu - \bu_r\|_{\mathcal{V}}^2 = \sum_{k > r} \lambda_k^2,
-\end{equation*}
-where $\lambda_k$ are the singular values of the solution operator
-$\bmy \mapsto u(\cdot, \bmy)$ as a Hilbert--Schmidt operator. The
-existence of this best approximation is guaranteed by
-Corollary~\ref{cor:best_approx_sobolev}. The spatial basis functions
-$v_k^{(x)} \in H_0^1(D_x)$ are the principal components of the
-solution manifold, and $v_k^{(\bmy)} \in L^2(\Gamma)$ encode the
-parameter dependence. This decomposition is the starting point for
-the \emph{proper orthogonal decomposition} (POD) and reduced basis
-methods used in uncertainty quantification; see~\cite{Nouy2017}.
+has dimension equal to the effective rank of the solution manifold.
+By Corollary~\ref{cor:best_approx_sobolev}, a best Tucker-$(r,r)$
+approximation $\bu_r = \sum_{k=1}^r \lambda_k v_k^{(x)} \otimes
+v_k^{(\bmy)}$ exists, with $\|\bu - \bu_r\|^2 = \sum_{k>r}\lambda_k^2$.
+When $a$ is analytic in $\bmy$, the singular values decay exponentially
+and low-rank approximations are highly accurate~\cite{Nouy2017}.
 \end{example}
 
 %------------------------------------------------------------
