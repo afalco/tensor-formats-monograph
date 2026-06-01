@@ -35,7 +35,7 @@ let $\fr \in \ADTD$ with $\FTv$ a proper set. Is $\FTv$ connected?
 \end{problem}
 
 In finite dimensions, connectedness has been established for the HT
-format~\cite{UschmajewVandereycken2013} and the TT format~\cite{HoltzRohwedderSchneider2012},
+format~\cite{Uschmajew2012} and the TT format~\cite{HoltzRohwedderSchneider2012},
 but the methods used there (algebraic geometry of determinantal varieties)
 do not directly extend to the Banach setting.
 
@@ -208,6 +208,37 @@ Formulate the Dirac--Frenkel variational principle for tree tensor
 networks in the language of $C^*$-algebras and operator systems.
 What is the correct generalisation of the Tucker manifold in the
 non-commutative setting?
+\end{problem}
+
+\begin{problem}[Lindblad dynamics: unbounded generators]
+\label{prob:lindblad_unbounded}
+Extend the well-posedness result of Theorem~\ref{thm:lind:wellposed}
+to unbounded Lindblad operators (e.g., position or momentum operators
+on $L^2(\RR)$). The main difficulty is that the support subspace
+$\supp(\rho(t))$ must evolve within the domain of the generator.
+Formulate the appropriate domain-adapted rank-$r$ stratum and
+construct the corresponding tangent projector.
+\end{problem}
+
+\begin{problem}[CPTP-preserving rank-$r$ reduction]
+\label{prob:lindblad_cptp}
+The Dirac--Frenkel projected Lindblad dynamics preserves positivity
+and trace but does not generally produce a CPTP map. Characterise
+when the projected flow $\rho_0 \mapsto \rho(t)$ is completely
+positive, and design reduced dynamics that are CPTP by construction
+(e.g., via Kraus-form or Cholesky parametrisations).
+\end{problem}
+
+\begin{problem}[Multipartite open systems and tensor networks]
+\label{prob:lindblad_tensor}
+For multipartite open systems $H = \bigotimes_{j=1}^d H_j$, extend
+the projected Lindblad dynamics to tree-based tensor formats on the
+operator space $\cTsa{1}(\bigotimes_j H_j) \cong \bigotimes_j \cL(H_j)$.
+This would provide a rigorous foundation for TDVP-MPO (matrix product
+operator) algorithms for Lindblad equations and connect the quantum
+geometry of Chapters~\ref{chap:quantum_states}--\ref{chap:lindblad}
+with the tree-based manifold theory of
+Chapters~\ref{chap:topTBT}--\ref{chap:TB_manifold}.
 \end{problem}
 
 %------------------------------------------------------------

@@ -211,7 +211,7 @@ $\cT{1}(H) \cong H \otimes_\pi H^*$:
 \begin{proof}
 Parts~(i)--(ii) follow from the identification $\cT{1}(H) \cong H
 \otimes_\pi H^*$ and the definition of Tucker rank
-(Definition~\ref{def:tucker_rank}): $r_\alpha(\rho)$ is the dimension
+(Definition~\ref{def:bounded_tucker_rank}): $r_\alpha(\rho)$ is the dimension
 of $\Umin{\alpha}{\rho}$, which for $\alpha = 1$ is the support in $H$
 and for $\alpha = 2$ is the support in $H^*$ (both have dimension $r$
 by~\eqref{eq:qs:mixed_spectral}). Part~(iii) is
@@ -263,7 +263,7 @@ Let $v \in \bigotimes_{j=1}^d H_j$ with $\|v\|=1$ and let $\alpha
 
 \begin{proof}
 (a)$\Leftrightarrow$(b): by definition of Tucker rank
-(Definition~\ref{def:tucker_rank}).
+(Definition~\ref{def:bounded_tucker_rank}).
 (b)$\Leftrightarrow$(c): Theorem~\ref{thm:qs:minimal_partial_trace}(b).
 (b)$\Leftrightarrow$(d): $r_\alpha(v) = \dim\Umin{\alpha}{v}$.
 \end{proof}
@@ -500,13 +500,13 @@ The error is $\|\rho - \rho_r\|_1 = 2\sum_{k > r} \lambda_k$
 \label{rem:qs:ky_fan}
 The spectral truncation~\eqref{eq:qs:spectral_trunc} is the quantum
 analogue of the HOSVD (Higher-Order SVD) truncation for tensor formats
-(Algorithm~\ref{alg:HOSVD} in Appendix~\ref{app:algorithms}):
+(Algorithm~\ref{app:alg:hosvd} in Appendix~\ref{app:algorithms}):
 in both cases, the best rank-$r$ approximation in the ambient norm is
 obtained by projecting onto the dominant eigenspaces/singular subspaces.
 For tensors with $d \geq 3$, the analogue of~\eqref{eq:qs:spectral_trunc}
 gives a near-best Tucker approximation (quasi-optimality with
 constant $\sqrt{d}$), not an exact best approximation; see
-Section~\ref{sec:algTBT:HOSVD}.
+Appendix~\ref{app:alg:hosvd}.
 \end{remark}
 
 %------------------------------------------------------------
