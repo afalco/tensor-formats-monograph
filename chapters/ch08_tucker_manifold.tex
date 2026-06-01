@@ -20,8 +20,10 @@ Section~\ref{sec:tucker_manifold:decomp} introduces the rank map and
 motivates the manifold structure.
 Section~\ref{sec:tucker_manifold:charts} constructs the local charts
 explicitly. Section~\ref{sec:tucker_manifold:cinfty} proves the
-$\mathcal{C}^\infty$ atlas and the fibre bundle structure
-(Theorem~\ref{thm:Tucker_Banach_Manifold}).
+$\mathcal{C}^\infty$ atlas (Theorem~\ref{thm:Tucker_Banach_Manifold}).
+Section~\ref{sec:tucker_manifold:bundle} develops the fibre bundle
+structure in detail: local trivialisations, transition functions, and
+the structure group $G_\fr = \prod_\alpha \GL{r_\alpha}{\RR}$.
 Section~\ref{sec:tucker_manifold:tangent} identifies the tangent space.
 Section~\ref{sec:tucker_manifold:immersion} proves the immersion theorem
 (Theorem~\ref{thm:tucker_immersion}).
@@ -119,91 +121,27 @@ to the pair $((L_\alpha)_{\alpha \in D},\, E^{(D)})$, where
 $(L_\alpha, E^{(D)})$ are uniquely determined by
 Lemma~\ref{lem:element} below.
 
-\begin{lemma}[Local representation]
+\begin{lemma}[Local representation, {\cite[Lemma~3.7]{FHN2019}}]
 \label{lem:element}
 Under the conditions above, for $\bw \in \Tucker{\fr}{\VD}$
 the following are equivalent:
 \begin{enumerate}
 \item[\textup{(a)}] $\bw \in \chart(\bv)$.
 \item[\textup{(b)}] There exists a unique pair
-    $\bigl((L_\alpha)_{\alpha \in D},\, E^{(D)}\bigr)
-    \in \prod_\alpha \cL\bigl(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv}\bigr)
+    $((L_\alpha)_{\alpha \in D},\, E^{(D)}) \in
+    \prod_\alpha \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})
     \times \RR^{\times r_\alpha}_*$
     such that
     \begin{equation}
     \label{eq:local_rep}
-        \bw
-        = \Bigl(\bigotimes_{\alpha \in D} \exp(L_\alpha)\Bigr)
-          \bigl(\bu(E^{(D)})\bigr),
+        \bw = \Bigl(\bigotimes_{\alpha \in D} \exp(L_\alpha)\Bigr)
+              (\bu(E^{(D)})),
     \end{equation}
-    where $\bu(E^{(D)}) \in \Tucker{\fr}\bigl({}_a\bigotimes_\alpha
-    \Umin{\alpha}{\bv}\bigr)$ is the tensor with core $E^{(D)}$ in
-    the fixed bases $\{u^{(\alpha)}_{i_\alpha}\}$.
+    where $\bu(E^{(D)}) \in \Tucker{\fr}({}_a\bigotimes_\alpha
+    \Umin{\alpha}{\bv})$ is the tensor with core $E^{(D)}$ in the
+    fixed bases.
 \end{enumerate}
 \end{lemma}
-
-\begin{proof}
-We prove (a)$\Rightarrow$(b) and (b)$\Rightarrow$(a).
-
-\medskip
-\noindent\textbf{(a) $\Rightarrow$ (b): Existence and uniqueness.}
-
-Suppose $\bw \in \chart(\bv)$, so $\Umin{\alpha}{\bw} \in
-\GrassB{\Wmin{\alpha}{\bv}, V_\alpha}$ for every $\alpha \in D$.
-
-\textit{Step 1: Recovering $L_\alpha$.}
-Define $L_\alpha$ as the Grassmannian chart coordinate of
-$\Umin{\alpha}{\bw}$ at $\Umin{\alpha}{\bv}$:
-\begin{equation*}
-    L_\alpha
-    \coloneqq \Psi_{\Umin{\alpha}{\bv} \oplus \Wmin{\alpha}{\bv}}
-    \bigl(\Umin{\alpha}{\bw}\bigr)
-    = \Proj{\Wmin{\alpha}{\bv}}{\Umin{\alpha}{\bv}}
-      \big|_{\Umin{\alpha}{\bw}}
-      \circ
-      \bigl(\Proj{\Umin{\alpha}{\bv}}{\Wmin{\alpha}{\bv}}
-      \big|_{\Umin{\alpha}{\bw}}\bigr)^{-1}
-    \in \cL\bigl(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv}\bigr).
-\end{equation*}
-By Proposition~\ref{prop:nilpotent_algebra},
-$\exp(L_\alpha) = \Id{V_\alpha} + L_\alpha$, and
-\begin{equation}
-\label{eq:exp_maps_U_to_Uw}
-    \exp(L_\alpha)\bigl(\Umin{\alpha}{\bv}\bigr)
-    = G(L_\alpha)
-    = \Umin{\alpha}{\bw},
-\end{equation}
-since $G(L_\alpha)$ is the Grassmann chart inverse of $L_\alpha$
-(Theorem~\ref{thm:grassmann_manifold}).
-
-\textit{Step 2: Recovering $E^{(D)}$.}
-Set $\widetilde{\bw} \coloneqq
-\bigl(\bigotimes_{\alpha \in D} \exp(-L_\alpha)\bigr)(\bw)$.
-Since $\exp(-L_\alpha) = \Id{} - L_\alpha = (\exp(L_\alpha))^{-1}$
-maps $\Umin{\alpha}{\bw}$ back to $\Umin{\alpha}{\bv}$
-by~\eqref{eq:exp_maps_U_to_Uw}, we get
-$\Umin{\alpha}{\widetilde\bw} \subset \Umin{\alpha}{\bv}$ for each
-$\alpha$. Proposition~\ref{prop:min_monotone} gives
-$\widetilde\bw \in {}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$,
-and since $\exp(-L_\alpha)$ preserves ranks,
-$\widetilde\bw \in \Tucker{\fr}({}_a\bigotimes_\alpha \Umin{\alpha}{\bv})$.
-Its core array in the fixed bases is the unique $E^{(D)} \in
-\RR^{\times r_\alpha}_*$ such that $\bu(E^{(D)}) = \widetilde\bw$.
-Applying $\bigotimes_\alpha \exp(L_\alpha)$ recovers~\eqref{eq:local_rep}.
-
-\textit{Uniqueness.}
-If $(L_\alpha, E^{(D)})$ and $(L'_\alpha, E'^{(D)})$ both represent $\bw$,
-applying $\bigotimes_\alpha \exp(-L'_\alpha)$ and Step~2 gives
-$E^{(D)} = E'^{(D)}$, and then $L_\alpha = L'_\alpha$ for each $\alpha$.
-
-\medskip
-\noindent\textbf{(b) $\Rightarrow$ (a).}
-
-For $(L_\alpha, E^{(D)})$ with $E^{(D)} \in \RR^{\times r_\alpha}_*$,
-let $\bw$ be defined by~\eqref{eq:local_rep}. By~\eqref{eq:exp_maps_U_to_Uw},
-$\Umin{\alpha}{\bw} = G(L_\alpha) \in \GrassB{\Wmin{\alpha}{\bv}, V_\alpha}$,
-so $\bw \in \chart(\bv)$.
-\end{proof}
 
 Here $\exp(L_\alpha) = \Id{V_\alpha} + L_\alpha$ by the nilpotency
 of $L_\alpha \in \cL_{(\Umin{\alpha}{\bv},\Wmin{\alpha}{\bv})}(V_\alpha)$
@@ -225,7 +163,7 @@ subspace $\Umin{\alpha}{\bv}$ to $\Umin{\alpha}{\bw} = G(L_\alpha)
 \label{sec:tucker_manifold:cinfty}
 %------------------------------------------------------------
 
-\begin{lemma}[Smooth transitions]
+\begin{lemma}[Smooth transitions, {\cite[Lemma~3.8]{FHN2019}}]
 \label{lem:premanifold}
 Under the continuity assumption on the tensor product map
 \eqref{eq:tensor_product_normed}, for $\bv, \bv' \in
@@ -233,67 +171,30 @@ Under the continuity assumption on the tensor product map
 the transition map
 \begin{equation*}
     \chartmap{\bv'} \circ \chartmap{\bv}^{-1} :
-    \chartmap{\bv}\bigl(\chart(\bv) \cap \chart(\bv')\bigr)
+    \chartmap{\bv}(\chart(\bv) \cap \chart(\bv'))
     \longrightarrow
-    \chartmap{\bv'}\bigl(\chart(\bv) \cap \chart(\bv')\bigr)
+    \chartmap{\bv'}(\chart(\bv) \cap \chart(\bv'))
 \end{equation*}
 is $\mathcal{C}^\infty$-Fréchet differentiable \textup{(}analytic if
 the $V_\alpha$ are complex Banach spaces\textup{)}.
 \end{lemma}
 
-\begin{proof}
-Let $\bw \in \chart(\bv) \cap \chart(\bv')$ with chart coordinates
-$\chartmap{\bv}(\bw) = ((L_\alpha), E^{(D)})$ and
-$\chartmap{\bv'}(\bw) = ((L'_\alpha), E'^{(D)})$.
-We show $(L_\alpha, E^{(D)}) \mapsto (L'_\alpha, E'^{(D)})$ is
-$\mathcal{C}^\infty$ (analytic over $\CC$).
-
-\medskip
-\noindent\textbf{Step 1: Smoothness of the Grassmannian component.}
-
-For each $\alpha \in D$, $\Umin{\alpha}{\bw} = G(L_\alpha)$
-(the inverse Grassmann chart of $L_\alpha$ at $\Umin{\alpha}{\bv}$).
-The map
+\begin{proof}[Sketch]
+For $\bw \in \chart(\bv) \cap \chart(\bv')$, the transition map is
 \begin{equation*}
-    L_\alpha \mapsto L'_\alpha
-    = \Psi_{\Umin{\alpha}{\bv'} \oplus \Wmin{\alpha}{\bv'}}(G(L_\alpha))
+    (L_\alpha, E^{(D)}) \mapsto
+    \bigl((\Psi^{(\alpha)}_{\bv'} \circ
+    (\Psi^{(\alpha)}_\bv)^{-1})(L_\alpha),\; f(\mathfrak{L}, \bu(E^{(D)}))\bigr),
 \end{equation*}
-is the transition map of $\Grass{r_\alpha}{V_\alpha}$ between the
-charts at $\Umin{\alpha}{\bv}$ and $\Umin{\alpha}{\bv'}$. Since
-$\Grass{r_\alpha}{V_\alpha}$ is an analytic Banach manifold
-(Theorem~\ref{thm:grassmann_manifold}), its transition maps are
-analytic, hence $L_\alpha \mapsto L'_\alpha$ is analytic.
-More explicitly: $G(L_\alpha) = \{(\Id{}+L_\alpha)(u) : u \in \Umin{\alpha}{\bv}\}$
-is affine-linear in $L_\alpha$; the projections in the chart formula
-\eqref{eq:grassmann_chart} are bounded linear; and inversion of a
-bounded linear isomorphism is analytic (locally given by the Neumann
-series). Their composition is analytic.
-
-\medskip
-\noindent\textbf{Step 2: Smoothness of the core component.}
-
-Given $(L_\alpha)$ (and hence $\Umin{\alpha}{\bw} = G(L_\alpha)$),
-the core is determined by
-\begin{equation*}
-    \bu(E^{(D)})
-    = \Bigl(\bigotimes_{\alpha \in D} \exp(-L_\alpha)\Bigr)(\bw),
-\end{equation*}
-where $\exp(-L_\alpha) = \Id{} - L_\alpha$
-(Proposition~\ref{prop:nilpotent_algebra}).
-The map $(L_\alpha, \bw) \mapsto (\bigotimes_\alpha (\Id{}-L_\alpha))(\bw)$
-is multilinear and continuous in $(L_\alpha)$ and $\bw$, hence
-$\mathcal{C}^\infty$ by Proposition~\ref{prop:multilinear_smooth}
-(analytic over $\CC$ by Corollary~\ref{cor:multilinear_analytic}).
-Reading off the core array $E^{(D)}$ from the result is a bounded
-linear operation. The same applies to $E'^{(D)}$ using $(L'_\alpha)$
-from Step~1.
-
-\medskip
-\noindent\textbf{Conclusion.}
-
-The transition map $(L_\alpha, E^{(D)}) \mapsto (L'_\alpha, E'^{(D)})$
-is a composition of $\mathcal{C}^\infty$ (analytic over $\CC$) maps,
-hence $\mathcal{C}^\infty$ (analytic over $\CC$).
+where $\Psi^{(\alpha)}_\bv$ is the Grassmann chart map at
+$\Umin{\alpha}{\bv}$ (Theorem~\ref{thm:grassmann_manifold}),
+and $f(\mathfrak{L}, \bu(E^{(D)})) = (\bigotimes_\alpha \exp(L_\alpha -
+L'_\alpha))(\bu(E^{(D)}))$.
+The first component is analytic (transition map of the Grassmannian).
+The second is $\mathcal{C}^\infty$ by Proposition~\ref{prop:tensor_smooth}
+(tensor product of $\mathcal{C}^\infty$ maps) and the fact that the
+evaluation map is multilinear and continuous. See~\cite{FHN2019}
+for the complete argument.
 \end{proof}
 
 \begin{theorem}[$\mathcal{C}^\infty$ Tucker manifold,
@@ -401,7 +302,8 @@ ${}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$ (dimension $\prod r_\alpha$)
 and $d$ ``tangent directions'' $\Wmin{\alpha}{\bv} \atens
 \Umin{D\setminus\{\alpha\}}{\bv}$.
 
-\begin{proposition}[Tangent space identification]
+\begin{proposition}[Tangent space identification,
+{\cite[Proposition~4.13]{FHN2019}}]
 \label{prop:tangent_space}
 Under the continuity assumption, the tangent map of the inclusion
 $\mathfrak{i}: \Tucker{\fr}{\VD} \hookrightarrow \VDnorm$ at $\bv$ is
@@ -426,81 +328,16 @@ where $\dot{u}^{(\alpha)}_{i_\alpha} = \dot{L}_\alpha(u^{(\alpha)}_{i_\alpha})
 \end{proposition}
 
 \begin{proof}
-We compute $T_\bv \mathfrak{i}$ by differentiating
-$\mathfrak{i} \circ \chartmap{\bv}^{-1}$ at the base point
-$(0, C_\bv^{(D)}) = \chartmap{\bv}(\bv)$.
-
-\medskip
-\noindent\textbf{Step 1: The inverse chart map is degree-one polynomial.}
-
-By Lemma~\ref{lem:element} and Proposition~\ref{prop:nilpotent_algebra},
-$\exp(L_\alpha) = \Id{} + L_\alpha$, so:
-\begin{align}
-\label{eq:chart_inv_poly}
-    (\mathfrak{i} \circ \chartmap{\bv}^{-1})(L_\alpha, E^{(D)})
-    &= \Bigl(\bigotimes_\alpha (\Id{} + L_\alpha)\Bigr)
-       \Bigl(\sum_{(i_\alpha)} E^{(D)}_{(i_\alpha)}
-       \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}\Bigr).
-\end{align}
-Expanding $\bigotimes_\alpha(\Id{}+L_\alpha)$ by multilinearity and
-using the nilpotency $L_\alpha \circ L_\beta = 0$ for all $\alpha, \beta$
-(Proposition~\ref{prop:nilpotent_algebra}), all terms of degree $\geq 2$
-in $(L_\alpha)$ vanish:
-\begin{equation*}
-    \bigotimes_\alpha (\Id{} + L_\alpha)
-    = \bigotimes_\alpha \Id{}
-    + \sum_{\alpha \in D}
-      L_\alpha \otimes \bigotimes_{\beta \neq \alpha} \Id{\beta}
-    \pmod{\text{degree} \geq 2}.
-\end{equation*}
-Hence~\eqref{eq:chart_inv_poly} is exactly affine-linear in
-$(L_\alpha, E^{(D)})$.
-
-\medskip
-\noindent\textbf{Step 2: Computing the Fréchet derivative.}
-
-Differentiating~\eqref{eq:chart_inv_poly} at $(0, C_\bv^{(D)})$ in
-direction $(\dot{L}_\alpha, \dot{C}^{(D)})$:
-\begin{align*}
-    D(\mathfrak{i} \circ \chartmap{\bv}^{-1})\big|_{(0,C_\bv^{(D)})}
-    (\dot{L}_\alpha, \dot{C}^{(D)})
-    &= \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)}
-       \bigotimes_\alpha u^{(\alpha)}_{i_\alpha}\\
-    &\quad+ \sum_{\alpha \in D}
-       \sum_{(i_\alpha)} C^{(D)}_{\bv,(i_\alpha)}\,
-       \dot{L}_\alpha(u^{(\alpha)}_{i_\alpha})
-       \otimes \bigotimes_{\beta \neq \alpha} u^{(\beta)}_{i_\beta}.
-\end{align*}
-Using the definition of $\bU^{(\alpha)}_{i_\alpha}$
-(formula~\eqref{eq:tucker_Ualpha}), the second line equals
-$\sum_\alpha \sum_{i_\alpha}
-\dot{L}_\alpha(u^{(\alpha)}_{i_\alpha}) \otimes \bU^{(\alpha)}_{i_\alpha}$,
-giving formula~\eqref{eq:tangent_formula} with
-$\dot{u}^{(\alpha)}_{i_\alpha} = \dot{L}_\alpha(u^{(\alpha)}_{i_\alpha})
-\in \Wmin{\alpha}{\bv}$.
-
-\medskip
-\noindent\textbf{Step 3: Image equals $\ZD{\bv}$, and injectivity.}
-
-Formula~\eqref{eq:tangent_formula} shows $T_\bv\mathfrak{i}$ maps into
-$\ZD{\bv}$: the first term lies in
-${}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$ and the $\alpha$-th summand
-in the second term lies in
-$\Wmin{\alpha}{\bv} \atens \Umin{D\setminus\{\alpha\}}{\bv}$.
-
-For surjectivity: given $\xi \in \ZD{\bv}$ decomposed as
-$\xi = \xi_0 + \sum_\alpha \xi_\alpha$ (cf.~Definition~\ref{def:ZD}),
-write $\xi_0 = \sum_{(i_\alpha)} \dot{C}^{(D)}_{(i_\alpha)}
-\bigotimes_\alpha u^{(\alpha)}_{i_\alpha}$ to determine $\dot{C}^{(D)}$,
-and $\xi_\alpha = \sum_{i_\alpha} w^{(\alpha)}_{i_\alpha} \otimes
-\bU^{(\alpha)}_{i_\alpha}$ with $w^{(\alpha)}_{i_\alpha} \in
-\Wmin{\alpha}{\bv}$, defining $\dot{L}_\alpha$ by
-$\dot{L}_\alpha(u^{(\alpha)}_{i_\alpha}) = w^{(\alpha)}_{i_\alpha}$.
-Then $T_\bv\mathfrak{i}(\dot{L}_\alpha, \dot{C}^{(D)}) = \xi$.
-
-Injectivity: if $T_\bv\mathfrak{i}(\dot{L}_\alpha, \dot{C}^{(D)}) = 0$,
-then $\xi_0 = 0$ gives $\dot{C}^{(D)} = 0$, and $\xi_\alpha = 0$
-for each $\alpha$ gives $\dot{L}_\alpha = 0$.
+The formula~\eqref{eq:tangent_formula} follows by differentiating
+$(\mathfrak{i} \circ \chartmap{\bv}^{-1})$ at the origin
+$(\mathfrak{0}, C^{(D)})$ using Proposition~\ref{prop:tensor_smooth}
+and the Leibniz rule for tensor products. Injectivity of $T_\bv\mathfrak{i}$
+follows from the linear independence of
+$\{\bigotimes_\alpha u^{(\alpha)}_{i_\alpha}\}$ (a basis of
+${}_a\bigotimes_\alpha \Umin{\alpha}{\bv}$) and of
+$\{\bU^{(\alpha)}_{i_\alpha}\}_{i_\alpha}$ for each $\alpha$
+(a basis of $\Umin{D\setminus\{\alpha\}}{\bv}$). See~\cite{FHN2019}
+for the complete proof.
 \end{proof}
 
 %------------------------------------------------------------
@@ -513,7 +350,7 @@ $\VDnorm$, it remains to show that $\ZD{\bv} \in \GrassB{\VDnorm}$,
 i.e., that $\ZD{\bv}$ is a split subspace of the ambient Banach space.
 This requires condition~\condINJ.
 
-\begin{lemma}
+\begin{lemma}[{\cite[Lemma~4.13]{FHN2019}}]
 \label{lem:two_faces}
 Assume \condINJ\ holds. Let $\beta \in D$ and $W_\beta \in
 \GrassB{V_{\beta,\|\cdot\|_\beta}}$ with $V_{\beta,\|\cdot\|_\beta}
@@ -526,58 +363,13 @@ Then for every finite-dimensional subspace $U_{[\beta]} \subset
 \end{lemma}
 
 \begin{proof}
-We construct an explicit bounded idempotent with image
-$W_\beta \atens U_{[\beta]}$.
-
-\medskip
-\noindent\textbf{Step 1: Bounded projection onto $U_{[\beta]}$.}
-
-Since $U_{[\beta]}$ is finite-dimensional,
-Proposition~\ref{prop:finitedim_split} provides a complement
-$W_{[\beta]}$ with $\Vbigalpha^{[\beta]} = U_{[\beta]} \oplus W_{[\beta]}$.
-Let $Q_{[\beta]} \coloneqq \Proj{U_{[\beta]}}{W_{[\beta]}}$.
-The map $\overline{\Id{\beta} \otimes Q_{[\beta]}} \in \cL(\VDnorm)$
-is well-defined and bounded: on elementary tensors,
-$\|v_\beta \otimes Q_{[\beta]}(\bU)\|_D = \|v_\beta\|_\beta
-\|Q_{[\beta]}(\bU)\|_{[\beta]} \leq \|v_\beta\|_\beta
-\|Q_{[\beta]}\|\,\|\bU\|_{[\beta]}$
-using \condCROSS, and the extension to $\VDnorm$ by continuity is
-bounded with norm $\leq \|Q_{[\beta]}\|$.
-
-\medskip
-\noindent\textbf{Step 2: Construction of $\mathcal{P}$.}
-
-Let $P_\beta \coloneqq \Proj{W_\beta}{U_\beta} \in
-\cL(V_{\beta,\|\cdot\|_\beta})$ be bounded (since $W_\beta$ is split).
-Define
-\begin{equation*}
-    \mathcal{P}
-    \coloneqq \overline{P_\beta \otimes \Id{[\beta]}}
-    \circ
-    \overline{\Id{\beta} \otimes Q_{[\beta]}}
-    \in \cL(\VDnorm).
-\end{equation*}
-This is a composition of bounded operators, hence bounded.
-
-\textit{Idempotency.} On elementary tensors:
-$\mathcal{P}^2(v_\beta \otimes \bU)
-= P_\beta^2(v_\beta) \otimes Q_{[\beta]}^2(\bU)
-= P_\beta(v_\beta) \otimes Q_{[\beta]}(\bU)
-= \mathcal{P}(v_\beta \otimes \bU)$.
-By density and continuity, $\mathcal{P}^2 = \mathcal{P}$.
-
-\textit{Image.} On elementary tensors:
-$\mathcal{P}(v_\beta \otimes \bU)
-= P_\beta(v_\beta) \otimes Q_{[\beta]}(\bU)
-\in W_\beta \atens U_{[\beta]}$.
-Conversely, for $w_\beta \in W_\beta$ and $u \in U_{[\beta]}$:
-$\mathcal{P}(w_\beta \otimes u) = w_\beta \otimes u$,
-since $P_\beta w_\beta = w_\beta$ and $Q_{[\beta]} u = u$.
-Hence $\mathrm{Im}\,\mathcal{P} = W_\beta \atens U_{[\beta]}$.
-
-\medskip
-By Proposition~\ref{prop:split_equiv}(b),
-$W_\beta \atens U_{[\beta]} \in \GrassB{\VDnorm}$.
+The proof uses the continuity of the projection
+$\Id{\beta} \otimes P_{U_{[\beta]} \oplus W_{[\beta]}}$
+on $\VDnorm$ (which follows from \condINJ\ and a norm estimate
+via~\cite[Lemma~3.18]{FH2012}), and then decomposes
+$\Id{\beta} = P_{U_\beta \oplus W_\beta} + P_{W_\beta \oplus U_\beta}$
+to construct an explicit bounded projection onto
+$W_\beta \atens U_{[\beta]}$. See~\cite{FHN2019} for details.
 \end{proof}
 
 \begin{lemma}[{\cite[Lemma~4.14]{FHN2019}}]
@@ -640,6 +432,220 @@ Since $\VDnorm$ is reflexive, every closed subspace is proximinal
 \end{proof}
 
 %------------------------------------------------------------
+\section{The Tucker fibre bundle}
+\label{sec:tucker_manifold:bundle}
+%------------------------------------------------------------
+
+Theorem~\ref{thm:Tucker_Banach_Manifold}(ii) asserts that
+$(\Tucker{\fr}{\VD}, \prod_\alpha \Grass{r_\alpha}{V_\alpha},
+\varrho_\fr)$ is a fibre bundle. In this section we develop this
+structure in detail: we identify the transition functions, the
+structure group, and the local trivialisations explicitly in terms
+of the chart maps, and we compare the bundle structure with the
+quotient description available in finite dimensions.
+
+\subsection*{Local trivialisations}
+
+Fix $\bv \in \Tucker{\fr}{\VD}$ and recall the chart domain
+$\chart(\bv)$ from~\eqref{eq:chart_domain}. The rank map
+$\varrho_\fr$ restricted to $\chart(\bv)$ takes values in
+\begin{equation*}
+    \mathcal{B}(\bv)
+    \coloneqq \prod_{\alpha \in D}
+    \GrassB{\Wmin{\alpha}{\bv}, V_\alpha}
+    \subset \prod_{\alpha \in D} \Grass{r_\alpha}{V_\alpha},
+\end{equation*}
+which is the product of the Grassmannian chart domains at
+$(\Umin{\alpha}{\bv})_{\alpha \in D}$, an open subset of the base.
+
+\begin{proposition}[Local trivialisation]
+\label{prop:tucker_triv}
+For each $\bv \in \Tucker{\fr}{\VD}$, the map
+\begin{equation}
+\label{eq:tucker_triv}
+    \chi_\bv :
+    \varrho_\fr^{-1}\bigl(\mathcal{B}(\bv)\bigr)
+    \xrightarrow{\;\sim\;}
+    \mathcal{B}(\bv) \times F_\fr,
+    \qquad
+    \bw \longmapsto
+    \bigl((\Umin{\alpha}{\bw})_{\alpha \in D},\;
+    E^{(D)}(\bw)\bigr),
+\end{equation}
+where $F_\fr \coloneqq \RR^{\times_{\alpha \in D} r_\alpha}_*$
+and $E^{(D)}(\bw)$ is the core tensor of $\bw$ in the chart at $\bv$
+\textup{(}Lemma~\ref{lem:element}\textup{)}, is a $\mathcal{C}^\infty$
+diffeomorphism satisfying $\mathrm{pr}_1 \circ \chi_\bv = \varrho_\fr$.
+\end{proposition}
+
+\begin{proof}
+By Lemma~\ref{lem:element}, every $\bw \in \chart(\bv)$ is uniquely
+represented by $((L_\alpha)_\alpha, E^{(D)})$, and
+$\varrho_\fr(\bw) = (\Umin{\alpha}{\bw})_\alpha =
+(G(L_\alpha))_\alpha \in \mathcal{B}(\bv)$.
+The Grassmannian chart maps $\Psi_{\Umin{\alpha}{\bv} \oplus \Wmin{\alpha}{\bv}}$
+give a diffeomorphism $\mathcal{B}(\bv) \cong \prod_\alpha
+\cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})$. Under this identification,
+$\chi_\bv$ becomes the chart map $\chartmap{\bv}$ restricted to the
+base component (the $L_\alpha$ part) and the fibre component
+(the $E^{(D)}$ part). The chart map is a $\mathcal{C}^\infty$
+diffeomorphism by Lemma~\ref{lem:premanifold} and
+Lemma~\ref{lem:element}, and $\mathrm{pr}_1 \circ \chi_\bv =
+\varrho_\fr$ is immediate from the definition.
+\end{proof}
+
+\subsection*{Transition functions and structure group}
+
+\begin{proposition}[Transition functions]
+\label{prop:tucker_transition_fns}
+For $\bv, \bv' \in \Tucker{\fr}{\VD}$ with
+$\mathcal{B}(\bv) \cap \mathcal{B}(\bv') \neq \emptyset$, the
+transition function
+\begin{equation}
+\label{eq:tucker_transition_fn}
+    g_{\bv'\bv} :
+    \mathcal{B}(\bv) \cap \mathcal{B}(\bv')
+    \longrightarrow \GL{F_\fr}
+\end{equation}
+defined by $\chi_{\bv'} \circ \chi_\bv^{-1}(U, e)
+= (U, g_{\bv'\bv}(U) \cdot e)$
+is a $\mathcal{C}^\infty$ map taking values in the group
+\begin{equation}
+\label{eq:tucker_structure_group}
+    G_\fr \coloneqq
+    \prod_{\alpha \in D} \GL{r_\alpha}{\RR}
+    \subset \GL{F_\fr},
+\end{equation}
+acting on $F_\fr = \RR^{\times r_\alpha}_*$ by simultaneous change
+of basis: for $g = (g_\alpha)_\alpha \in G_\fr$ and
+$E^{(D)} \in F_\fr$,
+\begin{equation}
+\label{eq:tucker_group_action}
+    (g \cdot E^{(D)})_{i_1 \ldots i_d}
+    = \sum_{j_1, \ldots, j_d}
+      (g_1)_{i_1 j_1} \cdots (g_d)_{i_d j_d}\,
+      E^{(D)}_{j_1 \ldots j_d}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For $\bw \in \varrho_\fr^{-1}(\mathcal{B}(\bv) \cap \mathcal{B}(\bv'))$,
+write $\chi_\bv(\bw) = (U, E^{(D)})$ and $\chi_{\bv'}(\bw) =
+(U, E'^{(D)})$ (both have the same base component since $\varrho_\fr(\bw)
+= U$ is intrinsic). The two core tensors $E^{(D)}$ and $E'^{(D)}$
+represent the same tensor $\bw$ in the two chart bases:
+\begin{equation*}
+    \bw
+    = \sum_{(i_\alpha)} E^{(D)}_{(i_\alpha)}
+      \bigotimes_\alpha \exp(L_\alpha)(u^{(\alpha)}_{i_\alpha})
+    = \sum_{(i_\alpha)} E'^{(D)}_{(i_\alpha)}
+      \bigotimes_\alpha \exp(L'_\alpha)(u'^{(\alpha)}_{i_\alpha}).
+\end{equation*}
+Since both $\exp(L_\alpha)(u^{(\alpha)}_{i_\alpha})$ and
+$\exp(L'_\alpha)(u'^{(\alpha)}_{i_\alpha})$ are bases of
+$\Umin{\alpha}{\bw}$, there exist matrices $g_\alpha \in \GL{r_\alpha}{\RR}$
+relating them:
+$\exp(L_\alpha)(u^{(\alpha)}_{i_\alpha})
+= \sum_j (g_\alpha)_{ij}
+\exp(L'_\alpha)(u'^{(\alpha)}_{j_\alpha})$.
+Substituting into the two representations gives
+$E'^{(D)}_{(i_\alpha)} = \sum_{(j_\alpha)} \prod_\alpha (g_\alpha)_{i_\alpha j_\alpha}
+E^{(D)}_{(j_\alpha)}$, which is exactly~\eqref{eq:tucker_group_action}.
+
+The map $U \mapsto g_{\bv'\bv}(U)$ is $\mathcal{C}^\infty$ because
+it is the composition of $\mathcal{C}^\infty$ Grassmannian transition
+maps (Lemma~\ref{lem:premanifold}, Step~1).
+\end{proof}
+
+\begin{remark}[The bundle is principal over its structure group]
+\label{rem:tucker_principal}
+Proposition~\ref{prop:tucker_transition_fns} shows that the Tucker
+bundle has structure group $G_\fr = \prod_\alpha \GL{r_\alpha}{\RR}$,
+which is a \emph{finite-dimensional} Lie group regardless of the
+(possibly infinite-dimensional) component spaces $V_\alpha$. This is
+the key reason why the bundle has good properties (e.g., the fibre is
+a smooth manifold, and the bundle admits a $\mathcal{C}^\infty$ atlas)
+even in infinite dimensions.
+
+The fibre $F_\fr = \RR^{\times r_\alpha}_*$ is the set of arrays of
+full Tucker rank, i.e., the complement of a closed algebraic variety
+in $\RR^{\times r_\alpha}$. The group $G_\fr$ acts on $F_\fr$ freely
+(a full-rank array cannot be fixed by a non-trivial gauge
+transformation) and properly (since $G_\fr$ is finite-dimensional Lie
+and acts by linear isomorphisms). Therefore the bundle is a
+\emph{principal $G_\fr$-bundle} in the classical sense.
+\end{remark}
+
+\subsection*{The quotient description and its limitations}
+
+In finite dimensions, the structure group $G_\fr$ acts on the
+total space of frames:
+\begin{equation}
+\label{eq:tucker_frame_bundle}
+    \widetilde{\Tucker{\fr}{\VD}}
+    \coloneqq
+    \bigl\{
+        (\bv, (u^{(\alpha)}_{i_\alpha})_{\alpha,i_\alpha}) :
+        \bv \in \Tucker{\fr}{\VD},\;
+        \{u^{(\alpha)}_{i_\alpha}\}_{i_\alpha=1}^{r_\alpha}
+        \text{ basis of } \Umin{\alpha}{\bv}
+    \bigr\},
+\end{equation}
+and $\Tucker{\fr}{\VD} = \widetilde{\Tucker{\fr}{\VD}} / G_\fr$, giving
+the quotient description of~\cite{KochLubich2007,UschmajewVandereycken2013}.
+
+In infinite dimensions, this quotient description breaks down for the
+following reason: the frame bundle $\widetilde{\Tucker{\fr}{\VD}}$ has
+a natural topology as a product $\Tucker{\fr}{\VD} \times
+\prod_\alpha \GL{\RR^{r_\alpha}, \Umin{\alpha}{\bv}}$, but the
+group $G_\fr$ acts on the \emph{second factor only}, and the projection
+$\widetilde{\Tucker{\fr}{\VD}} \to \Tucker{\fr}{\VD}$ is a principal
+$G_\fr$-bundle over $\Tucker{\fr}{\VD}$ --- which is what we are trying
+to construct. The quotient construction is circular in infinite
+dimensions.
+
+The explicit atlas approach of Section~\ref{sec:tucker_manifold:charts}
+resolves this by working directly with the Grassmannian structure of
+the base $\prod_\alpha \Grass{r_\alpha}{V_\alpha}$, bypassing the
+group action entirely. The bundle structure is then recovered
+a posteriori from Propositions~\ref{prop:tucker_triv}
+and~\ref{prop:tucker_transition_fns}.
+
+\subsection*{Special cases}
+
+\begin{example}[$d = 2$: line bundle and matrix bundle]
+\label{ex:tucker_d2_bundle}
+For $d = 2$:
+\begin{enumerate}
+\item[\textup{(i)}] If $r_1 = r_2 = 1$ (rank-one matrices), the fibre
+    is $F_{(1,1)} = \RR^* = \RR \setminus \{0\}$ and the structure
+    group is $G_{(1,1)} = \RR^* \times \RR^*$. The Tucker bundle is
+    a \emph{line bundle} over
+    $\Grass{1}{V_1} \times \Grass{1}{V_2}
+    \cong \mathbb{P}(V_1) \times \mathbb{P}(V_2)$ (the product of
+    projective spaces).
+\item[\textup{(ii)}] If $r_1 = r_2 = r \geq 2$ (matrices of rank $r$),
+    the fibre is $F_{(r,r)} = \GL{r}{\RR} \subset \RR^{r \times r}$
+    and the structure group is $G_{(r,r)} = \GL{r}{\RR} \times
+    \GL{r}{\RR}$, acting by $(g_1, g_2) \cdot M = g_1 M g_2^{-1}$.
+    This recovers the principal bundle description of rank-$r$ matrices
+    as $\GL{r}{\RR} \times \GL{r}{\RR}$-equivariant maps.
+\end{enumerate}
+\end{example}
+
+\begin{example}[Hilbert case: unitary structure group]
+\label{ex:tucker_hilbert_bundle}
+If each $V_\alpha$ is a Hilbert space and the bases
+$\{u^{(\alpha)}_{i_\alpha}\}$ are chosen to be orthonormal, the
+structure group reduces from $\GL{r_\alpha}{\RR}$ to the orthogonal
+group $O(r_\alpha)$. In the complex Hilbert case it reduces to
+$U(r_\alpha)$ (unitary group). This is the structure group used in the
+Hilbert-space treatments of~\cite{KochLubich2007} for MCTDH and is
+the reason why gauge invariance in quantum chemistry can be phrased
+in terms of unitary transformations.
+\end{example}
+
+%------------------------------------------------------------
 \section{The tensor space as a Banach manifold}
 \label{sec:tucker_manifold:full}
 %------------------------------------------------------------
@@ -671,7 +677,7 @@ Dirac--Frenkel variational principle for the MCTDH method. Their
 approach, however, uses the Hilbert structure (metric projection)
 and does not extend to Banach spaces.
 
-Uschmajew and Vandereycken~\cite{UschmajewVandereycken2013} studied the HT
+Uschmajew and Vandereycken~\cite{Uschmajew2012} studied the HT
 manifold in finite dimensions as a quotient manifold
 $\GL{r_1} \times \cdots \times \GL{r_d} \backslash \FTv / G$
 for a gauge group $G$. The description in~\cite{FHN2019} is
