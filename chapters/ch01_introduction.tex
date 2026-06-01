@@ -174,6 +174,25 @@ onto it). The immersion theorems of Chapters~\ref{chap:tucker_manifold}
 and~\ref{chap:TB_manifold} — the deepest results of the monograph —
 establish exactly this.
 
+\paragraph{Question 4 (Chapters~\ref{chap:quantum_states}
+and~\ref{chap:lindblad}).}
+\emph{Can the tensor format framework be used to describe and approximate
+quantum states, and to reduce the Lindblad master equation to a
+finite-rank manifold?}
+
+The answer is \emph{yes}, through a single observation that connects
+the two theories: for a non-zero vector $v$ in a Hilbert tensor space
+$H = \bigotimes_j H_j$, the minimal subspace $\Umin{\alpha}{v}$ of
+Chapter~\ref{chap:minsubspaces} coincides exactly with the support of
+the reduced density operator $\rho_\alpha = \mathrm{Tr}_{\alpha^c}(\rho_v)$.
+The Tucker rank of $v$ is the Schmidt rank of the quantum state; the
+Tucker manifold $\Tucker{\fr}{H}$ is the natural variational class for
+states with prescribed entanglement structure. The Dirac--Frenkel
+principle of Chapter~\ref{chap:DF} then yields a well-posed projected
+dynamics for both the von Neumann equation (closed systems) and the
+Lindblad equation (open systems) on the finite-rank manifold
+$\Drank{r}{H} \subset \cTsa{1}(H)$.
+
 %------------------------------------------------------------
 \section{The four source papers}
 \label{sec:intro:papers}
@@ -222,6 +241,23 @@ compatible with the Tucker structure at each level of the tree, and
 extends the Dirac--Frenkel principle to tree-based formats.
 It forms the basis of Chapter~\ref{chap:TB_manifold}.
 
+\medskip
+
+\noindent\textbf{[AF2026]} \emph{Fixed-Rank Density Operators in Trace
+Norm: Grassmann--Banach Manifolds and Dirac--Frenkel Projection for
+Lindblad Dynamics}~\cite{AcevedoFalco2026}. Written in collaboration
+with Alberto Acevedo, this paper develops the Grassmann--Banach
+manifold structure of fixed-rank density operators in the trace-norm
+topology, establishes the bounded tangent projector, and proves
+well-posedness of the projected Lindblad dynamics on the finite-rank
+manifold $\Drank{r}{H}$. The fundamental observation motivating this
+work — that the minimal subspace $\Umin{\alpha}{v}$ of a tensor $v$
+equals the support of the corresponding partial trace $\rho_\alpha =
+\mathrm{Tr}_{\alpha^c}(\rho_v)$ — connects the tensor format theory of
+the earlier papers with quantum mechanics. It forms the basis of
+Part~\ref{part:quantum} (Chapters~\ref{chap:quantum_states}
+and~\ref{chap:lindblad}).
+
 %------------------------------------------------------------
 \section{What this monograph adds}
 \label{sec:intro:added}
@@ -258,10 +294,10 @@ this monograph contributes the following:
     with historical notes that place the results in context and compare
     them with alternative approaches in the literature.
 
-\item \textbf{Open problems.} Chapter~\ref{chap:open} collects ten
-    concrete open problems arising naturally from the theory, ranging
-    from the global topology of tensor manifolds to learning theory on
-    tree-based manifolds.
+\item \textbf{Open problems.} Chapter~\ref{chap:open} collects concrete
+    open problems arising naturally from the theory, ranging from the
+    global topology of tensor manifolds to learning theory and the
+    extension of the Lindblad reduction to unbounded generators.
 \end{enumerate}
 
 %------------------------------------------------------------
@@ -325,12 +361,30 @@ We summarise the principal theorems of the monograph, grouped by theme.
     holds on $\FTv$.
 \end{itemize}
 
+\paragraph{Quantum states and Lindblad dynamics
+(Chapters~\ref{chap:quantum_states}--\ref{chap:lindblad}).}
+
+\begin{itemize}
+\item \emph{Theorem~\ref{thm:qs:minimal_partial_trace}} [AF2026]:
+    For $v \in \bigotimes_j H_j$ with $\|v\|=1$, the support of
+    the partial trace satisfies
+    $\mathrm{supp}(\mathrm{Tr}_{\alpha^c}(\rho_v)) = \Umin{\alpha}{v}$
+    and $\mathrm{rank}(\rho_\alpha) = r_\alpha(v)$.
+\item \emph{Theorem~\ref{thm:qs:manifold}} [AF2026]: The fixed-rank
+    stratum $\Drank{r}{H}$ is a $\mathcal{C}^\infty$-Banach manifold
+    in the trace-norm topology, with bounded tangent projector
+    $\hat{P}_\rho: \cTsa{1}(H) \to T_\rho \Drank{r}{H}$.
+\item \emph{Theorem~\ref{thm:lind:wellposed}} [AF2026]: The
+    Dirac--Frenkel projected Lindblad dynamics on $\Drank{r}{H}$
+    has unique local solutions preserving trace, rank, and positivity.
+\end{itemize}
+
 %------------------------------------------------------------
 \section{Guide to the reader}
 \label{sec:intro:guide}
 %------------------------------------------------------------
 
-The monograph is organised into four parts.
+The monograph is organised into five parts.
 
 \textbf{Part~\ref{part:foundations}: Algebraic and Topological Foundations}
 (Chapters~\ref{chap:banach}--\ref{chap:minsubspaces}).
@@ -372,12 +426,42 @@ which relies on Lemmas~\ref{lem:two_faces} and~\ref{lem:direct_sum_G}.}
 (Chapters~\ref{chap:DF}--\ref{chap:open}).
 Chapter~\ref{chap:DF} applies the geometric results to the
 Dirac--Frenkel variational principle, establishing the existence and
-characterisation of solutions to the reduced ODE on tensor manifolds.
-Chapter~\ref{chap:open} collects ten open problems.
+characterisation of solutions to the reduced ODE on tensor manifolds,
+and derives the explicit kinematic equations (the MCTDH system) in
+local chart coordinates.
+Chapter~\ref{chap:open} collects open problems.
 
-The three appendices (Appendices~\ref{app:manifolds}--\ref{app:notation_index})
-provide quick references for Banach manifold theory, functional analysis,
-and the notation.
+\textbf{Part~\ref{part:quantum}: Quantum States and Open Systems}
+(Chapters~\ref{chap:quantum_states}--\ref{chap:lindblad}).
+Chapter~\ref{chap:quantum_states} develops the connection between
+tensor formats and quantum mechanics: the minimal subspace
+$\Umin{\alpha}{v}$ equals the support of the reduced density operator
+$\rho_\alpha$, the Tucker manifold is the natural variational class for
+states with fixed entanglement structure, and the best-approximation
+theorem becomes quantum state compression. Chapter~\ref{chap:lindblad}
+applies the Dirac--Frenkel principle to the Lindblad master equation,
+establishing well-posedness of the projected dynamics on the finite-rank
+manifold $\Drank{r}{H}$ and deriving the kinematic equations in
+Stiefel-core coordinates.
+\emph{Readers without background in quantum mechanics should read
+Appendix~\ref{app:quantum} before Part~\ref{part:quantum}.
+No physics background is assumed: Appendix~\ref{app:quantum} develops
+all operator-theoretic prerequisites from first principles.}
+
+The five appendices provide quick reference material.
+Appendix~\ref{app:manifolds} is an index to the Banach manifold theory
+of Chapter~\ref{chap:banach}, plus the ODE existence theorem on Banach
+manifolds (used in Chapter~\ref{chap:DF}) and material on connections and
+curvature (for Chapter~\ref{chap:open}).
+Appendix~\ref{app:functional} is an index to the functional analysis
+of Chapters~\ref{chap:banach}--\ref{chap:minsubspaces}, plus the
+Hahn--Banach and Picard--Lindelöf theorems in Banach spaces.
+Appendix~\ref{app:quantum} develops the operator-theoretic background
+for Part~\ref{part:quantum}: Hilbert--Schmidt operators, trace-class
+operators, density operators, and their connection to tensor products.
+Appendix~\ref{app:algorithms} collects the main algorithms for tensor
+approximation (HOSVD, ALS, projector-splitting integrator, DMRG).
+Appendix~\ref{app:notation_index} is the complete index of notation.
 
 \paragraph{Prerequisites.} The reader is assumed to be familiar with
 functional analysis at the level of a standard graduate course (Banach
