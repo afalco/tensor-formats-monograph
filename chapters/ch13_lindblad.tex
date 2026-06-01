@@ -1,0 +1,497 @@
+%============================================================
+%  ch13_lindblad.tex
+%  Chapter 13: The Dirac--Frenkel Principle for Open Quantum
+%  Systems
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: Acevedo--Falcó (2026), FHN2019
+%  Estimated length: ~30 pp.
+%============================================================
+
+\chapter{The Dirac--Frenkel Principle for Open Quantum Systems}
+\label{chap:lindblad}
+
+Chapter~\ref{chap:DF} established the Dirac--Frenkel variational
+principle for abstract Cauchy problems on tensor Banach manifolds.
+Chapter~\ref{chap:quantum_states} identified the fixed-rank stratum
+$\Drank{r}{H}$ as a smooth Banach manifold within the trace-class
+Banach space $\cTsa{1}(H)$, inheriting all the geometric properties
+developed in Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold}.
+This chapter combines these two lines to obtain the Dirac--Frenkel
+principle for quantum master equations on $\cTsa{1}(H)$: the Lindblad
+(GKSL) equation for open quantum systems.
+
+The Lindblad equation describes the evolution of the state $\rho(t)
+\in \Dstate{H}$ of a quantum system coupled to an environment. Its
+generator $\Lind$ maps $\cTsa{1}(H)$ to itself and preserves
+$\Dstate{H}$. Since exact simulation of $\rho(t)$ in
+infinite-dimensional systems is generally intractable, one seeks a
+reduced dynamics on the finite-rank manifold $\Drank{r}{H}$,
+obtained by projecting the Lindblad vector field onto the tangent space
+of $\Drank{r}{H}$.
+
+Section~\ref{sec:lind:equation} formulates the Lindblad equation as an
+ODE on $\cTsa{1}(H)$ and identifies its vector field.
+Section~\ref{sec:lind:tangent} develops the tangent space of $\Drank{r}{H}$
+via minimal subspaces and establishes the bounded projector.
+Section~\ref{sec:lind:df} states and proves the main well-posedness theorem.
+Section~\ref{sec:lind:preservation} analyses which structural properties
+(trace, rank, positivity) are preserved by the projected dynamics.
+Section~\ref{sec:lind:kinematic} derives the kinematic equations in
+factorised coordinates, recovering the equations of Chapter~\ref{chap:DF}
+as a special case.
+Section~\ref{sec:lind:history} contains historical notes.
+
+%------------------------------------------------------------
+\section{The Lindblad equation on $\cTsa{1}(H)$}
+\label{sec:lind:equation}
+%------------------------------------------------------------
+
+\subsection*{The GKSL generator}
+
+The most general Markovian master equation for the state $\rho(t)
+\in \Dstate{H}$ of an open quantum system is the
+\emph{Gorini--Kossakowski--Sudarshan--Lindblad} (GKSL) equation:
+\begin{equation}
+\label{eq:lind:GKSL}
+    \dot\rho(t) = \Lind(\rho(t))
+    \coloneqq -i[H, \rho(t)]
+    + \sum_{j \in J} \Bigl(
+    L_j \rho(t) L_j^*
+    - \tfrac{1}{2}\{L_j^* L_j, \rho(t)\}
+    \Bigr),
+\end{equation}
+where:
+\begin{itemize}
+\item $H = H^* \in \cL(H)$ is the \emph{Hamiltonian} (self-adjoint,
+    bounded);
+\item $\{L_j\}_{j \in J} \subset \cL(H)$ are the \emph{Lindblad
+    operators} (noise operators), with $J$ a finite or countable index set;
+\item $[H, \rho] = H\rho - \rho H$ is the commutator and
+    $\{A, B\} = AB + BA$ is the anticommutator.
+\end{itemize}
+When $J$ is finite and all $L_j \in \cL(H)$ are bounded, $\Lind$ is a
+bounded operator on $\cT{1}(H)$. The solution to~\eqref{eq:lind:GKSL}
+is a strongly continuous one-parameter semigroup $(T_t)_{t \geq 0}$ on
+$\cT{1}(H)$ that is \emph{completely positive and trace preserving}
+(CPTP): $T_t(\Dstate{H}) \subset \Dstate{H}$ for all $t \geq 0$.
+
+\begin{remark}[The Lindblad equation as a tensor Banach ODE]
+\label{rem:lind:tensor_ODE}
+The equation~\eqref{eq:lind:GKSL} is a special case of the abstract
+Cauchy problem~\eqref{eq:DF:ode} of Chapter~\ref{chap:DF}, with ambient
+Banach space $\VDnorm = \cTsa{1}(H)$ and vector field
+$\bF(t, \rho) = \Lind(\rho)$ (time-independent in the homogeneous case).
+The trace norm $\|\cdot\|_1$ plays the role of $\|\cdot\|_D$, and the
+identification $\cTsa{1}(H) \cong H \otimes_\pi H^*$ (Remark~\ref{rem:app:trace_projective})
+makes $(\cTsa{1}(H), \|\cdot\|_1)$ a Banach tensor space with $d=2$,
+$V_1 = H$, $V_2 = H^*$, satisfying condition~\condINJ\ with the
+projective norm.
+\end{remark}
+
+\begin{assumption}[Regularity of $\Lind$]
+\label{ass:lind:regular}
+Throughout this chapter we assume that:
+\begin{enumerate}
+\item[\textup{(R1)}] $H \in \cL(H)$ is bounded and $J$ is finite,
+    so $\Lind: \cTsa{1}(H) \to \cTsa{1}(H)$ is a bounded linear operator.
+\item[\textup{(R2)}] The CPTP semigroup $(T_t)_{t \geq 0}$ generated
+    by $\Lind$ satisfies $T_t(\Dstate{H}) \subset \Dstate{H}$.
+\item[\textup{(R3)}] For each $\rho_0 \in \Drank{r}{H}$, the restriction
+    $\Lind|_{\Drank{r}{H}}$ is locally Lipschitz in $\|\cdot\|_1$.
+\end{enumerate}
+\end{assumption}
+
+Under Assumption~\ref{ass:lind:regular}, the full Lindblad equation has
+a unique global solution $\rho: [0,\infty) \to \Dstate{H}$.
+
+\begin{remark}[Unbounded generators]
+\label{rem:lind:unbounded}
+Assumption~\ref{ass:lind:regular}(R1) excludes unbounded Lindblad
+operators (e.g., position or momentum operators in infinite dimensions).
+The extension to unbounded generators requires domain-adapted fixed-rank
+strata and is the subject of Open Problem~\ref{prob:lindblad_unbounded}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Tangent space of $\Drank{r}{H}$ via minimal subspaces}
+\label{sec:lind:tangent}
+%------------------------------------------------------------
+
+The tangent space characterisation of Theorem~\ref{thm:qs:manifold}(iii)
+takes the following explicit form, connecting with the Tucker tangent
+space of Chapter~\ref{chap:tucker_manifold}.
+
+\begin{proposition}[Tangent space decomposition]
+\label{prop:lind:tangent}
+Let $\rho \in \Drank{r}{H}$, $S = \supp(\rho)$, $P = \PS{S}$.
+With respect to the orthogonal decomposition $H = S \oplus S^\perp$,
+every $\dot\rho \in T_\rho \Drank{r}{H}$ has a unique block form
+\begin{equation}
+\label{eq:lind:tangent_block}
+    \dot\rho =
+    \begin{pmatrix} C & B^* \\ B & 0 \end{pmatrix}
+    \in \cTsa{1}(H),
+    \quad C \in \cTsa{1}(S),\; \Tr(C) = 0,\;
+    B \in \cT{1}(S, S^\perp),
+\end{equation}
+where $\cT{1}(S, S^\perp)$ denotes the trace-class operators from
+$S$ to $S^\perp$ (automatically finite-rank since $\dim S = r$).
+The decomposition $T_\rho \Drank{r}{H} \cong \{C \in \cTsa{1}(S) :
+\Tr(C) = 0\} \oplus \cT{1}(S, S^\perp)$ identifies:
+\begin{itemize}
+\item The \emph{core direction} $C$: variation of $\rho$ within fixed
+    support $S$ — the quantum analogue of $\dot{C}^{(D)}$ in~\eqref{eq:DF:tangent_decomp}.
+\item The \emph{support direction} $B$: variation of the support
+    subspace $S$ — the quantum analogue of $\dot{u}^{(\alpha)}_{i_\alpha}
+    \in \Wmin{\alpha}{\bv_r}$ in~\eqref{eq:DF:tangent_decomp}.
+\end{itemize}
+\end{proposition}
+
+\begin{proof}
+This is Lemma~3.1 and Corollary~3.2 of~\cite{AcevedoFalco2026},
+proved by differentiating the chart curve $(A(t), \sigma(t))
+\mapsto V_{A(t)}\sigma(t)V_{A(t)}^*$ at $t=0$ in local chart
+coordinates~\eqref{eq:qs:chart}. The block structure follows from
+the orthogonality of $H = S \oplus S^\perp$ and the chain rule,
+exactly as in the proof of Proposition~\ref{prop:tangent_space}.
+\end{proof}
+
+\begin{remark}[The trace constraint]
+\label{rem:lind:trace_constraint}
+The condition $\Tr(\dot\rho) = 0$ in~\eqref{eq:lind:tangent_block}
+is the infinitesimal form of $\Tr(\rho(t)) = 1$. It corresponds to
+the fact that $\Drank{r}{H}$ lies in the affine hyperplane
+$\{\Tr = 1\} \subset \cTsa{1}(H)$, which is an additional constraint
+not present in the Tucker manifold $\Tucker{\fr}{\VD} \subset \VDnorm$.
+In the kinematic equations of Section~\ref{sec:lind:kinematic},
+this constraint is enforced automatically by the trace-removal term
+in the projector $\hat{P}_\rho$ (Proposition~\ref{prop:qs:projector}).
+\end{remark}
+
+%------------------------------------------------------------
+\section{The Dirac--Frenkel principle for Lindblad dynamics}
+\label{sec:lind:df}
+%------------------------------------------------------------
+
+\begin{definition}[Dirac--Frenkel projected Lindblad dynamics]
+\label{def:lind:df}
+The \emph{Dirac--Frenkel projected Lindblad dynamics} on $\Drank{r}{H}$
+is the ODE
+\begin{equation}
+\label{eq:lind:df}
+    \dot\rho(t) = \hat{P}_{\rho(t)}\bigl(\Lind(\rho(t))\bigr),
+    \qquad \rho(0) = \rho_0 \in \Drank{r}{H},
+\end{equation}
+where $\hat{P}_\rho: \cTsa{1}(H) \to T_\rho \Drank{r}{H}$ is the
+bounded projector of Proposition~\ref{prop:qs:projector}.
+\end{definition}
+
+The equation~\eqref{eq:lind:df} is the quantum specialisation of the
+Dirac--Frenkel equation~\eqref{eq:DF_tucker} of Chapter~\ref{chap:DF},
+with $\Tucker{\fr}{\VD}$ replaced by $\Drank{r}{H}$, $\VDnorm$ by
+$\cTsa{1}(H)$, $\bF$ by $\Lind$, and $\Pmetric{\bv_r}$ by $\hat{P}_\rho$.
+
+\begin{theorem}[Local well-posedness,
+{\cite[Theorem~4.6]{AcevedoFalco2026}}]
+\label{thm:lind:wellposed}
+Under Assumption~\ref{ass:lind:regular}, for every
+$\rho_0 \in \Drank{r}{H}$ there exist $T > 0$ and a unique
+$\mathcal{C}^1$-curve
+\begin{equation*}
+    \rho: [0, T) \longrightarrow \Drank{r}{H}
+\end{equation*}
+satisfying~\eqref{eq:lind:df} with $\rho(0) = \rho_0$.
+The solution depends continuously on $\rho_0$ in the trace norm.
+\end{theorem}
+
+\begin{proof}
+The proof is the quantum specialisation of the proof of
+Theorem~\ref{thm:DF_tucker}:
+\begin{enumerate}
+\item \textit{Smooth manifold.} $\Drank{r}{H}$ is a $\mathcal{C}^\infty$
+    Banach manifold by Theorem~\ref{thm:qs:manifold}.
+\item \textit{Smooth vector field.} The reduced vector field
+    $\rho \mapsto \hat{P}_\rho(\Lind(\rho))$ is locally Lipschitz
+    in $\|\cdot\|_1$: $\Lind$ is bounded (Assumption~\ref{ass:lind:regular}(R1)),
+    and $\rho \mapsto \hat{P}_\rho$ is locally Lipschitz in operator
+    norm because $\hat{P}_\rho = \hat{P}_{\rho}$ depends smoothly on
+    $\rho$ via the chart maps~\eqref{eq:qs:chart}
+    (Theorem~\ref{thm:qs:manifold}(i)).
+\item \textit{ODE on a Banach manifold.} Local existence and uniqueness
+    follow from Theorem~\ref{thm:app:ode} (Picard--Lindelöf on Banach
+    manifolds). In local chart coordinates $(A(t), \sigma(t))$,
+    equation~\eqref{eq:lind:df} becomes
+    \begin{equation*}
+        \frac{d}{dt}(A(t), \sigma(t))
+        = F(A(t), \sigma(t)),
+    \end{equation*}
+    where $F$ is the pushforward of $\hat{P}_{\rho}\Lind(\rho)$ by the
+    inverse chart $\Phi_{S_0}^{-1}$. Since $F$ is locally Lipschitz
+    in the Banach space $\cL(\CC^r, S_0^\perp) \times \cTsa{1}(\CC^r)$
+    (finite-dimensional in the core direction), Picard--Lindelöf
+    applies.
+\end{enumerate}
+Continuous dependence on $\rho_0$ follows from the same theorem.
+\end{proof}
+
+\begin{remark}[Choice of projector]
+\label{rem:lind:projector_choice}
+The projector $\hat{P}_\rho$ in Definition~\ref{def:lind:df} is the
+explicit block projector of Proposition~\ref{prop:qs:projector}. Other
+choices of bounded projector $\pi_\rho: \cTsa{1}(H) \to T_\rho
+\Drank{r}{H}$ lead to equivalent well-posedness results; the choice
+affects the trajectory $\rho(t)$ but not the structural preservation
+properties. In particular, in the Hilbert--Schmidt setting one may use
+the orthogonal projection in $\cT{2}(H)$, which gives the TDVP
+(time-dependent variational principle) projection of~\cite{LeBrisRouchon2013}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Structure preservation}
+\label{sec:lind:preservation}
+%------------------------------------------------------------
+
+\begin{proposition}[Trace, rank, and positivity]
+\label{prop:lind:preservation}
+Let $\rho: [0,T) \to \Drank{r}{H}$ be the solution of~\eqref{eq:lind:df}.
+Then for all $t \in [0, T)$:
+\begin{enumerate}
+\item[\textup{(i)}] \emph{Trace preservation:}
+    $\Tr(\rho(t)) = 1$.
+\item[\textup{(ii)}] \emph{Rank preservation:}
+    $\mathrm{rank}(\rho(t)) = r$.
+\item[\textup{(iii)}] \emph{Positivity:}
+    $\rho(t) \geq 0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textup{(i)}: Differentiating, $\frac{d}{dt}\Tr(\rho(t)) =
+\Tr(\dot\rho(t)) = \Tr(\hat{P}_{\rho(t)}(\Lind(\rho(t)))) = 0$,
+since $\hat{P}_\rho(X) \in T_\rho \Drank{r}{H}$ satisfies
+$\Tr(\hat{P}_\rho(X)) = 0$ by~\eqref{eq:lind:tangent_block}.
+
+\textup{(ii)} and \textup{(iii)}: The solution $\rho(t)$ is a curve
+in $\Drank{r}{H}$ by Theorem~\ref{thm:lind:wellposed}. Since
+$\Drank{r}{H} \subset \Dstate{H}$, every point satisfies
+$\rho(t) \geq 0$ and $\mathrm{rank}(\rho(t)) = r$.
+\end{proof}
+
+\begin{remark}[Complete positivity is not guaranteed]
+\label{rem:lind:cptp}
+Proposition~\ref{prop:lind:preservation} guarantees that $\rho(t)
+\in \Drank{r}{H} \subset \Dstate{H}$ (positive, trace one, rank $r$)
+along the trajectory. It does \emph{not} guarantee that the reduced
+flow $\rho_0 \mapsto \rho(t)$ is a CPTP map (quantum channel).
+The projected dynamics is a nonlinear ODE on $\Drank{r}{H}$; the
+linearity and complete positivity of the full Lindblad semigroup
+$(T_t)_{t \geq 0}$ are not inherited by the projected flow.
+Constructing a CPTP-preserving rank-$r$ approximation requires
+additional structure, such as Kraus-form parametrisations;
+see Open Problem~\ref{prob:lindblad_cptp}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Kinematic equations in factorised coordinates}
+\label{sec:lind:kinematic}
+%------------------------------------------------------------
+
+\subsection*{Stiefel-core parametrisation}
+
+Every $\rho \in \Drank{r}{H}$ admits a factorisation
+\begin{equation}
+\label{eq:lind:stiefel_core}
+    \rho = V \sigma V^*,
+    \quad V \in \Stiefel{r}{H},\;
+    \sigma \in \Dpos{\CC^r},
+\end{equation}
+where $\Stiefel{r}{H} = \{V \in \cL(\CC^r, H) : V^*V = I_{\CC^r}\}$
+is the Stiefel manifold of isometries. The parametrisation is unique up
+to the unitary gauge action $(V, \sigma) \sim (VU, U^*\sigma U)$ for
+$U \in U(r)$.
+
+Differentiating~\eqref{eq:lind:stiefel_core}:
+\begin{equation}
+\label{eq:lind:diff_stiefel}
+    \dot\rho = \dot{V} \sigma V^* + V \dot\sigma V^* + V \sigma \dot{V}^*.
+\end{equation}
+The Stiefel constraint $V^*V = I$ differentiates to give $V^*\dot{V} +
+\dot{V}^*V = 0$, so $V^*\dot{V}$ is skew-Hermitian. Imposing the
+\emph{horizontal (parallel transport) gauge}
+\begin{equation}
+\label{eq:lind:gauge}
+    V^* \dot{V} = 0
+    \quad\Longleftrightarrow\quad
+    \dot{V} = (I - VV^*) \dot{V},
+\end{equation}
+the variation $\dot{V}$ lies in the complement of $\mathrm{Im}(V) = S$,
+i.e., $\dot{V}(\CC^r) \subset S^\perp$.
+
+\subsection*{Derivation of the kinematic system}
+
+Under the gauge condition~\eqref{eq:lind:gauge}, projecting the
+Lindblad vector field $\Lind(\rho)$ onto $T_\rho \Drank{r}{H}$ via
+$\hat{P}_\rho$ gives, using the block formula~\eqref{eq:qs:projector}:
+
+\medskip
+\noindent\textbf{Equation for the core $\sigma(t)$.}
+Multiplying $\dot\rho = \hat{P}_\rho(\Lind(\rho))$ on the left by $V^*$
+and on the right by $V$, and using $V^*\dot{V} = 0$:
+\begin{equation}
+\label{eq:lind:core_eq}
+    \dot\sigma(t) = V(t)^*\, \hat{P}_{\rho(t)}\bigl(\Lind(\rho(t))\bigr)\, V(t).
+\end{equation}
+Since $\hat{P}_\rho(X) = PXP + \text{off-diagonal} - \frac{\Tr(PXP)}{r}P$
+and $P = VV^*$, this simplifies to
+\begin{equation}
+\label{eq:lind:core_explicit}
+    \dot\sigma(t)
+    = V^* \Lind(\rho) V
+    - \frac{\Tr(V^* \Lind(\rho) V)}{r}\, I_{\CC^r}
+    = V^* \Lind(\rho) V,
+\end{equation}
+where the last equality uses $\Tr(\Lind(\rho)) = 0$ (trace preservation
+of the full Lindblad semigroup), which gives $\Tr(V^*\Lind(\rho)V) =
+\Tr(VV^*\Lind(\rho)) = \Tr(P\Lind(\rho)) = 0$ when the $(S^\perp,S^\perp)$
+block of $\Lind(\rho)$ vanishes on the tangent space.
+
+\medskip
+\noindent\textbf{Equation for the frame $V(t)$.}
+Applying $(I - VV^*)$ on the left and $V\sigma^{-1}$ on the right to
+$\dot\rho = \hat{P}_\rho(\Lind(\rho))$:
+\begin{equation}
+\label{eq:lind:frame_eq}
+    \dot{V}(t)
+    = (I - V(t)V(t)^*)\,
+    \hat{P}_{\rho(t)}\bigl(\Lind(\rho(t))\bigr)\,
+    V(t)\, \sigma(t)^{-1}.
+\end{equation}
+This is well-defined since $\sigma(t) \in \Dpos{\CC^r}$ is invertible
+(positive definite) along the trajectory.
+
+\begin{remark}[Equations~\eqref{eq:lind:core_explicit}--\eqref{eq:lind:frame_eq}
+as a special case of the MCTDH system]
+\label{rem:lind:mctdh_special}
+Equations~\eqref{eq:lind:core_explicit}--\eqref{eq:lind:frame_eq} are
+the quantum analogue of the MCTDH kinematic
+system~\eqref{eq:DF:MCTDH_core}--\eqref{eq:DF:MCTDH_basis} of
+Chapter~\ref{chap:DF}. Precisely:
+\begin{itemize}
+\item $\sigma(t) \in \Dpos{\CC^r}$ plays the role of the core tensor
+    $C^{(D)}(t)$: the finite-dimensional degrees of freedom within the
+    fixed support.
+\item $V(t) \in \Stiefel{r}{H}$ plays the role of the basis
+    $\{u^{(\alpha)}_{i_\alpha}(t)\}$ of $\Umin{\alpha}{\bv_r(t)}$:
+    the isometric frame of the support subspace.
+\item The gauge condition $V^*\dot{V} = 0$ is the quantum analogue of
+    the tangential constraint~\eqref{eq:DF:tangential}.
+\item The mean-field force $F^{(\alpha)}$ of~\eqref{eq:DF:mean_field_hilbert}
+    becomes here $V^*\Lind(\rho)V$ in the core equation and
+    $(I-VV^*)\Lind(\rho)V\sigma^{-1}$ in the frame equation.
+\end{itemize}
+The key difference is the additional constraint $\Tr(\dot\sigma) = 0$
+(trace zero on the core), which has no analogue in the pure-state
+MCTDH case.
+\end{remark}
+
+\subsection*{The closed kinematic system}
+
+Combining~\eqref{eq:lind:core_explicit} and~\eqref{eq:lind:frame_eq},
+the Dirac--Frenkel projected Lindblad dynamics in Stiefel-core
+coordinates reads:
+\begin{subequations}
+\label{eq:lind:kinematic}
+\begin{align}
+    \dot\sigma(t)
+    &= V(t)^*\, \Lind\bigl(V(t)\sigma(t)V(t)^*\bigr)\, V(t),
+    \label{eq:lind:kinematic_core}\\[4pt]
+    \dot{V}(t)
+    &= \bigl(I - V(t)V(t)^*\bigr)\,
+    \Lind\bigl(V(t)\sigma(t)V(t)^*\bigr)\,
+    V(t)\, \sigma(t)^{-1},
+    \label{eq:lind:kinematic_frame}
+\end{align}
+\end{subequations}
+with initial conditions $V(0) = V_0 \in \Stiefel{r}{H}$ and
+$\sigma(0) = V_0^* \rho_0 V_0 \in \Dpos{\CC^r}$.
+
+\begin{proposition}[Well-posedness of the kinematic system]
+\label{prop:lind:kinematic_wellposed}
+Under Assumption~\ref{ass:lind:regular}, the system~\eqref{eq:lind:kinematic}
+has a unique local solution $(V(t), \sigma(t))$ with
+$V(t) \in \Stiefel{r}{H}$ and $\sigma(t) \in \Dpos{\CC^r}$ for
+$t \in [0, T)$. The reconstructed density operator
+$\rho(t) = V(t)\sigma(t)V(t)^*$ satisfies~\eqref{eq:lind:df}.
+\end{proposition}
+
+\begin{proof}
+In the chart $\Phi_{S_0}$ centred at $\rho_0$, the system~\eqref{eq:lind:kinematic}
+is a locally Lipschitz ODE on
+$\cL(\CC^r, S_0^\perp) \times \cTsa{1}(\CC^r)$
+(a Banach space, finite-dimensional in the core direction and infinite-
+dimensional in the frame direction). Local existence and uniqueness
+follow from Theorem~\ref{thm:app:picard}. Positivity and trace of $\sigma(t)$
+are preserved as in Proposition~\ref{prop:lind:preservation}.
+\end{proof}
+
+\begin{remark}[Complexity and numerical implementation]
+\label{rem:lind:complexity}
+In a finite-dimensional truncation $H \cong \CC^d$ (dimension $d$,
+rank $r \ll d$), the kinematic system~\eqref{eq:lind:kinematic}
+requires storing only $V(t) \in \CC^{d \times r}$ and $\sigma(t) \in
+\CC^{r \times r}$ at cost $O(dr + r^2)$, compared to $O(d^2)$ for the
+full state $\rho(t)$. Each time step of~\eqref{eq:lind:kinematic}
+costs $O(|J|dr^2 + dr^2 + r^3)$, where $|J|$ is the number of Lindblad
+operators. The dominant cost is the evaluation of $\Lind(\rho)$
+projected into the frame coordinates, which requires computing
+$L_j V(t) \in \CC^{d \times r}$ for each $j$. This is a factor
+$d/r$ reduction compared to the full simulation.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:lind:history}
+%------------------------------------------------------------
+
+\paragraph{The Lindblad equation.}
+The GKSL master equation was derived independently by
+Gorini, Kossakowski, and Sudarshan~(1976) and by Lindblad~(1976) as
+the most general Markovian, completely positive, trace-preserving
+quantum master equation. It is the quantum analogue of the Fokker--Planck
+equation for classical Markov processes. The bounded-generator case
+(Assumption~\ref{ass:lind:regular}) is completely understood;
+the unbounded case remains an active research area.
+
+\paragraph{Dirac--Frenkel for open systems.}
+The application of the Dirac--Frenkel variational principle to the
+Lindblad equation — projecting onto a finite-rank manifold — appears
+in the numerical literature as the time-dependent variational principle
+(TDVP) for density operators, used in the simulation of open quantum
+spin chains via matrix product operators (MPO). The mathematical
+foundations, including the well-posedness theorem
+(Theorem~\ref{thm:lind:wellposed}) and the explicit bounded projector
+(Proposition~\ref{prop:qs:projector}), are established in the companion
+paper~\cite{AcevedoFalco2026}.
+
+\paragraph{Low-rank methods for Lindblad equations.}
+Numerical low-rank methods for the Lindblad equation were developed
+by Le Bris, Rouchon, and Roussel~\cite{LeBrisRouchon2013,LeBrisRouchonRoussel2015}
+in the Hilbert--Schmidt setting, and by Gravina and Savona~\cite{GravinaSavona2024}
+using adaptive rank strategies. The CPTP-preserving approach via Kraus
+parametrisations was developed by Appelö and Cheng~\cite{AppeloChengo2024}.
+The present chapter provides a unified geometric framework for all
+these methods.
+
+\paragraph{Connection to tensor network methods.}
+For multipartite open systems $H = \bigotimes_{j=1}^d H_j$, the density
+operator $\rho(t)$ is a positive trace-class operator in
+$\cTsa{1}(\bigotimes_j H_j)$. Approximating $\rho(t)$ by a matrix
+product operator (MPO) of bond dimension $r$ is a special case of
+the tree-based tensor format of Chapters~\ref{chap:topTBT}--\ref{chap:TB_manifold},
+applied to the operator space $\cTsa{1}(\bigotimes_j H_j) \cong
+\bigotimes_j \cL(H_j)$. The Dirac--Frenkel principle on this space
+gives a rigorous foundation for TDVP-MPO algorithms for open systems.
+This connection is explored in Open Problem~\ref{prob:lindblad_tensor}.

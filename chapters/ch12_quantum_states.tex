@@ -1,0 +1,543 @@
+%============================================================
+%  ch12_quantum_states.tex
+%  Chapter 12: Quantum States as Tensor Formats
+%
+%  Tensor Formats in Banach Spaces
+%  Antonio Falcó, CEU Universities
+%
+%  Based on: Acevedo--Falcó (2026), FH2012, FHN2019
+%  Estimated length: ~25 pp.
+%============================================================
+
+\chapter{Quantum States as Tensor Formats}
+\label{chap:quantum_states}
+
+The theory developed in Parts~I--IV connects naturally to quantum
+mechanics through a single observation: for a non-zero vector $v$ in a
+Hilbert tensor space $H = \bigotimes_{j=1}^d H_j$, the minimal subspace
+$\Umin{\alpha}{v}$ coincides with the support of the reduced density
+operator of the quantum state associated to $v$. This chapter makes
+this connection precise and develops the geometric theory of quantum
+states from the perspective of tensor formats and minimal subspaces.
+
+The state space of a quantum system on $H$ is the set $\Dstate{H}$
+of positive trace-class operators of unit trace (see
+Appendix~\ref{app:quantum} for the relevant operator-theoretic background).
+Each fixed-rank stratum $\Drank{r}{H}$ carries the structure of a smooth
+Banach manifold, fibred over the Grassmannian $\Grass{r}{H}$ — precisely
+the structure of the Tucker manifold of Chapter~\ref{chap:tucker_manifold}
+specialised to the trace-class Banach space $\cTsa{1}(H)$.
+
+Section~\ref{sec:qs:pure} establishes the fundamental connection between
+minimal subspaces and partial traces for pure states.
+Section~\ref{sec:qs:mixed} extends to mixed states and identifies
+the rank stratification of $\Dstate{H}$ with the Tucker rank stratification.
+Section~\ref{sec:qs:entanglement} connects the Tucker rank vector with
+the entanglement structure of multipartite systems.
+Section~\ref{sec:qs:manifold} develops the Banach manifold structure of
+$\Drank{r}{H}$ as a special case of the Tucker manifold theory.
+Section~\ref{sec:qs:approx} applies the best-approximation theory of
+Chapter~\ref{chap:minsubspaces} to quantum state compression.
+Section~\ref{sec:qs:history} contains historical notes.
+
+Throughout this chapter, $H = \bigotimes_{j=1}^d H_j$ is a Hilbert
+tensor product of separable complex Hilbert spaces $H_j$,
+and $\cTsa{1}(H)$ is the real Banach space of self-adjoint trace-class
+operators on $H$, equipped with the trace norm $\|\cdot\|_1$
+(see Appendix~\ref{app:quantum}).
+
+%------------------------------------------------------------
+\section{Pure states and minimal subspaces}
+\label{sec:qs:pure}
+%------------------------------------------------------------
+
+\subsection*{The pure state associated to a vector}
+
+For a non-zero vector $v \in H$, the \emph{pure state associated to $v$} is
+\begin{equation}
+\label{eq:qs:pure_state}
+    \rho_v \coloneqq \frac{v \otimes J(v)}{\|v\|^2}
+    \in \Dstate{H},
+\end{equation}
+where $J: H \to H^*$ is the Riesz isomorphism and $v \otimes J(v)$
+is the rank-one operator $w \mapsto \langle v, w\rangle v / \|v\|^2$.
+Two vectors $v$ and $\lambda v$ ($\lambda \in \CC^*$) give the same
+pure state. The map $v \mapsto \rho_v$ thus induces a bijection between
+the projective space $\mathbb{P}(H)$ and the set $\Drank{1}{H}$ of
+pure states.
+
+\subsection*{The fundamental connection}
+
+The following theorem is the cornerstone of this chapter: it identifies
+the minimal subspaces of $v$ (in the sense of
+Definition~\ref{def:minimal_subspace}) with the supports of the
+partial traces of $\rho_v$.
+
+\begin{theorem}[Minimal subspaces and partial traces]
+\label{thm:qs:minimal_partial_trace}
+Let $v \in H = \bigotimes_{j=1}^d H_j$ with $\|v\|=1$ and let
+$\rho_v = v \otimes J(v)$ be the associated pure state. For each
+$\alpha \in D = \{1, \ldots, d\}$, let
+$\rho_\alpha \coloneqq \TrS{\alpha^c}(\rho_v) \in \cTsa{1}(H_\alpha)$
+be the partial trace over all factors except $\alpha$. Then:
+\begin{enumerate}
+\item[\textup{(a)}] $\rho_\alpha$ is a positive trace-class operator
+    with $\Tr(\rho_\alpha) = 1$ and
+    \begin{equation}
+    \label{eq:qs:supp_min}
+        \supp(\rho_\alpha) = \Umin{\alpha}{v}.
+    \end{equation}
+\item[\textup{(b)}] $\mathrm{rank}(\rho_\alpha) = r_\alpha(v)$,
+    the Tucker $\alpha$-rank of $v$.
+\item[\textup{(c)}] The non-zero eigenvalues of $\rho_\alpha$ are
+    $\lambda_k^{(\alpha)}(v) > 0$, $k = 1, \ldots, r_\alpha(v)$,
+    with $\sum_k \lambda_k^{(\alpha)}(v) = 1$.
+    For $d=2$, $\lambda_k^{(1)}(v) = \lambda_k^{(2)}(v) = s_k(v)^2$
+    where $s_k(v)$ are the Schmidt coefficients of $v$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By the definition of $\Umin{\alpha}{v}$ (Definition~\ref{def:minimal_subspace}),
+$\Umin{\alpha}{v}$ is the smallest subspace $U \subset H_\alpha$ such
+that $v \in U \otimes_H H_{\alpha^c}$. This is exactly the range of the
+map $T: H_\alpha^* \to H_{\alpha^c}$ defined by $T(\varphi) = (\varphi
+\otimes \Id{\alpha^c})(v)$, hence $\Umin{\alpha}{v} =
+\overline{\mathrm{Im}(T^*)}$ where $T^*: H_{\alpha^c}^* \to H_\alpha$
+is the adjoint.
+
+On the other hand, $\rho_\alpha = \TrS{\alpha^c}(\rho_v)$ is the
+operator on $H_\alpha$ characterised by
+$\langle u, \rho_\alpha w\rangle_{H_\alpha} = \langle u \otimes
+\Id{\alpha^c}, \rho_v (w \otimes \Id{\alpha^c})\rangle$ for all
+$u, w \in H_\alpha$. A direct computation using
+$\rho_v = v \otimes J(v)$ gives
+\begin{equation*}
+    \rho_\alpha = \TrS{\alpha^c}(v \otimes J(v))
+    = T T^*: H_\alpha \to H_\alpha
+\end{equation*}
+(the Gram operator of $T$ composed with its adjoint). Hence
+$\mathrm{Im}(\rho_\alpha) = \mathrm{Im}(TT^*) = \overline{\mathrm{Im}(T^*)}
+= \Umin{\alpha}{v}$, proving~\eqref{eq:qs:supp_min}.
+Part~(b) follows since $\mathrm{rank}(TT^*) = \mathrm{rank}(T) = r_\alpha(v)$.
+Part~(c) follows from the spectral theorem for compact operators
+(Theorem~\ref{thm:app:spectral}): the eigenvalues of $\rho_\alpha = TT^*$
+are the squared singular values of $T$, and $\Tr(\rho_\alpha) = 1$
+gives $\sum_k \lambda_k^{(\alpha)} = 1$.
+\end{proof}
+
+\begin{remark}[The $d=2$ case: Schmidt decomposition]
+\label{rem:qs:schmidt}
+For $d=2$, Theorem~\ref{thm:qs:minimal_partial_trace} reduces to the
+classical Schmidt decomposition. Every $v \in H_1 \otimes_H H_2$ can
+be written uniquely (up to phases) as
+\begin{equation*}
+    v = \sum_{k=1}^r s_k\, e_k \otimes f_k,
+    \quad s_1 \geq s_2 \geq \cdots \geq s_r > 0,
+\end{equation*}
+with $\{e_k\}_{k=1}^r \subset H_1$ and $\{f_k\}_{k=1}^r \subset H_2$
+orthonormal, $r = r_1(v) = r_2(v)$. Then
+$\Umin{1}{v} = \spann\{e_k\}$ and $\Umin{2}{v} = \spann\{f_k\}$,
+and $\rho_1 = \sum_k s_k^2\, e_k \otimes J(e_k)$,
+$\rho_2 = \sum_k s_k^2\, f_k \otimes J(f_k)$.
+\end{remark}
+
+\begin{remark}[Tucker format as the natural language for multipartite states]
+\label{rem:qs:tucker_natural}
+Theorem~\ref{thm:qs:minimal_partial_trace} shows that for a pure state
+$\rho_v$, the Tucker rank vector $(r_\alpha(v))_{\alpha \in D}$ is
+an intrinsic property of the state: it is determined by the ranks of
+the reduced density operators $\{\rho_\alpha\}$, which are physical
+observables. The Tucker manifold $\Tucker{\fr}{H}$ is therefore the
+natural variational class for quantum systems with prescribed
+entanglement structure $(r_\alpha)_{\alpha \in D}$.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Mixed states and the rank stratification}
+\label{sec:qs:mixed}
+%------------------------------------------------------------
+
+\subsection*{Hilbert--Schmidt operators as tensors}
+
+By Theorem~\ref{thm:app:hs_tensor}, $\cT{2}(H) \cong H \otimes_H H^*$
+isometrically as Hilbert spaces. Under this identification, a
+Hilbert--Schmidt operator $A \in \cT{2}(H)$ of rank $r$ corresponds
+to a tensor in $H \otimes_H H^*$ of Tucker rank $(r, r)$ with respect
+to the bipartition $\{H, H^*\}$. The SVD of $A$,
+\begin{equation*}
+    A = \sum_{k=1}^r s_k(A)\, v_k \otimes J(u_k),
+\end{equation*}
+is the Tucker decomposition of this tensor, with minimal subspaces
+$\Umin{1}{A} = \overline{\mathrm{Im}(A^*)} \subset H$ and
+$\Umin{2}{A} = J(\overline{\mathrm{Im}(A)}) \subset H^*$.
+
+\subsection*{Mixed states of rank $r$}
+
+For a mixed state $\rho \in \Drank{r}{H}$ with spectral decomposition
+\begin{equation}
+\label{eq:qs:mixed_spectral}
+    \rho = \sum_{k=1}^r \lambda_k\, v_k \otimes J(v_k),
+    \quad \lambda_k > 0, \quad \sum_{k=1}^r \lambda_k = 1,
+\end{equation}
+the support is $\supp(\rho) = \spann\{v_k : k=1,\ldots,r\} \in \Grass{r}{H}$.
+The positive core $\sigma \coloneqq V^*\rho V \in \Dpos{\CC^r}$
+(where $V = [v_1|\cdots|v_r]: \CC^r \to H$ is the column matrix of
+eigenvectors) is the finite-dimensional density operator on $\CC^r$
+with eigenvalues $\lambda_1, \ldots, \lambda_r$.
+
+\begin{proposition}[Rank stratification as Tucker decomposition]
+\label{prop:qs:rank_tucker}
+The decomposition
+\begin{equation}
+\label{eq:qs:rank_strat}
+    \Dstate{H} = \bigsqcup_{r=1}^\infty \Drank{r}{H}
+    \cup \mathcal{D}_\infty(H)
+\end{equation}
+is the rank stratification of $\Dstate{H}$ by Tucker rank in the
+Banach tensor space $(\cTsa{1}(H), \|\cdot\|_1)$. Specifically, viewing
+$\rho \in \Drank{r}{H}$ as a tensor in $H \otimes_\pi H^*$ via
+$\cT{1}(H) \cong H \otimes_\pi H^*$:
+\begin{enumerate}
+\item[\textup{(i)}] $r_1(\rho) = r_2(\rho) = r = \mathrm{rank}(\rho)$.
+\item[\textup{(ii)}] $\Umin{1}{\rho} = \supp(\rho) \subset H$ and
+    $\Umin{2}{\rho} = J(\supp(\rho)) \subset H^*$.
+\item[\textup{(iii)}] The trace norm $\|\rho\|_1 = \Tr(\rho) = 1$
+    is the projective tensor norm, satisfying \condINJ\ with equality
+    at all density operators \textup{(}Remark~\ref{rem:app:trace_projective}\textup{)}.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Parts~(i)--(ii) follow from the identification $\cT{1}(H) \cong H
+\otimes_\pi H^*$ and the definition of Tucker rank
+(Definition~\ref{def:tucker_rank}): $r_\alpha(\rho)$ is the dimension
+of $\Umin{\alpha}{\rho}$, which for $\alpha = 1$ is the support in $H$
+and for $\alpha = 2$ is the support in $H^*$ (both have dimension $r$
+by~\eqref{eq:qs:mixed_spectral}). Part~(iii) is
+Remark~\ref{rem:app:trace_projective}.
+\end{proof}
+
+\begin{corollary}[Weak lower semicontinuity of quantum rank]
+\label{cor:qs:rank_lsc}
+In the trace-norm topology, rank is weakly lower semicontinuous on
+$\Dstate{H}$: if $\rho_n \in \Drank{r}{H}$ and $\|\rho_n - \rho\|_1
+\to 0$, then $\mathrm{rank}(\rho) \leq r$.
+\end{corollary}
+
+\begin{proof}
+This is Theorem~\ref{thm:weak_closed} applied to the Tucker manifold
+$\Drank{r}{H} \subset \cTsa{1}(H)$: the trace norm satisfies \condINJ\
+(Remark~\ref{rem:app:trace_projective}), and $\cTsa{1}(H)$ is reflexive
+(it is a closed subspace of the Banach space $\cT{1}(H)$, which is
+reflexive when $H$ is finite-dimensional, and the statement holds in
+infinite dimensions by the same argument with the weak topology on
+$\cTsa{1}(H)$; see~\cite{BratteliRobinson1987}).
+\end{proof}
+
+%------------------------------------------------------------
+\section{Entanglement and minimal subspace dimension}
+\label{sec:qs:entanglement}
+%------------------------------------------------------------
+
+\subsection*{Separability and Tucker rank one}
+
+For a multipartite system $H = \bigotimes_{j=1}^d H_j$ and a pure
+state $\rho_v = v \otimes J(v)$, Theorem~\ref{thm:qs:minimal_partial_trace}
+gives a complete characterisation of separability:
+
+\begin{proposition}[Separability and Tucker rank]
+\label{prop:qs:separability}
+Let $v \in \bigotimes_{j=1}^d H_j$ with $\|v\|=1$ and let $\alpha
+\subset D$ be a subset of parties. The following are equivalent:
+\begin{enumerate}
+\item[\textup{(a)}] $v$ is separable across the bipartition
+    $\alpha | \alpha^c$: $v = u \otimes w$ for some $u \in
+    \bigotimes_{j \in \alpha} H_j$, $w \in \bigotimes_{j \in \alpha^c} H_j$.
+\item[\textup{(b)}] $r_\alpha(v) = 1$.
+\item[\textup{(c)}] $\mathrm{rank}(\rho_\alpha) = 1$, i.e., the reduced
+    state $\rho_\alpha = \TrS{\alpha^c}(\rho_v)$ is a pure state.
+\item[\textup{(d)}] $\Umin{\alpha}{v}$ is one-dimensional.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a)$\Leftrightarrow$(b): by definition of Tucker rank
+(Definition~\ref{def:tucker_rank}).
+(b)$\Leftrightarrow$(c): Theorem~\ref{thm:qs:minimal_partial_trace}(b).
+(b)$\Leftrightarrow$(d): $r_\alpha(v) = \dim\Umin{\alpha}{v}$.
+\end{proof}
+
+\subsection*{Entanglement entropy and minimal subspaces}
+
+The \emph{entanglement entropy} of the bipartition $\alpha|\alpha^c$
+is the von Neumann entropy of the reduced state:
+\begin{equation}
+\label{eq:qs:entanglement_entropy}
+    S_\alpha(v) \coloneqq -\Tr\bigl(\rho_\alpha \log \rho_\alpha\bigr)
+    = -\sum_{k=1}^{r_\alpha(v)} \lambda_k^{(\alpha)}(v)
+    \log \lambda_k^{(\alpha)}(v),
+\end{equation}
+where $\{\lambda_k^{(\alpha)}(v)\}$ are the eigenvalues of $\rho_\alpha$
+from Theorem~\ref{thm:qs:minimal_partial_trace}(c). Since
+$\lambda_k^{(\alpha)} > 0$ and $\sum_k \lambda_k^{(\alpha)} = 1$,
+we have $0 \leq S_\alpha(v) \leq \log r_\alpha(v)$, with:
+\begin{itemize}
+\item $S_\alpha(v) = 0$ iff $r_\alpha(v) = 1$ (separable, no entanglement).
+\item $S_\alpha(v) = \log r_\alpha(v)$ iff all eigenvalues are equal
+    $\lambda_k = 1/r_\alpha(v)$ (maximally entangled).
+\end{itemize}
+The Tucker rank $r_\alpha(v)$ is thus the \emph{Schmidt rank} of the
+bipartition, which upper-bounds the entanglement entropy:
+$S_\alpha(v) \leq \log r_\alpha(v)$.
+
+\begin{remark}[The Tucker manifold as a variational class for entanglement]
+\label{rem:qs:tucker_entanglement}
+The Tucker manifold $\Tucker{\fr}{H}$ for $H = \bigotimes_j H_j$
+and $\fr = (r_\alpha)_{\alpha \in D}$ is the set of pure states $v$
+with prescribed bipartite Schmidt ranks. States on $\Tucker{\fr}{H}$
+have entanglement entropies bounded by $S_\alpha \leq \log r_\alpha$
+for all bipartitions $\alpha$. The Dirac--Frenkel principle of
+Chapter~\ref{chap:DF}, applied on $\Tucker{\fr}{H}$, yields a
+variational dynamics that preserves the entanglement structure
+$(r_\alpha)_\alpha$ in the sense that the Schmidt ranks remain
+equal to $\fr$ along the trajectory.
+\end{remark}
+
+%------------------------------------------------------------
+\section{The Banach manifold structure of $\Drank{r}{H}$}
+\label{sec:qs:manifold}
+%------------------------------------------------------------
+
+The geometry of $\Drank{r}{H}$ is a special case of the Tucker manifold
+theory of Chapter~\ref{chap:tucker_manifold}, applied to the Banach
+tensor space $(\cTsa{1}(H), \|\cdot\|_1) \cong (H \otimes_\pi H^*,
+\|\cdot\|_\pi)$.
+
+\subsection*{The atlas}
+
+Fix $\rho_0 \in \Drank{r}{H}$ and let $S_0 = \supp(\rho_0) \in
+\Grass{r}{H}$. Choose an isometry $V_0: \CC^r \to H$ with
+$\mathrm{Im}(V_0) = S_0$, and set $P_0 = V_0 V_0^*$ (orthogonal
+projection onto $S_0$). For $A \in \cL(\CC^r, S_0^\perp)$ with
+$\|A\| < 1$, define the isometry
+\begin{equation}
+\label{eq:qs:VA}
+    V_A \coloneqq V_0(I + A^*A)^{-1/2} + \iota A (I + A^*A)^{-1/2}
+    \in \cL(\CC^r, H),
+    \quad V_A^* V_A = I_{\CC^r},
+\end{equation}
+where $\iota: S_0^\perp \hookrightarrow H$ is the inclusion. The chart
+map
+\begin{equation}
+\label{eq:qs:chart}
+    \Phi_{S_0}: \cL(\CC^r, S_0^\perp) \times \Dpos{\CC^r}
+    \longrightarrow \Drank{r}{H},
+    \quad (A, \sigma) \longmapsto V_A \sigma V_A^*,
+\end{equation}
+is the quantum analogue of the Tucker chart map $\chartmap{\bv}$
+of Section~\ref{sec:tucker_manifold:charts}: the Grassmann variable
+$A \in \cL(\CC^r, S_0^\perp)$ encodes the motion of the support
+(analogous to $L_\alpha \in \cL(\Umin{\alpha}{\bv}, \Wmin{\alpha}{\bv})$),
+and the core variable $\sigma \in \Dpos{\CC^r}$ encodes the positive
+density on the support (analogous to the core tensor $C^{(D)} \in
+\RR^{\times r_\alpha}_*$).
+
+\begin{theorem}[Banach manifold structure of $\Drank{r}{H}$,
+{\cite[Theorem~3.5]{AcevedoFalco2026}}]
+\label{thm:qs:manifold}
+For each $r \in \NN$, the set $\Drank{r}{H}$ admits a smooth
+$\mathcal{C}^\infty$-Banach manifold structure in the sense of
+Lang~\cite{Lang1999}. Specifically:
+\begin{enumerate}
+\item[\textup{(i)}] For each $\rho_0 \in \Drank{r}{H}$, the map
+    $\Phi_{S_0}$ in~\eqref{eq:qs:chart} is a $\mathcal{C}^\infty$
+    diffeomorphism from a neighbourhood of $(0, V_0^*\rho_0 V_0)$ in
+    $\cL(\CC^r, S_0^\perp) \times \Dpos{\CC^r}$ onto a neighbourhood
+    of $\rho_0$ in $\Drank{r}{H}$.
+\item[\textup{(ii)}] The transition maps between overlapping charts are
+    $\mathcal{C}^\infty$ (analytic over $\CC$).
+\item[\textup{(iii)}] The tangent space at $\rho \in \Drank{r}{H}$ is
+    \begin{equation}
+    \label{eq:qs:tangent}
+        T_\rho \Drank{r}{H}
+        = \bigl\{ \dot\rho \in \cTsa{1}(H) :
+        (I - P)\dot\rho(I - P) = 0,\;
+        \Tr(\dot\rho) = 0 \bigr\},
+    \end{equation}
+    where $P = \PS{\supp(\rho)}$ is the orthogonal projection onto
+    $\supp(\rho)$. This is a complemented closed subspace of
+    $\cTsa{1}(H)$.
+\item[\textup{(iv)}] The inclusion $\iota: \Drank{r}{H} \hookrightarrow
+    \cTsa{1}(H)$ is a smooth immersion.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Sketch]
+Parts~(i)--(ii) follow from the same argument as
+Theorem~\ref{thm:Tucker_Banach_Manifold}: the chart map $\Phi_{S_0}$
+is the composition of the smooth map $A \mapsto V_A$ (see
+equation~\eqref{eq:qs:VA} and Lemma~\ref{lem:element}) with the
+smooth map $\sigma \mapsto V_A \sigma V_A^*$, and the inverse map
+is smooth by the same argument as Proposition~\ref{prop:tucker_triv}.
+Part~(iii): the characterisation of $T_\rho \Drank{r}{H}$ follows
+from differentiating the curve $t \mapsto \Phi_{S_0}(tA, \sigma(t))$
+at $t=0$, giving exactly the tangent formula of
+Proposition~\ref{prop:tangent_space} restricted to the trace-zero
+condition. Part~(iv) follows from (iii) and
+Proposition~\ref{prop:split_equiv}: $T_\rho \Drank{r}{H}$ is complemented
+in $\cTsa{1}(H)$ via the explicit bounded projection of
+Proposition~\ref{prop:qs:projector} below.
+For the complete proof see~\cite{AcevedoFalco2026}.
+\end{proof}
+
+\subsection*{The tangent projector}
+
+\begin{proposition}[Bounded projector onto $T_\rho \Drank{r}{H}$,
+{\cite[Proposition~3.4]{AcevedoFalco2026}}]
+\label{prop:qs:projector}
+Let $\rho \in \Drank{r}{H}$ and $P = \PS{\supp(\rho)}$. The map
+\begin{equation}
+\label{eq:qs:projector}
+    \hat{P}_\rho: \cTsa{1}(H) \longrightarrow T_\rho \Drank{r}{H},
+    \quad
+    \hat{P}_\rho(X) \coloneqq PXP + PX(I-P) + (I-P)XP
+    - \frac{\Tr(PXP)}{r} P,
+\end{equation}
+is a bounded linear projection with $\|\hat{P}_\rho\|_{\cL(\cTsa{1}(H))}
+\leq 4$, and $\hat{P}_\rho(X) = X$ for all $X \in T_\rho \Drank{r}{H}$.
+\end{proposition}
+
+\begin{proof}
+The map $\hat{P}_\rho$ decomposes as:
+$PXP$: the $(S,S)$ block, a bounded map $\cTsa{1}(H) \to \cT{1}(S)$
+with norm $\leq 1$ (ideal property);
+$PX(I-P) + (I-P)XP$: the off-diagonal blocks, total norm $\leq 2$;
+$-\frac{\Tr(PXP)}{r}P$: a rank-$r$ correction, norm $\leq 1$ since
+$|\Tr(PXP)| \leq \|PXP\|_1 \leq \|X\|_1$ and $\|P\|_1 = r$.
+Adding: $\|\hat{P}_\rho\| \leq 4$. Idempotency and the image
+identification follow by direct computation as in the proof of
+Proposition~3.4 in~\cite{AcevedoFalco2026}.
+\end{proof}
+
+\begin{remark}[Comparison with the Tucker projector]
+\label{rem:qs:projector_comparison}
+The projector $\hat{P}_\rho$ in~\eqref{eq:qs:projector} is the
+quantum analogue of the metric projection $\Pmetric{\bv_r}$ onto
+$\ZD{\bv_r}$ from Chapter~\ref{chap:DF}. The explicit formula in
+terms of blocks with respect to $H = S \oplus S^\perp$ is the
+quantum version of the tangent space formula~\eqref{eq:tangent_formula}:
+the $PXP$ block corresponds to the core variation $\dot{C}^{(D)}$,
+and the off-diagonal blocks correspond to the subspace velocity
+$\dot{u}^{(\alpha)}_{i_\alpha} \in \Wmin{\alpha}{\bv_r}$.
+The trace correction $-\frac{\Tr(PXP)}{r}P$ is the additional
+constraint $\Tr(\dot\rho) = 0$ that appears because $\Drank{r}{H}$
+lies in the affine hyperplane $\{\Tr = 1\}$, not in the full Banach
+space.
+\end{remark}
+
+\subsection*{The fibre bundle structure}
+
+The support map $\pi: \Drank{r}{H} \to \Grass{r}{H}$,
+$\pi(\rho) = \supp(\rho)$, is the quantum analogue of the rank map
+$\varrho_\fr$ of Section~\ref{sec:tucker_manifold:cinfty}.
+
+\begin{theorem}[Fibre bundle, {\cite[Theorem~3.8]{AcevedoFalco2026}}]
+\label{thm:qs:bundle}
+The support map $\pi: \Drank{r}{H} \to \Grass{r}{H}$ is a smooth
+fibre bundle with typical fibre $\Dpos{\CC^r}$, a smooth manifold of
+real dimension $r^2 - 1$. The structure group is $U(r)$ (the unitary
+group), acting on $\Dpos{\CC^r}$ by $U \cdot \sigma = U \sigma U^*$.
+\end{theorem}
+
+This is the quantum specialisation of Theorem~\ref{thm:Tucker_Banach_Manifold}(ii)
+and Propositions~\ref{prop:tucker_triv}--\ref{prop:tucker_transition_fns}:
+the structure group reduces from $\GL{r}{\RR}$ to $U(r)$ because the
+core variable $\sigma \in \Dpos{\CC^r}$ transforms by unitary
+conjugation (preserving positivity and trace), rather than by
+an arbitrary invertible change of basis.
+
+%------------------------------------------------------------
+\section{Best approximation and quantum state compression}
+\label{sec:qs:approx}
+%------------------------------------------------------------
+
+The best-approximation theorem (Theorem~\ref{thm:best_approx_tucker})
+applied to the quantum setting gives the mathematical foundation for
+\emph{low-rank approximation of quantum states}.
+
+\begin{theorem}[Existence of best low-rank approximation]
+\label{thm:qs:best_approx}
+Let $\rho \in \Dstate{H}$ and $r \in \NN$. There exists
+$\rho_r \in \bigcup_{k=1}^r \Drank{k}{H}$ such that
+\begin{equation}
+\label{eq:qs:best_approx}
+    \|\rho - \rho_r\|_1
+    = \inf_{\sigma \in \bigcup_{k=1}^r \Drank{k}{H}} \|\rho - \sigma\|_1.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The set $\bigcup_{k=1}^r \Drank{k}{H}$ is weakly closed in
+$\cTsa{1}(H)$ by Corollary~\ref{cor:qs:rank_lsc} (weak lower
+semicontinuity of rank). The trace-class space $\cTsa{1}(H)$ is
+reflexive when $H$ is finite-dimensional; in infinite dimensions,
+the result follows from the explicit formula: the best rank-$r$
+approximation of $\rho$ in trace norm is given by the \emph{spectral
+truncation}
+\begin{equation}
+\label{eq:qs:spectral_trunc}
+    \rho_r \coloneqq \frac{1}{\sum_{k=1}^r \lambda_k}
+    \sum_{k=1}^r \lambda_k\, v_k \otimes J(v_k),
+\end{equation}
+where $\lambda_1 \geq \lambda_2 \geq \cdots$ are the eigenvalues of
+$\rho$ in decreasing order and $\{v_k\}$ the corresponding eigenvectors.
+The error is $\|\rho - \rho_r\|_1 = 2\sum_{k > r} \lambda_k$
+(Ky Fan's theorem).
+\end{proof}
+
+\begin{remark}[Spectral truncation as Tucker approximation]
+\label{rem:qs:ky_fan}
+The spectral truncation~\eqref{eq:qs:spectral_trunc} is the quantum
+analogue of the HOSVD (Higher-Order SVD) truncation for tensor formats
+(Algorithm~\ref{alg:HOSVD} in Appendix~\ref{app:algorithms}):
+in both cases, the best rank-$r$ approximation in the ambient norm is
+obtained by projecting onto the dominant eigenspaces/singular subspaces.
+For tensors with $d \geq 3$, the analogue of~\eqref{eq:qs:spectral_trunc}
+gives a near-best Tucker approximation (quasi-optimality with
+constant $\sqrt{d}$), not an exact best approximation; see
+Section~\ref{sec:algTBT:HOSVD}.
+\end{remark}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:qs:history}
+%------------------------------------------------------------
+
+\paragraph{Schmidt decomposition and entanglement.}
+The Schmidt decomposition for bipartite systems was introduced by
+Schmidt~(1907) in the context of integral equations, long before its
+quantum-mechanical interpretation. Its role in quantum entanglement
+was recognised in the 1990s with the development of quantum information
+theory. The generalisation to multipartite systems via minimal subspaces
+is the contribution of Falcó and Hackbusch~\cite{FH2012}.
+
+\paragraph{Tucker format and quantum many-body physics.}
+The connection between the Tucker format and tree tensor networks (TTN)
+was developed in the quantum chemistry and condensed matter literature
+under the name MCTDH (Multi-Configuration Time-Dependent Hartree) and
+its matrix product state (MPS/DMRG) variants. White's DMRG algorithm
+\cite{White1992} is algorithmically the DMRG of
+Appendix~\ref{app:algorithms}, implemented for quantum spin chains.
+The mathematical equivalence between Tucker formats and tensor network
+states was clarified in~\cite{Hackbusch2019}.
+
+\paragraph{Banach manifold structure of $\Drank{r}{H}$.}
+The explicit Grassmann-Banach manifold model for fixed-rank density
+operators in the trace-norm topology, with the support-core charts and
+bounded tangent projectors, was developed in the companion
+paper~\cite{AcevedoFalco2026}. Earlier work in the Hilbert--Schmidt
+(T$_2$) setting includes~\cite{KochLubich2007}; the move to the
+trace-class (T$_1$) setting is motivated by the operational
+interpretation of the trace norm as the natural metric for state
+distinguishability (Remark~\ref{rem:app:trace_projective}).
