@@ -1,29 +1,26 @@
 %============================================================
-%  main.tex
-%  Tensor Formats in Banach Spaces:
-%  Minimal Subspaces, Geometry, and Variational Principles
+% main.tex
+% Tensor Formats in Banach Spaces:
+% Minimal Subspaces, Geometry, and Variational Principles
 %
-%  Antonio Falcó — Universidad Cardenal Herrera-CEU
+% Antonio Falcó — Universidad Cardenal Herrera-CEU
 %
-%  TARGET: Ergebnisse der Mathematik und ihrer Grenzgebiete
-%          (3. Folge), Springer
-%
-%  COMPILATION:
-%    pdflatex main && bibtex main && pdflatex main && pdflatex main
-%  or:
-%    latexmk -pdf main
+% COMPILATION:
+% pdflatex main && bibtex main && pdflatex main && pdflatex main
+% or:
+% latexmk -pdf main
 %============================================================
 
 %------------------------------------------------------------
-%  DOCUMENT CLASS
-%  Use 'book' locally (freely available).
-%  For final submission replace with \documentclass{svmono}
-%  and adjust theorem styles to Springer macros.
+% DOCUMENT CLASS
+% Use 'book' locally (freely available).
+% For final submission replace with \documentclass{svmono}
+% and adjust theorem styles to Springer macros.
 %------------------------------------------------------------
 \documentclass[12pt, a4paper, twoside, openright]{book}
 
 %------------------------------------------------------------
-%  PACKAGES
+% PACKAGES
 %------------------------------------------------------------
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -35,7 +32,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{mathrsfs}
-\usepackage{mathtools}       % \coloneqq, \xrightarrow, etc.
+\usepackage{mathtools} % \coloneqq, \xrightarrow, etc.
 
 % Layout and typography
 \usepackage[margin=2.5cm, inner=3cm]{geometry}
@@ -45,9 +42,9 @@
 
 % Cross-references and hyperlinks
 \usepackage[colorlinks=true,
-            linkcolor=blue!60!black,
-            citecolor=green!50!black,
-            urlcolor=blue!70!black]{hyperref}
+linkcolor=blue!60!black,
+citecolor=green!50!black,
+urlcolor=blue!70!black]{hyperref}
 
 % Index and bibliography
 \usepackage{makeidx}
@@ -64,9 +61,9 @@
 \usepackage{booktabs}
 
 %------------------------------------------------------------
-%  THEOREM ENVIRONMENTS
-%  svmono uses \newtheorem with shared counter per chapter.
-%  Here we replicate that behaviour manually.
+% THEOREM ENVIRONMENTS
+% svmono uses \newtheorem with shared counter per chapter.
+% Here we replicate that behaviour manually.
 %------------------------------------------------------------
 \theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[section]
@@ -85,12 +82,12 @@
 \newtheorem{notation}[theorem]{Notation}
 
 %------------------------------------------------------------
-%  UNIFIED NOTATION  (separated into notation.tex)
+% UNIFIED NOTATION (separated into notation.tex)
 %------------------------------------------------------------
 \input{notation}
 
 %------------------------------------------------------------
-%  CUSTOM COMMANDS (not in notation.tex)
+% CUSTOM COMMANDS (not in notation.tex)
 %------------------------------------------------------------
 % Forward/backward references helpers
 \newcommand{\ie}{i.e.,\ }
@@ -104,47 +101,45 @@
 \newcommand{\Hitchcock}{\cite{Hitchcock1927}}
 
 %------------------------------------------------------------
-%  PART / CHAPTER TITLES  (for table of contents)
+% PART / CHAPTER TITLES (for table of contents)
 %------------------------------------------------------------
 \setcounter{tocdepth}{2}
 
 %============================================================
-%  DOCUMENT
+% DOCUMENT
 %============================================================
 \begin{document}
 
 %------------------------------------------------------------
-%  FRONT MATTER
+% FRONT MATTER
 %------------------------------------------------------------
 \frontmatter
 
 \begin{titlepage}
-  \begin{center}
-    \vspace*{3cm}
-    {\Huge\bfseries Tensor Formats in Banach Spaces}\\[1.5ex]
-    {\Large Minimal Subspaces, Geometry,\\[0.5ex]
-    and Variational Principles}\\[4cm]
-    {\Large Antonio Falcó}\\[1ex]
-    {\normalsize ESI International Chair@CEU-UCH\\
-    Departamento de Matemáticas, Física y Ciencias Tecnológicas\\
-    Universidad Cardenal Herrera-CEU, CEU Universities\\
-    San Bartolomé 55, 46115 Alfara del Patriarca (Valencia), Spain\\[0.5ex]
-    \texttt{afalco@uchceu.es}}\\[3cm]
-    {\small Ergebnisse der Mathematik und ihrer Grenzgebiete
-            (3.\ Folge), Springer}\\[0.5ex]
-    {\small \today}
-  \end{center}
+\begin{center}
+\vspace*{3cm}
+{\Huge\bfseries Tensor Formats in Banach Spaces}\\[1.5ex]
+{\Large Minimal Subspaces, Geometry,\\[0.5ex]
+and Variational Principles}\\[4cm]
+{\Large Antonio Falcó}\\[1ex]
+{\normalsize ESI International Chair@CEU-UCH\\
+Departamento de Matemáticas, Física y Ciencias Tecnológicas\\
+Universidad Cardenal Herrera-CEU, CEU Universities\\
+San Bartolomé 55, 46115 Alfara del Patriarca (Valencia), Spain\\[0.5ex]
+\texttt{afalco@uchceu.es}}\\[3cm]
+{\small \today}
+\end{center}
 \end{titlepage}
 
 \tableofcontents
 
 %------------------------------------------------------------
-%  PREFACE  (stub)
+% PREFACE
 %------------------------------------------------------------
 \input{chapters/ch00_preface}
 
 %------------------------------------------------------------
-%  NOTATION CHAPTER  (stub)
+% NOTATION CHAPTER
 %------------------------------------------------------------
 \chapter*{Notation and Conventions}
 \addcontentsline{toc}{chapter}{Notation and Conventions}
@@ -154,11 +149,11 @@ See the file \texttt{notation.tex} for the complete list of macros
 and symbols used throughout.
 
 %------------------------------------------------------------
-%  MAIN MATTER
+% MAIN MATTER
 %------------------------------------------------------------
 \mainmatter
 
-%%  PART I: ALGEBRAIC AND TOPOLOGICAL FOUNDATIONS
+%% PART I: ALGEBRAIC AND TOPOLOGICAL FOUNDATIONS
 \part{Algebraic and Topological Foundations}
 \label{part:foundations}
 
@@ -167,7 +162,7 @@ and symbols used throughout.
 \input{chapters/ch03_algtensor}
 \input{chapters/ch04_minsubspaces}
 
-%%  PART II: TREE-BASED TENSOR FORMATS
+%% PART II: TREE-BASED TENSOR FORMATS
 \part{Tree-Based Tensor Formats}
 \label{part:tree}
 
@@ -175,33 +170,40 @@ and symbols used throughout.
 \input{chapters/ch06_algTBT}
 \input{chapters/ch07_topTBT}
 
-%%  PART III: DIFFERENTIAL GEOMETRY OF TENSOR FORMATS
+%% PART III: DIFFERENTIAL GEOMETRY OF TENSOR FORMATS
 \part{Differential Geometry of Tensor Formats}
 \label{part:geometry}
 
 \input{chapters/ch08_tucker_manifold}
 \input{chapters/ch09_TB_manifold}
 
-%%  PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
+%% PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
 \part{Variational Principles and Applications}
 \label{part:variational}
 
 \input{chapters/ch10_DF}
 \input{chapters/ch11_open}
 
+%% PART V: QUANTUM STATES AND OPEN SYSTEMS
+\part{Quantum States and Open Systems}
+\label{part:quantum}
+
+\input{chapters/ch12_quantum_states}
+\input{chapters/ch13_lindblad}
+
 %------------------------------------------------------------
-%  APPENDICES
+% APPENDICES
 %------------------------------------------------------------
 \appendix
 
 \input{chapters/app_manifolds}
 \input{chapters/app_functional}
-\input{chapters/app_quantum.tex}
+\input{chapters/app_quantum}
 \input{chapters/app_algorithms}
 \input{chapters/app_notation_index}
 
 %------------------------------------------------------------
-%  BACK MATTER
+% BACK MATTER
 %------------------------------------------------------------
 \backmatter
 
