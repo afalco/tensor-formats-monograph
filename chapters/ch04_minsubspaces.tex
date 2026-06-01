@@ -15,8 +15,11 @@
 In Chapter~\ref{chap:algtensor} we introduced the Tucker format and
 defined the minimal subspace $\Umin{\alpha}{\bv}$ informally, taking
 its existence and properties for granted. This chapter provides the
-complete theory: existence and uniqueness (Section~\ref{sec:min:existence}),
-the lattice structure and inclusion under refinement of partitions
+complete theory: a discussion of reflexivity and why it is the right
+hypothesis for best-approximation problems
+(Section~\ref{sec:min:reflexivity}), existence and uniqueness of
+minimal subspaces (Section~\ref{sec:min:existence}), the lattice
+structure and inclusion under refinement of partitions
 (Section~\ref{sec:min:lattice}), admissible ranks and the disjoint
 decomposition of $\VD$ (Section~\ref{sec:min:admissible}), and the
 existence of best approximations in Banach tensor spaces
@@ -25,11 +28,207 @@ taken from~\cite{FH2012}, expanded with complete proofs and additional
 examples.
 
 %------------------------------------------------------------
+\section{Reflexivity and best approximations}
+\label{sec:min:reflexivity}
+%------------------------------------------------------------
+
+The main existence result of this chapter
+(Theorem~\ref{thm:best_approx_tucker}) requires the ambient Banach
+tensor space $\VDnorm$ to be \emph{reflexive}. This section explains
+why reflexivity is the right hypothesis, states the key characterisation
+theorem of James, and verifies reflexivity for the tensor spaces that
+arise in applications.
+
+\subsection*{Why reflexivity?}
+
+The standard strategy for proving existence of best approximations in
+a non-convex set $A \subset X$ is:
+\begin{enumerate}
+\item[(i)] take a minimising sequence $(\bv_n) \subset A$,
+    $\|\bu - \bv_n\| \to \inf_{\bv \in A} \|\bu - \bv\|$;
+\item[(ii)] extract a convergent subsequence;
+\item[(iii)] show the limit belongs to $A$.
+\end{enumerate}
+In step~(ii), norm convergence cannot be guaranteed (the set $A =
+\Tucker{\leq\fr}{\VD}$ is not compact for infinite-dimensional $V_\alpha$).
+The substitute is \emph{weak} convergence: in a reflexive Banach space,
+every bounded sequence has a weakly convergent subsequence
+(Eberlein--Šmulian theorem). The norm is then weakly lower
+semicontinuous, so step~(ii)--(iii) go through provided $A$ is weakly
+closed. Theorem~\ref{thm:weak_closed} establishes exactly this
+for $A = \Tucker{\leq\fr}{\VD}$ under condition \condINJ.
+
+Reflexivity is not merely a technical convenience: it is also
+\emph{necessary} for certain best-approximation properties, as
+expressed by the following classical result.
+
+\begin{theorem}[James, \cite{James1957}]
+\label{thm:james}
+A Banach space $X$ is reflexive if and only if every bounded linear
+functional $f \in \dual{X}$ attains its norm on the closed unit ball
+$B_X = \{x \in X : \|x\| \leq 1\}$, i.e., there exists $x_f \in B_X$
+such that $f(x_f) = \|f\|_{\dual{X}}$.
+\end{theorem}
+
+\begin{proof}
+The ``only if'' direction follows from the Krein--Milman theorem:
+in a reflexive space $B_X$ is weakly compact, and every continuous
+linear functional on a weakly compact convex set attains its supremum.
+For the ``if'' direction --- that norm-attainment of all functionals
+forces reflexivity --- we refer to the original argument
+of~\cite{James1957}, which uses a subtle diagonal construction. A
+streamlined proof can be found in~\cite{Megginson1998}.
+\end{proof}
+
+\begin{remark}[James's theorem and tensor approximation]
+\label{rem:james_tensor}
+James's theorem has a direct bearing on tensor approximation: if
+$\VDnorm$ is not reflexive, there exists a linear functional
+$F \in (\VDnorm)^*$ that does not attain its norm. By duality, one
+can construct a tensor $\bu \in \VDnorm$ whose best approximation
+from a rank-one slice $\{v \otimes \bw : v \in V_\alpha,\,
+\bw \in \Vbigalpha^{[\alpha]}\}$ does not exist — the infimum is
+not achieved. For example, in $L^1([0,1]) \otimes L^1([0,1])$
+(which is not reflexive), best rank-$r$ approximations may fail to
+exist even for simple target functions. This is why
+Theorem~\ref{thm:best_approx_tucker} requires reflexivity.
+\end{remark}
+
+\subsection*{Characterisations and stability of reflexivity}
+
+\begin{proposition}[Stability of reflexivity]
+\label{prop:reflexivity_stability}
+The class of reflexive Banach spaces is stable under:
+\begin{enumerate}
+\item[\textup{(i)}] Closed subspaces: every closed subspace of a
+    reflexive space is reflexive.
+\item[\textup{(ii)}] Quotients: every quotient of a reflexive space
+    by a closed subspace is reflexive.
+\item[\textup{(iii)}] Finite direct sums: $X \oplus Y$ is reflexive
+    if and only if both $X$ and $Y$ are reflexive.
+\item[\textup{(iv)}] Isomorphisms: reflexivity is preserved under
+    bounded linear isomorphisms.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Statements~(i)--(iv) are classical; see~\cite[Theorem~1.11.17]{Megginson1998}.
+Property~(i) will be used in Chapter~\ref{chap:DF}: the tangent spaces
+$\ZD{\bv}$, being closed subspaces of the reflexive space $\VDnorm$,
+are themselves reflexive, ensuring that the metric projection onto
+$\ZD{\bv}$ exists.
+\end{proof}
+
+\subsection*{Reflexivity of tensor product spaces}
+
+The key question for applications is whether the ambient tensor space
+$\VDnorm$ is reflexive when the component spaces $V_\alpha$ are.
+
+\begin{proposition}[Reflexivity of tensor products]
+\label{prop:reflexivity_tensor}
+Let $(V_\alpha, \|\cdot\|_\alpha)$ be Banach spaces for $\alpha \in D$
+and let $\|\cdot\|_D$ be a reasonable crossnorm on $\VD$.
+\begin{enumerate}
+\item[\textup{(i)}] If all $V_\alpha$ are Hilbert spaces and
+    $\|\cdot\|_D$ is the Hilbert tensor norm, then $\VDnorm$ is a
+    Hilbert space and hence reflexive.
+\item[\textup{(ii)}] If all $V_\alpha = L^p(I_\alpha)$ with
+    $1 < p < \infty$ and $\|\cdot\|_D = \|\cdot\|_{L^p}$, then
+    $\VDnorm \cong L^p(\prod_\alpha I_\alpha)$ is reflexive.
+\item[\textup{(iii)}] If all $V_\alpha$ are reflexive and $\|\cdot\|_D$
+    is the \emph{projective norm} $\|\cdot\|_\pi$, then $\VDnorm$ is
+    in general \emph{not} reflexive, even for $d=2$ and
+    $V_1 = V_2 = \ell^2$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i) follows because the Hilbert tensor norm makes $\VDnorm$ a
+Hilbert space (completion of the algebraic tensor product under the
+inner product $\langle \bigotimes u_\alpha, \bigotimes v_\alpha\rangle
+= \prod_\alpha \langle u_\alpha, v_\alpha\rangle_\alpha$).
+Part~(ii) follows from the Fubini isomorphism
+$L^p(I_1) \otimes \cdots \otimes L^p(I_d) \cong L^p(\prod I_\alpha)$
+and the reflexivity of $L^p$ for $1 < p < \infty$.
+For part~(iii): $\ell^2 \otimes_\pi \ell^2$ contains an isomorphic
+copy of $\ell^1$ (via the trace-class operators), which is not
+reflexive; see~\cite[Example~2.19]{Ryan2002}.
+\end{proof}
+
+\begin{remark}[Which norm to choose?]
+\label{rem:reflexivity_norm_choice}
+Proposition~\ref{prop:reflexivity_tensor} shows that the choice of
+norm $\|\cdot\|_D$ on $\VD$ matters for reflexivity. For the purposes
+of this monograph, we work with norms satisfying \condINJ\ that also
+make $\VDnorm$ reflexive. The typical examples --- $L^p$ spaces with
+$1 < p < \infty$, Sobolev spaces $W^{k,p}$ with $1 < p < \infty$, and
+Hilbert spaces --- all fall into this category. The projective norm is
+excluded by Proposition~\ref{prop:reflexivity_tensor}(iii), and so
+are the endpoint cases $L^1$ and $L^\infty$.
+\end{remark}
+
+\subsection*{Dual characterisation of the injective norm}
+
+The injective norm condition \condINJ\ has a natural dual interpretation
+that will be used in the proof of Theorem~\ref{thm:weak_closed}.
+
+\begin{proposition}[Dual characterisation of $\|\cdot\|_\varepsilon$]
+\label{prop:injnorm_dual}
+For any $\bv \in \VD$:
+\begin{equation}
+\label{eq:injnorm_dual}
+    \|\bv\|_\varepsilon
+    = \sup\Bigl\{
+        \bigl|(\textstyle\bigotimes_{\alpha \in D}\varphi_\alpha)(\bv)\bigr|
+        :
+        \varphi_\alpha \in \dual{V_\alpha},\;
+        \|\varphi_\alpha\|_{\dual{V_\alpha}} \leq 1
+    \Bigr\}.
+\end{equation}
+In particular, if $\|\cdot\|_D$ satisfies \condINJ, then for any
+$\varphi_\alpha \in \dual{V_\alpha}$:
+\begin{equation}
+\label{eq:injnorm_dual_bound}
+    \|\varphi_1 \otimes \cdots \otimes \varphi_d\|_{(\VDnorm)^*}
+    \leq \prod_{\alpha \in D} \|\varphi_\alpha\|_{\dual{V_\alpha}}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Equation~\eqref{eq:injnorm_dual} is the definition of the injective
+norm. For~\eqref{eq:injnorm_dual_bound}: since
+$|(\bigotimes_\alpha \varphi_\alpha)(\bv)|
+\leq \|\bv\|_\varepsilon \cdot \prod_\alpha \|\varphi_\alpha\|$
+(from the definition) and $\|\bv\|_\varepsilon \leq \|\bv\|_D$
+(from \condINJ), we get
+$|(\bigotimes_\alpha \varphi_\alpha)(\bv)|
+\leq \prod_\alpha \|\varphi_\alpha\| \cdot \|\bv\|_D$,
+which is exactly~\eqref{eq:injnorm_dual_bound}.
+
+That $\|\bv\|_\varepsilon = 0$ implies $\bv = 0$ follows from the
+Hahn--Banach theorem: for any $\bv \neq 0$, by Corollary~\ref{cor:app:hb_separation}
+there exists a functional that separates $\bv$ from $0$, and this
+functional can be chosen as a tensor product of functionals
+(using the tensor product structure of $\VD$).
+\end{proof}
+
+\begin{remark}[Role of \condINJ\ in the proof of weak closedness]
+\label{rem:condINJ_role}
+Proposition~\ref{prop:injnorm_dual} is the precise reason why
+\condINJ\ appears as a hypothesis in Theorem~\ref{thm:weak_closed}:
+it ensures that the contraction operators $T_\varphi =
+\overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}$ are bounded on
+$\VDnorm$, which is needed for the weak continuity argument in
+Step~1 of the proof. Without \condINJ, the contraction operators
+need not extend to bounded operators on $\VDnorm$, and the weak
+convergence argument breaks down.
+\end{remark}
+%------------------------------------------------------------
+
+%------------------------------------------------------------
 \section{Existence and uniqueness of minimal subspaces}
 \label{sec:min:existence}
 %------------------------------------------------------------
-
-\subsection*{The case $d = 2$: Schmidt decomposition}
 
 The case of two factors $\VD = V_1 \atens V_2$ is classical and serves
 as the inductive base. The key observation is a lattice property of
@@ -468,103 +667,46 @@ $\bv \in \VDnorm$. We must show $r_\alpha(\bv) \leq r_\alpha$ for
 all $\alpha \in D$.
 
 \medskip
-\noindent\textbf{Step 1: Weak continuity of the contraction operators.}
+\noindent\textbf{Step 1: Weak continuity of contraction operators.}
 
-Fix $\alpha \in D$. For each $\varphi \in \dual{V_\alpha}$, define the
+Fix $\alpha \in D$. For each $\varphi \in \dual{V_\alpha}$, the
 \emph{contraction operator}
+$T_\varphi \coloneqq \overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}:
+\VDnorm \to \Vbigalpha^{[\alpha]}$
+is bounded: for any $\psi \in \dual{(\Vbigalpha^{[\alpha]})}$,
 \begin{equation*}
-    T_\varphi \coloneqq \overline{\varphi \otimes \Id{\Vbigalpha^{[\alpha]}}}
-    : \VDnorm \to \Vbigalpha^{[\alpha]},
-    \qquad
-    T_\varphi(\bv) = (\varphi \otimes \Id{\Vbigalpha^{[\alpha]}})(\bv).
-\end{equation*}
-We claim $T_\varphi$ is bounded. Indeed, for $\bv \in \VD$ and
-$\psi \in \dual{(\Vbigalpha^{[\alpha]})}$:
-\begin{equation*}
-    |\langle T_\varphi(\bv),\, \psi\rangle|
+    |\langle T_\varphi(\bv), \psi\rangle|
     = |(\varphi \otimes \psi)(\bv)|
-    \leq \|\varphi \otimes \psi\|_{(\VDnorm)^*}\,\|\bv\|_D.
+    \leq \|\varphi\|_{\dual{V_\alpha}}
+        \|\psi\|_{\dual{(\Vbigalpha^{[\alpha]})}}
+        \|\bv\|_D,
 \end{equation*}
-Since $\|\cdot\|_D$ satisfies \condINJ, we have
-$\|\varphi \otimes \psi\|_{(\VDnorm)^*} \leq \|\varphi\|_{\dual{V_\alpha}}
-\|\psi\|_{\dual{(\Vbigalpha^{[\alpha]})}}$
-(the injective norm is the smallest reasonable crossnorm, so its dual
-functional norms are bounded by products of component norms; see
-\cite[Chapter~4]{Hackbusch2019}). Hence
-\begin{equation*}
-    \|T_\varphi\|_{\cL(\VDnorm,\, \Vbigalpha^{[\alpha]})}
-    \leq \|\varphi\|_{\dual{V_\alpha}},
-\end{equation*}
-and $T_\varphi$ is a bounded linear operator. Therefore, weak convergence
-$\bv_n \rightharpoonup \bv$ in $\VDnorm$ implies
-\begin{equation}
-\label{eq:weak_contraction}
-    T_\varphi(\bv_n) \rightharpoonup T_\varphi(\bv)
-    \quad \text{weakly in } \Vbigalpha^{[\alpha]},
-    \qquad \forall\, \varphi \in \dual{V_\alpha}.
-\end{equation}
+where the last inequality uses
+Proposition~\ref{prop:injnorm_dual}~\eqref{eq:injnorm_dual_bound}.
+Hence $T_\varphi$ is bounded with $\|T_\varphi\| \leq
+\|\varphi\|_{\dual{V_\alpha}}$, so weak convergence
+$\bv_n \rightharpoonup \bv$ implies
+$T_\varphi(\bv_n) \rightharpoonup T_\varphi(\bv)$ weakly in
+$\Vbigalpha^{[\alpha]}$ for all $\varphi \in \dual{V_\alpha}$.
 
 \medskip
-\noindent\textbf{Step 2: The minimal subspace is characterised by
-the range of contractions.}
+\noindent\textbf{Step 2: Rank is weakly lower semicontinuous.}
 
-By the contraction characterisation
-(Theorem~\ref{thm:min_contraction}), for any $\bw \in \VDnorm$:
-\begin{equation}
-\label{eq:min_contraction_norm}
-    \Umin{\alpha}{\bw}
-    = \overline{\spann\bigl\{
-        T_\varphi(\bw) : \varphi \in \dual{V_\alpha}
-    \bigr\}}^{\|\cdot\|_\alpha}.
-\end{equation}
-In particular, $r_\alpha(\bw) = \dim \Umin{\alpha}{\bw}$, which equals
-the rank of the linear map $\Phi_\bw: \dual{V_\alpha} \to
-\Vbigalpha^{[\alpha]}$, $\Phi_\bw(\varphi) = T_\varphi(\bw)$.
-
-\medskip
-\noindent\textbf{Step 3: Rank is weakly lower semicontinuous.}
-
-Since $r_\alpha(\bv_n) \leq r_\alpha$ for all $n$, we have
-$\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$. This means there exist
-subspaces $W_n \subset \Vbigalpha^{[\alpha]}$ with $\dim W_n \leq r_\alpha$
-such that $T_\varphi(\bv_n) \in W_n$ for all $\varphi \in \dual{V_\alpha}$.
-
-By~\eqref{eq:weak_contraction}, for each fixed $\varphi \in \dual{V_\alpha}$,
-the sequence $(T_\varphi(\bv_n))_n$ converges weakly to $T_\varphi(\bv)$.
-We now use the following standard fact: if $(w_n)$ is a weakly convergent
-sequence in a Banach space with $w_n \in W_n$ and $\dim W_n \leq r$,
-then its weak limit $w$ satisfies $w \in W$ for some subspace $W$ with
-$\dim W \leq r$.
-
-To see this, note that $\{T_\varphi(\bv_n) : \varphi \in \dual{V_\alpha},\,
-\|\varphi\| \leq 1\} \subset W_n$ spans $\Umin{\alpha}{\bv_n}$ for each
-$n$. Since all these subspaces have dimension $\leq r_\alpha$, the
-Grassmannian $\bigcup_{n} \{W_n\}$ is contained in the compact set
-$\Grass{\leq r_\alpha}{\Vbigalpha^{[\alpha]}}$ (in finite dimensions)
-or, in infinite dimensions, we argue directly: the set
-\begin{equation*}
-    W \coloneqq \overline{\spann\bigl\{
-        T_\varphi(\bv) : \varphi \in \dual{V_\alpha}
-    \bigr\}}^{\|\cdot\|_\alpha} = \Umin{\alpha}{\bv}
-\end{equation*}
-is the weak limit of the images, and its dimension satisfies
-$\dim W \leq \liminf_{n\to\infty} \dim W_n \leq r_\alpha$.
-
-More precisely: suppose for contradiction that $\dim \Umin{\alpha}{\bv}
-> r_\alpha$. Then there exist $r_\alpha + 1$ linearly independent vectors
-$w_1, \ldots, w_{r_\alpha+1} \in \Umin{\alpha}{\bv}$, each of the form
-$T_{\varphi_k}(\bv)$ for some $\varphi_k \in \dual{V_\alpha}$. By
-\eqref{eq:weak_contraction}, $T_{\varphi_k}(\bv_n) \rightharpoonup w_k$
-for each $k$. Since $T_{\varphi_k}(\bv_n) \in \Umin{\alpha}{\bv_n}$ and
+By the contraction characterisation (Theorem~\ref{thm:min_contraction}),
+$\Umin{\alpha}{\bv_n} = \overline{\spann\{T_\varphi(\bv_n) : \varphi \in
+\dual{V_\alpha}\}}$ and $\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$.
+Suppose for contradiction that $\dim \Umin{\alpha}{\bv} > r_\alpha$.
+Then there exist $r_\alpha + 1$ linearly independent vectors
+$w_k = T_{\varphi_k}(\bv)$, $k = 1,\ldots, r_\alpha+1$, in
+$\Umin{\alpha}{\bv}$. Step 1 gives $T_{\varphi_k}(\bv_n) \rightharpoonup w_k$
+weakly. Since $T_{\varphi_k}(\bv_n) \in \Umin{\alpha}{\bv_n}$ and
 $\dim \Umin{\alpha}{\bv_n} \leq r_\alpha$, the vectors
-$T_{\varphi_1}(\bv_n), \ldots, T_{\varphi_{r_\alpha+1}}(\bv_n)$ are
-linearly dependent for each $n$. But linear dependence is preserved under
-weak limits (it is a closed algebraic condition), so $w_1, \ldots,
-w_{r_\alpha+1}$ are linearly dependent in $\Vbigalpha^{[\alpha]}$ —
-a contradiction. Therefore $\dim \Umin{\alpha}{\bv} \leq r_\alpha$,
-i.e., $r_\alpha(\bv) \leq r_\alpha$.
+$T_{\varphi_1}(\bv_n), \ldots, T_{\varphi_{r_\alpha+1}}(\bv_n)$
+are linearly dependent for each $n$. Linear dependence is preserved
+under weak limits (it is a closed algebraic condition), so $w_1,
+\ldots, w_{r_\alpha+1}$ are linearly dependent --- contradiction.
+Therefore $r_\alpha(\bv) \leq r_\alpha$.
 
-\medskip
 Since the argument holds for every $\alpha \in D$, we conclude
 $\bv \in \Tucker{\leq\fr}{\VDnorm}$.
 \end{proof}
@@ -669,7 +811,7 @@ least-squares and related iterative methods.
 
 The weak closedness argument of Theorem~\ref{thm:weak_closed} is
 modelled on Uschmajew's result for the case of the spectral norm
-on finite-dimensional spaces~\cite{UschmajewVandereycken2013}. The innovation
+on finite-dimensional spaces~\cite{Uschmajew2012}. The innovation
 of~\cite{FH2012} is the extension to general reflexive Banach spaces
 under the crossnorm condition \condINJ, which is the natural condition
 for tensor product norms.
