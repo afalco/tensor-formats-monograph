@@ -431,19 +431,19 @@ for a two-particle quantum system:
 \begin{equation}
 \label{eq:DF:schrodinger}
     i\,\partial_t \psi(x_1, x_2, t)
-    = \mathcal{H}\,\psi(x_1, x_2, t),
+    = \Ham\,\psi(x_1, x_2, t),
 \end{equation}
-where $\mathcal{H}$ is the Hamiltonian operator
+where $\Ham$ is the Hamiltonian operator
 \begin{equation}
 \label{eq:DF:hamiltonian}
-    \mathcal{H} = \mathcal{H}_1 \otimes I + I \otimes \mathcal{H}_2
+    \Ham = \Hamone \otimes I + I \otimes \Hamtwo
     + V_{12}(x_1, x_2),
 \end{equation}
-with $\mathcal{H}_\alpha = -\tfrac{1}{2}\Delta_{x_\alpha} + V_\alpha(x_\alpha)$
+with $\Ham_\alpha = -\tfrac{1}{2}\Delta_{x_\alpha} + V_\alpha(x_\alpha)$
 the single-particle Hamiltonians and $V_{12}$ the interaction potential.
 
 \paragraph{The vector field.}
-The vector field is $\bF(\bv) = -i\mathcal{H}\bv$, which is a
+The vector field is $\bF(\bv) = -i\Ham\bv$, which is a
 (possibly unbounded) skew-adjoint operator on $L^2(\RR^6)$. In the
 Hilbert-space setting of this example, the metric projection
 $\Pmetric{\bv_r(t)}$ is the orthogonal projection onto $\ZD{\bv_r(t)}$
@@ -457,10 +457,10 @@ reduce to:
 \begin{subequations}
 \label{eq:DF:hartree}
 \begin{align}
-    i\,\dot\phi_1(t) &= \mathcal{H}_1 \phi_1(t)
+    i\,\dot\phi_1(t) &= \Hamone \phi_1(t)
     + \langle \phi_2(t), V_{12}\,\phi_2(t)\rangle_{H_2}\,\phi_1(t),
     \label{eq:DF:hartree1}\\
-    i\,\dot\phi_2(t) &= \mathcal{H}_2 \phi_2(t)
+    i\,\dot\phi_2(t) &= \Hamtwo \phi_2(t)
     + \langle \phi_1(t), V_{12}\,\phi_1(t)\rangle_{H_1}\,\phi_2(t),
     \label{eq:DF:hartree2}
 \end{align}
@@ -487,7 +487,7 @@ equations~\eqref{eq:DF:MCTDH} give:
     C^{(D)}_{kl}(t)
     + (\mu_i^{(1)} + \mu_j^{(2)})\,C^{(D)}_{ij}(t),
 \end{equation}
-where $\mathcal{H}_\alpha u^{(\alpha)}_i = \mu_i^{(\alpha)}
+where $\Ham_\alpha u^{(\alpha)}_i = \mu_i^{(\alpha)}
 u^{(\alpha)}_i$ (eigenvalue equation for the single-particle
 Hamiltonians; in practice one uses instantaneous eigenstates).
 
@@ -496,7 +496,7 @@ Hamiltonians; in practice one uses instantaneous eigenstates).
 \begin{equation}
 \label{eq:DF:mctdh_basis}
     i\,\dot{u}^{(\alpha)}_j(t)
-    = \mathcal{H}_\alpha u^{(\alpha)}_j(t)
+    = \Ham_\alpha u^{(\alpha)}_j(t)
     + P^{(\alpha)}_W(t)
     \bigl[M^{(\alpha)}(t)^{-1}\bigr]_{j\cdot}
     \sum_{k=1}^r F^{(\alpha)}_{k\cdot}(t)\,

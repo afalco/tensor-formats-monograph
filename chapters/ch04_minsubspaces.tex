@@ -610,7 +610,7 @@ norm:
 \begin{equation*}
     \|f - f_r\|_{L^2([0,1]^2)}^2
     = \sum_{k > r} \lambda_k^2
-    = \inf_{\bg \in \Tucker{\leq(r,r)}{L^2}} \|f - \bg\|^2.
+    = \inf_{\bv \in \Tucker{\leq(r,r)}{L^2}} \|f - \bv\|^2.
 \end{equation*}
 
 \paragraph{Decay of eigenvalues.}
@@ -642,69 +642,69 @@ solution with respect to parameters.
 \label{ex:min:parametric_pde}
 Let $D_x = (0,1) \subset \RR$ and $\Gamma = [-1,1]^s \subset \RR^s$
 be a parameter space ($s \geq 1$). Consider the parametric family of
-elliptic problems: find $u(\cdot, \bm{y}): D_x \to \RR$ such that
+elliptic problems: find $u(\cdot, \bmy): D_x \to \RR$ such that
 \begin{equation}
 \label{eq:parametric_pde}
     -\frac{\partial}{\partial x}
-    \Bigl[a(x, \bm{y})\,\frac{\partial u}{\partial x}(x, \bm{y})\Bigr]
+    \Bigl[a(x, \bmy)\,\frac{\partial u}{\partial x}(x, \bmy)\Bigr]
     = f(x),
-    \quad x \in D_x,\; \bm{y} = (y_1, \ldots, y_s) \in \Gamma,
+    \quad x \in D_x,\; \bmy = (y_1, \ldots, y_s) \in \Gamma,
 \end{equation}
-with homogeneous Dirichlet boundary conditions $u(0,\bm{y}) =
-u(1,\bm{y}) = 0$. The diffusion coefficient has the affine form
+with homogeneous Dirichlet boundary conditions $u(0,\bmy) =
+u(1,\bmy) = 0$. The diffusion coefficient has the affine form
 \begin{equation*}
-    a(x, \bm{y}) = a_0(x) + \sum_{j=1}^s y_j a_j(x),
+    a(x, \bmy) = a_0(x) + \sum_{j=1}^s y_j a_j(x),
 \end{equation*}
 where $a_0, a_1, \ldots, a_s \in L^\infty(D_x)$ with
-$a(x, \bm{y}) \geq a_{\min} > 0$ uniformly.
+$a(x, \bmy) \geq a_{\min} > 0$ uniformly.
 
 \paragraph{Tensor product setting.}
-The solution map $\bm{y} \mapsto u(\cdot, \bm{y})$ defines an element
+The solution map $\bmy \mapsto u(\cdot, \bmy)$ defines an element
 \begin{equation*}
-    \bm{u} \in \mathcal{V} \coloneqq
+    \bu \in \mathcal{V} \coloneqq
     H_0^1(D_x) \otimes L^2(\Gamma, \pi),
 \end{equation*}
 where $\pi$ is the uniform measure on $\Gamma$ and the tensor product
 norm satisfies \condINJ\ (Corollary~\ref{cor:best_approx_sobolev}).
 
 \paragraph{Minimal subspaces and parameter sensitivity.}
-The $\alpha$-rank $r_\alpha(\bm{u})$ for $\alpha = \{x\}$ (the physical
+The $\alpha$-rank $r_\alpha(\bu)$ for $\alpha = \{x\}$ (the physical
 variable) equals the effective rank of the solution manifold
-$\{u(\cdot, \bm{y}) : \bm{y} \in \Gamma\} \subset H_0^1(D_x)$:
+$\{u(\cdot, \bmy) : \bmy \in \Gamma\} \subset H_0^1(D_x)$:
 \begin{equation*}
-    \Umin{x}{\bm{u}}
-    = \overline{\spann\{u(\cdot, \bm{y}) : \bm{y} \in \Gamma\}}
+    \Umin{x}{\bu}
+    = \overline{\spann\{u(\cdot, \bmy) : \bmy \in \Gamma\}}
     \subset H_0^1(D_x).
 \end{equation*}
 If $a_0$ dominates (i.e., the perturbations $y_j a_j$ are small),
-the solution $u(\cdot, \bm{y})$ varies little with $\bm{y}$, and
-$r_x(\bm{u})$ is small. More precisely, the Kolmogorov $n$-width
+the solution $u(\cdot, \bmy)$ varies little with $\bmy$, and
+$r_x(\bu)$ is small. More precisely, the Kolmogorov $n$-width
 \begin{equation*}
-    d_n\bigl(\{u(\cdot,\bm{y}) : \bm{y}\in\Gamma\},\,H_0^1(D_x)\bigr)
+    d_n\bigl(\{u(\cdot,\bmy) : \bmy\in\Gamma\},\,H_0^1(D_x)\bigr)
     \coloneqq \inf_{\substack{W \subset H_0^1(D_x) \\ \dim W = n}}
-    \sup_{\bm{y} \in \Gamma}
-    \inf_{w \in W} \|u(\cdot,\bm{y}) - w\|_{H_0^1}
+    \sup_{\bmy \in \Gamma}
+    \inf_{w \in W} \|u(\cdot,\bmy) - w\|_{H_0^1}
 \end{equation*}
 decays at a rate determined by the smoothness of $a$ in the parameters
-$\bm{y}$. When $a$ is analytic in $\bm{y}$ (which holds when the
+$\bmy$. When $a$ is analytic in $\bmy$ (which holds when the
 $a_j$ are bounded away from zero), the $n$-width decays exponentially:
 $d_n \leq C e^{-cn^{1/s}}$ for constants $C, c > 0$
 (see~\cite{Nouy2017}).
 
 \paragraph{Best approximation from Tucker format.}
-The best Tucker-$(r,r)$ approximation of $\bm{u}$ in $\mathcal{V}$
+The best Tucker-$(r,r)$ approximation of $\bu$ in $\mathcal{V}$
 is
 \begin{equation*}
-    \bm{u}_r = \sum_{k=1}^r \lambda_k\, v_k^{(x)} \otimes v_k^{(\bm{y})},
+    \bu_r = \sum_{k=1}^r \lambda_k\, v_k^{(x)} \otimes v_k^{(\bmy)},
     \quad
-    \|\bm{u} - \bm{u}_r\|_{\mathcal{V}}^2 = \sum_{k > r} \lambda_k^2,
+    \|\bu - \bu_r\|_{\mathcal{V}}^2 = \sum_{k > r} \lambda_k^2,
 \end{equation*}
 where $\lambda_k$ are the singular values of the solution operator
-$\bm{y} \mapsto u(\cdot, \bm{y})$ as a Hilbert--Schmidt operator. The
+$\bmy \mapsto u(\cdot, \bmy)$ as a Hilbert--Schmidt operator. The
 existence of this best approximation is guaranteed by
 Corollary~\ref{cor:best_approx_sobolev}. The spatial basis functions
 $v_k^{(x)} \in H_0^1(D_x)$ are the principal components of the
-solution manifold, and $v_k^{(\bm{y})} \in L^2(\Gamma)$ encode the
+solution manifold, and $v_k^{(\bmy)} \in L^2(\Gamma)$ encode the
 parameter dependence. This decomposition is the starting point for
 the \emph{proper orthogonal decomposition} (POD) and reduced basis
 methods used in uncertainty quantification; see~\cite{Nouy2017}.
