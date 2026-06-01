@@ -241,7 +241,27 @@ The Dirac--Frenkel condition~\eqref{eq:DF_tucker_char} then yields
 coupled evolution equations for the basis vectors
 $u^{(\alpha)}_{i_\alpha}(t) \in V_\alpha$ and the core tensor
 $C^{(D)}(t)$, which generalise the MCTDH equations to arbitrary
-Tucker ranks in Banach spaces.
+Tucker ranks in Banach spaces. In the Hilbert case, imposing the
+tangential gauge $\langle \dot{u}^{(\alpha)}_i, u^{(\alpha)}_j\rangle = 0$,
+the closed system reads:
+\begin{subequations}
+\label{eq:DF:MCTDH}
+\begin{align}
+    \dot{C}^{(D)}_{(j_\alpha)}(t)
+    &= \bigl\langle \bF(t,\bv_r(t)),
+       \bigotimes_\alpha u^{(\alpha)}_{j_\alpha}(t)\bigr\rangle_D,
+    \label{eq:DF:MCTDH_core}\\[4pt]
+    \dot{u}^{(\alpha)}_{j_\alpha}(t)
+    &= P^{(\alpha)}_W(t)
+       \bigl[M^{(\alpha)}(t)^{-1}\bigr]_{j_\alpha \cdot}
+       \sum_{i_\alpha} F^{(\alpha)}_{i_\alpha \cdot}(t)\,
+       u^{(\alpha)}_{i_\alpha}(t),
+    \label{eq:DF:MCTDH_basis}
+\end{align}
+\end{subequations}
+where $M^{(\alpha)}_{ij}(t) = \langle \bU^{(\alpha)}_i(t),
+\bU^{(\alpha)}_j(t)\rangle_{[\alpha]}$ is the mass matrix and
+$F^{(\alpha)}_{ij}(t)$ the mean-field matrix~\eqref{eq:DF:meanfield}.
 \end{remark}
 
 \subsection*{The Hartree manifold}
