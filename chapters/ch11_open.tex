@@ -1,11 +1,9 @@
 %============================================================
-%  ch11_open.tex
-%  Chapter 11: Open Problems and Perspectives
+% ch11_open.tex
+% Chapter 11: Open Problems and Perspectives
 %
-%  Tensor Formats in Banach Spaces
-%  Antonio Falcó, CEU Universities
-%
-%  Estimated length: ~20 pp.
+% Tensor Formats in Banach Spaces
+% Antonio Falcó, CEU Universities
 %============================================================
 
 \chapter{Open Problems and Perspectives}
@@ -14,7 +12,9 @@
 The results established in this monograph open several directions for
 further research. This chapter collects the most natural open problems,
 organised by theme, together with a discussion of connections to other
-active areas of mathematics and its applications.
+active areas of mathematics and its applications. For each problem we
+describe the state of the art, identify the main technical obstacle, and
+indicate how it connects to the results of the monograph.
 
 %------------------------------------------------------------
 \section{Global topology of tensor manifolds}
@@ -23,55 +23,92 @@ active areas of mathematics and its applications.
 
 \subsection*{Connectedness of tree-based manifolds}
 
-We showed in Proposition~\ref{prop:TBT_connected} that each Tucker
-manifold $\Tucker{\fr}{\VD}$ is connected. For tree-based manifolds
-with $\dep{\TD} \geq 2$, this question is open in the
-infinite-dimensional setting.
+Proposition~\ref{prop:TBT_connected} establishes that each Tucker
+manifold $\Tucker{\fr}{\VD}$ is connected for any Banach spaces $V_\alpha$
+and any admissible rank $\fr$. The proof uses the explicit chart maps
+of Section~\ref{sec:tucker_manifold:charts} to construct a path between
+any two points of $\Tucker{\fr}{\VD}$.
+
+For tree-based manifolds with $\dep{\TD} \geq 2$, connectedness in
+finite dimensions has been established using algebraic geometry:
+$\FTv$ is the smooth part of a determinantal variety
+(Uschmajew~\cite{Uschmajew2012} for HT, Holtz--Rohwedder--Schneider~\cite{HoltzRohwedderSchneider2012}
+for TT). These proofs rely on the irreducibility of certain algebraic
+sets and do not extend directly to infinite-dimensional Banach spaces,
+where algebraic geometry methods are unavailable.
 
 \begin{problem}
 \label{prob:connected}
-Let $\TD$ be a dimension partition tree with $\dep{\TD} \geq 2$ and
-let $\fr \in \ADTD$ with $\FTv$ a proper set. Is $\FTv$ connected?
-\end{problem}
+Let $\TD$ be a dimension partition tree with $\dep{\TD} \geq 2$,
+$V_\alpha$ infinite-dimensional Banach spaces, and $\fr \in \ADTD$
+with $\FTv$ a proper non-empty set. Is $\FTv$ connected?
 
-In finite dimensions, connectedness has been established for the HT
-format~\cite{Uschmajew2012} and the TT format~\cite{HoltzRohwedderSchneider2012},
-but the methods used there (algebraic geometry of determinantal varieties)
-do not directly extend to the Banach setting.
+\emph{Approach.} The intersection representation
+(Theorem~\ref{thm:intersection_representation}) writes $\FTv$ as the
+intersection of Tucker manifolds at each level of the tree. Each
+Tucker manifold is connected; the difficulty is showing that the
+intersection retains this property. A sufficient condition would be
+that the fibres of the map $\FTv \to \Tucker{\fr_1}{\VD,\mathcal{P}_1}$
+are connected.
+\end{problem}
 
 \subsection*{Higher homotopy groups}
 
-Even in finite dimensions, the homotopy type of $\Tucker{\fr}{\VD}$
-and $\FTv$ is not fully understood. Since $\Tucker{\fr}{\VD}$ is
-a fibre bundle over the product of Grassmannians
-$\prod_\alpha \Grass{r_\alpha}{V_\alpha}$ (Theorem~\ref{thm:Tucker_Banach_Manifold}),
-the long exact sequence of homotopy groups relates
-$\pi_n(\Tucker{\fr}{\VD})$ to $\pi_n(\prod_\alpha \Grass{r_\alpha}{\RR^{n_\alpha}})$
-and $\pi_n(\RR^{\times r_\alpha}_*)$.
+The Tucker manifold $\Tucker{\fr}{\VD}$ is a fibre bundle over
+$\prod_\alpha \Grass{r_\alpha}{V_\alpha}$ with fibre
+$\RR^{\times r_\alpha}_*$
+(Theorem~\ref{thm:Tucker_Banach_Manifold}, Section~\ref{sec:tucker_manifold:bundle}).
+The long exact sequence of homotopy groups for this bundle gives
+\begin{equation*}
+    \cdots \to \pi_n(\RR^{\times r_\alpha}_*) \to
+    \pi_n(\Tucker{\fr}{\VD}) \to
+    \pi_n\Bigl(\prod_\alpha \Grass{r_\alpha}{V_\alpha}\Bigr) \to
+    \pi_{n-1}(\RR^{\times r_\alpha}_*) \to \cdots
+\end{equation*}
+For $V_\alpha = \RR^{n_\alpha}$ finite-dimensional, the homotopy groups
+of the real Grassmannian $\Grass{r}{\RR^n}$ are known
+(they stabilise as $n \to \infty$ to the homotopy groups of $BO(r)$),
+but $\pi_1(\RR^{\times r_\alpha}_*)$ is non-trivial whenever some
+$r_\alpha \geq 2$, making the exact sequence non-degenerate.
 
 \begin{problem}
 \label{prob:homotopy}
-Compute the fundamental group $\pi_1(\Tucker{\fr}{\VD})$ and
-$\pi_1(\FTv)$ in the finite-dimensional case. Are these manifolds
-simply connected?
+Compute $\pi_1(\Tucker{\fr}{\VD})$ and $\pi_1(\FTv)$ in the
+finite-dimensional case $V_\alpha = \RR^{n_\alpha}$. Is
+$\Tucker{\fr}{\VD}$ simply connected for $r_\alpha \geq 2$?
+
+\emph{Relevance.} The fundamental group controls the global
+behaviour of parallel transport around closed loops in the fibre
+bundle. In the quantum setting (Part~\ref{part:quantum}), the holonomy
+of the Tucker bundle is the structure group $G_\fr = \prod_\alpha
+\GL{r_\alpha}{\RR}$ (Remark~\ref{rem:tucker_principal}), and
+non-trivial $\pi_1$ would imply non-trivial holonomy — physically,
+a Berry phase for the Dirac--Frenkel dynamics.
 \end{problem}
 
-\subsection*{Rank stratification}
+\subsection*{Rank stratification and Whitney regularity}
 
 The decomposition $\VD = \bigsqcup_\fr \Tucker{\fr}{\VD}$ is a
-stratification of the algebraic tensor space. The boundary
-$\overline{\Tucker{\fr}{\VD}} \setminus \Tucker{\fr}{\VD}$ consists of
-tensors with strictly smaller rank, and the closure
-$\overline{\Tucker{\fr}{\VD}}^{\|\cdot\|}$ in the Banach topology is the
-set $\Tucker{\leq\fr}{\VD}$ of tensors of bounded rank
-(Theorem~\ref{thm:weak_closed}).
+stratification of the tensor space. The boundary
+$\overline{\Tucker{\fr}{\VD}} \setminus \Tucker{\fr}{\VD}
+= \Tucker{\leq\fr}{\VD} \setminus \Tucker{\fr}{\VD}$
+consists of tensors with strictly smaller rank in at least one direction.
+Theorem~\ref{thm:weak_closed} identifies $\Tucker{\leq\fr}{\VD}$ as
+weakly closed in $\VDnorm$ under condition \condINJ, but the local
+geometry at boundary points is not yet understood.
 
 \begin{problem}
 \label{prob:stratification}
-Describe the local geometry of the boundary strata: what is the tangent
-cone to $\Tucker{\leq\fr}{\VD}$ at a boundary point
-$\bv \in \Tucker{\leq\fr}{\VD} \setminus \Tucker{\fr}{\VD}$?
-Is the stratification Whitney regular?
+Describe the tangent cone to $\Tucker{\leq\fr}{\VD}$ at a boundary
+point $\bv_0 \in \Tucker{\fr_0}{\VD}$ with $\fr_0 < \fr$ (componentwise).
+Is the stratification $\{\Tucker{\fr}{\VD}\}_\fr$ Whitney regular?
+
+\emph{Known results.} In finite dimensions, the stratification of
+matrices by rank is Whitney regular (classical), but for
+$d \geq 3$ the analogous result is open even in finite dimensions.
+Whitney regularity would imply that the metric projection
+$\Pi_{\Tucker{\leq\fr}{\VD}}$ is continuous at boundary points, which
+is the key property needed for adaptive rank algorithms.
 \end{problem}
 
 %------------------------------------------------------------
@@ -79,21 +116,34 @@ Is the stratification Whitney regular?
 \label{sec:open:riemannian}
 %------------------------------------------------------------
 
-In the Hilbert case, the Tucker manifold inherits a Riemannian metric
-from the ambient Hilbert tensor space. Riemannian gradient methods
-on $\Tucker{\fr}{\VD}$ (ALS, Riemannian gradient, retraction-based
-methods) have been developed by Uschmajew and Vandereycken~\cite{UschmajewVandereycken2020}.
-In the Banach setting, a natural replacement is a Finsler metric (a
-continuously varying norm on each tangent space).
+In the Hilbert case, $\VDnorm = \bigotimes_j L^2(I_j)$ is a Hilbert
+space, and $\Tucker{\fr}{\VD}$ inherits a Riemannian metric from the
+ambient inner product. Riemannian gradient methods on Tucker manifolds
+(ALS with retraction, Riemannian gradient descent, trust-region methods)
+have been developed and analysed by Uschmajew and
+Vandereycken~\cite{UschmajewVandereycken2020}, who establish local and
+global convergence under appropriate non-degeneracy conditions on the
+rank.
+
+In the Banach setting, there is no canonical inner product on $\VDnorm$,
+and the natural replacement is a \emph{Finsler metric}: a continuously
+varying norm on each tangent space $T_\bv \Tucker{\fr}{\VD}$.
 
 \begin{problem}
 \label{prob:finsler}
-Equip $\Tucker{\fr}{\VD}$ with the Finsler metric induced by
-$\|\cdot\|_D$ (via the isomorphism
-$T_\bv\Tucker{\fr}{\VD} \cong \ZD{\bv}$). Study the geodesics,
-curvature, and exponential map of this Finsler manifold. In particular:
-does the Dirac--Frenkel flow~\eqref{eq:DF_tucker} preserve the
-Finsler structure in any sense?
+Equip $\Tucker{\fr}{\VD}$ with the Finsler metric
+$F(\bv, \dot\bv) \coloneqq \|\dot\bv\|_D$ (the restriction of the
+ambient norm to $T_\bv \Tucker{\fr}{\VD} \cong \ZD{\bv}$). Determine:
+\begin{enumerate}
+\item[\textup{(a)}] \emph{Geodesics and exponential map.} Are Finsler
+    geodesics on $\Tucker{\fr}{\VD}$ related to the retraction~\eqref{eq:tucker_retraction}
+    of Section~\ref{sec:banach:retractions}?
+\item[\textup{(b)}] \emph{Curvature.} Does the Dirac--Frenkel flow
+    preserve the Finsler structure (i.e., is the flow by isometries)?
+\item[\textup{(c)}] \emph{Convexity.} Are the sublevel sets
+    $\{\bv \in \Tucker{\fr}{\VD} : \|\bv - \bv_0\|_D \leq R\}$
+    geodesically convex?
+\end{enumerate}
 \end{problem}
 
 %------------------------------------------------------------
@@ -105,39 +155,61 @@ Finsler structure in any sense?
 
 For the TT format, Lubich, Oseledets, and
 Vandereycken~\cite{LubichOseledetsVandereycken2015} introduced the
-\emph{projector-splitting integrator}, which integrates the
-Dirac--Frenkel ODE by splitting the projection onto $\ZD{\bv_r(t)}$
-into a sequence of rank-one updates. For general tree-based formats,
-the corresponding integrator was introduced in~\cite{CerutiLubichWalach2020}.
+\emph{projector-splitting integrator}, which approximates the Dirac--Frenkel
+ODE by splitting the projection onto the tangent space $\ZD{\bv_r(t)}$
+into a sequence of rank-one updates. For each step of the algorithm,
+the update is exact on the ambient space and involves only one factor at
+a time. This makes the algorithm highly parallelisable and avoids the
+ill-conditioning of the full rank map.
 
-The convergence analysis of these algorithms in infinite-dimensional
-Banach spaces (as opposed to Hilbert spaces) requires understanding
-the stability of the Dirac--Frenkel flow on $\FTv$ and the
-approximation properties of the splitting.
+The convergence analysis of this integrator in the Hilbert setting gives
+second-order accuracy in time for smooth solutions
+\cite{LubichOseledetsVandereycken2015}. In the Banach setting, the
+analysis requires understanding the stability of the splitting under the
+metric projection $\Pmetric{\bv_r}$ of Chapter~\ref{chap:DF}, which in
+general is neither orthogonal nor idempotent.
 
 \begin{problem}
 \label{prob:integrator}
-Extend the convergence analysis of the projector-splitting integrator
-to the setting of Banach tensor spaces. In particular, establish
-error bounds that depend explicitly on the geometry of the tree-based
-manifold $\FTv$ (curvature, injectivity radius, condition number of
-the rank map $\varrho_\fr$).
+Extend the projector-splitting integrator to Banach tensor spaces.
+Specifically:
+\begin{enumerate}
+\item[\textup{(a)}] Define the splitting of $\Pmetric{\bv_r}$ into
+    factor-wise projections using the duality mapping $J$ of
+    Chapter~\ref{chap:banach}, and prove that the split projections
+    are well-defined and bounded.
+\item[\textup{(b)}] Establish error bounds for the resulting integrator
+    in terms of the curvature of $\Tucker{\fr}{\VD}$ (Open
+    Problem~\ref{prob:finsler}) and the condition number of the rank
+    map $\varrho_\fr$ at the current iterate.
+\item[\textup{(c)}] Analyse the special case $V_\alpha = L^p(I_\alpha)$,
+    $p \neq 2$, where the duality mapping is non-linear.
+\end{enumerate}
 \end{problem}
 
 \subsection*{Alternating least squares in Banach spaces}
 
-The \emph{alternating least squares} (ALS) algorithm and its variants
-(DMRG, HOSVD) minimise a functional over $\Tucker{\leq\fr}{\VD}$ by
-alternating optimisation over one factor at a time. In Hilbert spaces,
-convergence of ALS is well understood~\cite{UschmajewVandereycken2020}.
-In Banach spaces, convergence requires different tools.
+The ALS algorithm minimises a functional $J: \Tucker{\leq\fr}{\VD} \to \RR$
+by fixing all factor matrices except one and solving a linear subproblem.
+In the Hilbert setting, each subproblem is a linear least squares problem
+with a unique solution (when the rank map is non-degenerate), and
+convergence to a critical point follows from the monotone decrease of $J$.
+
+In the Banach setting, each subproblem requires minimising $J$ over a
+closed subspace of $V_\alpha$, which in a non-Hilbert space may require
+solving a nonlinear dual problem (via the duality mapping). The condition
+for convergence involves the geometry of $\Tucker{\fr}{\VD}$, specifically
+whether the tangent spaces $\ZD{\bv}$ vary Lipschitz continuously.
 
 \begin{problem}
 \label{prob:ALS}
-Prove convergence of ALS for minimisation over $\Tucker{\leq\fr}{\VD}$
-in a reflexive Banach tensor space $\VDnorm$. What role does the
-geometry of the Tucker manifold (specifically, the structure of the
-tangent spaces $\ZD{\bv}$) play in the convergence rate?
+For a convex, coercive, and Fréchet-differentiable functional
+$J: \VDnorm \to \RR$ and a reflexive strictly convex $\VDnorm$, prove
+convergence of ALS for minimisation over $\Tucker{\leq\fr}{\VD}$.
+Determine the convergence rate in terms of the condition number of
+the Gram matrices $M^{(\alpha)}_{ij} = \langle \bU^{(\alpha)}_i,
+\bU^{(\alpha)}_j\rangle_{[\alpha]}$ at the current iterate (defined
+in Section~\ref{sec:DF:kinematic}).
 \end{problem}
 
 %------------------------------------------------------------
@@ -147,98 +219,203 @@ tangent spaces $\ZD{\bv}$) play in the convergence rate?
 
 \subsection*{Quasi-Banach and Fréchet spaces}
 
-The component spaces $V_\alpha$ in this monograph are normed (Banach or
-at least normed). Many function spaces of interest — $L^p$ for
-$0 < p < 1$, or spaces of smooth functions — are quasi-Banach or Fréchet
-but not Banach. The theory of minimal subspaces and Tucker manifolds
-should extend to these settings, but the proofs require substantial
-modifications.
+The $L^p$ spaces for $0 < p < 1$ are quasi-Banach spaces: they satisfy
+a weaker triangle inequality $\|x+y\|^p \leq \|x\|^p + \|y\|^p$.
+These spaces arise in sparse approximation and compressed sensing, where
+$p < 1$ norms encourage sparsity. The natural component spaces for
+multi-dimensional sparse approximation are $\ell^p(\NN)$ or
+$L^p(\Omega)$ with $0 < p < 1$.
+
+The theory of minimal subspaces (Chapter~\ref{chap:minsubspaces}) requires
+reflexivity of $\VDnorm$ for the existence of best Tucker approximations
+(Theorem~\ref{thm:best_approx_tucker}). Quasi-Banach spaces with $p < 1$
+are not locally convex and are not reflexive, so the proof breaks down.
+However, the algebraic definition of minimal subspaces
+(Chapter~\ref{chap:algtensor}) and the manifold structure
+(Chapter~\ref{chap:tucker_manifold}) might still be recoverable under
+weaker hypotheses.
 
 \begin{problem}
 \label{prob:quasi-banach}
-Develop the theory of minimal subspaces and tensor manifolds for
-quasi-Banach spaces $V_\alpha$ with $0 < p < 1$. In particular,
-does the Tucker manifold $\Tucker{\fr}{\VD}$ retain its smooth
-structure when the $V_\alpha$ are $L^p$ spaces for $p < 1$?
+Develop a theory of minimal subspaces and Tucker manifolds for
+quasi-Banach component spaces $V_\alpha = L^p(I_\alpha)$ with
+$0 < p < 1$. In particular:
+\begin{enumerate}
+\item[\textup{(a)}] Does the Tucker manifold $\Tucker{\fr}{\VD}$
+    retain its $\mathcal{C}^\infty$-Banach manifold structure when
+    the $V_\alpha$ are quasi-Banach spaces? The key difficulty is
+    whether finite-dimensional subspaces of $L^p$ ($p < 1$) are
+    complemented; this fails for $p < 1$ by a result of
+    Kalton~(1984).
+\item[\textup{(b)}] Does a best Tucker approximation exist when
+    $p < 1$? Or does the failure of reflexivity lead to non-existence
+    as in the $L^1$ case?
+\end{enumerate}
 \end{problem}
 
 \subsection*{Infinite-dimensional index sets}
 
 All results in this monograph assume $D = \{1, \ldots, d\}$ is finite.
-For problems in infinite dimensions — e.g., infinite particle quantum
-systems or PDEs in infinitely many variables — one would want $D$ to
-be infinite. The algebraic tensor product over an infinite index set
-requires projective limits or nuclear spaces.
+For quantum field theory, statistical mechanics on infinite lattices,
+and PDEs in infinitely many variables (e.g., parametric PDEs with
+countably many parameters as in~\cite{Nouy2017}), one requires $D$ to
+be countably infinite.
+
+The algebraic tensor product over $D = \NN$ is well-defined as the
+inductive limit $\varinjlim_{d \in \NN} \bigotimes_{j=1}^d V_j$, but
+the completion and the norm theory are more subtle: different orderings
+of the factors may give inequivalent completions.
 
 \begin{problem}
 \label{prob:infinite_D}
-Extend the tree-based tensor framework to infinite index sets
-$D = \NN$ (or more general sets). What is the natural analogue of
-a dimension partition tree, and what conditions on the norms guarantee
-the existence of minimal subspaces and best approximations?
+Extend the tree-based tensor framework to infinite index sets $D = \NN$.
+Concretely:
+\begin{enumerate}
+\item[\textup{(a)}] What is the natural analogue of a dimension partition
+    tree for $D = \NN$? (A natural candidate: an infinite rooted binary
+    tree with $\Leaves = \{\{j\} : j \in \NN\}$.)
+\item[\textup{(b)}] Under what conditions on the norms $\|\cdot\|_j$
+    does the inductive limit $\varinjlim_d \Tucker{\fr_d}{\bigotimes_{j=1}^d V_j}$
+    converge to a well-defined Banach manifold?
+\item[\textup{(c)}] Does the best approximation theorem
+    (Theorem~\ref{thm:best_approx_tucker}) extend to the infinite case,
+    and under what reflexivity conditions?
+\end{enumerate}
 \end{problem}
 
 %------------------------------------------------------------
-\section{Connections with quantum information}
+\section{Connections with quantum information and open systems}
 \label{sec:open:quantum}
 %------------------------------------------------------------
 
-\subsection*{Tensor networks and entanglement}
+\subsection*{Tensor networks and entanglement geometry}
 
-In quantum information, a \emph{tensor network state} on a lattice
-is a tensor $\bv \in \bigotimes_{j \in D} \CC^{d_j}$ whose
-transfer tensors $\{C^{(\alpha)}\}$ are specified by a graph (not
-necessarily a tree). The tree-based format corresponds to
-\emph{tree tensor networks} (TTN), which include MPS/TT as the
-linear-chain case and MERA (multi-scale entanglement renormalisation
-ansatz) as a more general tree.
+In quantum information, the \emph{area law} for ground states of
+gapped local Hamiltonians~\cite{Vidal2003} states that the entanglement
+entropy $S(\alpha) = -\Tr(\rho_\alpha \log \rho_\alpha)$ of a bipartition
+$D = \alpha \cup \alpha^c$ grows at most as $|\partial\alpha|$ (boundary
+area), not $|\alpha|$ (volume). This is the physical motivation for
+tree-based tensor formats: the rank constraints in $\FTv$ directly
+control $S(\alpha) \leq \log r_\alpha$ for all $\alpha \in \TD$
+(Remark~\ref{rem:qs:tucker_entanglement} in
+Chapter~\ref{chap:quantum_states}).
 
-The \emph{entanglement entropy} of a bipartition $D = \alpha \cup \alpha^c$
-is $S(\alpha) = -\mathrm{tr}(\rho_\alpha \log \rho_\alpha)$, where
-$\rho_\alpha$ is the reduced density matrix of the state on $\alpha$.
-The \emph{area law} for ground states of local Hamiltonians states that
-$S(\alpha)$ grows at most as $|\partial \alpha|$ (the boundary of
-$\alpha$), not as $|\alpha|$ (the volume). This motivates the use of
-tree-based formats: the rank constraints in $\FTv$ directly control
-the entanglement structure.
+The tensor network formalism extends beyond trees to general graphs
+(PEPS, MERA), where the entanglement structure is governed by the
+graph's topology. The manifold theory of this monograph covers only
+tree-based networks.
 
 \begin{problem}
 \label{prob:quantum}
-Formulate the Dirac--Frenkel variational principle for tree tensor
-networks in the language of $C^*$-algebras and operator systems.
-What is the correct generalisation of the Tucker manifold in the
-non-commutative setting?
+Formulate the Dirac--Frenkel variational principle for general tensor
+network states (not necessarily tree-based) in the language of
+$C^*$-algebras. What is the correct Banach manifold structure for
+PEPS (projected entangled pair states), where the graph has cycles?
+Does the immersion theorem (Theorem~\ref{thm:tucker_immersion}) extend
+to non-tree tensor networks, and under what conditions on the graph?
 \end{problem}
 
-\begin{problem}[Lindblad dynamics: unbounded generators]
+\subsection*{Lindblad dynamics: unbounded generators}
+
+Theorem~\ref{thm:lind:wellposed} establishes well-posedness of the
+projected Lindblad dynamics under Assumption~\ref{ass:lind:regular},
+which requires the generator $\Lind$ to be bounded on $\cTsa{1}(H)$.
+The physically important cases — position decoherence ($L = \sqrt{2D}\,x$),
+momentum diffusion ($L = \sqrt{\gamma}\,p$), and scattering-decoherence
+models — all involve unbounded Lindblad operators. In these cases,
+$\Lind$ is well-defined only on a dense domain $\mathrm{Dom}(\Lind) \subset
+\cTsa{1}(H)$, and the rank-$r$ stratum $\Drank{r}{H}$ must be replaced
+by a domain-adapted version
+$\Drank{r}{\Ham}(H) \coloneqq \{\rho \in \Drank{r}{H} : \supp(\rho) \subset
+\mathrm{Dom}(\Ham)\}$ (Section~6.4 of~\cite{AcevedoFalco2026}).
+
+\begin{problem}
 \label{prob:lindblad_unbounded}
-Extend the well-posedness result of Theorem~\ref{thm:lind:wellposed}
-to unbounded Lindblad operators (e.g., position or momentum operators
-on $L^2(\RR)$). The main difficulty is that the support subspace
-$\supp(\rho(t))$ must evolve within the domain of the generator.
-Formulate the appropriate domain-adapted rank-$r$ stratum and
-construct the corresponding tangent projector.
+Extend Theorem~\ref{thm:lind:wellposed} to unbounded Lindblad generators.
+Specifically:
+\begin{enumerate}
+\item[\textup{(a)}] Construct a smooth Banach manifold structure on
+    $\Drank{r}{\Ham}(H)$ using graph-norm Grassmannians, where support
+    subspaces are required to lie in $\mathrm{Dom}(\Ham)$ equipped with
+    the graph norm $\|\psi\|_{\Ham} = \|\psi\| + \|\Ham\psi\|$.
+\item[\textup{(b)}] Construct a bounded tangent projector
+    $\hat P_\rho^{\Ham}: \cTsa{1}(H) \to T_\rho \Drank{r}{\Ham}(H)$
+    that enforces both the rank and domain constraints.
+\item[\textup{(c)}] Prove local well-posedness of the projected dynamics
+    $\dot\rho = \hat P_\rho^{\Ham}(\Lind(\rho))$ for an appropriate
+    class of initial data in $\Drank{r}{\Ham}(H)$.
+\end{enumerate}
+\emph{Test case.} The Joos--Zeh position-decoherence model
+$\dot\rho = -D[x,[x,\rho]]$ with $L = \sqrt{2D}\,x$ on $L^2(\RR)$,
+where $\mathrm{Dom}(\Ham) = W^{2,2}(\RR)$ and
+$\Drank{r}{\Ham}(L^2(\RR)) = \{\rho \in \Drank{r}{L^2(\RR)} :
+\supp(\rho) \subset W^{2,2}(\RR)\}$.
 \end{problem}
 
-\begin{problem}[CPTP-preserving rank-$r$ reduction]
+\subsection*{CPTP-preserving rank reduction}
+
+The projected Lindblad dynamics of Chapter~\ref{chap:lindblad}
+preserves positivity, trace, and rank (Proposition~\ref{prop:lind:preservation}),
+but the projected flow is a nonlinear ODE on $\Drank{r}{H}$ and is
+not itself a completely positive trace-preserving (CPTP) map.
+This means the reduced dynamics does not correspond to a valid quantum
+channel, which is a serious limitation for quantum information applications.
+
+Recent work by Appelö and Cheng~\cite{AppeloChengo2024} proposes
+Kraus-form low-rank integrators that preserve CPTP at the discrete
+level, but the relationship between their schemes and the continuous
+Dirac--Frenkel dynamics remains unclear.
+
+\begin{problem}
 \label{prob:lindblad_cptp}
-The Dirac--Frenkel projected Lindblad dynamics preserves positivity
-and trace but does not generally produce a CPTP map. Characterise
-when the projected flow $\rho_0 \mapsto \rho(t)$ is completely
-positive, and design reduced dynamics that are CPTP by construction
-(e.g., via Kraus-form or Cholesky parametrisations).
+Characterise the conditions under which the projected Lindblad flow
+$\rho_0 \mapsto \rho(t)$ is completely positive:
+\begin{enumerate}
+\item[\textup{(a)}] Under what conditions on $\Lind$ and $\hat P_\rho$
+    does the flow $t \mapsto \rho(t)$ define a CPTP semigroup on
+    $\Drank{r}{H}$?
+\item[\textup{(b)}] Is there a choice of bounded projector
+    $\hat P_\rho: \cTsa{1}(H) \to T_\rho\Drank{r}{H}$ that guarantees
+    CPTP preservation, beyond the block projector of
+    Proposition~\ref{prop:qs:projector}?
+\item[\textup{(c)}] Relate the continuous Dirac--Frenkel dynamics to
+    the Kraus-form integrators of~\cite{AppeloChengo2024} in the limit
+    of small time steps.
+\end{enumerate}
 \end{problem}
 
-\begin{problem}[Multipartite open systems and tensor networks]
+\subsection*{Multipartite open systems and tensor networks}
+
+For multipartite open quantum systems $H = \bigotimes_{j=1}^d H_j$,
+the density operator $\rho(t)$ is a positive trace-class operator on
+$\bigotimes_j H_j$. Approximating $\rho(t)$ by a \emph{matrix product
+operator} (MPO) of bond dimension $r$ is standard in numerical quantum
+physics, but the geometric foundations — what manifold structure does
+the set of rank-$r$ MPOs carry, and is the Dirac--Frenkel principle
+well-posed on it? — have not been rigorously established.
+
+The key difficulty is that $\rho \in \cTsa{1}(\bigotimes_j H_j)$ is
+simultaneously an element of a tensor product (the space
+$\bigotimes_j \cL(H_j)$ via the isomorphism
+$\cT{1}(\bigotimes_j H_j) \cong \bigotimes_j \cT{1}(H_j)$ under
+appropriate conditions) and a positive operator, and these two structures
+interact in a non-trivial way.
+
+\begin{problem}
 \label{prob:lindblad_tensor}
-For multipartite open systems $H = \bigotimes_{j=1}^d H_j$, extend
-the projected Lindblad dynamics to tree-based tensor formats on the
-operator space $\cTsa{1}(\bigotimes_j H_j) \cong \bigotimes_j \cL(H_j)$.
-This would provide a rigorous foundation for TDVP-MPO (matrix product
-operator) algorithms for Lindblad equations and connect the quantum
-geometry of Chapters~\ref{chap:quantum_states}--\ref{chap:lindblad}
-with the tree-based manifold theory of
-Chapters~\ref{chap:topTBT}--\ref{chap:TB_manifold}.
+Develop the Banach manifold theory for matrix product operators of
+bond dimension $r$ on $\cTsa{1}(\bigotimes_{j=1}^d H_j)$:
+\begin{enumerate}
+\item[\textup{(a)}] Identify the correct tree structure $\TD$ for the
+    MPO format and show that MPOs of bond dimension $r$ correspond to
+    elements of $\FTv$ in the operator space $\cTsa{1}(\bigotimes_j H_j)$.
+\item[\textup{(b)}] Prove that the set of fixed-bond-dimension MPOs is
+    a smooth Banach manifold, extending the results of
+    Chapter~\ref{chap:TB_manifold} to operator spaces.
+\item[\textup{(c)}] Formulate the Dirac--Frenkel principle for Lindblad
+    dynamics on this manifold and prove local well-posedness, extending
+    Theorem~\ref{thm:lind:wellposed}.
+\end{enumerate}
 \end{problem}
 
 %------------------------------------------------------------
@@ -248,36 +425,59 @@ Chapters~\ref{chap:topTBT}--\ref{chap:TB_manifold}.
 
 \subsection*{Statistical learning theory}
 
-In machine learning, tensor network states arise naturally as
-\emph{function approximation schemes} for high-dimensional data.
-The generalisation capacity of these models depends on the geometry
-of the hypothesis class $\FTleq{\fr}{\VD}{\TD}$.
+Tensor network states arise naturally in machine learning as function
+approximation schemes for high-dimensional data: each tensor $\bv \in
+\FTv$ defines a function $f_\bv: \prod_j I_j \to \RR$ via
+$f_\bv(x_1,\ldots,x_d) = \bv(x_1,\ldots,x_d)$, and the hypothesis
+class $\FTleq{\fr}{\VD}{\TD}$ is a subset of a Banach space.
 
-The \emph{Rademacher complexity} of $\FTleq{\fr}{\VD}{\TD}$ controls
-the generalisation error via the Dudley entropy integral. For finite
-$D$ and fixed ranks, this can be bounded using the Weyl tube formula
-once the curvature of the manifold $\FTv$ is understood.
+The Rademacher complexity of a hypothesis class $\mathcal{H} \subset
+\{f: \mathcal{X} \to \RR\}$ controls the generalisation error via
+$R_n(\mathcal{H}) = \EE_\sigma \sup_{f \in \mathcal{H}} \frac{1}{n}
+\sum_i \sigma_i f(x_i)$, where $\sigma_i$ are independent Rademacher
+random variables. For the Tucker format in finite dimensions,
+Goldberg and Marks~(2007) and Grasedyck et al.~\cite{Grasedyck2013}
+have obtained entropy bounds using the parametrisation by factor
+matrices, but these bounds depend on the choice of parametrisation
+rather than the intrinsic geometry of $\FTleq{\fr}{\VD}{\TD}$.
 
 \begin{problem}
 \label{prob:learning}
-Compute the Rademacher complexity and metric entropy of
-$\FTleq{\fr}{\VD}{\TD}$ in terms of the tree-based rank $\fr$,
-the depth $\dep{\TD}$, and the dimensions $\dim V_j$. How does the
-choice of tree $\TD$ affect the approximation-complexity tradeoff?
+Compute the metric entropy (Kolmogorov $\varepsilon$-entropy) of
+$\FTleq{\fr}{\VD}{\TD}$ in the norm of $\VDnorm$ in terms of the
+tree-based rank $\fr$, the depth $\dep{\TD}$, and the geometry of
+the Tucker manifold (specifically, the diameter and curvature of
+$\FTv$ in the Finsler metric of Problem~\ref{prob:finsler}).
+Derive generalisation bounds for empirical risk minimisation over
+$\FTleq{\fr}{\VD}{\TD}$.
 \end{problem}
 
 \subsection*{Optimal tree selection}
 
-Given a function $f: \prod_j I_j \to \RR$ (a target function for
-approximation), which tree $\TD$ gives the best approximation of $f$
-by a tree-based tensor of a given rank? This question connects the
-geometry of tensor manifolds to the combinatorics of tree structures.
+Given a target function $f \in \VDnorm$, the approximation error
+$\inf_{\bv \in \FTleq{\fr}{\VD}{\TD}} \|f - \bv\|_D$ depends on both
+the rank bound $\fr$ and the tree structure $\TD$. Different trees
+give different approximation classes: the Tucker tree $\TDtuck$ is
+optimal for functions with low multilinear rank, the TT tree $\TDtt$
+for functions with sequential correlation structure, and balanced HT
+trees for functions with hierarchical correlation structure.
+
+The inclusion chain~\eqref{eq:inclusion_chain} (Chapter~\ref{chap:trees})
+shows that deeper trees give smaller sets for fixed rank $\fr$, so the
+question is not which tree gives the \emph{smallest} set but which
+gives the best \emph{trade-off} between approximation error and
+computational cost.
 
 \begin{problem}
 \label{prob:tree_selection}
-Given $f \in \VDnorm$ and a bound $r$ on the tree-based rank,
-find the dimension partition tree $\TD^*$ that minimises the
-approximation error $\inf_{\bv \in \FTleq{\fr}{\VD}{\TD^*}} \|f - \bv\|_D$.
-Is this optimisation problem tractable?
+Given $f \in \VDnorm$ and computational budget $B$
+(e.g., $B = O(dr^k n)$ operations for some fixed $k$), find the
+dimension partition tree $\TD^*$ and rank $\fr^*$ that minimise
+$\|f - \bv_{\TD^*,\fr^*}\|_D$ subject to the budget constraint.
+Is this combinatorial-geometric optimisation problem tractable (e.g.,
+via a greedy algorithm on the tree structure)? Can it be solved in
+the case $\VDnorm = L^2(\prod_j I_j)$ using the singular value
+structure of the partial trace operators $\Tr_{\alpha^c}(\rho_f)$
+(Chapter~\ref{chap:quantum_states})?
 \end{problem}
 
