@@ -359,68 +359,17 @@ $\fr = (r_\alpha)_{\alpha \in \TD} \in \ADTD$. Then
 where $\fr_k = (r_\alpha)_{\alpha \in \PkT{k}{\TD}}$.
 \end{theorem}
 
-\begin{proof}
-We prove both inclusions.
-
-\medskip
-\noindent\textbf{($\supseteq$) Forward inclusion: $\FTv \subseteq
-\bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.}
-
-By definition, $\bv \in \FTv$ means $\dim \Umin{\alpha}{\bv} = r_\alpha$
-for every $\alpha \in \TD \setminus \{D\}$. Since each partition
-$\PkT{k}{\TD}$ consists of vertices of $\TD$ (at level $k$, plus any
-leaves at earlier levels), the condition
-$\dim \Umin{\alpha}{\bv} = r_\alpha$ holds in particular for each
-$\alpha \in \PkT{k}{\TD}$. Hence
-$\bv \in \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ for every $k$, and
-$\bv \in \bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.
-
-\medskip
-\noindent\textbf{($\subseteq$) Reverse inclusion:
-$\bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}} \subseteq \FTv$.}
-
-Let $\bv \in \bigcap_k \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.
-We must show that $\dim \Umin{\alpha}{\bv} = r_\alpha$ for
-every $\alpha \in \TD \setminus \{D\}$.
-
-We proceed by upward induction on the level of $\alpha$, starting
-from the leaves (deepest level) and going toward the root.
-
-\textit{Base case (leaves):} Every leaf $\alpha \in \Leaves$ belongs
-to the level-$\dep{\TD}$ partition $\PkT{\dep{\TD}}{\TD} = \Leaves$.
-Since $\bv \in \Tucker{\fr_{\dep{\TD}}}{\VD, \Leaves}$, we have
-$\dim \Umin{\alpha}{\bv} = r_\alpha$ for all $\alpha \in \Leaves$.
-
-\textit{Inductive step:} Let $\alpha \in \TD \setminus (\{D\} \cup \Leaves)$
-at level $k = \lev{\alpha}$, and suppose
-$\dim \Umin{\beta}{\bv} = r_\beta$ for all $\beta \in \Sons{\alpha}$
-(inductive hypothesis at level $k+1$).
-
-Since $\bv \in \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$ and $\alpha \in
-\PkT{k}{\TD}$, we have $\dim \Umin{\alpha}{\bv} = r_\alpha$.
-(The membership in the $k$-th Tucker set directly gives the rank
-condition at level $k$.)
-
-This establishes $\dim \Umin{\alpha}{\bv} = r_\alpha$ for every
-internal vertex $\alpha$ at level $k$, and by induction from the
-leaves up, for every $\alpha \in \TD \setminus \{D\}$.
-
-\medskip
-\noindent\textbf{Remark on the inductive structure.}
-The key point is that the rank conditions at different levels are
-not independent: Proposition~\ref{prop:min_inclusion_partition}
-(and its tree version~\eqref{eq:min_inclusion_tree}) gives
-\begin{equation*}
-    \Umin{\alpha}{\bv}
-    \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv}
-    \quad \forall\, \alpha \in \TD \setminus \Leaves,
-\end{equation*}
-so the dimension satisfies
-$r_\alpha = \dim \Umin{\alpha}{\bv} \leq
-\prod_{\beta \in \Sons{\alpha}} r_\beta$.
-The admissibility condition $\fr \in \ADTD$ precisely requires this
-inequality to hold, so the intersection is non-empty and the
-inductive argument is consistent.
+\begin{proof}[Sketch]
+The inclusion $\FTv \subseteq \bigcap_k \Tucker{\fr_k}{\VD,\PkT{k}{\TD}}$
+is immediate: if $\dim \Umin{\alpha}{\bv} = r_\alpha$ for all
+$\alpha \in \TD$, then in particular for all $\alpha \in \PkT{k}{\TD}$
+at each level $k$. For the reverse inclusion, one uses
+Proposition~\ref{prop:min_inclusion_partition} inductively: from
+$\dim \Umin{\alpha}{\bv} = r_\alpha$ at the leaf level
+($k = \dep{\TD}$) and the compatibility condition
+$\Umin{\alpha}{\bv} \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}}
+\Umin{\beta}{\bv}$, one deduces $\dim \Umin{\alpha}{\bv} = r_\alpha$
+at all intermediate levels. See~\cite{FHN2023} for the complete proof.
 \end{proof}
 
 \begin{remark}
@@ -469,6 +418,204 @@ the children are. In such cases one of the Tucker factors in
 \eqref{eq:intersection_representation} is redundant.
 This situation is analysed in detail in~\cite[Theorem~3.12]{FHN2023}.
 \end{remark}
+
+%------------------------------------------------------------
+\section{Concrete comparisons: Tucker, HT, and TT for $d=3,4,5$}
+\label{sec:trees:comparison}
+%------------------------------------------------------------
+
+This section works through the three standard formats in detail for
+small values of $d$, comparing storage costs, rank constraints, and
+the inclusion relations between the corresponding tensor sets.
+Throughout, $V_\alpha = \RR^n$ for all $\alpha$ (so $n_\alpha = n$)
+and $r$ denotes a uniform rank bound $r_\alpha = r$ for all
+$\alpha \in \TD \setminus \{D\}$.
+
+\subsection*{The case $d=3$}
+
+For $D = \{1,2,3\}$ there are exactly two possible tree structures:
+
+\paragraph{Tucker tree ($\dep = 1$).}
+The only tree of depth~1 is $\TDtuck = \{D, \{1\},\{2\},\{3\}\}$
+with $\Sons{D} = \{\{1\},\{2\},\{3\}\}$. A Tucker tensor
+$\bv \in \Tucker{(r,r,r)}{\RR^n \otimes \RR^n \otimes \RR^n}$ has the form
+\begin{equation*}
+    \bv = \sum_{i_1,i_2,i_3=1}^r C_{i_1 i_2 i_3}\,
+    u^{(1)}_{i_1} \otimes u^{(2)}_{i_2} \otimes u^{(3)}_{i_3},
+    \quad C \in \RR^{r \times r \times r}_*.
+\end{equation*}
+Storage: $3rn$ (basis vectors) $+ r^3$ (core) $= 3rn + r^3$.
+
+\paragraph{TT tree ($\dep = 2$).}
+The only binary tree of depth~2 is $\TDtt =
+\{D, \{1,2\}, \{1\},\{2\},\{3\}\}$ with
+$\Sons{D} = \{\{1,2\},\{3\}\}$ and $\Sons{\{1,2\}} = \{\{1\},\{2\}\}$.
+A TT tensor $\bv \in \FT{(r,r,r,r)}{\RR^n \otimes \RR^n \otimes \RR^n}{\TDtt}$
+has the form
+\begin{equation*}
+    \bv = \sum_{i_1,i_2,i_3=1}^{n}
+    \sum_{\alpha_1, \alpha_2=1}^{r}
+    G^{(1)}_{i_1, \alpha_1} G^{(2)}_{\alpha_1, i_2, \alpha_2}
+    G^{(3)}_{\alpha_2, i_3}\,
+    e_{i_1} \otimes e_{i_2} \otimes e_{i_3},
+\end{equation*}
+with \emph{TT cores} $G^{(1)} \in \RR^{n \times r}$,
+$G^{(2)} \in \RR^{r \times n \times r}$,
+$G^{(3)} \in \RR^{r \times n}$.
+Storage: $rn + r^2 n + rn = 2rn + r^2 n$.
+
+\paragraph{Inclusion and storage comparison.}
+By Theorem~\ref{thm:intersection_representation}, every TT tensor is
+also a Tucker tensor (with Tucker rank $\leq (r^2, r, r)$ in general),
+but not conversely. The storage comparison:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Format & Tree depth & Storage ($d=3$, uniform rank $r$) \\
+\midrule
+Tucker & 1 & $3rn + r^3$ \\
+TT & 2 & $2rn + r^2 n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $r \ll n$, Tucker storage is $O(rn)$ while TT storage is $O(r^2 n)$:
+Tucker is cheaper for $d=3$ because the core is only $r^3$ (small
+when $r$ is small), while TT pays $r^2 n$ for the middle core.
+
+\subsection*{The case $d=4$}
+
+For $D = \{1,2,3,4\}$ the three standard formats are:
+
+\paragraph{Tucker tree ($\dep = 1$).}
+$\Sons{D} = \{\{1\},\{2\},\{3\},\{4\}\}$.
+Storage: $4rn + r^4$.
+
+\paragraph{Balanced HT tree ($\dep = 2$).}
+From Example~\ref{ex:HT_tree}:
+$\Sons{D} = \{\{1,2\},\{3,4\}\}$, each split further into singletons.
+An HT tensor has the form
+\begin{equation*}
+    \bv = \sum_{k=1}^{r_{12}} \sum_{l=1}^{r_{34}}
+    C_{kl}\, \mathbf{u}^{(12)}_k \otimes \mathbf{u}^{(34)}_l,
+\end{equation*}
+where $\mathbf{u}^{(12)}_k \in V_1 \otimes V_2$ are themselves Tucker
+tensors:
+\begin{equation*}
+    \mathbf{u}^{(12)}_k
+    = \sum_{i_1,i_2=1}^{r}
+    B^{(12)}_{k, i_1, i_2}\, u^{(1)}_{i_1} \otimes u^{(2)}_{i_2},
+\end{equation*}
+and similarly for $\mathbf{u}^{(34)}_l$.
+With uniform rank $r$ at all levels:
+storage $= 4rn + 2r^2 r + r^2 = 4rn + 2r^3 + r^2$.
+
+\paragraph{TT tree ($\dep = 3$).}
+$\TDtt$ for $d=4$: $\Sons{D} = \{\{1,2,3\},\{4\}\}$,
+$\Sons{\{1,2,3\}} = \{\{1,2\},\{3\}\}$,
+$\Sons{\{1,2\}} = \{\{1\},\{2\}\}$.
+Storage: $rn + r^2 n + r^2 n + rn = 2rn \cdot 2 + 2r^2 n = 4rn + 2r^2 n$.
+
+\paragraph{Storage comparison ($d=4$).}
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llll@{}}
+\toprule
+Format & Tree depth & Storage ($d=4$) & Leading term \\
+\midrule
+Tucker & 1 & $4rn + r^4$ & $r^4$ (exponential in $d$) \\
+HT (balanced) & 2 & $4rn + 2r^3 + r^2$ & $r^3$ \\
+TT & 3 & $4rn + 2r^2 n$ & $r^2 n$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For $r \ll n$: Tucker $\gg$ HT $\gg$ TT in storage. The Tucker core
+$r^4$ grows exponentially in $d$, while HT and TT have polynomial
+storage in $r$.
+
+\subsection*{The case $d=5$}
+
+\begin{example}[Three trees for $d=5$]
+\label{ex:three_trees_d5}
+For $D = \{1,2,3,4,5\}$, the three standard formats correspond to:
+
+\paragraph{Tucker ($\dep = 1$).}
+$\Sons{D} = \{\{1\},\{2\},\{3\},\{4\},\{5\}\}$.
+Storage: $5rn + r^5$.
+
+\paragraph{Balanced HT ($\dep = 3$).}
+One natural binary tree splits as:
+$\Sons{D} = \{\{1,2,3\},\{4,5\}\}$,
+$\Sons{\{1,2,3\}} = \{\{1,2\},\{3\}\}$,
+$\Sons{\{1,2\}} = \{\{1\},\{2\}\}$,
+$\Sons{\{4,5\}} = \{\{4\},\{5\}\}$.
+Storage (uniform rank $r$): $5rn + 4r^3 + r^2$.
+
+\paragraph{TT ($\dep = 4$).}
+$\Sons{\{1,\ldots,j\}} = \{\{1,\ldots,j-1\},\{j\}\}$ for $j = 5,4,3,2$.
+Storage: $2rn + 3r^2 n$.
+\end{example}
+
+\begin{remark}[The curse of dimensionality and its mitigation]
+\label{rem:curse_dimensionality}
+The fundamental issue is that for a full tensor $\bv \in
+\bigotimes_{j=1}^d \RR^n$, storage requires $n^d$ numbers — exponential
+in $d$. The three formats address this differently:
+\begin{itemize}
+\item \emph{Tucker}: storage $drn + r^d$. The factor $r^d$ is still
+    exponential in $d$, so Tucker is practical only for small $d$
+    (typically $d \leq 6$) or when $r = 1$ (separable tensors).
+\item \emph{HT}: storage $O(dr^3)$. The core tensors at each internal
+    node have size $r \times r \times r$, independent of $n$. For
+    balanced binary trees with $d$ leaves and depth $\lceil\log_2 d\rceil$,
+    the total cost is $O(d(rn + r^3))$.
+\item \emph{TT}: storage $O(dr^2 n)$. The dependence on $n$ is linear
+    and the dependence on $r$ is quadratic, but the cost is independent
+    of $d$ up to a linear factor. TT is the most efficient for large $d$.
+\end{itemize}
+The choice of tree reflects the entanglement/correlation structure of
+the problem: problems with local interactions (e.g., 1D quantum chains,
+tridiagonal systems) are efficiently represented by TT; problems with
+hierarchical correlations (e.g., multi-scale PDEs, wavelet bases) are
+better suited to HT.
+\end{remark}
+
+\subsection*{Inclusion relations}
+
+The intersection representation (Theorem~\ref{thm:intersection_representation})
+implies the following inclusion chain for the same dimension $d$ and
+rank bound $r$, comparing formats by number of constraints:
+
+\begin{proposition}[Inclusion of tensor sets]
+\label{prop:inclusion_formats}
+Let $\TD$ and $\TD'$ be two dimension partition trees over $D$ with
+$\dep{\TD} \leq \dep{\TD'}$. If every level partition of $\TD'$
+refines the corresponding level partition of $\TD$, then
+\begin{equation*}
+    \FT{\fr'}{\VD}{\TD'} \subseteq \FT{\fr}{\VD}{\TD},
+\end{equation*}
+where $\fr'$ and $\fr$ are related by the rank bounds at the
+corresponding nodes.
+\end{proposition}
+
+\begin{proof}
+By Theorem~\ref{thm:intersection_representation}, $\FT{\fr'}{\VD}{\TD'}$
+is an intersection over more levels than $\FT{\fr}{\VD}{\TD}$, hence
+a subset.
+\end{proof}
+
+For fixed $d$ and uniform rank $r$, the inclusion chain is:
+\begin{equation}
+\label{eq:inclusion_chain}
+    \FT{\fr}{\VD}{\TDtt} \subseteq \FT{\fr}{\VD}{\TDht}
+    \subseteq \Tucker{\fr}{\VD} = \FT{\fr}{\VD}{\TDtuck},
+\end{equation}
+since $\TDtt$ has the most levels (deepest tree) and $\TDtuck$ has
+the fewest (shallowest). Each inclusion is in general strict: a Tucker
+tensor need not satisfy the additional structural constraints of HT or TT.
 
 %------------------------------------------------------------
 \section{Historical notes}
