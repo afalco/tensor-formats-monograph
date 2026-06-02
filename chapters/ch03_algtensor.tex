@@ -170,18 +170,66 @@ $\rank \Mmat{\alpha}(\bv) \in \{0, 1, \ldots, n_\alpha\}$,
 is the \emph{$\alpha$-rank} of $\bv$.
 \end{definition}
 
-The notion of $\alpha$-rank was introduced by Hitchcock
-\cite[p.\,170]{Hitchcock1927} in 1927 under the name ``rank on the $j$th
-index''. In the infinite-dimensional case, the correct replacement of
+The notion of $\alpha$-rank was introduced by Hitchcock~\cite{Hitchcock1927}
+in 1927 under the name ``rank on the $j$th index''. In the
+infinite-dimensional case, the correct replacement of
 $\rank \Mmat{\alpha}(\bv)$ is the dimension of the minimal subspace
-$\Umin{\alpha}{\bv}$, which we define in Section~\ref{sec:algtensor:tucker}
-and develop fully in Chapter~\ref{chap:minsubspaces}.
+$\Umin{\alpha}{\bv}$, developed fully in Chapter~\ref{chap:minsubspaces}.
 
-\subsection*{Full-rank core tensors}
+\subsection*{Explicit example: three-mode matricisation}
 
-The following definition isolates the tensors whose coordinate arrays
-have maximal rank in every direction, a condition that will characterise
-elements of the Tucker manifold $\Tucker{\fr}{\VD}$.
+\begin{example}[Matricisation for $d=3$]
+\label{ex:matricisation_d3}
+Let $n_1=n_2=n_3=2$. Consider $\bv \in \RR^2 \otimes \RR^2 \otimes \RR^2$
+with coordinate array
+$C_{111}=C_{122}=C_{212}=C_{221}=1$, all other entries zero;
+equivalently,
+\begin{equation*}
+    \bv = e_1{\otimes}e_1{\otimes}e_1
+        + e_1{\otimes}e_2{\otimes}e_2
+        + e_2{\otimes}e_1{\otimes}e_2
+        + e_2{\otimes}e_2{\otimes}e_1.
+\end{equation*}
+The three matricisations, with columns ordered lexicographically by the
+remaining indices, are:
+\begin{align*}
+    \Mmat{1}(\bv) &=
+    \begin{pmatrix} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 0 \end{pmatrix}
+    \in \RR^{2 \times 4}, \\
+    \Mmat{2}(\bv) &=
+    \begin{pmatrix} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 0 \end{pmatrix}
+    \in \RR^{2 \times 4}, \\
+    \Mmat{3}(\bv) &=
+    \begin{pmatrix} 1 & 0 & 0 & 1 \\ 0 & 1 & 1 & 0 \end{pmatrix}
+    \in \RR^{2 \times 4}.
+\end{align*}
+All three have rank~2, so the Tucker rank of $\bv$ is $(2,2,2)$ and
+$\Umin{\alpha}{\bv} = \RR^2 = V_\alpha$ for each $\alpha$.
+\end{example}
+
+\subsection*{CP rank vs.\ Tucker rank}
+
+\begin{example}[CP rank strictly exceeds Tucker rank]
+\label{ex:cp_vs_tucker}
+Consider the tensor $\bv$ of Example~\ref{ex:matricisation_d3}. Its
+Tucker rank is $(2,2,2)$, yet its CP rank (the minimum number of
+elementary summands) equals~4: the representation above has 4 terms,
+and a 3-term representation can be ruled out by direct computation.
+
+By contrast, the tensor
+$\bw = e_1{\otimes}e_1{\otimes}e_1 + e_2{\otimes}e_2{\otimes}e_2
+\in \RR^2 \otimes \RR^2 \otimes \RR^2$
+has Tucker rank $(2,2,2)$ (each matricisation has rank~2) but CP rank~2.
+
+This illustrates a fundamental distinction: the Tucker rank
+$(r_1,\ldots,r_d)$ describes the subspace structure
+($\Umin{\alpha}{\bv}$ has dimension $r_\alpha$), while the CP rank
+counts minimal summands. One always has $r_\alpha \leq r_{\mathrm{CP}}(\bv)$,
+but the inequality is strict in general for $d \geq 3$. Computing
+Tucker rank is tractable (SVD of the matricisations); computing CP rank
+is NP-hard~(H\aa stad, 1990). This computational advantage is a key
+motivation for the Tucker-format framework of this monograph.
+\end{example}
 
 \begin{definition}
 \label{def:fullrank_core}
@@ -419,6 +467,125 @@ arbitrary dimension partition trees $\TD$ and show that
 $\Tucker{\fr}{\VD} = \FT{\fr}{\VD}{\TDtuck}$.
 
 %------------------------------------------------------------
+\section{The Hilbert--Schmidt norm as a tensor product norm}
+\label{sec:algtensor:hs}
+%------------------------------------------------------------
+
+The Hilbert--Schmidt operators provide the most natural bridge between
+the abstract tensor framework of this chapter and the concrete
+infinite-dimensional setting of Part~\ref{part:quantum}. This section
+shows that the Hilbert--Schmidt norm is a crossnorm on $H \otimes H^*$,
+computes it explicitly for functions in $L^2$, and connects the
+Hilbert--Schmidt rank with the Tucker rank.
+
+\subsection*{The Hilbert tensor product}
+
+Let $H$ be a separable complex Hilbert space with inner product
+$\langle\cdot,\cdot\rangle$ and dual $H^*$ (Riesz isomorphism
+$J: H \to H^*, J(v) = \langle v, \cdot\rangle$). The \emph{Hilbert
+tensor norm} on $H \otimes_a H^*$ is defined for elementary tensors by
+\begin{equation}
+\label{eq:hilbert_tensor_norm}
+    \|u \otimes \varphi\|_H \coloneqq \|u\|_H \|\varphi\|_{H^*},
+\end{equation}
+and extended to all finite sums by
+\begin{equation}
+\label{eq:hilbert_tensor_norm_sum}
+    \Bigl\|\sum_k u_k \otimes \varphi_k\Bigr\|_H^2
+    \coloneqq \sum_{j,k} \varphi_j(u_k)\,\overline{\varphi_k(u_j)}
+    = \Tr\bigl(([\varphi_j(u_k)]_{jk})^* [\varphi_j(u_k)]_{jk}\bigr).
+\end{equation}
+The completion of $(H \otimes_a H^*, \|\cdot\|_H)$ is the space
+$\cT{2}(H)$ of Hilbert--Schmidt operators, with
+$\cT{2}(H) \cong H \otimes_H H^*$ isometrically
+(Theorem~\ref{thm:app:hs_tensor} in Appendix~\ref{app:quantum}).
+
+\begin{proposition}[Hilbert tensor norm is a crossnorm satisfying \condINJ]
+\label{prop:hilbert_tensor_crossnorm}
+The Hilbert tensor norm $\|\cdot\|_H$ on $H \otimes_a H^*$ satisfies:
+\begin{enumerate}
+\item[\textup{(i)}] \condCROSS: $\|u \otimes J(v)\|_H = \|u\|_H\|v\|_H$
+    for all $u, v \in H$.
+\item[\textup{(ii)}] \condINJ: $\|\cdot\|_\varepsilon \leq \|\cdot\|_H$.
+\item[\textup{(iii)}] $\|\cdot\|_H \leq \|\cdot\|_\pi$ (dominated by
+    the projective norm).
+\item[\textup{(iv)}] The Grothendieck inequality gives
+    $\|\cdot\|_\pi \leq K_G \|\cdot\|_\varepsilon$ on $H \otimes_a H^*$,
+    so all three norms are equivalent with constant $K_G \approx 1.78$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Part~(i) is immediate from~\eqref{eq:hilbert_tensor_norm}.
+Part~(ii): for any $\phi \in H^*$ with $\|\phi\|_{H^*} \leq 1$ and
+$\psi \in (H^*)^*$ with $\|\psi\|_{(H^*)^*} \leq 1$, identifying
+$\psi = J^{-1}(\psi) \in H$ (using $J$), one has
+$|(\phi \otimes \psi)(\bv)| = |\phi((\text{Id} \otimes \psi)(\bv))|
+\leq \|\bv\|_H$ by the Cauchy--Schwarz inequality in $\cT{2}(H)$,
+giving $\|\bv\|_\varepsilon \leq \|\bv\|_H$.
+Part~(iii) is standard: $\|\cdot\|_H \leq \|\cdot\|_\pi$ for any
+reasonable crossnorm. Part~(iv) is Grothendieck's theorem
+(Remark~\ref{rem:grothendieck_hilbert}).
+\end{proof}
+
+\subsection*{Hilbert--Schmidt rank equals Tucker rank}
+
+\begin{proposition}[Hilbert--Schmidt rank and Tucker rank]
+\label{prop:app:hs_rank}
+Let $A \in \cT{2}(H)$ and identify $A$ with a tensor $\bA \in H \otimes_H H^*$.
+Then $r_1(\bA) = r_2(\bA) = \mathrm{rank}(A)$, and the SVD
+$A = \sum_{k=1}^r s_k v_k \otimes J(u_k)$ is the Tucker decomposition
+with minimal subspaces $\Umin{1}{\bA} = \overline{\mathrm{Im}(A^*)}
+\subset H$ and $\Umin{2}{\bA} = J(\overline{\mathrm{Im}(A)}) \subset H^*$.
+\end{proposition}
+
+\begin{proof}
+Under the identification $\cT{2}(H) \cong H \otimes_H H^*$, the
+contraction map $T_\varphi: H \otimes_H H^* \to H^*$,
+$T_\varphi(\bA) = (\varphi \otimes \Id{H^*})(\bA) = \varphi(A(\cdot))$
+has range $J(\mathrm{Im}(A))$ when $\varphi$ ranges over $H^*$. Hence
+$\Umin{2}{\bA} = J(\overline{\mathrm{Im}(A)})$, and similarly
+$\Umin{1}{\bA} = \overline{\mathrm{Im}(A^*)}$.
+\end{proof}
+
+\subsection*{Explicit computation in $L^2$}
+
+\begin{example}[Hilbert--Schmidt norm of a separable kernel]
+\label{ex:hs_l2}
+Let $H = L^2([0,1])$ and $H^* \cong H$ via $J$. Consider the rank-$r$
+kernel $K(x,y) = \sum_{k=1}^r \lambda_k \phi_k(x)\psi_k(y)$, viewed as
+an element of $L^2([0,1]^2) \cong L^2([0,1]) \otimes_H L^2([0,1])$.
+The associated Hilbert--Schmidt operator $T_K: L^2 \to L^2$,
+$T_K f = \int_0^1 K(\cdot, y) f(y)\,dy$, has:
+\begin{itemize}
+\item \emph{Hilbert--Schmidt norm:}
+    $\|T_K\|_{\cT{2}}^2 = \|K\|_{L^2([0,1]^2)}^2
+    = \int_0^1 \int_0^1 |K(x,y)|^2\,dx\,dy$.
+\item \emph{Tucker rank:} $r_1(K) = r_2(K) = r$
+    (if $\{\phi_k\}$, $\{\psi_k\}$ are linearly independent).
+\item \emph{Minimal subspaces:} $\Umin{1}{K} = \spann\{\phi_1,\ldots,\phi_r\}$
+    and $\Umin{2}{K} = \spann\{\psi_1,\ldots,\psi_r\}$ in $L^2([0,1])$.
+\end{itemize}
+For the specific case $K(x,y) = xy$ (rank~1 kernel):
+$\|K\|_{\cT{2}}^2 = \int_0^1 x^2\,dx \int_0^1 y^2\,dy = \tfrac{1}{9}$,
+so $\|K\|_{\cT{2}} = \tfrac{1}{3}$. The Tucker rank is $(1,1)$ and
+the Tucker decomposition is $K = \phi \otimes J(\psi)$ with
+$\phi(x) = x$, $\psi(y) = y$.
+\end{example}
+
+\begin{remark}[The Hilbert tensor norm in the real case]
+\label{rem:hs_real}
+When $\KK = \RR$ and $H = \RR^n$, the Hilbert--Schmidt operators
+on $\RR^n$ are exactly the $n \times n$ matrices with the Frobenius norm
+$\|A\|_F = (\sum_{ij} A_{ij}^2)^{1/2}$. The identification
+$\cT{2}(\RR^n) \cong \RR^n \otimes_H \RR^n$ (using $H^* \cong H$
+since $J$ is the identity in the real self-dual case) gives
+$\|A\|_F = \|A\|_H$, and the Tucker rank of $A$ viewed as a tensor in
+$\RR^n \otimes \RR^n$ equals $\mathrm{rank}(A)$ as a matrix. This is
+the finite-dimensional instance of Proposition~\ref{prop:app:hs_rank}.
+\end{remark}
+
+%------------------------------------------------------------
 \section{The tensor product map and its differential}
 \label{sec:algtensor:tensmap}
 %------------------------------------------------------------
@@ -560,104 +727,3 @@ $\|\cdot\|_D$ is a crossnorm. This interplay between algebraic and
 topological structure is a recurring theme throughout the monograph.
 \end{remark}
 
-\begin{remark}[Crossnorms and \condINJ\ in the Hilbert case]
-\label{rem:grothendieck_hilbert}
-The crossnorm condition \condCROSS\ and the injective norm condition
-\condINJ\ (to be introduced formally in
-Definition~\ref{def:crossnorm}) express two levels of compatibility
-between the norm $\|\cdot\|_D$ and the tensor product structure. The
-injective norm $\|\cdot\|_\varepsilon$ is the smallest reasonable
-crossnorm, and \condINJ\ says that $\|\cdot\|_D$ dominates it.
-
-In the Hilbert case, this condition is automatically satisfied and
-imposes no effective constraint. More precisely:
-
-\begin{enumerate}
-\item[\textup{(i)}]
-\textit{All reasonable crossnorms are equivalent on Hilbert tensor
-products.}
-By the Grothendieck inequality~\cite{Grothendieck1953}, there exists
-a universal constant $K_G \leq \pi/(2\ln(1+\sqrt{2})) \approx 1.78$
-such that $\|\cdot\|_\pi \leq K_G \|\cdot\|_\varepsilon$ on
-$H_1 \otimes H_2$ for any Hilbert spaces $H_1$, $H_2$. Since every
-reasonable crossnorm satisfies
-$\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$, all
-reasonable crossnorms on $H_1 \otimes H_2$ are equivalent with
-constant $K_G$.
-\item[\textup{(ii)}] \textit{The Hilbert tensor norm is the unique norm making
-$\VDnorm$ a Hilbert space.} For $H_\alpha = L^2(I_\alpha)$, the
-Hilbert tensor norm satisfies $\bigotimes_j L^2(I_j) \cong
-L^2(\prod_j I_j)$ isometrically (via the Fubini identification
-$\bigotimes f_j \leftrightarrow \prod_j f_j(x_j)$). This is the
-natural norm for quantum mechanics and function approximation, and
-it satisfies \condINJ\ with equality ($\|\cdot\|_D = \|\cdot\|_H$
-dominates $\|\cdot\|_\varepsilon$ by definition of the Hilbert norm).
-\end{enumerate}
-
-In contrast, in the Banach case ($V_\alpha = L^p(I_\alpha)$ with
-$p \neq 2$), different reasonable crossnorms are genuinely inequivalent,
-and the condition \condINJ\ is a non-trivial hypothesis that must be
-verified for each choice of $\|\cdot\|_D$. This is one of the reasons
-why the Banach-space theory of this monograph is substantially harder
-than the Hilbert-space theory of~\cite{KochLubich2007}: in the Banach
-case, the geometry depends on the specific choice of norm, not just
-the isomorphism class of the spaces.
-\end{remark}
-
-%------------------------------------------------------------
-\section{Historical notes}
-\label{sec:algtensor:history}
-%------------------------------------------------------------
-
-\paragraph{Algebraic tensor products.}
-The tensor product of vector spaces was introduced in its modern form
-by Whitney in 1938 and placed within the framework of multilinear
-algebra by Bourbaki in the 1940s. The presentation here follows
-the approach of Greub~\cite{Greub1981}, which is well suited to the
-infinite-dimensional setting: the algebraic tensor product is defined
-by the universal property, without any choice of basis or norm.
-
-\paragraph{Crossnorms and Grothendieck's theory.}
-The projective and injective tensor norms were introduced by
-Grothendieck in his 1953 Résumé~\cite{Grothendieck1953}, which
-established the fundamental hierarchy
-$\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq \|\cdot\|_\pi$
-for any reasonable crossnorm, identified the dual of
-$V_1 \otimes_\pi V_2$ as the space of bounded bilinear forms, and
-proved the inequality that now bears his name
-(Remark~\ref{rem:grothendieck_hilbert}). This work, largely
-unrecognised at the time, became foundational through the notion of
-tensor norms and operator ideals. A systematic treatment appears
-in~\cite{Hackbusch2019} and~\cite{Ryan2002}.
-
-The condition \condINJ\ is the natural analogue of the
-``reasonable crossnorm'' condition in Grothendieck's theory and holds
-for all standard function-space tensor products ($L^p$, Sobolev);
-see Remark~\ref{rem:crossnorm_examples} in
-Chapter~\ref{chap:minsubspaces}.
-
-\paragraph{Tucker format and tensor rank.}
-The Tucker decomposition~\cite{Tucker1966} was introduced as a
-psychometric tool for three-mode factor analysis. It generalises the
-singular value decomposition to higher-order tensors: just as every
-matrix $A \in \RR^{m \times n}$ can be written as $A = U \Sigma V^\top$
-with orthogonal factor matrices, a Tucker tensor is represented by a
-core array and a set of factor matrices in each mode.
-
-The notion of tensor rank for $d \geq 3$ is far more subtle than for
-matrices: the maximum rank of a real $n \times n \times n$ tensor is
-not known in general, and computing the rank is NP-hard
-(H\aa stad, 1990). The minimal-subspace framework of
-Chapter~\ref{chap:minsubspaces} avoids these difficulties by working
-with the subspace rank $(r_\alpha)_{\alpha \in D}$ rather than the
-canonical (CP) rank; the former has a clean algebraic characterisation
-and leads to a well-posed approximation problem in Banach spaces.
-
-\paragraph{Tensor product map and the manifold structure.}
-The differential of the tensor product map
-(Section~\ref{sec:algtensor:tensmap}) is the key ingredient in the
-construction of the tangent space to the Tucker manifold. The
-formula~\eqref{eq:diff_tensor_product} is the multilinear analogue
-of the product rule and appears in~\cite{FHN2019} as the starting
-point for the identification
-$T_{\bv}\Tucker{\fr}{\VD} \cong \ZD{\bv}$.

@@ -386,22 +386,102 @@ Lang~\cite{Lang1999}. Specifically:
 \end{enumerate}
 \end{theorem}
 
-\begin{proof}[Sketch]
-Parts~(i)--(ii) follow from the same argument as
-Theorem~\ref{thm:Tucker_Banach_Manifold}: the chart map $\Phi_{S_0}$
-is the composition of the smooth map $A \mapsto V_A$ (see
-equation~\eqref{eq:qs:VA} and Lemma~\ref{lem:element}) with the
-smooth map $\sigma \mapsto V_A \sigma V_A^*$, and the inverse map
-is smooth by the same argument as Proposition~\ref{prop:tucker_triv}.
-Part~(iii): the characterisation of $T_\rho \Drank{r}{H}$ follows
-from differentiating the curve $t \mapsto \Phi_{S_0}(tA, \sigma(t))$
-at $t=0$, giving exactly the tangent formula of
-Proposition~\ref{prop:tangent_space} restricted to the trace-zero
-condition. Part~(iv) follows from (iii) and
-Proposition~\ref{prop:split_equiv}: $T_\rho \Drank{r}{H}$ is complemented
-in $\cTsa{1}(H)$ via the explicit bounded projection of
-Proposition~\ref{prop:qs:projector} below.
-For the complete proof see~\cite{AcevedoFalco2026}.
+\begin{proof}
+We prove each part in turn.
+
+\medskip
+\noindent\textbf{Part~(i): The chart map is a $\mathcal{C}^\infty$ diffeomorphism.}
+
+Fix $\rho_0 \in \Drank{r}{H}$, $S_0 = \supp(\rho_0)$, and an isometry
+$V_0: \CC^r \to H$ with $\mathrm{Im}(V_0) = S_0$.
+
+\emph{Step~1: $\Phi_{S_0}$ is smooth.}
+For $\|A\| < 1$, the operator $I_{\CC^r} + A^*A$ is invertible in
+$\cL(\CC^r, \CC^r)$ (since $\CC^r$ is finite-dimensional and $A^*A \geq 0$).
+The map $A \mapsto (I + A^*A)^{-1/2}$ is real-analytic on operator
+norm balls, hence $A \mapsto V_A = (V_0 + \iota A)(I + A^*A)^{-1/2}$
+is $\mathcal{C}^\infty$ by composition. Since $\sigma \mapsto V_A
+\sigma V_A^*$ is linear in $\sigma$ for fixed $A$, the full map
+$(A, \sigma) \mapsto V_A \sigma V_A^*$ is $\mathcal{C}^\infty$.
+
+\emph{Step~2: Values in $\Drank{r}{H}$.}
+For any $(A, \sigma)$ in the domain: $V_A \sigma V_A^* \geq 0$ (since
+$\sigma > 0$ and $V_A$ is an isometry); $\Tr(V_A \sigma V_A^*) =
+\Tr(\sigma V_A^* V_A) = \Tr(\sigma) = 1$ (since $V_A^* V_A =
+I_{\CC^r}$); and $\mathrm{rank}(V_A \sigma V_A^*) = r$ (since
+$\sigma \succ 0$ and $V_A$ is injective). Hence $\Phi_{S_0}(A,\sigma)
+\in \Drank{r}{H}$.
+
+\emph{Step~3: Local bijectivity and smooth inverse.}
+At $A = 0$: $V_0 = V_0 (I)^{-1/2} = V_0$ and $\Phi_{S_0}(0,\sigma) =
+V_0 \sigma V_0^*$; in particular $\Phi_{S_0}(0, V_0^* \rho_0 V_0) =
+V_0 (V_0^* \rho_0 V_0) V_0^* = \rho_0$. For $\rho'$ near $\rho_0$
+in $\Drank{r}{H}$, $\supp(\rho')$ is near $S_0$ in $\Grass{r}{H}$,
+so there is a unique small $A$ with $\mathrm{Im}(V_A) = \supp(\rho')$.
+The inverse is $\Phi_{S_0}^{-1}(\rho') = (A(\rho'), V_A^* \rho' V_A)$,
+where $A(\rho') = \chi_{S_0, S_0^\perp}(\supp(\rho'))$ is the
+Grassmannian chart map. Since the Grassmannian chart is $\mathcal{C}^\infty$
+(Theorem~\ref{thm:grassmann_manifold}) and $\rho' \mapsto V_A^* \rho'
+V_A$ is linear in $\rho'$, the inverse is $\mathcal{C}^\infty$.
+
+\medskip
+\noindent\textbf{Part~(ii): Smooth transition maps.}
+
+Let $\rho_0, \tilde\rho_0 \in \Drank{r}{H}$ with chart domains
+$\mathcal{B}(\rho_0)$ and $\mathcal{B}(\tilde\rho_0)$ overlapping.
+The transition map $\Phi_{\tilde S_0}^{-1} \circ \Phi_{S_0}$ is the
+composition:
+\begin{equation*}
+    (A, \sigma) \xmapsto{\Phi_{S_0}} \rho
+    \xmapsto{\Phi_{\tilde S_0}^{-1}} (\tilde A, \tilde\sigma),
+\end{equation*}
+where $\tilde A = \chi_{\tilde S_0, \tilde S_0^\perp}(\supp(\rho))$
+is smooth in $\rho$ (Grassmannian transition map, Theorem~\ref{thm:grassmann_manifold}),
+and $\tilde\sigma = \tilde V_{\tilde A}^* \rho \tilde V_{\tilde A}$
+is smooth in both $\tilde A$ and $\rho$. The composition is therefore
+$\mathcal{C}^\infty$.
+
+\medskip
+\noindent\textbf{Part~(iii): Tangent space characterisation.}
+
+Let $t \mapsto \rho(t) = \Phi_{S_0}(A(t), \sigma(t))$ be a
+$\mathcal{C}^1$ curve with $A(0) = 0$ and $\sigma(0) = V_0^* \rho_0
+V_0$. Differentiating $\rho(t) = V_{A(t)} \sigma(t) V_{A(t)}^*$ at
+$t=0$:
+\begin{equation*}
+    \dot\rho(0) = \dot V_0 \sigma_0 V_0^* + V_0 \dot\sigma_0 V_0^*
+    + V_0 \sigma_0 \dot V_0^*,
+\end{equation*}
+where $\dot V_0 = \frac{d}{dt}V_{A(t)}|_{t=0}$. Since $V_{A(t)}^*
+V_{A(t)} = I$ implies $\dot V_0^* V_0 + V_0^* \dot V_0 = 0$ (so
+$V_0^* \dot V_0$ is skew-Hermitian), and $\mathrm{Im}(V_0) = S_0$
+(so $\dot V_0 \in \cL(\CC^r, S_0^\perp)$ by the Grassmannian chart),
+one computes:
+\begin{equation*}
+    (I - P)\dot\rho(0)(I - P)
+    = (I-P)\dot V_0 \sigma_0 V_0^*(I-P) = 0,
+\end{equation*}
+since $V_0^*(I-P) = 0$ (the range of $V_0$ is $S_0$). Also
+$\Tr(\dot\rho(0)) = \Tr(\dot\sigma_0) + 2\mathrm{Re}\,\Tr(\sigma_0
+V_0^* \dot V_0) = 0$ if $\Tr(\dot\sigma_0) = 0$ and $V_0^*\dot V_0$
+is skew-Hermitian. This shows the inclusion
+$\dot\rho(0) \in T_\rho \Drank{r}{H} \supset$ the set in~\eqref{eq:qs:tangent}.
+The reverse inclusion follows by constructing explicit curves realising
+each tangent vector of the given form (Step~3 of the proof
+in~\cite{AcevedoFalco2026}).
+
+\medskip
+\noindent\textbf{Part~(iv): Smooth immersion.}
+
+The differential of $\iota: \Drank{r}{H} \hookrightarrow \cTsa{1}(H)$
+at $\rho$ is the map $d\iota_\rho: T_\rho \Drank{r}{H} \to \cTsa{1}(H)$,
+$d\iota_\rho(\dot\rho) = \dot\rho$, which is injective by definition.
+The image $T_\rho \Drank{r}{H}$ is a complemented subspace of
+$\cTsa{1}(H)$ by the explicit bounded projection $\hat P_\rho$ of
+Proposition~\ref{prop:qs:projector} below, satisfying
+$\|\hat P_\rho\| \leq 4 < \infty$. Hence $d\iota_\rho$ has closed
+split image (Proposition~\ref{prop:split_equiv}), i.e., $\iota$ is
+an immersion.
 \end{proof}
 
 \subsection*{The tangent projector}
@@ -422,15 +502,55 @@ is a bounded linear projection with $\|\hat{P}_\rho\|_{\cL(\cTsa{1}(H))}
 \end{proposition}
 
 \begin{proof}
-The map $\hat{P}_\rho$ decomposes as:
-$PXP$: the $(S,S)$ block, a bounded map $\cTsa{1}(H) \to \cT{1}(S)$
-with norm $\leq 1$ (ideal property);
-$PX(I-P) + (I-P)XP$: the off-diagonal blocks, total norm $\leq 2$;
-$-\frac{\Tr(PXP)}{r}P$: a rank-$r$ correction, norm $\leq 1$ since
-$|\Tr(PXP)| \leq \|PXP\|_1 \leq \|X\|_1$ and $\|P\|_1 = r$.
-Adding: $\|\hat{P}_\rho\| \leq 4$. Idempotency and the image
-identification follow by direct computation as in the proof of
-Proposition~3.4 in~\cite{AcevedoFalco2026}.
+Write $X \in \cTsa{1}(H)$ in block form with respect to $H = S \oplus S^\perp$:
+\begin{equation*}
+    X = \begin{pmatrix} X_{11} & X_{12}^* \\ X_{12} & X_{22}
+    \end{pmatrix},
+    \quad X_{11} \in \cTsa{1}(S),\; X_{12} \in \cT{1}(S,S^\perp),\;
+    X_{22} \in \cTsa{1}(S^\perp).
+\end{equation*}
+By direct computation using $P^2 = P = P^*$:
+\begin{align*}
+    PXP &= \begin{pmatrix} X_{11} & 0 \\ 0 & 0 \end{pmatrix}, &
+    PX(I-P) &= \begin{pmatrix} 0 & X_{12}^* \\ 0 & 0 \end{pmatrix}, \\
+    (I-P)XP &= \begin{pmatrix} 0 & 0 \\ X_{12} & 0 \end{pmatrix}, &
+    \frac{\Tr(PXP)}{r}P &= \frac{\Tr(X_{11})}{r}
+    \begin{pmatrix} I_S & 0 \\ 0 & 0 \end{pmatrix}.
+\end{align*}
+Hence
+\begin{equation}
+\label{eq:qs:projector_block}
+    \hat P_\rho(X)
+    = \begin{pmatrix} X_{11} - \frac{\Tr(X_{11})}{r}I_S & X_{12}^* \\
+    X_{12} & 0 \end{pmatrix}.
+\end{equation}
+\emph{Idempotency:} Applying $\hat P_\rho$ to~\eqref{eq:qs:projector_block}:
+the $(S,S)$ block is $X_{11} - \frac{\Tr(X_{11})}{r}I_S - \frac{1}{r}
+\Tr(X_{11} - \frac{\Tr(X_{11})}{r}I_S)I_S = X_{11} - \frac{\Tr(X_{11})}{r}I_S$
+(since $\Tr(X_{11} - \frac{\Tr(X_{11})}{r}I_S) = \Tr(X_{11}) - \Tr(X_{11}) = 0$),
+and the off-diagonal blocks are unchanged. So $\hat P_\rho^2 = \hat P_\rho$.
+
+\emph{Image:} From~\eqref{eq:qs:projector_block}, $\hat P_\rho(X)$ has
+$(S^\perp,S^\perp)$ block zero and $\Tr(\hat P_\rho(X)) = \Tr(X_{11}
+- \frac{\Tr(X_{11})}{r}I_S) + 0 = 0$. So $\hat P_\rho(X) \in
+T_\rho \Drank{r}{H}$.
+
+\emph{$\hat P_\rho = \mathrm{Id}$ on $T_\rho\Drank{r}{H}$:} If $Y \in
+T_\rho\Drank{r}{H}$, its block form is $Y_{22} = 0$ and $\Tr(Y_{11})=0$
+(by~\eqref{eq:qs:tangent}). Then $\frac{\Tr(PYP)}{r} = \frac{\Tr(Y_{11})}{r} = 0$,
+so $\hat P_\rho(Y) = Y$.
+
+\emph{Norm bound:} Using the ideal property $\|BAC\|_1 \leq \|B\|\|A\|_1\|C\|$:
+\begin{align*}
+    \|\hat P_\rho(X)\|_1
+    &\leq \|PXP\|_1 + \|PX(I-P)\|_1 + \|(I-P)XP\|_1
+    + \tfrac{|\Tr(PXP)|}{r}\|P\|_1 \\
+    &\leq \|X\|_1 + \|X\|_1 + \|X\|_1
+    + \tfrac{\|PXP\|_1}{r} \cdot r \\
+    &\leq 4\|X\|_1,
+\end{align*}
+where we used $|\Tr(PXP)| \leq \|PXP\|_1 \leq \|X\|_1$ and
+$\|P\|_1 = \Tr(P) = r$.
 \end{proof}
 
 \begin{remark}[Comparison with the Tucker projector]

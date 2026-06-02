@@ -208,33 +208,70 @@ The solution depends continuously on $\rho_0$ in the trace norm.
 \end{theorem}
 
 \begin{proof}
-The proof is the quantum specialisation of the proof of
-Theorem~\ref{thm:DF_tucker}:
-\begin{enumerate}
-\item \textit{Smooth manifold.} $\Drank{r}{H}$ is a $\mathcal{C}^\infty$
-    Banach manifold by Theorem~\ref{thm:qs:manifold}.
-\item \textit{Smooth vector field.} The reduced vector field
-    $\rho \mapsto \hat{P}_\rho(\Lind(\rho))$ is locally Lipschitz
-    in $\|\cdot\|_1$: $\Lind$ is bounded (Assumption~\ref{ass:lind:regular}(R1)),
-    and $\rho \mapsto \hat{P}_\rho$ is locally Lipschitz in operator
-    norm because $\hat{P}_\rho = \hat{P}_{\rho}$ depends smoothly on
-    $\rho$ via the chart maps~\eqref{eq:qs:chart}
-    (Theorem~\ref{thm:qs:manifold}(i)).
-\item \textit{ODE on a Banach manifold.} Local existence and uniqueness
-    follow from Theorem~\ref{thm:app:ode} (Picard--Lindelöf on Banach
-    manifolds). In local chart coordinates $(A(t), \sigma(t))$,
-    equation~\eqref{eq:lind:df} becomes
-    \begin{equation*}
-        \frac{d}{dt}(A(t), \sigma(t))
-        = F(A(t), \sigma(t)),
-    \end{equation*}
-    where $F$ is the pushforward of $\hat{P}_{\rho}\Lind(\rho)$ by the
-    inverse chart $\Phi_{S_0}^{-1}$. Since $F$ is locally Lipschitz
-    in the Banach space $\cL(\CC^r, S_0^\perp) \times \cTsa{1}(\CC^r)$
-    (finite-dimensional in the core direction), Picard--Lindelöf
-    applies.
-\end{enumerate}
-Continuous dependence on $\rho_0$ follows from the same theorem.
+We verify the three conditions of Theorem~\ref{thm:app:ode} (Picard--Lindelöf
+on Banach manifolds, Appendix~\ref{app:manifolds}).
+
+\medskip
+\noindent\textbf{Step~1: $\Drank{r}{H}$ is a $\mathcal{C}^\infty$ Banach manifold.}
+
+This is Theorem~\ref{thm:qs:manifold}. The model space for a chart at
+$\rho_0$ is $\cL(\CC^r, S_0^\perp) \times \cTsa{1}(\CC^r)$, a Banach
+space (infinite-dimensional in the first factor, finite-dimensional in
+the second).
+
+\medskip
+\noindent\textbf{Step~2: The reduced vector field is locally Lipschitz.}
+
+In the chart $\Phi_{S_0}$ at $\rho_0$, the reduced vector field
+in coordinates is
+\begin{equation*}
+    F(A, \sigma)
+    \coloneqq d\Phi_{S_0}^{-1}\bigl(\Phi_{S_0}(A,\sigma)\bigr)
+    \bigl[\hat P_{\rho(A,\sigma)}\bigl(\Lind(\rho(A,\sigma))\bigr)\bigr],
+\end{equation*}
+where $\rho(A,\sigma) = V_A \sigma V_A^*$.
+
+We verify local Lipschitz continuity in three sub-steps:
+
+\emph{(a) $\Lind(\rho)$ is Lipschitz in $\|\cdot\|_1$.}
+By Assumption~\ref{ass:lind:regular}(R1), $\Lind$ is bounded on
+$\cT{1}(H)$: $\|\Lind(\rho) - \Lind(\rho')\|_1 \leq \|\Lind\|_{\cL(\cT{1})}
+\|\rho - \rho'\|_1$.
+
+\emph{(b) $\rho \mapsto \hat P_\rho$ is locally Lipschitz.}
+Writing $\hat P_\rho(X) = P_{\supp(\rho)} X P_{\supp(\rho)} + \ldots$,
+the dependence on $\rho$ enters only through the orthogonal projection
+$P = P_{\supp(\rho)}$. In the chart, $\supp(\rho(A,\sigma)) =
+\mathrm{Im}(V_A)$ and $P = V_A V_A^*$. The map $A \mapsto V_A V_A^*$
+is $\mathcal{C}^\infty$ by Step~1 (Theorem~\ref{thm:qs:manifold}(i)),
+hence Lipschitz on bounded sets.
+
+\emph{(c) The chart map is Lipschitz.}
+$d\Phi_{S_0}^{-1}$ is bounded on bounded sets since $\Phi_{S_0}$ is a
+$\mathcal{C}^\infty$ diffeomorphism with bounded differential.
+
+Combining (a)--(c) by the chain rule: $F$ is locally Lipschitz on
+a neighbourhood of $(0, V_0^*\rho_0 V_0)$ in $\cL(\CC^r, S_0^\perp)
+\times \cTsa{1}(\CC^r)$.
+
+\medskip
+\noindent\textbf{Step~3: Local existence and uniqueness by Picard--Lindelöf.}
+
+By Theorem~\ref{thm:app:picard} (Picard--Lindelöf in Banach spaces),
+applied to the coordinate ODE $\dot z(t) = F(z(t))$ in the Banach space
+$\cL(\CC^r, S_0^\perp) \times \cTsa{1}(\CC^r)$, there exist $T > 0$ and
+a unique $\mathcal{C}^1$ solution $z: [0,T) \to \cL(\CC^r, S_0^\perp)
+\times \cTsa{1}(\CC^r)$ with $z(0) = (0, V_0^*\rho_0 V_0)$.
+Pushing forward by $\Phi_{S_0}$, we obtain $\rho(t) = \Phi_{S_0}(z(t))$,
+a $\mathcal{C}^1$ curve in $\Drank{r}{H}$ satisfying~\eqref{eq:lind:df}.
+
+\medskip
+\noindent\textbf{Step~4: Continuous dependence on $\rho_0$.}
+
+Continuous dependence of $z(t)$ on $z(0)$ follows from Theorem~\ref{thm:app:picard}.
+Transported through the $\mathcal{C}^\infty$ chart map $\Phi_{S_0}$,
+this gives continuous dependence of $\rho(t)$ on $\rho_0$ in the
+trace norm.
 \end{proof}
 
 \begin{remark}[Choice of projector]
