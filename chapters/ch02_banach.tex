@@ -186,7 +186,7 @@ The following proposition characterises split subspaces in terms of
 projections and provides three equivalent conditions that will each be
 used at different points of the text.
 
-\begin{proposition}[{\cite[Proposition~4.2]{FHN2015}}]
+\begin{proposition}[{\cite[Proposition~4.2]{FHHM}}]
 \label{prop:split_equiv}
 Let $X$ be a Banach space and $U \subset X$ a closed subspace. The
 following conditions are equivalent:
@@ -203,7 +203,7 @@ In condition~(b), the projection $P$ is none other than $\Proj{U}{W}$
 for any choice of closed complement $W$ of $U$; in~(c), one has $Q =
 \Proj{W}{U}$.
 
-\begin{proposition}[{\cite[Theorem~4.5]{FHN2015}}]
+\begin{proposition}[{\cite[Theorem~4.5]{FHHM}}]
 \label{prop:finitedim_split}
 Let $X$ be a Banach space. Every finite-dimensional subspace of $X$ is
 a split subspace.
@@ -283,7 +283,7 @@ The following lemma, which underlies the compatibility of overlapping
 charts in the Grassmann--Banach manifold, characterises when two split
 subspaces share a common complement.
 
-\begin{lemma}[{\cite[Lemma~2.1]{DixmierDouady1963}}]
+\begin{lemma}[{\cite[Lemma~2.1]{DRW}}]
 \label{lem:common_complement}
 Let $X$ be a Banach space and let $U, U', W \in \GrassB{X}$ with
 $X = U \oplus W = U' \oplus W$. The following conditions are equivalent:
@@ -446,7 +446,7 @@ modelled on itself, with the single chart $(X, \Id{X})$.
 If $X$ is a Banach space, then $\GL{X}$ is an open subset of $\cL(X)$,
 and hence an analytic Banach manifold modelled on $\cL(X)$. The maps
 $A \mapsto A^{-1}$ and $(A,B) \mapsto AB$ are analytic
-\textup{(}see~\cite[2.7, 2.8]{Upmeier1985}\textup{)}.
+\textup{(}see~\cite[2.7, 2.8]{Upmeier}\textup{)}.
 \end{example}
 
 \begin{definition}
@@ -496,7 +496,7 @@ A map $M: X_1 \times \cdots \times X_d \to Y$ between normed spaces is
 The following proposition shows that continuity implies a much stronger
 regularity.
 
-\begin{proposition}[{\cite[Proposition~79]{HJ2012}}]
+\begin{proposition}[{\cite[Proposition~79]{HJ}}]
 \label{prop:multilinear_smooth}
 Let $X_1, \ldots, X_d$ and $Y$ be normed spaces and let
 $M: X_1 \times \cdots \times X_d \to Y$ be a continuous multilinear map.
@@ -508,7 +508,7 @@ The vanishing of derivatives beyond order $d$ reflects the polynomial
 nature of multilinear maps. In the complex case, a stronger conclusion
 holds.
 
-\begin{proposition}[{\cite[Theorem~160]{HJ2012}}]
+\begin{proposition}[{\cite[Theorem~160]{HJ}}]
 \label{prop:analytic_c1}
 Let $X$, $Y$ be complex Banach spaces and $U \subset X$ open. A map
 $f: U \to Y$ is analytic if and only if it is $\mathcal{C}^1$-Fréchet
@@ -561,62 +561,133 @@ of $\GrassB{W, \bar X}$ has dimension $r$.
 
 
 %------------------------------------------------------------
-\section{Historical notes}
-\label{sec:banach:history}
+\section{Curves in the Grassmannian and retractions}
+\label{sec:banach:retractions}
 %------------------------------------------------------------
 
-The theory of Banach spaces was developed primarily in the 1920s and
-1930s, with Stefan Banach's monograph~\cite{Banach1932} providing the
-first systematic treatment. The duality theory and reflexivity go back
-to Banach and Alaoglu; the theorem that uniform convexity implies
-reflexivity is due to Clarkson (1936) and Milman (1938).
+The Tucker and tree-based tensor manifolds live over Grassmannians, and
+the numerical algorithms of Appendix~\ref{app:algorithms} — the
+projector-splitting integrator, the DMRG sweep, and the geometric
+ALS — require the ability to move along curves in $\Grass{r}{X}$
+efficiently. This section develops the necessary tools: explicit
+curves in $\Grass{r}{L^2}$, the notion of retraction, and the
+connection between the chart-based retraction and the exponential map.
 
-\paragraph{Complemented subspaces.}
-The study of complemented subspaces has its roots in the work of
-Banach himself, who showed that $c_0$ has uncomplemented subspaces.
-The decisive result --- that a Banach space in which every closed
-subspace is complemented must be isomorphic to a Hilbert space ---
-was proved by Lindenstrauss and Tzafriri in 1971. This explains why
-complementability is a genuine and non-trivial constraint in the
-Banach tensor setting of this monograph.
+\subsection*{Curves in the Grassmannian via the chart}
 
-The characterisation of split subspaces via bounded projections
-(Proposition~\ref{prop:split_equiv}) and the finite-dimensionality
-criterion (Proposition~\ref{prop:finitedim_split}) are classical; the
-formulation used here follows~\cite{FHN2015}. The nilpotent algebra
-associated to a splitting (Proposition~\ref{prop:nilpotent_algebra})
-and its use to identify the chart inverse as a degree-one polynomial
-map is a key observation of~\cite{FHN2019}.
+Fix $U_0 \in \Grass{r}{X}$ with complement $W_0$, $X = U_0 \oplus W_0$.
+By Theorem~\ref{thm:grassmann_manifold}, a $\mathcal{C}^1$-curve
+$\gamma: (-\varepsilon, \varepsilon) \to \Grass{r}{X}$ with
+$\gamma(0) = U_0$ lying in the chart domain $\GrassB{W_0, X}$ is
+uniquely represented by a $\mathcal{C}^1$-curve
+$L: (-\varepsilon, \varepsilon) \to \cL(U_0, W_0)$ with $L(0) = 0$
+and $\gamma(t) = G(L(t)) = (\Id{X} + L(t))(U_0)$.
+The velocity at $t=0$ is $\dot\gamma(0) = \dot L(0) \in \cL(U_0, W_0)
+= T_{U_0}\Grass{r}{X}$.
 
-The lemma on common complements (Lemma~\ref{lem:common_complement})
-is a version of results going back to Dixmier and Douady~\cite{DixmierDouady1963},
-who studied continuous fields of Hilbert spaces. The formulation for
-general Banach spaces and its application to the transition maps of the
-Tucker manifold appears in~\cite{FHN2019}.
+\begin{example}[Curves in $\Grass{1}{L^2({[0,1]})}$]
+\label{ex:grassmann_curves}
+Let $X = L^2([0,1])$, $r=1$, $U_0 = \spann\{\phi_1\}$, where
+$\phi_k(x) = \sqrt{2}\sin(k\pi x)$ are the Dirichlet eigenfunctions of
+$-d^2/dx^2$.
 
-\paragraph{Grassmann--Banach manifold.}
-The infinite-dimensional Grassmannian was constructed as an analytic
-Banach manifold by Douady~\cite{Douady1966} in the context of moduli
-spaces of compact analytic subspaces. The atlas described in
-Theorem~\ref{thm:grassmann_manifold} goes back to this work; the
-specific formulation in terms of the chart map~\eqref{eq:grassmann_chart}
-and the identification of the tangent space with $\cL(U,W)$ follows
-the presentation of~\cite{Upmeier1985}. The finite-dimensional
-Grassmannian $Gr(r,n)$ is a smooth compact manifold of dimension
-$r(n-r)$, a fact well known since Grassmann's original work in the
-1840s; the infinite-dimensional version requires the split condition
-as a substitute for compactness arguments.
+\paragraph{Rotation between eigenfunctions.}
+For fixed $k \geq 2$, the curve
+\begin{equation*}
+    \gamma(t) = \spann\{\cos(t)\phi_1 + \sin(t)\phi_k\},
+    \quad t \in (-\pi/2, \pi/2),
+\end{equation*}
+is $\mathcal{C}^\infty$ in $\Grass{1}{L^2}$. Its chart coordinate is
+$L(t) = \tan(t)\phi_k$ (in $\cL(\spann\{\phi_1\}, W_0)$, identifying
+$\phi_k$ with the map $\lambda\phi_1 \mapsto \lambda\phi_k$), and
+$\dot L(0) = \phi_k$.
 
-\paragraph{Multilinear maps and Fréchet differentiability.}
-The fact that continuous multilinear maps are $\mathcal{C}^\infty$
-(Proposition~\ref{prop:multilinear_smooth}) is a standard result of
-infinite-dimensional calculus; see~\cite{HJ2012} for a careful
-treatment. The equivalence between $\mathcal{C}^1$ and analyticity
-in complex Banach spaces (Proposition~\ref{prop:analytic_c1}) is the
-Gâteaux--Cauchy theorem; see~\cite{HJ2012}. These two propositions are
-the main tools that allow one to conclude that the Tucker and tree-based
-tensor manifolds are $\mathcal{C}^\infty$ (real case) or analytic
-(complex case) without further calculation: their atlas transition maps
-are compositions of continuous multilinear maps and bounded linear
-projections, all of which satisfy the hypotheses of
-Propositions~\ref{prop:multilinear_smooth} and~\ref{prop:analytic_c1}.
+\paragraph{Propagating Gaussian support.}
+Define $\psi_a(x) = C_a e^{-a(x-1/2)^2}$ (normalised). The curve
+$t \mapsto \spann\{\psi_{a+t}\}$ traces the evolution of the support
+subspace as the Gaussian width changes. At $t=0$, the velocity
+$\dot L(0) = \frac{d}{dt}\big|_0 \Psi_{U_0\oplus W_0}(\spann\{\psi_{a+t}\})
+\in \cL(\spann\{\psi_a\}, \{\psi_a\}^\perp)$ encodes the instantaneous
+rate of change of the dominant mode.
+\end{example}
+
+\begin{example}[Curves in $\Grass{r}{L^2}$ for $r=2$]
+\label{ex:grassmann_curves_r}
+For $r=2$ and $U_0 = \spann\{\phi_1,\phi_2\}$, the curve
+\begin{equation*}
+    \gamma(t) = \spann\bigl\{
+    \cos(t)\phi_1 + \sin(t)\phi_3,\;
+    \cos(t)\phi_2 + \sin(t)\phi_4
+    \bigr\}
+\end{equation*}
+has chart matrix $[L(t)]_{ij} = \tan(t)\delta_{ij}$: a uniform
+rotation of both basis vectors. For the Tucker manifold
+$\Tucker{(2,2)}{L^2 \otimes L^2}$, a pair of such curves (one per
+factor) gives a curve in the base $\Grass{2}{L^2} \times \Grass{2}{L^2}$
+of the Tucker bundle.
+\end{example}
+
+\subsection*{Retractions on Banach manifolds}
+
+\begin{definition}
+\label{def:retraction}
+A \emph{retraction} on a $\mathcal{C}^2$-Banach manifold $\mathbb{M}$
+is a $\mathcal{C}^1$-map $R: T\mathbb{M} \to \mathbb{M}$ such that,
+for every $m \in \mathbb{M}$, the restriction $R_m \coloneqq
+R|_{T_m\mathbb{M}}$ satisfies:
+\begin{enumerate}
+\item[\textup{(R1)}] $R_m(0_m) = m$.
+\item[\textup{(R2)}] $DR_m(0_m) = \Id{T_m\mathbb{M}}$.
+\end{enumerate}
+\end{definition}
+
+Condition~(R2) says the retraction is a first-order approximation to
+the exponential map. Retractions are the key ingredient for geometric
+optimisation (gradient descent, Newton's method) and geometric
+integration on manifolds; they replace the exponential map whenever
+no Riemannian metric is available.
+
+\begin{example}[Retraction on $\Grass{r}{X}$]
+\label{ex:grassmann_retraction}
+For $U \in \Grass{r}{X}$ and $L \in T_U\Grass{r}{X} = \cL(U, W)$:
+\begin{equation}
+\label{eq:grassmann_retraction}
+    R_U(L) \coloneqq (\Id{X} + L)(U).
+\end{equation}
+Conditions~(R1)--(R2) are immediate from the chart map
+(Theorem~\ref{thm:grassmann_manifold}).
+\end{example}
+
+\begin{remark}[Retraction vs.\ geodesic]
+\label{rem:retraction_vs_exp}
+In the Hilbert case, the geodesic on $\Grass{r}{H}$ from $U$ with
+velocity $L \in \cL(U, U^\perp)$ is
+$\gamma(t) = \cos(t|L|)(U) \oplus \sin(t|L|)\mathrm{Im}(L/|L|)$,
+where $|L| = (L^*L)^{1/2}$. The chart-based retraction~\eqref{eq:grassmann_retraction}
+equals the geodesic to first order in $t$ (agreeing at $t=0$ and having
+the same velocity). For $r=1$, the geodesic is the great circle on
+$\mathbb{P}(H)$ — the Rabi oscillation in quantum mechanics.
+
+In the non-Hilbert Banach setting, there is no canonical Riemannian
+metric; the chart-based retraction is the natural substitute and is
+used in the projector-splitting
+integrator~\cite{LubichOseledetsVandereycken2015}.
+\end{remark}
+
+\begin{example}[Retraction on the Tucker manifold]
+\label{ex:tucker_retraction}
+For $\bv \in \Tucker{\fr}{\VD}$ and $\dot\bv \in \ZD{\bv}$, writing
+$\dot\bv = d\Phi_\bv^{-1}[\dot\bv]$ in chart coordinates
+$((\delta L_\alpha)_\alpha, \delta C^{(D)})$:
+\begin{equation}
+\label{eq:tucker_retraction}
+    R_\bv(\dot\bv)
+    = \sum_{(i_\alpha)}
+    (C^{(D)} + \delta C^{(D)})_{(i_\alpha)}
+    \bigotimes_\alpha
+    (\Id{} + \delta L_\alpha)(u^{(\alpha)}_{i_\alpha}).
+\end{equation}
+This satisfies (R1)--(R2) by construction and is the retraction used
+in the geometric ALS and DMRG algorithms of
+Appendix~\ref{app:algorithms}.
+\end{example}
