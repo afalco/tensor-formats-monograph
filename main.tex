@@ -53,6 +53,7 @@ urlcolor=blue!70!black]{hyperref}
 % Figures and trees
 \usepackage{graphicx}
 \usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric, calc, fit, backgrounds}
 \usepackage[all,cmtip]{xy}
 \usepackage{synttree}
 
@@ -80,6 +81,16 @@ urlcolor=blue!70!black]{hyperref}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
 \newtheorem{notation}[theorem]{Notation}
+
+% Exercise environment (numbered per chapter)
+\newcounter{exercisectr}[chapter]
+\renewcommand{\theexercisectr}{\thechapter.\arabic{exercisectr}}
+\newenvironment{exercise}{%
+  \refstepcounter{exercisectr}%
+  \medskip\noindent\textbf{Exercise~\theexercisectr.}\enspace\ignorespaces
+}{%
+  \medskip
+}
 
 %------------------------------------------------------------
 % UNIFIED NOTATION (separated into notation.tex)

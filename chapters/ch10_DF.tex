@@ -770,6 +770,75 @@ encoding all interactions between the variables.
 \end{example}
 
 %------------------------------------------------------------
+\section{Exercises}
+\label{sec:DF:exercises}
+%------------------------------------------------------------
+
+\begin{exercise}
+Let $\VDnorm = \RR^2 \otimes \RR^2$ (Frobenius norm) and
+$\Tucker{(1,1)}{\RR^2 \otimes \RR^2}$ the rank-$(1,1)$ manifold.
+Consider the vector field $\bF(\bv) = A - \bv$ where
+$A = \begin{psmallmatrix}2 & 1 \\ 1 & 1\end{psmallmatrix}$.
+\begin{enumerate}
+\item[\textup{(a)}] Starting from $\bv_0 = e_1 e_1^\top$ (rank-1
+    matrix), write down the Dirac--Frenkel ODE
+    $\dot\bv_r = \Pmetric{\bv_r}(\bF(\bv_r))$ explicitly in the
+    $(\lambda, u, w)$ parametrisation of Example~\ref{ex:DF:finite_dim}.
+\item[\textup{(b)}] Find the equilibrium point of the system and
+    show it corresponds to the best rank-1 approximation of $A$.
+\item[\textup{(c)}] Linearise the system at the equilibrium and
+    determine the stability (eigenvalues of the Jacobian).
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Let $\VDnorm = L^2([0,1]^2)$ and $\bF(\bv) = \Delta\bv + f$ where
+$f(x_1,x_2) = \sin(\pi x_1)\sin(\pi x_2) + \sin(2\pi x_1)\sin(2\pi x_2)$.
+Consider the Dirac--Frenkel ODE on $\Tucker{(r,r)}{L^2([0,1]^2)}$.
+\begin{enumerate}
+\item[\textup{(a)}] Show that $f \in \Tucker{(2,2)}{L^2}$ and identify
+    its Tucker decomposition.
+\item[\textup{(b)}] For $r = 2$ and the initial condition
+    $\bv_0 = 0$, solve the kinematic equations~\eqref{eq:DF:MCTDH}
+    explicitly and show the solution converges to a steady state.
+\item[\textup{(c)}] For $r = 1$, compute the Dirac--Frenkel projection
+    of $f$ onto $\Tucker{(1,1)}{L^2}$ and find the error
+    $\|f - \Pmetric{\bv}(f)\|_{L^2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Verify that the kinematic equations~\eqref{eq:DF:MCTDH_core}--\eqref{eq:DF:MCTDH_basis}
+preserve the tangential gauge $\langle \dot u^{(\alpha)}_i, u^{(\alpha)}_j
+\rangle_\alpha = 0$: show that if this condition holds at $t=0$, it
+holds for all $t$ in the existence interval. (\emph{Hint:} Differentiate
+$\langle u^{(\alpha)}_i(t), u^{(\alpha)}_j(t)\rangle_\alpha$ using the
+basis equation and the constraint $\dot u^{(\alpha)}_i \perp u^{(\alpha)}_j$.)
+\end{exercise}
+
+\begin{exercise}[Dirac--Frenkel for the tensor train, $d=3$]
+Let $D = \{1,2,3\}$, $V_j = \RR^n$ for $j=1,2,3$, and the TT format
+with $\TDtt$: $\Sons{\{1,2,3\}} = \{\{1,2\},\{3\}\}$,
+$\Sons{\{1,2\}} = \{\{1\},\{2\}\}$. Using
+Theorem~\ref{thm:DF_treebased}, write down the Dirac--Frenkel ODE
+on $\FTv[\TDtt]$ and identify the intersection
+$\bigcap_k \ZD[\PkT{k}{\TDtt}]{\bv}$ of tangent spaces at each level
+of the tree. Describe the kinematic system in TT-component form
+(three component tensors $C^{(1)}, C^{(12)}, C^{(3)}$ plus transfer
+tensors) and identify the equations for each component.
+\end{exercise}
+
+\begin{exercise}
+Prove that the Hartree equations~\eqref{eq:DF:hartree} conserve the
+$L^2$-norms $\|\phi_1(t)\|_{H_1} = \|\phi_1(0)\|_{H_1}$ and
+$\|\phi_2(t)\|_{H_2} = \|\phi_2(0)\|_{H_2}$ by differentiating
+$\frac{d}{dt}\|\phi_\alpha(t)\|^2$ and using the skew-adjointness of
+$H_\alpha$ and the mean-field potential structure. Conclude that
+if $\|\phi_\alpha(0)\| = 1$, then $\|\phi_\alpha(t)\| = 1$ for all
+$t \geq 0$, so the Hartree solution stays on the unit sphere of $H_\alpha$.
+\end{exercise}
+
+%------------------------------------------------------------
 \section{Historical notes}
 \label{sec:DF:history}
 %------------------------------------------------------------

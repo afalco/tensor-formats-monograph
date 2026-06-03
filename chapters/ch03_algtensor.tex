@@ -561,6 +561,64 @@ topological structure is a recurring theme throughout the monograph.
 \end{remark}
 
 %------------------------------------------------------------
+\section{Exercises}
+\label{sec:algtensor:exercises}
+%------------------------------------------------------------
+
+\begin{exercise}
+Let $D = \{1,2\}$ and $V_1 = V_2 = \RR^2$. Write down a basis for the
+algebraic tensor product $V_1 \otimes_a V_2 \cong \RR^{2\times 2}$,
+identify the elementary tensors, and show explicitly that
+$e_1 \otimes e_2 + e_2 \otimes e_1$ is not an elementary tensor.
+Compute the Tucker rank (multilinear rank) of this tensor.
+\end{exercise}
+
+\begin{exercise}
+Let $\bv = \sum_{i,j=1}^r C^{(D)}_{ij}\, u_i \otimes w_j \in
+\RR^n \otimes \RR^m$ be a Tucker-format tensor with $r \leq \min(n,m)$.
+Show that $r_1(\bv) = \mathrm{rank}(\Mmat{1}(\bv))$ and
+$r_2(\bv) = \mathrm{rank}(\Mmat{2}(\bv))$, where $\Mmat{\alpha}(\bv)$
+is the $\alpha$-matricisation (Definition~\ref{def:matricisation}).
+Deduce that $r_\alpha(\bv) \leq r$ for both $\alpha$, with equality
+when the core $C^{(D)}$ has full row and column rank.
+\end{exercise}
+
+\begin{exercise}
+Let $D = \{1,2,3\}$ and $V_\alpha = \RR^2$ for each $\alpha$.
+Consider the tensor $\bv = e_1 \otimes e_1 \otimes e_1 + e_2 \otimes
+e_2 \otimes e_2$ (the ``diagonal'' rank-2 tensor).
+\begin{enumerate}
+\item[\textup{(a)}] Compute the minimal subspaces
+    $\Umin{\{1\}}{\bv}$, $\Umin{\{2\}}{\bv}$, $\Umin{\{3\}}{\bv}$
+    and the Tucker rank $(r_{\{1\}}, r_{\{2\}}, r_{\{3\}})$.
+\item[\textup{(b)}] Write $\bv$ in Tucker format with a $2 \times 2
+    \times 2$ core tensor $C^{(D)}$ and identify the core explicitly.
+\item[\textup{(c)}] Show that the tensor rank of $\bv$ (decomposition
+    into elementary tensors) equals its Tucker rank in this case.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Let $\bv \in V_1 \atens V_2$ and define $T_\bv: V_1^* \to V_2$ by
+$T_\bv(\varphi) = (\varphi \otimes \Id{V_2})(\bv)$.
+Prove that $\Umin{\{2\}}{\bv} = \mathrm{Im}(T_\bv)$ and
+$\Umin{\{1\}}{\bv} = \mathrm{Im}(T_\bv^*)$ (where $T_\bv^*: V_2^*
+\to V_1$ is the adjoint map). Conclude that the Tucker rank of $\bv$
+equals $\mathrm{rank}(T_\bv)$, consistent with the matrix rank
+interpretation.
+\end{exercise}
+
+\begin{exercise}[Tucker format and the TT format for $d=3$]
+Let $D = \{1,2,3\}$ and the TT tree $\TDtt$ with
+$\Sons{\{1,2,3\}} = \{\{1,2\}, \{3\}\}$,
+$\Sons{\{1,2\}} = \{\{1\}, \{2\}\}$.
+Show that every TT-format tensor (i.e., every $\bv \in
+\FTv[\TDtt]$) can be written in Tucker format (i.e., as an element
+of $\Tucker{\fr'}{\VD}$ for some $\fr'$), and express the Tucker
+rank $\fr'$ in terms of the TT bond dimensions $(r_1, r_2)$.
+\end{exercise}
+
+%------------------------------------------------------------
 \section{Historical notes}
 \label{sec:algtensor:history}
 %------------------------------------------------------------

@@ -693,6 +693,58 @@ Appendix~\ref{app:algorithms}.
 \end{example}
 
 %------------------------------------------------------------
+\section{Exercises}
+\label{sec:banach:exercises}
+%------------------------------------------------------------
+
+\begin{exercise}
+Let $X = C([0,1])$ with the sup norm and $Y = \ker(\delta_0)$ where
+$\delta_0(f) = f(0)$ is the evaluation functional. Show that $Y$ is
+a closed hyperplane in $X$, hence complemented (find an explicit
+bounded projection $P: X \to Y$), and compute $\|P\|$.
+\end{exercise}
+
+\begin{exercise}
+Let $X$ be a Banach space and $U, W \subset X$ closed subspaces with
+$X = U \oplus W$ (algebraic direct sum). Prove that the projection
+$P: X \to U$ with $\ker P = W$ is bounded if and only if the graph
+$\{(u, w) : u \in U, w \in W,\, u + w = 0\}$ is closed in $X \times X$.
+(\emph{Hint:} Use the closed graph theorem.)
+\end{exercise}
+
+\begin{exercise}
+Let $H$ be an infinite-dimensional separable Hilbert space and $r \geq 1$.
+Prove that $\Grass{r}{H}$ is connected by constructing, for any two
+subspaces $U, V \in \Grass{r}{H}$, an explicit $\mathcal{C}^\infty$
+path $\gamma: [0,1] \to \Grass{r}{H}$ with $\gamma(0) = U$ and
+$\gamma(1) = V$ using the chart map $\Psi_{U \oplus W}$ of
+Theorem~\ref{thm:grassmann_manifold}.
+(\emph{Hint:} The linear path $t \mapsto G(tL)$ in the chart, where
+$L = \Psi_{U \oplus U^\perp}(V)$, works when $V \in \GrassB{U^\perp, H}$;
+handle the general case by composing two such paths.)
+\end{exercise}
+
+\begin{exercise}
+Let $X = L^p([0,1])$ for $1 \leq p < \infty$. For the retraction
+$R_U(L) = (\Id{} + L)(U)$ on $\Grass{r}{X}$
+(Example~\ref{ex:grassmann_retraction}), verify conditions (R1) and
+(R2) of Definition~\ref{def:retraction} directly from the definition
+of the chart map, without using the analytic atlas.
+\end{exercise}
+
+\begin{exercise}
+Let $\mathbb{M}$ be a $\mathcal{C}^\infty$-Banach manifold and
+$f: \mathbb{M} \to \RR$ a smooth function. An \emph{integral curve}
+of the gradient flow $\dot m = -\nabla f(m)$ is a solution of the ODE
+on $\mathbb{M}$. Prove that $f$ is non-increasing along any integral
+curve, with $\frac{d}{dt}f(\gamma(t)) = -\|\nabla f(\gamma(t))\|^2$.
+(\emph{Note:} This requires specifying what $\nabla f$ means; in the
+Hilbert case it is the Riesz representative of $df$, while in the Banach
+case it is the duality-mapping gradient of
+Appendix~\ref{app:functional}, \S\ref{app:functional:reflexivity}.)
+\end{exercise}
+
+%------------------------------------------------------------
 \section{Historical notes}
 \label{sec:banach:history}
 %------------------------------------------------------------

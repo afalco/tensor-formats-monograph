@@ -650,6 +650,71 @@ in terms of unitary transformations.
 \label{sec:tucker_manifold:full}
 %------------------------------------------------------------
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  >=Latex,
+  box/.style={draw, rounded corners=3pt, minimum width=2.8cm,
+              minimum height=0.8cm, align=center, font=\small},
+  grbox/.style={draw, dashed, rounded corners=4pt, minimum width=2.8cm,
+                minimum height=0.8cm, align=center, font=\small},
+  node distance=1.4cm
+]
+% Total space
+\node[box, fill=blue!8] (E)
+  {$\Tucker{\fr}{\VD}$\\[1pt]\scriptsize(total space)};
+
+% Bundle map
+\node[box, fill=orange!10, below=1.6cm of E] (B)
+  {$\displaystyle\prod_{\alpha\in D}\Grass{r_\alpha}{V_\alpha}$\\[1pt]
+   \scriptsize(base, Grassmannian product)};
+
+% Fibre
+\node[box, fill=green!10, right=3.5cm of E] (F)
+  {$F_\fr = \RR^{\times_\alpha r_\alpha}_{*}$\\[1pt]\scriptsize(fibre,
+   invertible cores)};
+
+% Chart domain
+\node[grbox, fill=blue!4, left=3.0cm of E] (U)
+  {$\mathcal{B}(\bv) \subset B$\\[1pt]\scriptsize(local base open set)};
+
+% Trivialisation
+\node[grbox, fill=blue!4, below=1.6cm of F] (UF)
+  {$\mathcal{B}(\bv) \times F_\fr$\\[1pt]\scriptsize(local trivialisation)};
+
+% Arrows
+\draw[->] (E) -- node[left, font=\small]{$\varrho_\fr$} (B);
+\draw[->] (E) -- node[above, font=\small]{fibre} (F);
+\draw[->, dashed] (E.south east)
+  to[bend right=15]
+  node[right, font=\small]{$\chi_\bv$ (triv.)} (UF);
+\draw[->, dashed] (UF) -- node[right, font=\scriptsize]{$\mathrm{pr}_1$} (B.east |- UF);
+\draw[->, dashed] (U) -- node[above, font=\scriptsize]{$\hookrightarrow$} (B);
+
+% Structure group annotation
+\node[draw=none, font=\scriptsize, below=0.3cm of UF, align=center]
+  {struct.\ group\; $G_\fr = \prod_\alpha\GL{r_\alpha}{\RR}$};
+
+% Section annotation
+\draw[->, gray, dotted] (B.north west)
+  to[bend left=20]
+  node[left, font=\scriptsize, gray]{section $\sigma$} (E.south west);
+\end{tikzpicture}
+\caption{Fibre bundle structure of the Tucker manifold
+$\Tucker{\fr}{\VD}$ (Theorem~\ref{thm:Tucker_Banach_Manifold}(ii)).
+The total space projects via $\varrho_\fr$ onto the base
+$\prod_\alpha\Grass{r_\alpha}{V_\alpha}$ (product of
+Grassmann--Banach manifolds). Over each chart $\mathcal{B}(\bv)$
+in the base, the bundle trivialises via $\chi_\bv$ to a product
+with the fibre of invertible core tensors $F_\fr$.
+The structure group $G_\fr = \prod_\alpha\GL{r_\alpha}{\RR}$ acts
+by change of basis in each minimal subspace. A (local) section
+$\sigma$ of the bundle corresponds to a chart map
+$\chartmap{\bv}^{-1}$ selecting a canonical representative
+in each fibre.}
+\label{fig:tucker_bundle}
+\end{figure}
+
 \begin{corollary}[{\cite[Corollary~3.19]{FHN2019}}]
 \label{cor:VD_manifold}
 Under the continuity assumption on the tensor product map, the algebraic
@@ -660,6 +725,65 @@ disjoint union of the Tucker manifold atlases over all $\fr \in \AD{\VD}$:
     \VD = \bigsqcup_{\fr \in \AD{\VD}} \Tucker{\fr}{\VD}.
 \end{equation*}
 \end{corollary}
+
+%------------------------------------------------------------
+\section{Exercises}
+\label{sec:tucker_manifold:exercises}
+%------------------------------------------------------------
+
+\begin{exercise}
+Let $D = \{1,2\}$, $V_1 = V_2 = \RR^3$, and $\fr = (2,2)$.
+Let $\bv = \sum_{i,j=1}^2 C^{(D)}_{ij}\, u_i \otimes w_j$ with
+$u_1, u_2 \in \RR^3$ linearly independent and $w_1, w_2 \in \RR^3$
+linearly independent.
+\begin{enumerate}
+\item[\textup{(a)}] Write down the chart map
+    $\Phi_\bv: \Tucker{(2,2)}{\RR^3 \otimes \RR^3} \supset M_\bv
+    \to \cL(U_1, W_1) \times \cL(U_2, W_2) \times \RR^{2\times 2}_*$
+    explicitly in coordinates (where $U_\alpha = \spann\{u_1,u_2\}$
+    and $W_\alpha = U_\alpha^\perp$ for $\alpha = 1,2$).
+\item[\textup{(b)}] Identify the model space $\Emodel{D}$ for this
+    case and compute its dimension.
+\item[\textup{(c)}] Verify that the transition map between two charts
+    at $\bv$ and $\bv'$ (both in the same Tucker stratum) is smooth.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Let $\bv = C^{(D)} \cdot (u_1 \otimes w_1)$ be a rank-$(1,1)$ tensor
+in $\RR^2 \otimes \RR^2$. Compute the tangent space
+$\ZD{\bv} \subset \RR^{2\times 2}$ explicitly as a subspace of matrices,
+and verify that $\dim \ZD{\bv} = 1 + 1 + 1 = 3$ (core + two basis
+directions, minus the gauge degrees of freedom).
+\end{exercise}
+
+\begin{exercise}
+Prove that the Tucker manifold $\Tucker{\fr}{\VD}$ is a fibre bundle
+over $\prod_\alpha \Grass{r_\alpha}{V_\alpha}$ in the following sense:
+show that the map $\pi: \Tucker{\fr}{\VD} \to \prod_\alpha
+\Grass{r_\alpha}{V_\alpha}$ defined by $\pi(\bv) =
+(\Umin{\alpha}{\bv})_{\alpha \in D}$ is a smooth surjection, and
+identify the typical fibre over a point $((U_\alpha)_\alpha)$ as the
+set of full-rank core tensors in
+$\Tucker{\fr}{\bigotimes_\alpha U_\alpha}$.
+(\emph{Hint:} Use the bundle description of
+Section~\ref{sec:tucker_manifold:bundle}.)
+\end{exercise}
+
+\begin{exercise}
+Let $V_1 = V_2 = L^2([0,1])$ and $\Tucker{(r,r)}{L^2([0,1]^2)}$ with
+$r = 2$.
+\begin{enumerate}
+\item[\textup{(a)}] Show that the tensor $\bv(x_1,x_2) = \sin(\pi x_1)
+    \sin(\pi x_2) + \sin(2\pi x_1)\sin(2\pi x_2)$ is in
+    $\Tucker{(2,2)}{L^2}$ and identify its core and basis vectors.
+\item[\textup{(b)}] Compute the tangent space $\ZD{\bv}$ at this point
+    and describe it as a subspace of $L^2([0,1]^2)$.
+\item[\textup{(c)}] Find the orthogonal projection of
+    $\bw(x_1,x_2) = \sin(3\pi x_1)\sin(\pi x_2)$ onto $\ZD{\bv}$
+    and verify that the projected vector lies in $\ZD{\bv}$.
+\end{enumerate}
+\end{exercise}
 
 %------------------------------------------------------------
 \section{Historical notes and comparison}
@@ -677,7 +801,7 @@ Dirac--Frenkel variational principle for the MCTDH method. Their
 approach, however, uses the Hilbert structure (metric projection)
 and does not extend to Banach spaces.
 
-Uschmajew and Vandereycken~\cite{Uschmajew2012} studied the HT
+Uschmajew and Vandereycken~\cite{UschmajewVandereycken2013} studied the HT
 manifold in finite dimensions as a quotient manifold
 $\GL{r_1} \times \cdots \times \GL{r_d} \backslash \FTv / G$
 for a gauge group $G$. The description in~\cite{FHN2019} is

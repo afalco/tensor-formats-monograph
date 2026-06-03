@@ -166,6 +166,78 @@ natural variational class for quantum systems with prescribed
 entanglement structure $(r_\alpha)_{\alpha \in D}$.
 \end{remark}
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Latex, node distance=1.8cm,
+  state/.style={draw, rounded corners=4pt, minimum width=2.4cm,
+                minimum height=0.75cm, align=center, font=\small},
+  obs/.style={draw, dashed, rounded corners=4pt, minimum width=2.4cm,
+              minimum height=0.75cm, align=center, font=\small, fill=orange!8},
+  arr/.style={->, thick},
+  label/.style={font=\scriptsize, draw=none}
+]
+% Central: pure state
+\node[state, fill=blue!8] (v)
+  {$v \in \Tucker{\fr}{H}$\\[1pt]\scriptsize pure state};
+
+% Tucker rank annotation
+\node[label, above=0.4cm of v]
+  {Tucker rank $\fr = (r_\alpha)_{\alpha \in D}$};
+
+% Partial traces
+\node[obs, left=3.0cm of v] (r1)
+  {$\rho_1 = \TrS{1^c}(\rho_v)$\\[1pt]\scriptsize red.\ density op.\ on $H_1$};
+\node[obs, right=3.0cm of v] (r2)
+  {$\rho_2 = \TrS{2^c}(\rho_v)$\\[1pt]\scriptsize red.\ density op.\ on $H_2$};
+\node[obs, below=1.6cm of v] (ralpha)
+  {$\rho_\alpha = \TrS{\alpha^c}(\rho_v)$\\[1pt]\scriptsize
+   for each $\alpha \in D$};
+
+% Minimal subspaces
+\node[state, fill=green!8, left=3.0cm of r1, yshift=0cm] (U1)
+  {$\Umin{1}{v} = \supp(\rho_1)$\\[1pt]\scriptsize $\dim = r_1$};
+\node[state, fill=green!8, right=3.0cm of r2, yshift=0cm] (U2)
+  {$\Umin{2}{v} = \supp(\rho_2)$\\[1pt]\scriptsize $\dim = r_2$};
+\node[state, fill=green!8, below=1.4cm of ralpha] (Ualpha)
+  {$\Umin{\alpha}{v} = \supp(\rho_\alpha)$\\[1pt]\scriptsize $\dim = r_\alpha$};
+
+% Arrows: pure state -> partial traces
+\draw[arr, blue] (v) -- node[above, font=\scriptsize]{$\TrS{1^c}$} (r1);
+\draw[arr, blue] (v) -- node[above, font=\scriptsize]{$\TrS{2^c}$} (r2);
+\draw[arr, blue] (v) -- node[right, font=\scriptsize]{$\TrS{\alpha^c}$} (ralpha);
+
+% Arrows: partial traces -> minimal subspaces
+\draw[arr, orange!70!black] (r1)
+  -- node[above, font=\scriptsize]{$\supp(\cdot)$} (U1);
+\draw[arr, orange!70!black] (r2)
+  -- node[above, font=\scriptsize]{$\supp(\cdot)$} (U2);
+\draw[arr, orange!70!black] (ralpha)
+  -- node[right, font=\scriptsize]{$\supp(\cdot)$} (Ualpha);
+
+% Curved arrow: direct connection
+\draw[arr, dashed, green!60!black] (v.south west)
+  to[bend right=30]
+  node[left, font=\scriptsize, green!50!black]{Def.~of $\Umin{\alpha}{\cdot}$}
+  (U1.north east);
+
+% Tucker manifold annotation at bottom
+\node[label, below=0.3cm of Ualpha, align=center]
+  {$v \in \bigotimes_\alpha \Umin{\alpha}{v}$,\quad
+   $r_\alpha(v) = \mathrm{rank}(\rho_\alpha)$};
+\end{tikzpicture}
+\caption{The correspondence between minimal subspaces and partial traces
+(Theorem~\ref{thm:qs:minimal_partial_trace}), illustrated for
+$v \in \Tucker{\fr}{H} \subset H = \bigotimes_{j \in D} H_j$.
+Blue arrows: formation of reduced density operators by partial tracing.
+Orange arrows: extraction of minimal subspaces as supports of the
+reduced operators. The dashed green arrow shows the direct definition
+of $\Umin{\alpha}{v}$ as the smallest $U \subset H_\alpha$ with
+$v \in U \otimes_H H_{\alpha^c}$.
+The Tucker $\alpha$-rank $r_\alpha(v) = \dim\Umin{\alpha}{v}$ equals
+the rank of the corresponding reduced density operator.}
+\label{fig:minimal_partial_trace}
+\end{figure}
+
 %------------------------------------------------------------
 \section{Mixed states and the rank stratification}
 \label{sec:qs:mixed}

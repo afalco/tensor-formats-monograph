@@ -679,6 +679,55 @@ and low-rank approximations are highly accurate~\cite{Nouy2017}.
 \end{example}
 
 %------------------------------------------------------------
+\section{Exercises}
+\label{sec:min:exercises}
+%------------------------------------------------------------
+
+\begin{exercise}
+Let $V_1 = V_2 = \ell^2(\NN)$ and $\bv = \sum_{k=1}^\infty k^{-2}
+e_k \otimes e_k \in \VDnorm$ (the Hilbert tensor product). Compute
+$\Umin{\{1\}}{\bv}$ and $\Umin{\{2\}}{\bv}$, show that both are
+infinite-dimensional, and determine the Tucker rank $r_\alpha(\bv)$
+for $\alpha = \{1\}$ and $\alpha = \{2\}$.
+\end{exercise}
+
+\begin{exercise}
+Let $\VDnorm$ be a reflexive Banach tensor space satisfying \condINJ.
+Prove that the set $\Tucker{\leq\fr}{\VD}$ of tensors with Tucker rank
+$\leq \fr$ (component-wise) is weakly sequentially closed. (\emph{Hint:}
+Use Theorem~\ref{thm:weak_closed} and the lower semicontinuity of the
+rank function $\bv \mapsto r_\alpha(\bv)$ with respect to weak convergence,
+i.e., $r_\alpha(\bv^*) \leq \liminf_n r_\alpha(\bv_n)$ whenever
+$\bv_n \rightharpoonup \bv^*$.)
+\end{exercise}
+
+\begin{exercise}
+Let $V_1 = V_2 = L^2([0,1])$ and $\bv(x_1, x_2) = \min(x_1, x_2)$
+(the kernel of the Brownian motion covariance) regarded as an element of
+$L^2([0,1]^2) \cong L^2([0,1]) \otimes_H L^2([0,1])$.
+\begin{enumerate}
+\item[\textup{(a)}] Compute the operator $T_\bv: L^2([0,1]) \to L^2([0,1])$
+    defined by $(T_\bv f)(x_1) = \int_0^1 \bv(x_1, x_2) f(x_2)\,dx_2$
+    and show it is compact and self-adjoint.
+\item[\textup{(b)}] Identify $\Umin{\{1\}}{\bv}$ as the closure of
+    $\mathrm{Im}(T_\bv)$ and conclude that $r_{\{1\}}(\bv) = \infty$.
+\item[\textup{(c)}] Find the best Tucker rank-$(1,1)$ approximation
+    $\bv_1$ of $\bv$ in $L^2([0,1]^2)$ and compute the error
+    $\|\bv - \bv_1\|_{L^2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Prove that the injective norm $\|\cdot\|_\varepsilon$ is the smallest
+crossnorm on $\VD = {}_a\bigotimes_\alpha V_\alpha$. That is, for any
+crossnorm $\|\cdot\|_D$ on $\VD$, show $\|\bv\|_D \geq \|\bv\|_\varepsilon$
+for all $\bv \in \VD$. (\emph{Hint:} Use the definition of
+$\|\cdot\|_\varepsilon$ as a supremum over dual functionals and the
+crossnorm inequality $\|\bigotimes_\alpha v_\alpha\|_D = \prod_\alpha
+\|v_\alpha\|_\alpha$.)
+\end{exercise}
+
+%------------------------------------------------------------
 \section{Historical notes and comparison with the literature}
 \label{sec:min:history}
 %------------------------------------------------------------
@@ -701,7 +750,7 @@ least-squares and related iterative methods.
 
 The weak closedness argument of Theorem~\ref{thm:weak_closed} is
 modelled on Uschmajew's result for the case of the spectral norm
-on finite-dimensional spaces~\cite{Uschmajew2012}. The innovation
+on finite-dimensional spaces~\cite{UschmajewVandereycken2013}. The innovation
 of~\cite{FH2012} is the extension to general reflexive Banach spaces
 under the crossnorm condition \condINJ, which is the natural condition
 for tensor product norms.

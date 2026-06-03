@@ -617,6 +617,75 @@ since $\TDtt$ has the most levels (deepest tree) and $\TDtuck$ has
 the fewest (shallowest). Each inclusion is in general strict: a Tucker
 tensor need not satisfy the additional structural constraints of HT or TT.
 
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  every node/.style={circle, draw, inner sep=2pt, minimum size=18pt,
+                     font=\small},
+  leaf/.style={rectangle, draw, inner sep=3pt, font=\scriptsize},
+  edge from parent/.style={draw, -},
+  level distance=9mm,
+  sibling distance=8mm
+]
+%--- Tucker tree (depth 1) ---
+\begin{scope}[xshift=0cm]
+  \node[font=\scriptsize] (Tr) {$D$}
+    child { node[leaf] {1} }
+    child { node[leaf] {2} }
+    child { node[leaf] {3} }
+    child { node[leaf] {4} };
+  \node[below=20mm of Tr, draw=none, font=\small\itshape] {Tucker ($\dep=1$)};
+  \node[below=25mm of Tr, draw=none, font=\scriptsize] {$4rn + r^4$};
+\end{scope}
+%--- HT tree (depth 2) ---
+\begin{scope}[xshift=4.2cm]
+  \node[font=\scriptsize] (Ht) {$D$}
+    child { node[font=\scriptsize] {12}
+      child { node[leaf] {1} }
+      child { node[leaf] {2} }
+    }
+    child { node[font=\scriptsize] {34}
+      child { node[leaf] {3} }
+      child { node[leaf] {4} }
+    };
+  \node[below=20mm of Ht, draw=none, font=\small\itshape] {HT ($\dep=2$)};
+  \node[below=25mm of Ht, draw=none, font=\scriptsize] {$4rn + 2r^3 + r^2$};
+\end{scope}
+%--- TT tree (depth 3) ---
+\begin{scope}[xshift=8.2cm]
+  \node[font=\scriptsize] (Tt) {$D$}
+    child { node[font=\scriptsize] {123}
+      child { node[font=\scriptsize] {12}
+        child { node[leaf] {1} }
+        child { node[leaf] {2} }
+      }
+      child { node[leaf] {3} }
+    }
+    child { node[leaf] {4} };
+  \node[below=20mm of Tt, draw=none, font=\small\itshape] {TT ($\dep=3$)};
+  \node[below=25mm of Tt, draw=none, font=\scriptsize] {$4rn + 2r^2 n$};
+\end{scope}
+%--- Inclusion arrows ---
+\draw[-{Latex}, thick, gray]
+  ([xshift=1.5cm, yshift=-4mm] Tr.south) --
+  node[above, draw=none, font=\scriptsize, gray] {$\supseteq$}
+  ([xshift=-1.5cm, yshift=-4mm] Ht.south);
+\draw[-{Latex}, thick, gray]
+  ([xshift=1.5cm, yshift=-4mm] Ht.south) --
+  node[above, draw=none, font=\scriptsize, gray] {$\supseteq$}
+  ([xshift=-1.5cm, yshift=-4mm] Tt.south);
+\end{tikzpicture}
+\caption{The three standard dimension partition trees for $d=4$
+and their storage costs (uniform rank $r$, per-mode dimension $n$).
+Left to right: Tucker ($\dep=1$, single-level partition), Hierarchical
+Tucker ($\dep=2$, balanced binary), Tensor Train ($\dep=3$, linear chain).
+The inclusion arrows~\eqref{eq:inclusion_chain} indicate that the TT
+tensor set is the smallest and Tucker the largest.
+Internal nodes are labelled by index subsets (e.g., ``$12$'' for
+$\{1,2\}$); leaf nodes are shown as rectangles.}
+\label{fig:tree_comparison}
+\end{figure}
+
 %------------------------------------------------------------
 \section{Historical notes}
 \label{sec:trees:history}
