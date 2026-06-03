@@ -620,7 +620,8 @@ than a matrix rank. This shift from rank to subspace is what makes the
 theory tractable in the Banach setting; the full development is given
 in Chapter~\ref{chap:minsubspaces}.
 
-\paragraph{Banach tensor spaces and crossnorms.}
+\begin{remark}[Grothendieck inequality and the Hilbert case]
+\label{rem:grothendieck_hilbert}
 The systematic theory of norms on tensor products of Banach spaces was
 initiated by Schatten in the late 1940s (see~\cite{Hackbusch2019} for
 the historical account) and greatly extended by Grothendieck in his 1953
@@ -628,8 +629,14 @@ Résumé. The projective and injective norms are the two canonical
 extremes; crossnorms (which satisfy $\|\bigotimes_\alpha v_\alpha\|_D =
 \prod_\alpha \|v_\alpha\|_\alpha$) are the natural class for tensor
 analysis because they ensure continuity of the tensor product map
-(Definition~\ref{def:tensor_product_continuous}). The monograph of
-Hackbusch~\cite{Hackbusch2019} provides the most comprehensive modern
+(Definition~\ref{def:tensor_product_continuous}). In the Hilbert case,
+the projective and injective norms are equivalent (up to the
+Grothendieck constant $K_G$), so the distinction between them collapses;
+this is the content of Grothendieck's inequality~\cite{Grothendieck1953}.
+For general Banach spaces the two norms are genuinely different, and the
+choice of crossnorm has significant consequences for the best-approximation
+theory of Chapter~\ref{chap:minsubspaces}.
+The monograph of Hackbusch~\cite{Hackbusch2019} provides the most comprehensive modern
 treatment of Banach tensor spaces from the numerical analysis perspective.
 The Hilbert tensor space setting (Example~\ref{ex:Lp_tensor} for $p=2$)
 is the framework for most existing algorithms for high-dimensional PDEs;
@@ -637,6 +644,7 @@ the extension to general Banach spaces, particularly $L^p$ for $p \neq 2$
 (Example~\ref{ex:Lp_tensor}) and Sobolev spaces
 (Example~\ref{ex:sobolev_tensor}), is one of the main motivations for the
 abstract framework of this monograph.
+\end{remark}
 
 \paragraph{Tree-based and hierarchical formats.}
 The Tucker format is the depth-1 case of a hierarchy of tensor formats
