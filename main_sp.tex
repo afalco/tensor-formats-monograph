@@ -19,19 +19,21 @@
 
 %------------------------------------------------------------
 %  DOCUMENT CLASS
-%  SNmono v6.00 valid options:
+%  SNmono v6.00 supported options:
 %    envcountchap  — number theorems per chapter  (e.g. Theorem 1.1)
 %    envcountsect  — number theorems per section  (e.g. Theorem 1.1.1)
-%  Options 'sechang' and 'openright' are NOT supported in v6.00.
 %------------------------------------------------------------
 \documentclass[envcountsect]{SNmono}
 
 %------------------------------------------------------------
 %  PACKAGES
-%  SNmono v6.00 loads internally:
-%    amsmath, amsthm, graphicx, hyperref, xcolor, inputenc, fontenc
-%  We add only what is missing.
+%  SNmono v6.00 already loads internally:
+%    amsmath, amsthm, graphicx, hyperref, xcolor
+%  We add only what is genuinely missing.
 %------------------------------------------------------------
+
+% Bibliography — natbib for plainnat style
+%\usepackage{natbib}
 
 % Symbol fonts — NOT loaded by SNmono
 \usepackage{amssymb}             % \mathbb, \mathfrak, etc.
@@ -53,16 +55,27 @@
 
 %------------------------------------------------------------
 %  THEOREM ENVIRONMENTS
-%  SNmono already defines via \spnewtheorem:
+%  SNmono v6.00 already defines (do NOT redefine):
 %    theorem, lemma, corollary, proposition, definition,
-%    example, exercise, remark, note, case, conjecture,
-%    question, solution, property
-%  We only declare the ones NOT provided by SNmono.
-%  Syntax: \spnewtheorem{name}[shared-counter]{Caption}{\headfont}{\bodyfont}
+%    example, exercise, remark, note, problem, case,
+%    conjecture, question, solution, property, prob
+%
+%  We only add the two environments NOT provided by SNmono.
+%  'openprob' is used for "Open Problem" to avoid clash with
+%  SNmono's built-in \problem environment.
 %------------------------------------------------------------
 \spnewtheorem{assumption}[theorem]{Assumption}{\bfseries}{\upshape}
-\spnewtheorem{problem}[theorem]{Open Problem}{\bfseries}{\upshape}
+\spnewtheorem{openprob}[theorem]{Open Problem}{\bfseries}{\upshape}
 \spnewtheorem{notation}[theorem]{Notation}{\itshape}{\upshape}
+
+%------------------------------------------------------------
+%  COMPATIBILITY ALIAS
+%  The chapter sources use \begin{problem}...\end{problem}.
+%  We redirect that to openprob so no chapter source needs
+%  editing.  This must come AFTER the \spnewtheorem above.
+%------------------------------------------------------------
+\let\problem\openprob
+\let\endproblem\endopenprob
 
 %------------------------------------------------------------
 %  UNIFIED NOTATION
@@ -158,6 +171,7 @@ and symbols used throughout.
 %%  PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
 \part{Variational Principles and Applications}
 \label{part:variational}
+\label{part:quantum}    % alias used by ch01_introduction (new chapters)
 
 \input{chapters/ch10_DF}
 \input{chapters/ch12_quantum_states}
@@ -180,6 +194,9 @@ and symbols used throughout.
 %------------------------------------------------------------
 \backmatter
 
+%  spbasic.bst is not installed in standard TeX Live.
+%  Use plainnat (author-year style, matches Springer monograph conventions).
+%  Switch to \bibliographystyle{spbasic} once the Springer package is available.
 \bibliographystyle{spbasic}
 \bibliography{bibliography/monograph}
 
