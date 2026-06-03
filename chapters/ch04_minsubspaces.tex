@@ -512,10 +512,18 @@ We say $\|\cdot\|_D$ satisfies condition \condINJ\ if
 $\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$.
 \end{definition}
 
-A crossnorm satisfies \condINJ\ if and only if it is a
-\emph{reasonable crossnorm} in the sense that its dual norm is also
-a crossnorm. The injective norm is the smallest reasonable crossnorm
-(see \cite{Hackbusch2019}, Chapter~4).
+A crossnorm $\|\cdot\|_D$ is called \emph{reasonable} if its dual norm
+$\|\cdot\|_D^*$ is also a crossnorm on $\bigotimes_\alpha V_\alpha^*$,
+i.e., $\|\bigotimes_\alpha \varphi_\alpha\|_D^* =
+\prod_\alpha \|\varphi_\alpha\|_{\alpha}^*$ for all
+$\varphi_\alpha \in V_\alpha^*$.
+Every reasonable crossnorm satisfies \condINJ\ (since the injective norm
+is the weakest reasonable crossnorm, see~\cite{Hackbusch2019},
+Lemma~4.96). The converse is false in general: \condINJ\ only requires
+$\|\cdot\|_D \geq \|\cdot\|_\varepsilon$, which is strictly weaker than
+requiring the dual to be a crossnorm.
+The injective norm is itself the smallest reasonable crossnorm
+(see~\cite{Hackbusch2019}, Chapter~4).
 
 \begin{remark}
 \label{rem:crossnorm_examples}

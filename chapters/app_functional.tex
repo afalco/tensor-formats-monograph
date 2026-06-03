@@ -239,9 +239,15 @@ The \emph{injective (or $\varepsilon$-) norm} on $\VD$ is
 \end{equation}
 Condition \condINJ\ requires that the norm $\|\cdot\|_D$ on $\VDnorm$
 satisfies $\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$
-(i.e., $\|\cdot\|_D$ dominates the injective norm). This is equivalent
-to requiring the tensor product map
-$\bigotimes: \prod_\alpha V_\alpha \to \VDnorm$ to be continuous.
+(i.e., $\|\cdot\|_D$ dominates the injective norm). Note that \condINJ\
+is a strictly stronger condition than merely requiring the tensor product
+map $\bigotimes: \prod_\alpha V_\alpha \to \VDnorm$ to be continuous
+(which requires only $\|\bigotimes_\alpha v_\alpha\|_D \leq C\prod_\alpha
+\|v_\alpha\|_\alpha$ for some $C < \infty$, and is implied by — but not
+equivalent to — $\|\cdot\|_D$ being a crossnorm); \condINJ\
+additionally controls the dual behaviour via the injective norm.
+Every reasonable crossnorm satisfies \condINJ, but not every crossnorm
+satisfying \condINJ\ is reasonable.
 \end{definition}
 
 \begin{proposition}[Condition \condINJ\ for standard spaces,

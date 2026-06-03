@@ -446,8 +446,13 @@ $\|(v_\alpha)\|_\times = \max_\alpha \|v_\alpha\|_\alpha$) is said to be
 \end{definition}
 
 Continuity of the tensor product map is equivalent to
-$\|\bigotimes\| < \infty$; it holds whenever $\|\cdot\|_D$ is a
-crossnorm (Definition~\ref{def:crossnorm}) on $\VD$.
+$\|\bigotimes\| < \infty$ (i.e., the operator norm of $\bigotimes$
+as a multilinear map is finite, so $\|\bigotimes_\alpha v_\alpha\|_D
+\leq C \prod_\alpha \|v_\alpha\|_\alpha$ with $C = \|\bigotimes\|$).
+If $\|\cdot\|_D$ is a crossnorm (Definition~\ref{def:crossnorm}), then
+continuity holds with constant $C = 1$; however, continuity is strictly
+weaker than being a crossnorm — there exist continuous norms with $C > 1$
+that are not crossnorms.
 
 \begin{proposition}
 \label{prop:tensor_smooth}
