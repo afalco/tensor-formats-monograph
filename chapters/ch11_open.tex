@@ -360,11 +360,19 @@ but the projected flow is a nonlinear ODE on $\Drank{r}{H}$ and is
 not itself a completely positive trace-preserving (CPTP) map.
 This means the reduced dynamics does not correspond to a valid quantum
 channel, which is a serious limitation for quantum information applications.
+The obstruction is structural: tangent projection mixes the Kraus
+operators of $\Lind$ in a way that does not, in general, preserve the
+Kraus decomposition of the reduced generator
+(Remark~\ref{rem:lind:cptp}).
 
 Recent work by Appelö and Cheng~\cite{AppeloChengo2024} proposes
 Kraus-form low-rank integrators that preserve CPTP at the discrete
-level, but the relationship between their schemes and the continuous
-Dirac--Frenkel dynamics remains unclear.
+level through Cholesky/Kraus parametrisations and constrained
+optimisation at each time step, but the relationship between their
+schemes and the continuous Dirac--Frenkel dynamics remains unclear.
+A rigorous bridge between geometric projection and CPTP-preserving
+numerical schemes is an important challenge for reliable simulation of
+open quantum systems.
 
 \begin{problem}
 \label{prob:lindblad_cptp}
@@ -377,10 +385,13 @@ $\rho_0 \mapsto \rho(t)$ is completely positive:
 \item[\textup{(b)}] Is there a choice of bounded projector
     $\hat P_\rho: \cTsa{1}(H) \to T_\rho\Drank{r}{H}$ that guarantees
     CPTP preservation, beyond the block projector of
-    Proposition~\ref{prop:qs:projector}?
+    Proposition~\ref{prop:qs:projector}? In particular, can one enforce
+    complete positivity at the level of the generator by preserving a
+    reduced GKSL structure?
 \item[\textup{(c)}] Relate the continuous Dirac--Frenkel dynamics to
     the Kraus-form integrators of~\cite{AppeloChengo2024} in the limit
-    of small time steps.
+    of small time steps, and identify conditions under which their
+    discretisation is consistent with the projected ODE.
 \end{enumerate}
 \end{problem}
 
@@ -399,7 +410,14 @@ simultaneously an element of a tensor product (the space
 $\bigotimes_j \cL(H_j)$ via the isomorphism
 $\cT{1}(\bigotimes_j H_j) \cong \bigotimes_j \cT{1}(H_j)$ under
 appropriate conditions) and a positive operator, and these two structures
-interact in a non-trivial way.
+interact in a non-trivial way. A main motivation for the minimal subspace
+framework of Chapter~\ref{chap:minsubspaces} and the tree-based manifold
+theory of Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold}
+is precisely to provide the tools needed to handle this interaction.
+For Lindbladians acting locally on subsystems,
+$\Lind = \sum_j \Lind_j \otimes \Id_{\bigotimes_{k \neq j} H_k}$,
+the tensor structure of $\Lind$ should be exploitable to reduce the
+Dirac--Frenkel principle to coupled lower-dimensional problems.
 
 \begin{problem}
 \label{prob:lindblad_tensor}
@@ -415,7 +433,117 @@ bond dimension $r$ on $\cTsa{1}(\bigotimes_{j=1}^d H_j)$:
 \item[\textup{(c)}] Formulate the Dirac--Frenkel principle for Lindblad
     dynamics on this manifold and prove local well-posedness, extending
     Theorem~\ref{thm:lind:wellposed}.
+\item[\textup{(d)}] Design numerically stable integrators for the
+    resulting projected dynamics that preserve positivity, unit trace,
+    and exploit tensor compression — extending the projector-splitting
+    integrator of~\cite{LubichOseledetsVandereycken2015} to the
+    operator-space setting.
 \end{enumerate}
+\end{problem}
+
+\subsection*{Global existence and rank stability for projected Lindblad flows}
+
+Theorem~\ref{thm:lind:wellposed} yields local well-posedness of the
+projected Lindblad dynamics on $\Drank{r}{H}$, but global existence
+may fail if the trajectory approaches the boundary of the stratum —
+for instance, if the core $\hat\sigma(t)$ develops small eigenvalues
+and tends to lose rank. This boundary phenomenon is specific to the
+trace-norm geometry and has no direct analogue in the Hilbert-space
+Dirac--Frenkel theory of Chapter~\ref{chap:DF}.
+
+\begin{problem}
+\label{prob:lind:global_existence}
+Let $\Lind$ be a bounded GKSL generator and $\rho_0 \in \Drank{r}{H}$.
+\begin{enumerate}
+\item[\textup{(a)}] Identify sufficient conditions on $\Lind$ and the
+    projector $\hat P_\rho$ (Proposition~\ref{prop:lind:tangent})
+    preventing finite-time rank collapse, i.e.\ ensuring that
+    $\inf_{t \in [0,T]} \lambda_r(\hat\sigma(t)) > 0$ for some $T > 0$.
+\item[\textup{(b)}] Establish invariant bounded or compact subsets of
+    $\Drank{r}{H}$, in the trace-norm topology, that guarantee global
+    continuation of solutions.
+\item[\textup{(c)}] Relate rank stability to the spectral gap of
+    $\hat\sigma(t)$ and to dissipativity properties of $\Lind$,
+    specifically the positivity of the dissipator
+    $\sum_k (L_k \rho L_k^* - \tfrac{1}{2}\{L_k^* L_k, \rho\})$
+    in suitable norm.
+\end{enumerate}
+In finite dimensions, analogous stability results for dynamical
+low-rank approximation rely on Grönwall-type arguments in the
+Frobenius norm; the trace-norm setting and the non-Hilbert ambient
+geometry require new tools.
+\end{problem}
+
+\subsection*{A priori and a posteriori error bounds for the projected dynamics}
+
+A central goal of model reduction is to bound the approximation
+error between the full Lindblad trajectory
+$\hat\rho_{\mathrm{full}}(t)$, satisfying
+$\dot{\hat\rho} = \Lind(\hat\rho)$, and the reduced trajectory
+$\hat\rho_r(t) \in \Drank{r}{H}$, satisfying the projected equation
+$\dot{\hat\rho} = \hat P_{\hat\rho}\,\Lind(\hat\rho)$
+(Definition~\ref{def:lind:df}). The residual
+\begin{equation}
+    \hat R(\hat\rho)
+    \coloneqq \Lind(\hat\rho) - \hat P_{\hat\rho}\,\Lind(\hat\rho)
+\end{equation}
+measures the instantaneous projection error, but controlling the
+accumulated error $\|\hat\rho_{\mathrm{full}}(t) - \hat\rho_r(t)\|_1$
+over time requires stability estimates for the projected flow.
+
+\begin{problem}
+\label{prob:lind:error_bounds}
+\begin{enumerate}
+\item[\textup{(a)}] Derive stability estimates in trace norm for the
+    residual $\hat R(\hat\rho)$, quantifying how the spectral tail
+    truncation (dropping eigenvalues $\lambda_{r+1}, \lambda_{r+2},\ldots$)
+    interacts with the support motion of $\hat\rho_r(t)$.
+\item[\textup{(b)}] Develop computable a posteriori residual indicators
+    for adaptive rank strategies: certify whether the current rank $r$
+    is sufficient, and provide a rank-increase criterion based on the
+    residual norm $\|\hat R(\hat\rho_r(t))\|_1$.
+\item[\textup{(c)}] Prove a priori error bounds of the form
+    $\|\hat\rho_{\mathrm{full}}(t) - \hat\rho_r(t)\|_1 \leq
+    C(t)\,\|\hat\rho_{\mathrm{full}}(0) - \hat\rho_r(0)\|_1 +
+    \int_0^t C(t-s)\,\|\hat R(\hat\rho_r(s))\|_1\,ds$,
+    where $C(t)$ depends on the dissipativity of $\Lind$.
+\end{enumerate}
+Extending the dynamical low-rank error analysis of Lubich, Oseledets,
+and Vandereycken~\cite{LubichOseledetsVandereycken2015} (which uses
+Frobenius-norm arguments in the Hilbert setting) to the trace-class
+geometry, and to unbounded generators, remains largely open.
+\end{problem}
+
+\subsection*{Quantum Fisher information and information-geometric monotonicity}
+
+Finite-rank approximations to quantum states are widely used in quantum
+metrology, where one works with low-dimensional effective models and
+matrix-product-state ans\"{a}tze. The quantum Fisher information (QFI)
+with respect to a parameter $\theta$ is the key quantity governing
+estimation precision via the quantum Cram\'{e}r--Rao bound. A natural
+question is how the projection $\rho \mapsto \hat P_\rho\,\Lind(\rho)$
+interacts with the information-geometric structure of $\cTsa{1}(H)$.
+
+\begin{problem}
+\label{prob:lind:qfi}
+\begin{enumerate}
+\item[\textup{(a)}] Does the Dirac--Frenkel projection distort the
+    quantum Fisher information in a controlled way? Specifically, for
+    the SLD (symmetric logarithmic derivative) Fisher metric, is there
+    a constant $C$ such that
+    $\mathcal{F}_Q(\hat\rho_r) \leq C\,\mathcal{F}_Q(\hat\rho_{\mathrm{full}})$
+    along the projected trajectory?
+\item[\textup{(b)}] Can one design a projection rule
+    $\hat P_\rho: \cTsa{1}(H) \to T_\rho\Drank{r}{H}$ that preserves,
+    or accurately approximates, a chosen monotone Riemannian metric on
+    $\Dstate{H}$ (KMS metric, Bures metric, Wigner--Yanase metric)?
+\item[\textup{(c)}] How do infinite-dimensional QFI notions —
+    energy-constrained and operator-algebraic versions arising in
+    continuous-variable quantum systems — behave under rank truncation?
+\end{enumerate}
+These questions require combining the Grassmann--Banach geometry of
+Chapter~\ref{chap:quantum_states} with infinite-dimensional information
+geometry in the sense of Petz~\cite{BratteliRobinson1987}.
 \end{problem}
 
 %------------------------------------------------------------
