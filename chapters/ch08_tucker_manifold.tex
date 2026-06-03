@@ -179,22 +179,58 @@ is $\mathcal{C}^\infty$-Fréchet differentiable \textup{(}analytic if
 the $V_\alpha$ are complex Banach spaces\textup{)}.
 \end{lemma}
 
-\begin{proof}[Sketch]
-For $\bw \in \chart(\bv) \cap \chart(\bv')$, the transition map is
+\begin{proof}
+Let $\bw \in \chart(\bv) \cap \chart(\bv')$. By Lemma~\ref{lem:element},
+$\bw$ has two local representations:
+\begin{align*}
+    \bw &= \Bigl(\bigotimes_\alpha \exp(L_\alpha)\Bigr)(\bu(E^{(D)}))
+    && \text{in chart at }\bv,\\
+    \bw &= \Bigl(\bigotimes_\alpha \exp(L'_\alpha)\Bigr)(\bu'(E'^{(D)}))
+    && \text{in chart at }\bv'.
+\end{align*}
+The transition map
+$\chartmap{\bv'} \circ \chartmap{\bv}^{-1}: (L_\alpha, E^{(D)}) \mapsto
+(L'_\alpha, E'^{(D)})$
+has two components.
+
+\textbf{Grassmannian component.}
+The $\alpha$-minimal subspace of $\bw$ is $\Umin{\alpha}{\bw} =
+G(L_\alpha) = \spann\{(\Id{} + L_\alpha)u^{(\alpha)}_{i_\alpha}\}$,
+and also $G(L'_\alpha) = \Umin{\alpha}{\bw}$. The map
+$L_\alpha \mapsto L'_\alpha$ is the transition map of the Grassmannian
+$\Grass{r_\alpha}{V_\alpha}$ between the charts at
+$\Umin{\alpha}{\bv}$ and $\Umin{\alpha}{\bv'}$:
 \begin{equation*}
-    (L_\alpha, E^{(D)}) \mapsto
-    \bigl((\Psi^{(\alpha)}_{\bv'} \circ
-    (\Psi^{(\alpha)}_\bv)^{-1})(L_\alpha),\; f(\mathfrak{L}, \bu(E^{(D)}))\bigr),
+    L'_\alpha
+    = \Psi_{\bv'}\bigl(\Psi_\bv^{-1}(L_\alpha)\bigr)
+    = \Psi_{\bv'}\bigl(G(L_\alpha)\bigr),
 \end{equation*}
-where $\Psi^{(\alpha)}_\bv$ is the Grassmann chart map at
-$\Umin{\alpha}{\bv}$ (Theorem~\ref{thm:grassmann_manifold}),
-and $f(\mathfrak{L}, \bu(E^{(D)})) = (\bigotimes_\alpha \exp(L_\alpha -
-L'_\alpha))(\bu(E^{(D)}))$.
-The first component is analytic (transition map of the Grassmannian).
-The second is $\mathcal{C}^\infty$ by Proposition~\ref{prop:tensor_smooth}
-(tensor product of $\mathcal{C}^\infty$ maps) and the fact that the
-evaluation map is multilinear and continuous. See~\cite{FHN2019}
-for the complete argument.
+which is $\mathcal{C}^\infty$ (analytic in the complex case) by
+Theorem~\ref{thm:grassmann_manifold} applied to each
+$\Grass{r_\alpha}{V_\alpha}$.
+
+\textbf{Core component.}
+Given $(L_\alpha, E^{(D)})$, the core $E'^{(D)}$ is determined by
+expressing $\bu(E^{(D)}) \in \Tucker{\fr}({}_a\bigotimes_\alpha
+\Umin{\alpha}{\bv})$ in the new bases
+$\{(\Id{} + L'_\alpha)(u'^{(\alpha)}_{i_\alpha})\}$ of $\Umin{\alpha}{\bw}$.
+This involves the map
+\begin{equation*}
+    E^{(D)} \longmapsto E'^{(D)}
+    = \bigl[\bigotimes_\alpha (Q_\alpha(L_\alpha, L'_\alpha))^{-1}\bigr]
+    (E^{(D)}),
+\end{equation*}
+where $Q_\alpha(L_\alpha, L'_\alpha) \in \GL{r_\alpha}{\RR}$ is the
+change-of-basis matrix from the $\bv$-frame to the $\bv'$-frame
+at $\Umin{\alpha}{\bw}$. Since $Q_\alpha$ depends polynomially on
+$(L_\alpha, L'_\alpha)$ (via the nilpotent formula
+$\exp(L_\alpha) = \Id{} + L_\alpha$) and $L'_\alpha$ depends
+$\mathcal{C}^\infty$ on $L_\alpha$ (first component above), the
+composition is $\mathcal{C}^\infty$.
+
+\textbf{Conclusion.}
+Both components are $\mathcal{C}^\infty$ (resp.\ analytic), so the
+full transition map is $\mathcal{C}^\infty$ (resp.\ analytic).
 \end{proof}
 
 \begin{theorem}[$\mathcal{C}^\infty$ Tucker manifold,

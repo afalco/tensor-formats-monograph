@@ -359,17 +359,38 @@ $\fr = (r_\alpha)_{\alpha \in \TD} \in \ADTD$. Then
 where $\fr_k = (r_\alpha)_{\alpha \in \PkT{k}{\TD}}$.
 \end{theorem}
 
-\begin{proof}[Sketch]
-The inclusion $\FTv \subseteq \bigcap_k \Tucker{\fr_k}{\VD,\PkT{k}{\TD}}$
-is immediate: if $\dim \Umin{\alpha}{\bv} = r_\alpha$ for all
-$\alpha \in \TD$, then in particular for all $\alpha \in \PkT{k}{\TD}$
-at each level $k$. For the reverse inclusion, one uses
-Proposition~\ref{prop:min_inclusion_partition} inductively: from
-$\dim \Umin{\alpha}{\bv} = r_\alpha$ at the leaf level
-($k = \dep{\TD}$) and the compatibility condition
-$\Umin{\alpha}{\bv} \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}}
-\Umin{\beta}{\bv}$, one deduces $\dim \Umin{\alpha}{\bv} = r_\alpha$
-at all intermediate levels. See~\cite{FHN2023} for the complete proof.
+\begin{proof}
+\textbf{($\subseteq$)} Let $\bv \in \FTv$, i.e., $\dim\Umin{\alpha}{\bv}
+= r_\alpha$ for all $\alpha \in \TD$. For each level $k$ and each
+$\alpha \in \PkT{k}{\TD}$, the rank $r_\alpha(\bv)$ equals $r_\alpha$
+by definition, so $\bv \in \Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$. Since
+this holds for all levels, $\bv \in \bigcap_k
+\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$.
+
+\textbf{($\supseteq$)} Let $\bv \in \bigcap_{k=1}^{\dep{\TD}}
+\Tucker{\fr_k}{\VD, \PkT{k}{\TD}}$, i.e., $\dim\Umin{\alpha}{\bv}
+= r_\alpha$ for every $\alpha$ at every level of $\TD$. We must show
+$\bv \in \FTv$, i.e., that the same holds for every $\alpha \in \TD$
+(not just the level-$k$ vertices).
+
+The vertices of $\TD$ at each level already cover all of $\TD$:
+$\TD = \{D\} \cup \bigcup_{k=1}^{\dep{\TD}} \PkT{k}{\TD}$. (Every
+non-root vertex appears in exactly one level, and the root $D$ has
+$r_D$ fixed by the rank of $\bv$.)
+
+It remains to verify the tree compatibility condition
+$\Umin{\alpha}{\bv} \subset \bigotimes_{\beta \in \Sons{\alpha}}
+\Umin{\beta}{\bv}$ for each internal vertex $\alpha \in \TD$.
+By Proposition~\ref{prop:min_inclusion_partition} applied to the
+partition $\mathcal{P}_\alpha = \Sons{\alpha}$ of $\alpha$:
+\begin{equation*}
+    \Umin{\alpha}{\bv}
+    \subset {}_a\bigotimes_{\beta \in \Sons{\alpha}} \Umin{\beta}{\bv}.
+\end{equation*}
+This holds for every $\alpha \in \TD \setminus \Leaves[\TD]$ purely from
+the definition of minimal subspaces and does not require any hypothesis
+on the rank. Since $\dim\Umin{\alpha}{\bv} = r_\alpha$ for all
+$\alpha \in \TD$ by assumption, we have $\bv \in \FTv$.
 \end{proof}
 
 \begin{remark}
