@@ -1,5 +1,5 @@
 # Tensor Formats in Banach Spaces
-## Minimal Subspaces, Geometry, and Variational Principles
+## Minimal Subspaces, Geometry, and Applications to Open Quantum Systems
 
 **Author:** Antonio Falcó  
 **Institution:** ESI International Chair@CEU-UCH, Universidad Cardenal Herrera-CEU, CEU Universities  
@@ -26,28 +26,43 @@ the results of the following four research papers:
 
 ```
 monograph/
-├── main.tex                  % Master file (compiles the whole book)
-├── notation.tex              % Unified notation and macros (input into main.tex)
+├── main.tex                    % Master file (compiles the whole book)
+├── notation.tex                % Unified notation and macros (input into main.tex)
+├── SNmono.cls                  % Document class
 ├── chapters/
 │   ├── ch00_preface.tex
+│   │
+│   ├── % Part I: Algebraic and Topological Foundations
 │   ├── ch01_introduction.tex
 │   ├── ch02_banach.tex
 │   ├── ch03_algtensor.tex
 │   ├── ch04_minsubspaces.tex
+│   │
+│   ├── % Part II: Tree-Based Tensor Formats
 │   ├── ch05_trees.tex
 │   ├── ch06_algTBT.tex
 │   ├── ch07_topTBT.tex
+│   │
+│   ├── % Part III: Differential Geometry of Tensor Formats
 │   ├── ch08_tucker_manifold.tex
 │   ├── ch09_TB_manifold.tex
+│   │
+│   ├── % Part IV: Variational Principles and Applications
 │   ├── ch10_DF.tex
-│   ├── ch11_open.tex
+│   ├── ch12_quantum_states.tex
+│   ├── ch13_lindblad.tex
+│   ├── ch11_open.tex           % Open Problems (final chapter)
+│   │
+│   ├── % Appendices
 │   ├── app_manifolds.tex
 │   ├── app_functional.tex
+│   ├── app_quantum.tex
+│   ├── app_algorithms.tex
 │   └── app_notation_index.tex
 ├── bibliography/
-│   └── monograph.bib         % BibTeX database
-├── figures/                  % PDF/TikZ figures
-└── styles/                   % Any custom style files
+│   └── monograph.bib           % BibTeX database
+├── figures/                    % PDF/TikZ figures
+└── styles/                     % Any custom style files
 ```
 
 ---
@@ -71,10 +86,10 @@ latexmk -pdf main.tex
 
 ## MSC Classification
 
-15A69 · 46B28 · 46A32
+15A69 · 46B28 · 46A32 · 81Q10 · 47D07
 
 ## Keywords
 
 Tensor spaces · Banach manifolds · Tensor formats · Tree-based tensors ·
 Minimal subspaces · Dirac–Frenkel variational principle · Tucker format ·
-Tensor train · Hierarchical Tucker
+Tensor train · Hierarchical Tucker · Open quantum systems · Lindblad equation
