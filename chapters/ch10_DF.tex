@@ -627,6 +627,148 @@ $\langle \cdot, J(\cdot)\rangle$ and the mass matrix replaced by the
 duality mass matrix of Remark~\ref{rem:kinematic_banach}.
 \end{example}
 
+\subsection*{Example 3: Explicit computation of the Dirac--Frenkel projection
+in finite dimensions}
+
+\begin{example}[Low-rank ODE in $\RR^3 \otimes \RR^3$]
+\label{ex:DF:finite_dim}
+This example carries out the Dirac--Frenkel projection fully
+explicitly in a small finite-dimensional setting, illustrating how
+the abstract ODE on $\Tucker{\fr}{\RR^{n_1}\otimes\RR^{n_2}}$ reduces
+to a concrete system of scalar ODEs.
+
+\paragraph{Setting.}
+Let $V_1 = V_2 = \RR^3$ with the Euclidean norm, so $\VDnorm = \RR^3
+\otimes \RR^3 \cong \RR^{3\times 3}$ (matrices) with the Frobenius
+norm. Consider the rank-$1$ Tucker manifold $\Tucker{(1,1)}{\RR^3
+\otimes \RR^3}$, which consists of rank-$1$ matrices
+$\bv = \lambda\,(u \otimes w)$, $u, w \in \RR^3$, $\|u\| = \|w\| = 1$,
+$\lambda > 0$. This is the Hartree manifold for $d=2$, $n_1=n_2=3$.
+
+The ambient ODE is $\dot{A}(t) = F(A(t))$ on $\RR^{3\times 3}$,
+where
+\begin{equation}
+\label{eq:DF:fd_ode}
+    F(A) = -A + B,
+\end{equation}
+with $B \in \RR^{3\times 3}$ a fixed target matrix. The exact solution
+is $A(t) = e^{-t}(A_0 - B) + B$, which converges to $B$ as $t \to
+\infty$. If $B$ has rank $> 1$, the exact trajectory immediately leaves
+$\Tucker{(1,1)}{\RR^{3\times 3}}$ for $t > 0$; the Dirac--Frenkel
+principle gives the best rank-$1$ approximation of the trajectory at
+each instant.
+
+\paragraph{Tangent space at $\bv = \lambda\,(u \otimes w)$.}
+By Proposition~\ref{prop:tangent_space}, the tangent space at
+$\bv = \lambda\,(u \otimes w)$ is
+\begin{equation}
+    \ZD{\bv}
+    = \bigl\{ \dot\lambda\,(u \otimes w)
+      + \lambda\,(\dot u \otimes w)
+      + \lambda\,(u \otimes \dot w)
+      : \dot\lambda \in \RR,\;
+        \dot u \perp u,\; \dot w \perp w \bigr\},
+\end{equation}
+which has dimension $1 + (n_1-1) + (n_2-1) = 1 + 2 + 2 = 5$ (for
+$n_1 = n_2 = 3$). The tangential gauge $\dot u \perp u$, $\dot w
+\perp w$ removes the two gauge freedoms from the $(u,w) \sim
+(-u,-w)$ symmetry.
+
+\paragraph{Dirac--Frenkel equations.}
+In the Hilbert (Frobenius) setting, the Dirac--Frenkel condition
+$\dot{\bv}_r = \Pmetric{\bv}(F(\bv))$ is equivalent to:
+\begin{equation}
+\label{eq:DF:fd_proj}
+    \langle \dot{\bv}_r - F(\bv_r),\; \xi \rangle_F = 0
+    \quad\text{for all } \xi \in \ZD{\bv_r},
+\end{equation}
+where $\langle A, B\rangle_F = \Tr(A^\top B)$ is the Frobenius
+inner product. Substituting $\bv_r = \lambda\,(u \otimes w)$ and
+$F(\bv_r) = -\lambda(u \otimes w) + B$, and testing
+against the three types of tangent vectors:
+
+\medskip
+\noindent\textit{(i) Test with $\xi = u \otimes w$} (core variation):
+\begin{equation}
+    \dot\lambda - \langle F(\bv_r),\, u \otimes w\rangle_F = 0
+    \implies
+    \dot\lambda = -\lambda + \langle B,\, u \otimes w\rangle_F
+    = -\lambda + u^\top B w.
+\end{equation}
+
+\noindent\textit{(ii) Test with $\xi = \lambda\,(\dot u \otimes w)$,
+$\dot u \perp u$} (left-basis variation):
+\begin{equation}
+    \lambda\,\dot u
+    = P_{u^\perp}\bigl(F(\bv_r)\,w\bigr)
+    = P_{u^\perp}\bigl((-\lambda(uw^\top) + B)\,w\bigr)
+    = P_{u^\perp}(Bw),
+\end{equation}
+where $P_{u^\perp} = I - uu^\top$ is the projection onto $u^\perp$,
+and we used $(-\lambda\,u w^\top w) = -\lambda u$ which is absorbed
+by the core equation.
+
+\noindent\textit{(iii) Test with $\xi = \lambda\,(u \otimes \dot w)$,
+$\dot w \perp w$} (right-basis variation):
+\begin{equation}
+    \lambda\,\dot w
+    = P_{w^\perp}\bigl(F(\bv_r)^\top u\bigr)
+    = P_{w^\perp}(B^\top u).
+\end{equation}
+
+\paragraph{Closed kinematic system.}
+The Dirac--Frenkel principle reduces to the following system of ODEs
+for $(\lambda(t), u(t), w(t)) \in \RR_+ \times S^2 \times S^2$:
+\begin{subequations}
+\label{eq:DF:fd_system}
+\begin{align}
+    \dot\lambda &= -\lambda + u^\top B w,
+    \label{eq:DF:fd_lambda}\\
+    \dot u &= \frac{1}{\lambda}\,(I - uu^\top)\,Bw,
+    \label{eq:DF:fd_u}\\
+    \dot w &= \frac{1}{\lambda}\,(I - ww^\top)\,B^\top u.
+    \label{eq:DF:fd_w}
+\end{align}
+\end{subequations}
+This is a system of $1 + 2 + 2 = 5$ scalar ODEs (using $\|u\|=\|w\|=1$
+to reduce the 3+3+1=7 apparent degrees of freedom).
+
+\paragraph{Numerical illustration.}
+Take $B = \begin{psmallmatrix} 3 & 1 & 0 \\ 1 & 2 & 0 \\ 0 & 0 & 1
+\end{psmallmatrix}$ (symmetric, rank 3) and initial condition
+$\lambda_0 = 1$, $u_0 = (1,0,0)^\top$, $w_0 = (1,0,0)^\top$
+(so $\bv_r(0) = e_1 e_1^\top$, the rank-1 matrix with $(1,1)$-entry
+equal to 1 and all others zero).
+
+\begin{enumerate}
+\item The exact solution $A(t) = e^{-t}(e_1 e_1^\top - B) + B$ has
+    rank 3 for all $t > 0$; its best rank-1 approximation at $t = 0$
+    is $\sigma_1 \hat{u}_1 \hat{v}_1^\top$ where $\sigma_1 \approx
+    3.28$, $\hat{u}_1 \approx (0.88, 0.47, 0)^\top$,
+    $\hat{v}_1 \approx (0.88, 0.47, 0)^\top$ (dominant SVD of $B$).
+\item System~\eqref{eq:DF:fd_system} drives $(\lambda, u, w)$ toward
+    $(\sigma_1, \hat{u}_1, \hat{v}_1)$ as $t \to \infty$: the
+    amplitude $\lambda(t)$ grows from 1 toward $\sigma_1 \approx 3.28$,
+    while $u(t)$ and $w(t)$ rotate from $e_1$ toward the dominant
+    left and right singular vectors of $B$.
+\item The Frobenius-norm error $\|\bv_r(t) - A(t)\|_F$ measures how
+    well the rank-1 projected trajectory approximates the full solution.
+    At time $t=1$: $\|A(1)\|_F \approx 2.87$,
+    $\|\bv_r(1)\|_F \approx \sigma_1(1 - e^{-1}) \approx 2.07$,
+    error $\approx 1.22$.
+\end{enumerate}
+
+The key observation is that system~\eqref{eq:DF:fd_system} is the
+\emph{$2\times 2$ case of the MCTDH equations}~\eqref{eq:DF:MCTDH}
+with $d=2$, $r=1$: equation~\eqref{eq:DF:fd_lambda} is the core
+equation, and equations~\eqref{eq:DF:fd_u}--\eqref{eq:DF:fd_w} are
+the basis equations with mass matrix $M^{(\alpha)}(t) = \lambda(t)^2$
+(scalar). This example makes precise the general pattern: the MCTDH
+system is a set of coupled ODEs for the core tensor entries and the
+basis vectors, with the mean-field matrices $F^{(\alpha)}_{ij}$
+encoding all interactions between the variables.
+\end{example}
+
 %------------------------------------------------------------
 \section{Historical notes}
 \label{sec:DF:history}

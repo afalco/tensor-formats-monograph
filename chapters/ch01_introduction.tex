@@ -57,6 +57,96 @@ of such representations — their algebraic structure, their topological
 properties in function spaces, and their geometry as differentiable
 manifolds — is the subject of this monograph.
 
+\subsection*{Concrete instances of the curse and its circumvention}
+
+To appreciate the practical scope of the problem, it helps to examine
+typical problem sizes in the main application areas, together with
+the rank constraints that make them tractable.
+
+\paragraph{Quantum chemistry: MCTDH and DMRG.}
+The electronic Schrödinger equation for an $N$-electron molecule in
+$\RR^3$ lives in $L^2(\RR^{3N})$, discretised on a product grid of
+$n^{3N}$ points. For $N = 10$ electrons and $n = 10$ grid points per
+coordinate, the full state space has dimension $10^{30}$ — far beyond
+any direct approach.
+
+The \emph{Multi-Configuration Time-Dependent Hartree} (MCTDH)
+method~\cite{BeckJackleWorthMeyer2000} reduces this to $O(d r^2 n)$
+parameters by representing the wavefunction as a Tucker-format tensor
+with $d = 3N$ modes and mode ranks $r \sim 10$--$50$. For $N = 10$,
+$d = 30$, $n = 100$, $r = 20$, the storage is approximately
+$30 \times 20^2 \times 100 \approx 10^6$ — a reduction from $10^{60}$
+to $10^6$.
+
+The \emph{Density Matrix Renormalisation Group} (DMRG)
+method~\cite{White1992}, reformulated as optimisation over the TT
+manifold~\cite{Oseledets2011}, achieves comparable compression for
+one-dimensional quantum chains: for $d = 100$ sites, $n = 2$ (spin-1/2),
+and bond dimension $r = 100$, the TT representation requires
+$O(d r^2) \approx 10^6$ parameters instead of $2^{100} \approx 10^{30}$.
+The accuracy of DMRG is governed by the area law for entanglement entropy:
+for gapped one-dimensional systems, the Schmidt rank across any bipartition
+grows at most polynomially with the system size, justifying the TT ansatz
+at small bond dimension~\cite{Vidal2003}.
+
+\paragraph{Uncertainty quantification.}
+Consider a PDE with $d$ independent uncertain parameters $y =
+(y_1, \ldots, y_d) \in [-1,1]^d$ (e.g., the diffusion coefficient of
+an elliptic equation written in a Karhunen--Lo\`{e}ve expansion).
+The parametric solution $u(x, y) \in H^1(\Omega) \otimes L^2([-1,1]^d)$
+is a function of $d+1$ variables; for $d = 100$ uncertain parameters
+and $n = 5$ quadrature points per parameter, a full grid has $5^{100}$
+points.
+
+Tensor approximation methods~\cite{Nouy2017,Khoromskij2012} represent
+$u$ as a tensor-train or Tucker-format element with ranks
+$r \sim 5$--$20$, reducing the storage to $O(d r^2 n)$ and enabling
+efficient computation of statistics (mean, variance, quantiles) via
+tensor contractions. For $d = 100$, $r = 10$, $n = 5$, the TT storage
+is $100 \times 10^2 \times 5 = 5 \times 10^5$, versus $5^{100} \approx
+10^{70}$ for the full grid.
+
+The mathematical justification for these low-rank structures is the
+existence of best approximations in reflexive Banach tensor spaces
+(Theorem~\ref{thm:best_approx_tucker}): the parametric solution
+$u(\cdot, y)$ has Tucker ranks determined by the spectral decay of
+its $\alpha$-mode Gram operators, which is rapid when the parameters
+enter the PDE in a structured, separable way.
+
+\paragraph{Machine learning: tensor decompositions in neural networks.}
+Weight tensors in deep neural networks are high-dimensional arrays
+that can be compressed using TT or Tucker decompositions. A weight
+tensor of shape $n^d$ with $d = 10$, $n = 32$ has $32^{10} \approx
+10^{15}$ entries; a TT decomposition with bond dimension $r = 8$
+requires only $d \times r^2 \times n = 10 \times 64 \times 32 = 20\,480$
+parameters — a compression ratio exceeding $10^{10}$~\cite{Bachmayr2016}.
+In the supervised learning context, a function in $\FTleq{\fr}{\VD}{\TD}$
+defines a hypothesis class whose sample complexity is controlled by the
+tree-based rank $\fr$ and the geometry of the Tucker manifold
+(Open Problem~\ref{prob:learning} in Chapter~\ref{chap:open}).
+
+\paragraph{Summary.}
+Table~\ref{tab:sizes} collects representative problem sizes and the
+parameter counts achieved by tensor formats.
+
+\begin{table}[h]
+\centering
+\caption{Comparison of full and tensor-format parameter counts in
+representative high-dimensional problems. Here $d$ is the number of
+modes, $n$ the per-mode dimension, and $r$ the maximal rank.}
+\label{tab:sizes}
+\begin{tabular}{@{}lccccl@{}}
+\toprule
+Application & $d$ & $n$ & $r$ & Full ($n^d$) & TT/Tucker ($O(dr^2n)$) \\
+\midrule
+MCTDH (quantum chemistry) & 30 & 100 & 20 & $10^{60}$ & $1.2 \times 10^6$ \\
+DMRG (spin chain) & 100 & 2 & 100 & $10^{30}$ & $2 \times 10^6$ \\
+UQ (parametric PDE) & 100 & 5 & 10 & $10^{70}$ & $5 \times 10^5$ \\
+Neural network weight & 10 & 32 & 8 & $10^{15}$ & $2 \times 10^4$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 %------------------------------------------------------------
 \section{Tensor formats and the role of subspaces}
 \label{sec:intro:formats}
@@ -146,7 +236,11 @@ The answer, established in Chapters~\ref{chap:minsubspaces}
 and~\ref{chap:topTBT}, is \emph{yes}: under a natural condition on the
 norm (condition \condINJ, which holds for all $L^p$ and Sobolev spaces),
 $\FTleq{\fr}{\VD}{\TD}$ is weakly closed in $\VDnorm$, and reflexivity
-gives the best approximation.
+gives the best approximation. This result has direct algorithmic
+consequences: it guarantees that ALS, DMRG, and other alternating
+optimisation methods have well-defined target states, and that
+adaptive rank-truncation strategies for parametric PDEs are
+justified~\cite{Bachmayr2016,Nouy2017}.
 
 \paragraph{Question 2 (Chapters~\ref{chap:tucker_manifold}
 and~\ref{chap:TB_manifold}).}
@@ -162,6 +256,11 @@ The answer, established in~\cite{FHN2019} for Tucker formats and
 in~\cite{FHN2023} for tree-based formats, is \emph{yes}: an explicit
 atlas with $\mathcal{C}^\infty$ transition maps can be constructed
 using the Grassmann--Banach manifold structure of the minimal subspaces.
+The manifold structure is the foundation for dynamical low-rank
+approximation: Koch and Lubich~\cite{KochLubich2007} showed that the
+Dirac--Frenkel principle gives the optimal time-evolution scheme on the
+Tucker manifold in the Hilbert setting; the present monograph extends
+this to Banach spaces and to tree-based formats.
 
 \paragraph{Question 3 (Chapter~\ref{chap:DF}).}
 \emph{Can the Dirac--Frenkel variational principle — the projection
@@ -172,7 +271,12 @@ The answer is \emph{yes}, provided the tangent space $\ZD{\bv}$ is a
 \emph{split subspace} of $\VDnorm$ (i.e., has a bounded projection
 onto it). The immersion theorems of Chapters~\ref{chap:tucker_manifold}
 and~\ref{chap:TB_manifold} — the deepest results of the monograph —
-establish exactly this.
+establish exactly this. The practical significance is that the
+projector-splitting integrator of Lubich, Oseledets, and
+Vandereycken~\cite{LubichOseledetsVandereycken2015} and its extension
+to tree-based formats by Ceruti, Lubich, and
+Walach~\cite{CerutiLubichWalach2020} can be rigorously justified in
+$L^p$ and Sobolev spaces, not just in Hilbert spaces.
 
 \paragraph{Question 4 (Chapters~\ref{chap:quantum_states}
 and~\ref{chap:lindblad}).}
@@ -191,7 +295,11 @@ states with prescribed entanglement structure. The Dirac--Frenkel
 principle of Chapter~\ref{chap:DF} then yields a well-posed projected
 dynamics for both the von Neumann equation (closed systems) and the
 Lindblad equation (open systems) on the finite-rank manifold
-$\Drank{r}{H} \subset \cTsa{1}(H)$.
+$\Drank{r}{H} \subset \cTsa{1}(H)$. This extends the scope of
+dynamical low-rank approximation — developed for Hilbert-space
+wavefunctions by Koch--Lubich~\cite{KochLubich2007} and Le Bris--Rouchon~\cite{LeBrisRouchon2013} —
+to open quantum systems described by density operators in trace norm,
+as established in~\cite{AcevedoFalco2026}.
 
 %------------------------------------------------------------
 \section{The four source papers}
