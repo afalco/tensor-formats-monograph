@@ -33,7 +33,7 @@
 %------------------------------------------------------------
 
 % Bibliography — natbib for plainnat style
-%\usepackage{natbib}
+\usepackage{natbib}
 
 % Symbol fonts — NOT loaded by SNmono
 \usepackage{amssymb}             % \mathbb, \mathfrak, etc.
@@ -171,7 +171,10 @@ and symbols used throughout.
 %%  PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
 \part{Variational Principles and Applications}
 \label{part:variational}
-\label{part:quantum}    % alias used by ch01_introduction (new chapters)
+%  part:quantum is referenced in ch01_introduction (new quantum chapters).
+%  If ch12_quantum_states.tex does not define \label{part:quantum},
+%  uncomment the next line:
+% \label{part:quantum}
 
 \input{chapters/ch10_DF}
 \input{chapters/ch12_quantum_states}
@@ -197,7 +200,7 @@ and symbols used throughout.
 %  spbasic.bst is not installed in standard TeX Live.
 %  Use plainnat (author-year style, matches Springer monograph conventions).
 %  Switch to \bibliographystyle{spbasic} once the Springer package is available.
-\bibliographystyle{spbasic}
+\bibliographystyle{plainnat}
 \bibliography{bibliography/monograph}
 
 \printindex
