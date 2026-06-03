@@ -571,6 +571,137 @@ $L_j V(t) \in \CC^{d \times r}$ for each $j$. This is a factor
 $d/r$ reduction compared to the full simulation.
 \end{remark}
 
+\subsection*{Explicit kinematic equations for a bipartite system ($d=2$)}
+
+We now specialise the kinematic system~\eqref{eq:lind:kinematic} to the
+physically important case of a \emph{bipartite open system}
+$H = H_1 \otimes H_2$, with $\dim H_1 = n_1$ and $\dim H_2 = n_2$
+(both finite for simplicity). This is the minimal case exhibiting
+genuine tensor structure in the generator, and it makes precise the
+connection between the Stiefel-core coordinates and the Tucker/MCTDH
+formalism.
+
+\paragraph{Setup.}
+Let $\rho(t) \in \Drank{r}{H_1 \otimes H_2}$ with Stiefel-core
+parametrisation $\rho = V\sigma V^*$, $V \in \Stiefel{r}{H_1 \otimes H_2}$,
+$\sigma \in \Dpos{\CC^r}$. The columns of $V$ form an orthonormal set
+$\{v_1(t), \ldots, v_r(t)\} \subset H_1 \otimes H_2$, and by
+Theorem~\ref{thm:qs:minimal_partial_trace}, the minimal subspaces are
+\begin{equation}
+    \Umin{1}{\rho} = \spann\{v_1, \ldots, v_r\}_{H_1}
+    = \mathrm{supp}(\Tr_2(\rho))
+    \subset H_1,
+\end{equation}
+where $\spann\{v_k\}_{H_1}$ denotes the range of the partial trace.
+
+Write the generator in the \emph{local-plus-interaction} form:
+\begin{equation}
+\label{eq:lind:bipartite_gen}
+    \Lind(\rho)
+    = \Lind_1 \otimes \Id{H_2}(\rho)
+    + \Id{H_1} \otimes \Lind_2(\rho)
+    + \Lind_{12}(\rho),
+\end{equation}
+where $\Lind_\alpha(\rho) = -i[H_\alpha, \rho] + \mathcal{D}_\alpha(\rho)$
+are local GKSL generators acting on subsystem $\alpha$, and
+$\Lind_{12}$ is the interaction dissipator. This structure covers
+local decoherence channels plus inter-system coupling.
+
+\paragraph{Core equation.}
+Substituting~\eqref{eq:lind:bipartite_gen} into~\eqref{eq:lind:kinematic_core}:
+\begin{equation}
+\label{eq:lind:bipartite_core}
+\begin{aligned}
+    \dot\sigma_{kl}
+    &= \langle v_k,\, \Lind(V\sigma V^*)\, v_l \rangle_H \\
+    &= \sum_{m,n=1}^r \sigma_{mn}
+       \Bigl[
+         \langle v_k, (\Lind_1 \otimes \Id{2})(v_m \otimes \langle\cdot, v_n\rangle)\, v_l\rangle
+         + \langle v_k, (\Id{1} \otimes \Lind_2)(\ldots)\, v_l\rangle
+         + \langle v_k, \Lind_{12}(v_m v_n^*)\, v_l\rangle
+       \Bigr].
+\end{aligned}
+\end{equation}
+Using the Schmidt decomposition of each $v_k \in H_1 \otimes H_2$:
+\begin{equation}
+\label{eq:lind:bipartite_schmidt}
+    v_k(t) = \sum_{\mu=1}^{s_k} \sqrt{p_\mu^{(k)}(t)}\,
+    \phi_\mu^{(k)}(t) \otimes \chi_\mu^{(k)}(t),
+\end{equation}
+where $\{(\phi_\mu^{(k)}, \chi_\mu^{(k)})\}_\mu$ are Schmidt pairs and
+$p_\mu^{(k)} > 0$ are Schmidt coefficients ($\sum_\mu p_\mu^{(k)} = 1$),
+the local contribution to the core equation from $\Lind_1$ is:
+\begin{equation}
+\label{eq:lind:bipartite_local1}
+    \langle v_k, (\Lind_1 \otimes \Id{2})(v_m v_n^*)\, v_l\rangle
+    = \sum_{\mu,\nu} \sqrt{p_\mu^{(m)} p_\nu^{(n)}}
+      \langle \phi_\mu^{(k)}, \Lind_1(\phi_\mu^{(m)} (\phi_\nu^{(n)})^*)\,
+      \phi_\nu^{(l)}\rangle_{H_1}
+      \cdot \langle \chi_\mu^{(k)}, \chi_\mu^{(m)}\rangle_{H_2}
+      \langle \chi_\nu^{(n)}, \chi_\nu^{(l)}\rangle_{H_2}.
+\end{equation}
+An analogous formula holds for $\Lind_2$.
+
+\paragraph{Frame equation for $d=2$.}
+The frame equation~\eqref{eq:lind:kinematic_frame} gives:
+\begin{equation}
+\label{eq:lind:bipartite_frame}
+    \dot{v}_k(t)
+    = \sum_{l=1}^r \bigl[(I_{H_1 \otimes H_2} - VV^*)\,
+      \Lind(V\sigma V^*)\, v_l\bigr]\,
+      [\sigma^{-1}]_{lk}.
+\end{equation}
+Writing $v_l = \sum_\mu \sqrt{p_\mu^{(l)}}\, \phi_\mu^{(l)} \otimes
+\chi_\mu^{(l)}$ and expanding, the projection $(I - VV^*)$ removes
+the component of $\Lind(\rho) v_l$ within the current support
+$\spann\{v_1, \ldots, v_r\}$, leaving only the \emph{normal component}:
+\begin{equation}
+    \dot{v}_k(t)
+    = P_{S^\perp}(t)
+      \sum_{l=1}^r \Lind(V\sigma V^*)\, v_l\, [\sigma^{-1}]_{lk},
+\end{equation}
+where $P_{S^\perp}(t) = I - V(t)V(t)^*$ is the projection onto
+$S(t)^\perp = \supp(\rho(t))^\perp$.
+
+\paragraph{Special case: rank $r=1$.}
+For $r=1$, $\rho = p\, v v^*$ with $\Tr(\rho) = 1$, so $p = 1$ and
+$v \in H_1 \otimes H_2$ is a unit vector (pure state). The system
+reduces to a single equation for $v(t)$:
+\begin{equation}
+\label{eq:lind:pure_state}
+    \dot{v}(t)
+    = (I - v(t)v(t)^*)\, \Lind(v(t)v(t)^*)\, v(t).
+\end{equation}
+Writing $v = \phi \otimes \chi$ (product state, Schmidt rank 1) and
+$\Lind = \Lind_1 \otimes \Id{} + \Id{} \otimes \Lind_2$ (local generators only),
+equation~\eqref{eq:lind:pure_state} decouples into:
+\begin{subequations}
+\label{eq:lind:pure_decoupled}
+\begin{align}
+    \dot\phi(t) &= (I_{H_1} - \phi\phi^*)\,\Lind_1(\phi\phi^*)\,\phi, \\
+    \dot\chi(t) &= (I_{H_2} - \chi\chi^*)\,\Lind_2(\chi\chi^*)\,\chi,
+\end{align}
+\end{subequations}
+recovering the \emph{time-dependent Hartree equations for open systems}:
+the two factors evolve independently under their respective local
+generators, projected onto the complement of the current state within
+each factor space. This is the open-system analogue of the time-dependent
+Hartree equations~\eqref{eq:DF:hartree} of Chapter~\ref{chap:DF}.
+
+\begin{remark}[Entanglement generation by $\Lind_{12}$]
+\label{rem:lind:entanglement_gen}
+The decoupling~\eqref{eq:lind:pure_decoupled} breaks down as soon
+as the interaction dissipator $\Lind_{12} \neq 0$, even for an
+initial product state $\rho_0 = |\phi_0\rangle\langle\phi_0| \otimes
+|\chi_0\rangle\langle\chi_0|$. The normal component of
+$\Lind_{12}(\rho_0)$ along $v_0 = \phi_0 \otimes \chi_0$ drives
+the state out of the rank-1 manifold: the Schmidt rank of $\rho(t)$
+grows from 1 as soon as $t > 0$ when
+$(I - v_0 v_0^*)\,\Lind_{12}(\rho_0)\,v_0 \neq 0$. The Dirac--Frenkel
+principle with rank $r \geq 2$ is needed to capture this
+\emph{environment-induced entanglement}.
+\end{remark}
+
 %------------------------------------------------------------
 \section{Historical notes}
 \label{sec:lind:history}
