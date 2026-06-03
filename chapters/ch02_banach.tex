@@ -691,3 +691,119 @@ This satisfies (R1)--(R2) by construction and is the retraction used
 in the geometric ALS and DMRG algorithms of
 Appendix~\ref{app:algorithms}.
 \end{example}
+
+%------------------------------------------------------------
+\section{Historical notes}
+\label{sec:banach:history}
+%------------------------------------------------------------
+
+The material of this chapter spans several decades of functional
+analysis and infinite-dimensional differential geometry. We trace the
+origins of the main topics: Banach space theory, complemented subspaces,
+the Grassmann--Banach manifold, the general theory of Banach manifolds,
+and the notion of retraction.
+
+\paragraph{Banach spaces and the geometry of infinite-dimensional spaces.}
+The systematic study of complete normed spaces was inaugurated by Stefan
+Banach in his 1922 doctoral thesis and codified in the monograph
+\emph{Théorie des opérations linéaires}~\cite{Banach1932}. The three
+fundamental theorems of linear functional analysis — the Hahn--Banach
+theorem, the open mapping theorem, and the uniform boundedness principle
+— were all established or placed on definitive footing in this period.
+The question of when a closed subspace is complemented (i.e., has a
+bounded projection from the ambient space) was raised immediately:
+Banach observed that every finite-dimensional or finite-codimensional
+closed subspace of a Banach space is complemented, and the first deep
+negative result — that $c_0$ is not complemented in $\ell^\infty$ —
+is due to Phillips~\cite{Phillips1940}. The landmark result that $\ell^1$
+is the only separable Banach space in which every closed subspace is
+complemented is due to Lindenstrauss and
+Tzafriri~\cite{LindenstraussTzafriri1971}, answering a long-standing
+question of Banach. The modern geometric theory of Banach spaces,
+encompassing type and cotype, uniform convexity, and local theory, was
+developed primarily by Mazur, Pe\l czy\'{n}ski, Lindenstrauss, and
+Milman from the 1950s onwards; the monograph of Lindenstrauss and
+Tzafriri~\cite{LindenstraussTzafriri1977} remains the standard reference.
+
+\paragraph{Complemented subspaces and projections.}
+The notion of complemented subspace
+(Definition~\ref{def:complemented_subspace}) and the basic properties of
+bounded projections (Section~\ref{sec:banach:complemented}) are classical;
+see Lindenstrauss--Tzafriri~\cite{LindenstraussTzafriri1977} or the
+monograph of Megginson~\cite{Megginson1998} for a modern treatment.
+The specific form of the projection $\Proj{U}{W}$ associated to a direct
+sum decomposition $X = U \oplus W$
+(Proposition~\ref{prop:projection_characterisation}) and the
+norm-continuity of the map $L \mapsto (\Id{} + L)(U)$ used in the
+Grassmannian charts are standard results; the presentation here follows
+Douady~\cite{Douady1966}.
+
+\paragraph{The Grassmann--Banach manifold.}
+The construction of the Grassmannian of a Banach space as an
+infinite-dimensional analytic manifold
+(Theorem~\ref{thm:grassmann_manifold}) is due to Douady~\cite{Douady1966},
+who established the analytic atlas using the graph construction and
+proved analyticity of the transition maps. An independent and closely
+related construction appears in the work of Porta and
+Recht~\cite{PortaRecht1994}, who studied the geometry of the Grassmannian
+in the context of operator algebras, and of Corach, Porta, and
+Recht~\cite{CorachPortaRecht1993}, who developed the metric geometry and
+geodesics of the Grassmannian of a $C^*$-algebra. These works established
+the Grassmannian as a symmetric space in the Hilbert-module setting and
+identified the geodesics as arcs of the unitary group, giving the formula
+recalled in Remark~\ref{rem:retraction_vs_exp}. The finite-dimensional
+case — the classical Grassmannian $Gr(r, n)$ as a homogeneous space of
+$GL(n)$ — is treated in every textbook on differential geometry;
+see Milnor--Stasheff~\cite{MilnorStasheff1974} for the characteristic
+class theory.
+
+\paragraph{Banach manifolds.}
+The foundations of the theory of manifolds modelled on Banach spaces were
+laid independently by several authors in the late 1950s and early 1960s.
+The definitive early reference is the monograph of
+Lang~\cite{Lang1999}, which establishes the basic theory of Banach
+manifolds — charts, atlases, tangent bundles, vector fields, and the
+Frobenius theorem — in the generality required for infinite-dimensional
+applications. A parallel development, closer to the needs of global
+analysis, appears in the work of Eells~\cite{Eells1966} and in the
+monograph of Abraham, Marsden, and Ratiu~\cite{AbrahamMarsdenRatiu1988},
+which provides the most thorough treatment of infinite-dimensional
+manifolds available and covers connections, Riemannian geometry, and
+Hamiltonian mechanics in the Banach setting. The foundational text of
+Dieudonné~\cite{Dieudonne1972} treats the local differential calculus
+on Banach spaces in full generality, establishing the chain rule,
+the inverse function theorem, and the implicit function theorem
+(Theorem~\ref{thm:IFT}) in the form used in Chapters~\ref{chap:tucker_manifold}
+and~\ref{chap:TB_manifold}.
+
+\paragraph{Fréchet differentiability and multilinear maps.}
+The Fréchet derivative in Banach spaces
+(Section~\ref{sec:banach:multilinear}) is the canonical notion of
+differentiability for maps between infinite-dimensional spaces; it agrees
+with the Gâteaux derivative for maps whose Gâteaux derivative is bounded
+and continuous, which is always the case in our applications. The
+identification of bounded multilinear maps with bounded linear maps on
+tensor products (the universal property, Proposition~\ref{prop:multilinear_universal})
+is classical; see Dieudonné~\cite{Dieudonne1972}, Chapter~12, or
+Ryan~\cite{Ryan2002} for a treatment aimed at Banach space theory.
+The $\mathcal{C}^\infty$ regularity of the tensor product map
+(Proposition~\ref{prop:tensormap_smooth}), which is used throughout
+Chapters~\ref{chap:tucker_manifold}--\ref{chap:TB_manifold}, follows
+immediately from its polynomial (hence real-analytic) nature.
+
+\paragraph{Retractions and geometric optimisation.}
+The notion of retraction on a Riemannian manifold as a first-order
+approximation to the exponential map
+(Definition~\ref{def:retraction}) was formalised for optimisation
+purposes by Shub~\cite{Shub1986} and systematised by Absil, Mahony, and
+Sepulchre~\cite{AbsilMahonySepulchre2008} in their monograph on
+optimisation on matrix manifolds. The specific chart-based retraction on
+the Grassmannian (Example~\ref{ex:grassmann_retraction}) is the one
+used in practice in geometric integration algorithms; the
+projector-splitting integrator of Lubich, Oseledets, and
+Vandereycken~\cite{LubichOseledetsVandereycken2015} employs exactly
+this retraction at each level of the tree. In the Hilbert case the
+relation between the chart retraction and the geodesic (great circle) is
+well known; the Banach case requires a different approach since no
+canonical Riemannian metric is available, and the chart retraction is
+the natural substitute.
