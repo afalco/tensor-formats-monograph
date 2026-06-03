@@ -212,6 +212,45 @@ the Gram matrices $M^{(\alpha)}_{ij} = \langle \bU^{(\alpha)}_i,
 in Section~\ref{sec:DF:kinematic}).
 \end{problem}
 
+\subsection*{Convergence of DMRG in infinite-dimensional Banach spaces}
+
+The Density Matrix Renormalisation Group (DMRG) algorithm, reformulated
+as a sequence of rank-one updates on the TT manifold~\cite{Oseledets2011},
+is one of the most successful numerical methods in quantum physics and
+high-dimensional approximation. Its convergence analysis in the
+finite-dimensional Hilbert case was established by
+Holtz, Rohwedder, and Schneider~\cite{HoltzRohwedderSchneider2012}: under
+a gap condition on the Hessian of $J$ restricted to the TT manifold,
+the one-site DMRG sweep converges locally at a linear rate governed by
+the ratio of the gap to the spectral norm of the Hessian.
+
+In infinite-dimensional Banach spaces (e.g., $V_\alpha = L^p(I_\alpha)$
+with $p \neq 2$), the Hessian is not a symmetric bilinear form but a
+Fréchet derivative of the gradient map, and the gap condition must be
+reformulated in terms of the duality mapping $J: \VDnorm \to \VDnorm^*$.
+
+\begin{problem}
+\label{prob:DMRG_banach}
+Let $J: \VDnorm \to \RR$ be a strongly convex Fréchet-differentiable
+functional on a reflexive strictly convex Banach tensor space. Consider
+the one-site DMRG sweep for minimisation over $\Tucker{\leq\fr}{\VD}$:
+\begin{enumerate}
+\item[\textup{(a)}] Formulate the gap condition for the restricted
+    Hessian $D^2 J|_{\Tucker{\fr}{\VD}}$ in terms of the duality
+    mapping and the Gram matrices of the tangent space, extending
+    the condition of~\cite{HoltzRohwedderSchneider2012} to the Banach
+    setting.
+\item[\textup{(b)}] Prove local linear convergence of the one-site
+    DMRG sweep under this condition, with a convergence rate
+    depending on the condition number of the mode-unfolding matrices
+    and the modulus of convexity of $\VDnorm$.
+\item[\textup{(c)}] Identify the specific obstacle for two-site DMRG
+    (rank adaptation) in the Banach case: the SVD-based rank increase
+    step relies on the Hilbert-space singular value decomposition and
+    does not directly generalise to $L^p$ for $p \neq 2$.
+\end{enumerate}
+\end{problem}
+
 %------------------------------------------------------------
 \section{Beyond Banach spaces}
 \label{sec:open:beyond}
@@ -313,6 +352,45 @@ $C^*$-algebras. What is the correct Banach manifold structure for
 PEPS (projected entangled pair states), where the graph has cycles?
 Does the immersion theorem (Theorem~\ref{thm:tucker_immersion}) extend
 to non-tree tensor networks, and under what conditions on the graph?
+\end{problem}
+
+\subsection*{Curvature of $\Drank{r}{H}$ and entanglement measures}
+
+The manifold $\Drank{r}{H}$ of fixed-rank density operators carries a
+natural Riemannian structure in the Hilbert--Schmidt norm: the tangent
+space $T_\rho \Drank{r}{H}$ is a subspace of the Hilbert--Schmidt space
+$\cT{2}(H)$, and the restricted inner product gives a Riemannian metric.
+Geodesics on $\Drank{r}{H}$ with respect to this metric correspond to
+physically meaningful interpolations between quantum states.
+
+On the other hand, the natural geometry for quantum information is given
+by the \emph{Bures metric} (related to the quantum fidelity) and the
+family of \emph{Petz monotone metrics}~\cite{BratteliRobinson1987}.
+These are defined on the full state space $\Dstate{H}$ and restrict to
+metrics on $\Drank{r}{H}$, but their curvature properties on the finite-rank
+stratum have not been systematically studied.
+
+\begin{problem}
+\label{prob:curvature_entanglement}
+\begin{enumerate}
+\item[\textup{(a)}] Compute the sectional curvature of $\Drank{r}{H}$
+    with respect to the Hilbert--Schmidt metric and the Bures metric.
+    In particular, determine the sign of the curvature and whether
+    $\Drank{r}{H}$ is a non-positively curved (NPC) space, which
+    would imply convexity of the squared distance function and
+    uniqueness of Fréchet means.
+\item[\textup{(b)}] Relate the curvature of $\Drank{r}{H}$ at a state
+    $\rho$ to entanglement measures of $\rho$ as a tensor in
+    $H = \bigotimes_j H_j$. Specifically: is the sectional curvature
+    in directions tangent to the orbit of $\rho$ under local unitaries
+    $U(H_1) \times \cdots \times U(H_d)$ related to the entanglement
+    entropy $S(\alpha) = -\Tr(\rho_\alpha \log \rho_\alpha)$?
+\item[\textup{(c)}] Use the curvature to derive improved error estimates
+    for the Dirac--Frenkel projected dynamics: if $\Drank{r}{H}$
+    has bounded sectional curvature, one expects Jacobi field estimates
+    that improve on the Grönwall-type bounds of
+    Problem~\ref{prob:lind:error_bounds}.
+\end{enumerate}
 \end{problem}
 
 \subsection*{Lindblad dynamics: unbounded generators}
@@ -607,5 +685,52 @@ via a greedy algorithm on the tree structure)? Can it be solved in
 the case $\VDnorm = L^2(\prod_j I_j)$ using the singular value
 structure of the partial trace operators $\Tr_{\alpha^c}(\rho_f)$
 (Chapter~\ref{chap:quantum_states})?
+\end{problem}
+
+\subsection*{Supervised learning over Banach tensor manifolds}
+
+The results of this monograph establish that the Tucker manifold
+$\Tucker{\fr}{\VD}$ and the tree-based manifold $\FTv$ are smooth Banach
+manifolds immersed in $\VDnorm$. This geometric structure opens the
+door to a rigorous learning theory that goes beyond the finite-dimensional
+Hilbert setting.
+
+In supervised learning, one is given data $\{(x_i, y_i)\}_{i=1}^n
+\subset \mathcal{X} \times \RR$ and seeks $f \in \FTleq{\fr}{\VD}{\TD}$
+minimising the empirical risk $\frac{1}{n}\sum_i \ell(f(x_i), y_i)$
+for some loss function $\ell$. The Banach setting introduces two new
+challenges compared to the Hilbert case:
+(i) gradient descent on $\FTv$ uses the duality mapping $J$ rather
+than the gradient in $\VDnorm^*$, which is nonlinear for $p \neq 2$;
+(ii) the norm $\|\cdot\|_D$ used to measure approximation error is
+not a Hilbert norm, so Rademacher complexity bounds derived from
+Hilbert-space Gram matrices do not apply directly.
+
+\begin{problem}
+\label{prob:supervised_learning_banach}
+Let $\VDnorm = \bigotimes_{\alpha \in D} L^p(I_\alpha)$ with
+$1 < p < \infty$, $p \neq 2$.
+\begin{enumerate}
+\item[\textup{(a)}] \emph{Riemannian gradient descent.}
+    Define the \emph{Finsler gradient} $\nabla_F J(\bv) \in
+    T_\bv \FTv$ as the unique vector satisfying
+    $dJ(\bv)[\delta\bv] = \langle \nabla_F J(\bv),
+    J(\delta\bv)\rangle$ for all $\delta\bv \in T_\bv\FTv$,
+    where $J: \VDnorm \to \VDnorm^*$ is the duality mapping.
+    Prove that gradient descent $\dot\bv = -\nabla_F J(\bv)$
+    converges to a critical point under a Łojasiewicz condition
+    on $J|_{\FTleq{\fr}{\VD}{\TD}}$.
+\item[\textup{(b)}] \emph{Rademacher complexity in $L^p$.}
+    Compute or bound the Rademacher complexity $R_n(\FTleq{\fr}{\VD}{\TD})$
+    using the covering number of the Tucker manifold in the
+    $L^p$-norm, and derive generalisation bounds for ERM over
+    $\FTleq{\fr}{\VD}{\TD}$ that are tight in the rank $\fr$ and
+    the dimension $d$.
+\item[\textup{(c)}] \emph{Sample complexity.}
+    Determine the minimax sample complexity for estimating the best
+    Tucker-rank-$\fr$ approximation to an unknown function
+    $f \in \VDnorm$ from $n$ noisy observations, and compare with
+    the Hilbert-space ($p = 2$) bound of~\cite{Bachmayr2016}.
+\end{enumerate}
 \end{problem}
 
