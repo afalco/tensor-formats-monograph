@@ -1,0 +1,204 @@
+%============================================================
+%  main_sp.tex
+%  Tensor Formats in Banach Spaces:
+%  Minimal Subspaces, Geometry, and Applications to Open Quantum Systems
+%
+%  Antonio Falcó — Universidad Cardenal Herrera-CEU
+%
+%  TARGET: Ergebnisse der Mathematik und ihrer Grenzgebiete
+%          (3. Folge), Springer
+%
+%  DOCUMENT CLASS: SNmono.cls  (Springer Nature monograph class,
+%                  v6.00, 11-Nov-2025 — replaces svmono)
+%
+%  COMPILATION:
+%    pdflatex main_sp && bibtex main_sp && pdflatex main_sp && pdflatex main_sp
+%  or:
+%    latexmk -pdf main_sp
+%============================================================
+
+%------------------------------------------------------------
+%  DOCUMENT CLASS
+%  SNmono accepts the same class options as svmono.
+%  'sechang'  — use Springer section heading style
+%  'envcountchap' — number theorems per chapter (1.1, 1.2, ...)
+%  'envcountsect' — number theorems per section  (1.1.1, 1.1.2, ...)
+%  We use 'envcountsect' to match the numbering in the source papers.
+%------------------------------------------------------------
+\documentclass[envcountsect, sechang, openright]{SNmono}
+
+%------------------------------------------------------------
+%  PACKAGES
+%  SNmono loads amsmath, amssymb, graphicx, and hyperref
+%  internally; we only add what is not already provided.
+%------------------------------------------------------------
+
+% Extended mathematics
+\usepackage{mathrsfs}            % \mathscr
+\usepackage{mathtools}           % \coloneqq, \xrightarrow, etc.
+
+% Diagrams and trees
+\usepackage{tikz}
+\usepackage[all,cmtip]{xy}
+\usepackage{synttree}
+
+% Tables and lists
+\usepackage{booktabs}
+\usepackage{enumitem}
+
+% Index
+\usepackage{makeidx}
+\makeindex
+
+%------------------------------------------------------------
+%  THEOREM ENVIRONMENTS
+%  SNmono (svmono) provides \spnewtheorem for Springer-styled
+%  environments.  With option 'envcountsect', the counter is
+%  chapter.section.number.
+%
+%  \spnewtheorem{env}{Caption}[counter]{\bfseries}{\itshape}
+%    — bold label, italic body  (plain style)
+%  \spnewtheorem{env}{Caption}[counter]{\bfseries}{\upshape}
+%    — bold label, upright body (definition/remark style)
+%------------------------------------------------------------
+
+% Plain style (statement in italics)
+\spnewtheorem{theorem}{Theorem}[section]{\bfseries}{\itshape}
+\spnewtheorem{lemma}[theorem]{Lemma}{\bfseries}{\itshape}
+\spnewtheorem{proposition}[theorem]{Proposition}{\bfseries}{\itshape}
+\spnewtheorem{corollary}[theorem]{Corollary}{\bfseries}{\itshape}
+
+% Definition style (body upright)
+\spnewtheorem{definition}[theorem]{Definition}{\bfseries}{\upshape}
+\spnewtheorem{example}[theorem]{Example}{\bfseries}{\upshape}
+\spnewtheorem{assumption}[theorem]{Assumption}{\bfseries}{\upshape}
+\spnewtheorem{problem}[theorem]{Open Problem}{\bfseries}{\upshape}
+
+% Remark style (label italic, body upright)
+\spnewtheorem{remark}[theorem]{Remark}{\itshape}{\upshape}
+\spnewtheorem{notation}[theorem]{Notation}{\itshape}{\upshape}
+
+%------------------------------------------------------------
+%  UNIFIED NOTATION
+%------------------------------------------------------------
+\input{notation}
+
+%------------------------------------------------------------
+%  CUSTOM COMMANDS  (not in notation.tex)
+%------------------------------------------------------------
+\newcommand{\ie}{i.e.,\ }
+\newcommand{\eg}{e.g.,\ }
+\newcommand{\cf}{cf.\ }
+\newcommand{\Norm}[1]{\left\|#1\right\|}
+\newcommand{\Hitchcock}{\cite{Hitchcock1927}}
+
+%------------------------------------------------------------
+%  TOC DEPTH
+%------------------------------------------------------------
+\setcounter{tocdepth}{2}
+
+%------------------------------------------------------------
+%  AUTHOR / TITLE METADATA  (used by SNmono for running heads)
+%------------------------------------------------------------
+\title{Tensor Formats in Banach Spaces}
+\subtitle{Minimal Subspaces, Geometry, and Applications to Open Quantum Systems}
+\author{Antonio Falcó}
+\institute{%
+  Antonio Falcó \at
+  ESI International Chair@CEU-UCH,
+  Departamento de Matemáticas, Física y Ciencias Tecnológicas,
+  Universidad Cardenal Herrera-CEU, CEU Universities,
+  San Bartolomé 55, 46115 Alfara del Patriarca (Valencia), Spain\\
+  \email{afalco@uchceu.es}
+}
+
+%============================================================
+%  DOCUMENT
+%============================================================
+\begin{document}
+
+%------------------------------------------------------------
+%  FRONT MATTER
+%------------------------------------------------------------
+\frontmatter
+
+\maketitle                        % SNmono typesets title from metadata above
+
+\tableofcontents
+
+%------------------------------------------------------------
+%  PREFACE
+%------------------------------------------------------------
+\input{chapters/ch00_preface}
+
+%------------------------------------------------------------
+%  NOTATION CHAPTER
+%------------------------------------------------------------
+\chapter*{Notation and Conventions}
+\addcontentsline{toc}{chapter}{Notation and Conventions}
+\label{chap:notation}
+See the file \texttt{notation.tex} for the complete list of macros
+and symbols used throughout.
+
+%------------------------------------------------------------
+%  MAIN MATTER
+%------------------------------------------------------------
+\mainmatter
+
+%%  PART I: ALGEBRAIC AND TOPOLOGICAL FOUNDATIONS
+\part{Algebraic and Topological Foundations}
+\label{part:foundations}
+
+\input{chapters/ch01_introduction}
+\input{chapters/ch02_banach}
+\input{chapters/ch03_algtensor}
+\input{chapters/ch04_minsubspaces}
+
+%%  PART II: TREE-BASED TENSOR FORMATS
+\part{Tree-Based Tensor Formats}
+\label{part:tree}
+
+\input{chapters/ch05_trees}
+\input{chapters/ch06_algTBT}
+\input{chapters/ch07_topTBT}
+
+%%  PART III: DIFFERENTIAL GEOMETRY OF TENSOR FORMATS
+\part{Differential Geometry of Tensor Formats}
+\label{part:geometry}
+
+\input{chapters/ch08_tucker_manifold}
+\input{chapters/ch09_TB_manifold}
+
+%%  PART IV: VARIATIONAL PRINCIPLES AND APPLICATIONS
+\part{Variational Principles and Applications}
+\label{part:variational}
+
+\input{chapters/ch10_DF}
+\input{chapters/ch12_quantum_states}
+\input{chapters/ch13_lindblad}
+\input{chapters/ch11_open}        % Open Problems — final chapter
+
+%------------------------------------------------------------
+%  APPENDICES
+%  SNmono uses \appendix to switch numbering to A, B, C, ...
+%------------------------------------------------------------
+\appendix
+
+\input{chapters/app_manifolds}
+\input{chapters/app_functional}
+\input{chapters/app_quantum}
+\input{chapters/app_algorithms}
+\input{chapters/app_notation_index}
+
+%------------------------------------------------------------
+%  BACK MATTER
+%------------------------------------------------------------
+\backmatter
+
+%  SNmono recommends spbasic or spmpsci for the bibliography style.
+\bibliographystyle{spbasic}
+\bibliography{bibliography/monograph}
+
+\printindex
+
+\end{document}
