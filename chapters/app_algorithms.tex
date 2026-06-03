@@ -380,6 +380,121 @@ corresponds to moving between strata of the stratification
 $\VD = \bigsqcup_\fr \Tucker{\fr}{\VD}$
 (Theorem~\ref{thm:tucker_decomposition_full}).
 
+\subsubsection*{Algorithm: Two-site DMRG sweep}
+
+Let $\bv \in \Tucker{\fr}{\VD}$ with $\VD = \bigotimes_{k=1}^d \RR^{n_k}$
+in TT format with bond dimensions $r_0 = r_d = 1$ and
+$r_1, \ldots, r_{d-1}$. We seek to minimise $f(\bv) = \langle \bv,
+H\bv\rangle / \|\bv\|^2$ (Rayleigh quotient) over TT tensors of bond
+dimension $\leq r_{\max}$.
+
+\medskip
+\noindent\textbf{Initialisation.}
+\begin{enumerate}
+\item Start with $\bv^{(0)} \in \Tucker{\fr^{(0)}}{\VD}$ (e.g., from
+    a one-site initialisation or random).
+\item Build the \emph{left environment tensors}
+    $L_k = \Psi_{k-1}^L \in \RR^{r_{k-1} \times r_{k-1}}$
+    and \emph{right environment tensors}
+    $R_k = \Psi_{k+1}^R \in \RR^{r_k \times r_k}$ by sweeping left
+    to right and right to left respectively.
+\end{enumerate}
+
+\noindent\textbf{Forward sweep} ($k = 1, \ldots, d-1$):
+\begin{enumerate}
+\item \emph{Form the two-site tensor.} Define the \emph{super-block}
+    tensor by contracting sites $k$ and $k+1$:
+    \begin{equation}
+    \label{eq:app:superblock}
+        \Theta^{[k,k+1]}_{(i_{k-1}, i_k, i_{k+1}, i_{k+2})}
+        \coloneqq \sum_{j=1}^{r_k}
+        C^{(k)}_{i_{k-1}, i_k, j}\, C^{(k+1)}_{j, i_{k+1}, i_{k+2}}.
+    \end{equation}
+    The super-block lives in $\RR^{r_{k-1} \times n_k \times n_{k+1}
+    \times r_{k+1}}$.
+
+\item \emph{Solve the effective eigenvalue problem.} Project $H$ onto
+    the super-block subspace using the environment tensors $L_k$ and
+    $R_{k+1}$:
+    \begin{equation}
+    \label{eq:app:effective_H}
+        H^{\mathrm{eff}}_{k,k+1}
+        = L_k \otimes I_{n_k} \otimes I_{n_{k+1}} \otimes R_{k+1}
+        \cdot H_{k,k+1}^{\mathrm{local}},
+    \end{equation}
+    and solve $H^{\mathrm{eff}}_{k,k+1}\, \Theta = \lambda\, \Theta$
+    by a Krylov method (e.g., Lanczos or Jacobi--Davidson) of
+    dimension $r_{k-1} n_k n_{k+1} r_{k+1}$.
+
+\item \emph{SVD truncation with rank adaptation.}
+    Reshape $\Theta^{[k,k+1]}$ as a matrix
+    $M \in \RR^{(r_{k-1} n_k) \times (n_{k+1} r_{k+1})}$ and compute
+    the truncated SVD:
+    \begin{equation}
+    \label{eq:app:svd_truncation}
+        M \approx U \Sigma V^\top,
+        \quad U \in \RR^{(r_{k-1} n_k) \times r_k^{\mathrm{new}}},\;
+        \Sigma \in \RR^{r_k^{\mathrm{new}} \times r_k^{\mathrm{new}}},\;
+        V \in \RR^{(n_{k+1} r_{k+1}) \times r_k^{\mathrm{new}}},
+    \end{equation}
+    where the new bond dimension is
+    \begin{equation}
+    \label{eq:app:rank_criterion}
+        r_k^{\mathrm{new}}
+        = \min\bigl\{j : \sigma_{j+1}^2 + \cdots + \sigma_{r_k^{\max}}^2
+        \leq \varepsilon^2_{\mathrm{tol}} \|\bv\|^2\bigr\}
+    \end{equation}
+    for a prescribed truncation tolerance $\varepsilon_{\mathrm{tol}} > 0$.
+
+\item \emph{Update component tensors.}
+    Set $C^{(k)} \leftarrow \mathrm{reshape}(U,\, r_{k-1},n_k,r_k^{\mathrm{new}})$
+    and $C^{(k+1)} \leftarrow \mathrm{reshape}(\Sigma V^\top,\, r_k^{\mathrm{new}},n_{k+1},r_{k+1})$.
+
+\item \emph{Update right environment.} Absorb site $k$ into $L_{k+1}$:
+    $L_{k+1} \leftarrow C^{(k)} \cdot L_k \cdot C^{(k)\top}$.
+\end{enumerate}
+
+\noindent\textbf{Backward sweep} ($k = d-1, \ldots, 1$): same procedure,
+sweeping right to left, updating $R_k$ after each site.
+
+\noindent\textbf{Convergence criterion.} Repeat forward--backward sweeps
+until
+\begin{equation}
+    |f(\bv^{(\ell+1)}) - f(\bv^{(\ell)})| \leq \varepsilon_{\mathrm{conv}}
+    \quad\text{and}\quad
+    \max_k |r_k^{(\ell+1)} - r_k^{(\ell)}| = 0.
+\end{equation}
+
+\begin{proposition}[Rank adaptation by SVD truncation]
+\label{prop:app:dmrg_rank}
+The rank criterion~\eqref{eq:app:rank_criterion} guarantees that the
+truncation error at site $k$ satisfies
+\begin{equation}
+    \|M - U\Sigma V^\top\|_F^2
+    = \sum_{j > r_k^{\mathrm{new}}} \sigma_j^2
+    \leq \varepsilon_{\mathrm{tol}}^2\,\|\bv\|^2.
+\end{equation}
+The total truncation error over all sites in one sweep is bounded by
+$\sqrt{d-1}\,\varepsilon_{\mathrm{tol}}\,\|\bv\|$.
+\end{proposition}
+
+\begin{remark}[Geometric interpretation and the Tucker stratification]
+\label{rem:app:dmrg_geometry}
+Each SVD truncation step in two-site DMRG moves $\bv$ from the stratum
+$\Tucker{\fr}{\VD}$ (with bond dimensions $\fr = (r_1, \ldots, r_{d-1})$)
+to a new stratum $\Tucker{\fr^{\mathrm{new}}}{\VD}$ (with updated bond
+dimensions $\fr^{\mathrm{new}}$). The rank criterion~\eqref{eq:app:rank_criterion}
+selects the stratum that is minimal (smallest bond dimensions) subject
+to the approximation error being within tolerance.
+
+In the language of Chapter~\ref{chap:topTBT}, this is the
+\emph{$\varepsilon$-rank} of the super-block tensor: the smallest $r$
+such that the best rank-$r$ approximation error is $\leq \varepsilon$.
+The existence of this best approximation is guaranteed by
+Theorem~\ref{thm:TBT_best_approx}, and the truncated SVD computes it
+exactly in the $\ell^2$ norm.
+\end{remark}
+
 %------------------------------------------------------------
 \section{Retraction-based optimisation on tensor manifolds}
 \label{app:alg:retraction}

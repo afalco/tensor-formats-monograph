@@ -128,3 +128,155 @@ $F(t,\bv_r)=\Pmetric{\bv_r}(\bF(t,\bv_r))$ on $\Tucker{\fr}{\VD}$
 in Chapter~\ref{chap:DF}. Local Lipschitz continuity follows from
 the $\mathcal{C}^\infty$-regularity of the manifold
 (Theorem~\ref{thm:Tucker_Banach_Manifold}).
+
+%------------------------------------------------------------
+\section{Reflexivity and duality in Banach spaces}
+\label{app:functional:reflexivity}
+%------------------------------------------------------------
+
+This section collects the reflexivity and duality results used in the
+best-approximation theory of Chapter~\ref{chap:minsubspaces}.
+
+\begin{theorem}[James's theorem, {\cite[Theorem~1.13.2]{Megginson1998}}]
+\label{thm:app:james}
+A Banach space $X$ is reflexive if and only if every bounded linear
+functional $f \in X^*$ attains its supremum on the closed unit ball
+$B_X$.
+\end{theorem}
+
+\begin{proposition}[Stability of reflexivity,
+{\cite[Propositions~1.11.7--1.11.8]{Megginson1998}}]
+\label{prop:app:reflexivity_stability}
+\begin{enumerate}
+\item[\textup{(i)}] A closed subspace of a reflexive Banach space is
+    reflexive.
+\item[\textup{(ii)}] A Banach space $X$ is reflexive if and only if
+    $X^*$ is reflexive.
+\item[\textup{(iii)}] If $X$ is reflexive and $Y$ is isomorphic to $X$
+    (i.e., there exists a bounded bijection $T: X \to Y$ with bounded
+    inverse), then $Y$ is reflexive.
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Weak sequential compactness in reflexive spaces,
+{\cite[Theorem~1.6.4]{Megginson1998}}]
+\label{prop:app:weak_compact}
+A Banach space $X$ is reflexive if and only if every bounded sequence
+in $X$ has a weakly convergent subsequence. In particular, the closed
+unit ball $B_X$ is weakly sequentially compact.
+\end{proposition}
+
+\begin{remark}[Relevance to best Tucker approximations]
+The weak sequential compactness of Proposition~\ref{prop:app:weak_compact}
+is the key tool in the proof of Theorem~\ref{thm:best_approx_tucker}
+(existence of best Tucker approximations): given a minimising sequence
+$\{\bv_n\} \subset \FTleq{\fr}{\VD}{\TD}$ for $\|\bu - \bv\|_D$, one
+extracts a weakly convergent subsequence $\bv_{n_k} \rightharpoonup \bv^*$
+in $\VDnorm$, and then uses weak closedness of $\FTleq{\fr}{\VD}{\TD}$
+(Theorem~\ref{thm:weak_closed}) and weak lower semicontinuity of the
+norm to conclude $\bv^* \in \FTleq{\fr}{\VD}{\TD}$ is a minimiser.
+\end{remark}
+
+\begin{proposition}[Duality mapping,
+{\cite[Chapter~4]{Megginson1998}}]
+\label{prop:app:duality_mapping}
+Let $X$ be a Banach space. The \emph{duality mapping} $J: X \to 2^{X^*}$
+is defined by
+\begin{equation}
+    J(x) \coloneqq \{f \in X^* : f(x) = \|x\|^2 = \|f\|^2\}.
+\end{equation}
+\begin{enumerate}
+\item[\textup{(i)}] $J(x) \neq \emptyset$ for all $x \in X$ (by
+    Hahn--Banach, Theorem~\ref{thm:app:hahn_banach}).
+\item[\textup{(ii)}] $J$ is single-valued and norm-to-norm continuous
+    if and only if $X$ is smooth (Definition~\ref{def:smooth}).
+\item[\textup{(iii)}] $J$ is a bijection $X \to X^*$ if and only if
+    $X$ is reflexive and strictly convex; in this case
+    $J^{-1} = J_{X^*}$ (the duality mapping of $X^*$).
+\item[\textup{(iv)}] For $X = H$ a Hilbert space, $J = \mathrm{id}_H$
+    (after the Riesz identification $H \cong H^*$).
+\end{enumerate}
+\end{proposition}
+
+%------------------------------------------------------------
+\section{Crossnorms and the injective norm}
+\label{app:functional:crossnorms}
+%------------------------------------------------------------
+
+This section records the norm conditions on Banach tensor spaces used
+throughout the monograph, supplementing the discussion in
+Chapter~\ref{chap:minsubspaces} (\S\ref{sec:min:bestapprox}) and
+the historical notes of Chapter~\ref{chap:algtensor}.
+
+\begin{definition}[Crossnorm and condition \condCROSS,
+{\cite[Definition~3.2]{FH2012}}]
+\label{def:app:crossnorm}
+A norm $\|\cdot\|_D$ on the algebraic tensor product
+$\VD = {}_a\!\bigotimes_{\alpha \in D} V_\alpha$ is a \emph{crossnorm}
+if
+\begin{equation}
+    \Bigl\|\bigotimes_{\alpha \in D} v_\alpha\Bigr\|_D
+    = \prod_{\alpha \in D} \|v_\alpha\|_\alpha
+\end{equation}
+for all elementary tensors $v = \bigotimes_\alpha v_\alpha$.
+Condition \condCROSS\ requires $\|\cdot\|_D$ to be a crossnorm.
+The Banach completion of $(\VD, \|\cdot\|_D)$ is the
+\emph{Banach tensor space} $\VDnorm$.
+\end{definition}
+
+\begin{definition}[Injective norm and condition \condINJ,
+{\cite[Definition~3.5]{FH2012}}]
+\label{def:app:injnorm}
+The \emph{injective (or $\varepsilon$-) norm} on $\VD$ is
+\begin{equation}
+    \|\bv\|_\varepsilon \coloneqq
+    \sup\Bigl\{
+    \Bigl|\sum_{(i_\alpha)} \bv_{(i_\alpha)}
+    \prod_\alpha \varphi_\alpha(e^{(\alpha)}_{i_\alpha})\Bigr|
+    :
+    \varphi_\alpha \in V_\alpha^*,\; \|\varphi_\alpha\|_* \leq 1
+    \Bigr\}.
+\end{equation}
+Condition \condINJ\ requires that the norm $\|\cdot\|_D$ on $\VDnorm$
+satisfies $\|\bv\|_D \geq \|\bv\|_\varepsilon$ for all $\bv \in \VD$
+(i.e., $\|\cdot\|_D$ dominates the injective norm). This is equivalent
+to requiring the tensor product map
+$\bigotimes: \prod_\alpha V_\alpha \to \VDnorm$ to be continuous.
+\end{definition}
+
+\begin{proposition}[Condition \condINJ\ for standard spaces,
+{\cite[Example~3.6]{FH2012}}]
+\label{prop:app:condINJ_examples}
+\begin{enumerate}
+\item[\textup{(i)}] $V_\alpha = L^p(I_\alpha)$ for $1 \leq p \leq
+    \infty$, with $\|\cdot\|_D$ the $L^p$ norm on the product domain:
+    \condINJ\ holds.
+\item[\textup{(ii)}] $V_\alpha = W^{k,p}(\Omega_\alpha)$ Sobolev spaces
+    with the standard Sobolev norm: \condINJ\ holds.
+\item[\textup{(iii)}] $V_\alpha = \ell^p(\NN)$ sequence spaces with the
+    $\ell^p$ norm on the product: \condINJ\ holds for $1 \leq p \leq
+    \infty$.
+\item[\textup{(iv)}] $V_\alpha = H_\alpha$ Hilbert spaces with the
+    tensor-product Hilbert norm: \condINJ\ holds (the projective and
+    injective norms are equivalent up to $K_G$,
+    Remark~\ref{rem:grothendieck_hilbert}).
+\end{enumerate}
+\end{proposition}
+
+\begin{proposition}[Projective norm,
+{\cite[Chapter~2]{Ryan2002}}]
+\label{prop:app:projnorm}
+The \emph{projective (or $\pi$-) norm} on $\VD$ is
+\begin{equation}
+    \|\bv\|_\pi \coloneqq
+    \inf\Bigl\{
+    \sum_i \prod_\alpha \|u_\alpha^{(i)}\|_\alpha :
+    \bv = \sum_i \bigotimes_\alpha u_\alpha^{(i)}
+    \Bigr\}.
+\end{equation}
+The projective and injective norms are the two extremes of the
+crossnorm order: $\|\cdot\|_\varepsilon \leq \|\cdot\|_D \leq
+\|\cdot\|_\pi$ for every crossnorm $\|\cdot\|_D$.
+The dual of the projective tensor product is the space of bounded
+multilinear maps: $(\VDnorm_\pi)^* \cong \cL(V_1, \ldots, V_d; \RR)$.
+\end{proposition}
