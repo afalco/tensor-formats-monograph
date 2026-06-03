@@ -9,7 +9,7 @@
 %          (3. Folge), Springer
 %
 %  DOCUMENT CLASS: SNmono.cls  (Springer Nature monograph class,
-%                  v6.00, 11-Nov-2025 — replaces svmono)
+%                  v6.00, 11-Nov-2025)
 %
 %  COMPILATION:
 %    pdflatex main_sp && bibtex main_sp && pdflatex main_sp && pdflatex main_sp
@@ -19,21 +19,22 @@
 
 %------------------------------------------------------------
 %  DOCUMENT CLASS
-%  SNmono accepts the same class options as svmono.
-%  'sechang'  — use Springer section heading style
-%  'envcountchap' — number theorems per chapter (1.1, 1.2, ...)
-%  'envcountsect' — number theorems per section  (1.1.1, 1.1.2, ...)
-%  We use 'envcountsect' to match the numbering in the source papers.
+%  SNmono v6.00 valid options:
+%    envcountchap  — number theorems per chapter  (e.g. Theorem 1.1)
+%    envcountsect  — number theorems per section  (e.g. Theorem 1.1.1)
+%  Options 'sechang' and 'openright' are NOT supported in v6.00.
 %------------------------------------------------------------
-\documentclass[envcountsect, sechang, openright]{SNmono}
+\documentclass[envcountsect]{SNmono}
 
 %------------------------------------------------------------
 %  PACKAGES
-%  SNmono loads amsmath, amssymb, graphicx, and hyperref
-%  internally; we only add what is not already provided.
+%  SNmono v6.00 loads internally:
+%    amsmath, amsthm, graphicx, hyperref, xcolor, inputenc, fontenc
+%  We add only what is missing.
 %------------------------------------------------------------
 
-% Extended mathematics
+% Symbol fonts — NOT loaded by SNmono
+\usepackage{amssymb}             % \mathbb, \mathfrak, etc.
 \usepackage{mathrsfs}            % \mathscr
 \usepackage{mathtools}           % \coloneqq, \xrightarrow, etc.
 
@@ -52,30 +53,15 @@
 
 %------------------------------------------------------------
 %  THEOREM ENVIRONMENTS
-%  SNmono (svmono) provides \spnewtheorem for Springer-styled
-%  environments.  With option 'envcountsect', the counter is
-%  chapter.section.number.
-%
-%  \spnewtheorem{env}{Caption}[counter]{\bfseries}{\itshape}
-%    — bold label, italic body  (plain style)
-%  \spnewtheorem{env}{Caption}[counter]{\bfseries}{\upshape}
-%    — bold label, upright body (definition/remark style)
+%  SNmono already defines via \spnewtheorem:
+%    theorem, lemma, corollary, proposition, definition,
+%    example, exercise, remark, note, case, conjecture,
+%    question, solution, property
+%  We only declare the ones NOT provided by SNmono.
+%  Syntax: \spnewtheorem{name}[shared-counter]{Caption}{\headfont}{\bodyfont}
 %------------------------------------------------------------
-
-% Plain style (statement in italics)
-\spnewtheorem{theorem}{Theorem}[section]{\bfseries}{\itshape}
-\spnewtheorem{lemma}[theorem]{Lemma}{\bfseries}{\itshape}
-\spnewtheorem{proposition}[theorem]{Proposition}{\bfseries}{\itshape}
-\spnewtheorem{corollary}[theorem]{Corollary}{\bfseries}{\itshape}
-
-% Definition style (body upright)
-\spnewtheorem{definition}[theorem]{Definition}{\bfseries}{\upshape}
-\spnewtheorem{example}[theorem]{Example}{\bfseries}{\upshape}
 \spnewtheorem{assumption}[theorem]{Assumption}{\bfseries}{\upshape}
 \spnewtheorem{problem}[theorem]{Open Problem}{\bfseries}{\upshape}
-
-% Remark style (label italic, body upright)
-\spnewtheorem{remark}[theorem]{Remark}{\itshape}{\upshape}
 \spnewtheorem{notation}[theorem]{Notation}{\itshape}{\upshape}
 
 %------------------------------------------------------------
@@ -98,7 +84,7 @@
 \setcounter{tocdepth}{2}
 
 %------------------------------------------------------------
-%  AUTHOR / TITLE METADATA  (used by SNmono for running heads)
+%  AUTHOR / TITLE METADATA
 %------------------------------------------------------------
 \title{Tensor Formats in Banach Spaces}
 \subtitle{Minimal Subspaces, Geometry, and Applications to Open Quantum Systems}
@@ -122,7 +108,7 @@
 %------------------------------------------------------------
 \frontmatter
 
-\maketitle                        % SNmono typesets title from metadata above
+\maketitle
 
 \tableofcontents
 
@@ -180,7 +166,6 @@ and symbols used throughout.
 
 %------------------------------------------------------------
 %  APPENDICES
-%  SNmono uses \appendix to switch numbering to A, B, C, ...
 %------------------------------------------------------------
 \appendix
 
@@ -195,7 +180,6 @@ and symbols used throughout.
 %------------------------------------------------------------
 \backmatter
 
-%  SNmono recommends spbasic or spmpsci for the bibliography style.
 \bibliographystyle{spbasic}
 \bibliography{bibliography/monograph}
 
